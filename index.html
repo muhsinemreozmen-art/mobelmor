@@ -162,20 +162,20 @@
                     <h4 class="footer-heading">Hızlı Erişim</h4>
                     <ul class="footer-links">
                         <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Ana Sayfa</a></li>
-                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Tüm Koleksiyon</a></li>
-                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Oturma Odası</a></li>
-                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Yemek Odası</a></li>
-                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Yatak Odası</a></li>
+                        <li><a href="index.html?cat=all#catalog"><i class="fa-solid fa-chevron-right"></i> Tüm Koleksiyon</a></li>
+                        <li><a href="index.html?cat=living#catalog"><i class="fa-solid fa-chevron-right"></i> Oturma Odası</a></li>
+                        <li><a href="index.html?cat=dining#catalog"><i class="fa-solid fa-chevron-right"></i> Yemek Odası</a></li>
+                        <li><a href="index.html?cat=bedroom#catalog"><i class="fa-solid fa-chevron-right"></i> Yatak Odası</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
                     <h4 class="footer-heading">Müşteri Hizmetleri</h4>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
-                        <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
-                        <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Sıkça Sorulan Sorular</a></li>
-                        <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="javascript:void(0)" class="info-modal-trigger" data-type="warranty"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
+                        <li><a href="javascript:void(0)" class="info-modal-trigger" data-type="fabric"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
+                        <li><a href="javascript:void(0)" class="info-modal-trigger" data-type="faq"><i class="fa-solid fa-chevron-right"></i> Sıkça Sorulan Sorular</a></li>
+                        <li><a href="javascript:void(0)" class="info-modal-trigger" data-type="privacy"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
                     </ul>
                 </div>
 
@@ -188,15 +188,15 @@
                         </div>
                         <div class="contact-item">
                             <i class="fa-solid fa-phone"></i>
-                            <span>0850 888 00 00</span>
+                            <a href="tel:08508880000" style="color:inherit; text-decoration:none;">0850 888 00 00</a>
                         </div>
                         <div class="contact-item">
                             <i class="fa-brands fa-whatsapp"></i>
-                            <span>+90 530 000 00 00</span>
+                            <a href="https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com%20üzerinden%20bilgi%20almak%20istiyorum." target="_blank" style="color:inherit; text-decoration:none;">+90 530 000 00 00</a>
                         </div>
                         <div class="contact-item">
                             <i class="fa-solid fa-envelope"></i>
-                            <span>destek@mobelmor.com</span>
+                            <a href="mailto:destek@mobelmor.com" style="color:inherit; text-decoration:none;">destek@mobelmor.com</a>
                         </div>
                     </div>
                 </div>
@@ -246,6 +246,15 @@
         <div class="modal-card">
             <button class="close-btn modal-close interactive-btn" id="closeQuickViewBtn"><i class="fa-solid fa-xmark"></i></button>
             <div id="quickViewContent"></div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal-overlay" id="infoModalOverlay">
+        <div class="modal-card" style="max-width: 580px; width: 92%;">
+            <button class="close-btn modal-close interactive-btn" id="closeInfoModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div id="infoModalTitle" style="font-size: 1.25rem; font-weight: 800; color: #6b21a8; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;"></div>
+            <div id="infoModalBody" style="color: #3f3f46; font-size: 0.92rem; line-height: 1.6;"></div>
         </div>
     </div>
 

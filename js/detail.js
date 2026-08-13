@@ -12919,8 +12919,128 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("cartOverlay")?.classList.remove("active");
     });
 
+    document.getElementById("wishlistBtn")?.addEventListener("click", () => {
+        document.getElementById("wishlistDrawer")?.classList.add("active");
+        document.getElementById("wishlistOverlay")?.classList.add("active");
+    });
+
+    document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
+        document.getElementById("wishlistDrawer")?.classList.remove("active");
+        document.getElementById("wishlistOverlay")?.classList.remove("active");
+    });
+
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
+    });
+
+    // Checkout Form Submit Handling
+    const checkoutForm = document.getElementById("checkoutForm");
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            cart = [];
+            updateBadges();
+            renderCart();
+            document.getElementById("checkoutOverlay")?.classList.remove("active");
+            showToast("Siparişiniz başarıyla alındı! Müşteri temsilcimiz sizinle iletişime geçecektir.", "fa-circle-check");
+            checkoutForm.reset();
+        });
+    }
+
+    // Info Modals (Garanti, Kumaş, SSS, Gizlilik)
+    const INFO_MODALS = {
+        warranty: {
+            title: '<i class="fa-solid fa-shield-cat"></i> Garanti & İade Koşulları',
+            body: `
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="background:#f4f4f5; padding:12px; border-radius:8px; border-left:4px solid #6b21a8;">
+                        <h4 style="margin:0 0 4px 0; color:#18181b;">2 Yıl Üretici Garantisi</h4>
+                        <p style="margin:0; font-size:0.85rem;">Tüm İnegöl mobilyası ürünlerimiz 2 yıl boyunca %100 orijinal imalat ve malzeme garantisi altındadır.</p>
+                    </div>
+                    <div style="background:#f4f4f5; padding:12px; border-radius:8px; border-left:4px solid #10b981;">
+                        <h4 style="margin:0 0 4px 0; color:#18181b;">14 Gün Koşulsuz İade Hakkı</h4>
+                        <p style="margin:0; font-size:0.85rem;">Eksiksiz ambalajında hasarsız ürünler için 14 gün içerisinde cayma hakkınızı kullanabilirsiniz.</p>
+                    </div>
+                    <div style="background:#f4f4f5; padding:12px; border-radius:8px; border-left:4px solid #3b82f6;">
+                        <h4 style="margin:0 0 4px 0; color:#18181b;">Sigortalı Sevkiyat & Kurulum</h4>
+                        <p style="margin:0; font-size:0.85rem;">Taşıma ve kurulum esnasında oluşabilecek tüm zararlar Mobelmor garantisi ile anında yenisi ile değiştirilir.</p>
+                    </div>
+                </div>
+            `
+        },
+        fabric: {
+            title: '<i class="fa-solid fa-swatchbook"></i> Kumaş & Renk Kartelası',
+            body: `
+                <p>Mobelmor ürünlerinde kullanılan tüm kumaşlar leke tutmaz, silinebilir ve yüksek sürtünme dayanımlı 1. sınıf akıllı kumaş teknolojisine sahiptir.</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin:16px 0;">
+                    <div style="background:#fdf4ff; border:1px solid #f0abfc; padding:10px; text-align:center; border-radius:8px; font-weight:700; color:#86198f;">Krem Kadife</div>
+                    <div style="background:#f1f5f9; border:1px solid #cbd5e1; padding:10px; text-align:center; border-radius:8px; font-weight:700; color:#334155;">Antrasit Keten</div>
+                    <div style="background:#fff7ed; border:1px solid #ffedd5; padding:10px; text-align:center; border-radius:8px; font-weight:700; color:#c2410c;">Kiremit Taytüyü</div>
+                    <div style="background:#ecfdf5; border:1px solid #a7f3d0; padding:10px; text-align:center; border-radius:8px; font-weight:700; color:#047857;">Zümrüt Yeşili</div>
+                </div>
+                <a href="https://wa.me/905300000000?text=Merhaba,%20ücretsiz%20kumaş%20kartelası%20istiyorum." target="_blank" class="btn btn-primary btn-block interactive-btn" style="text-align:center; display:block; padding:12px; margin-top:12px; text-decoration:none;">
+                    <i class="fa-brands fa-whatsapp"></i> Ücretsiz Kumaş Numunesi İste
+                </a>
+            `
+        },
+        faq: {
+            title: '<i class="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular',
+            body: `
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div>
+                        <strong style="color:#6b21a8;">S: Teslimat süresi ne kadar?</strong>
+                        <p style="margin:2px 0 0 0; font-size:0.85rem;">C: Türkiye geneline 7 - 14 iş günü içerisinde ücretsiz teslimat ve kurulum yapılmaktadır.</p>
+                    </div>
+                    <hr style="border:none; border-top:1px solid #f4f4f5; margin:4px 0;">
+                    <div>
+                        <strong style="color:#6b21a8;">S: Kurulum ücretli mi?</strong>
+                        <p style="margin:2px 0 0 0; font-size:0.85rem;">C: Hayır, uzman ekiplerimiz tarafından tüm ürünlerin montajı ücretsiz yapılmaktadır.</p>
+                    </div>
+                    <hr style="border:none; border-top:1px solid #f4f4f5; margin:4px 0;">
+                    <div>
+                        <strong style="color:#6b21a8;">S: Ödeme seçenekleri nelerdir?</strong>
+                        <p style="margin:2px 0 0 0; font-size:0.85rem;">C: Kredi kartına 12 aya varan taksit, Kapıda ödeme ve Havale/EFT kabul edilmektedir.</p>
+                    </div>
+                </div>
+            `
+        },
+        privacy: {
+            title: '<i class="fa-solid fa-lock"></i> Gizlilik & Güvenlik Politikası',
+            body: `
+                <p>Mobelmor.com müşteri güvenliğini en üst düzeyde tutmaktadır.</p>
+                <ul style="padding-left:20px; margin:10px 0; font-size:0.88rem;">
+                    <li><strong>256-Bit SSL:</strong> Tüm kart işlemleri yüksek şifrelemeli SSL alt yapısı ile korunur.</li>
+                    <li><strong>KVKK Uyumlu:</strong> Kişisel verileriniz 6698 sayılı kanun gereğince güvenle muhafaza edilir.</li>
+                    <li><strong>3D Secure:</strong> Tüm ödemeler bankanızın onay kodu ile gerçekleşir.</li>
+                </ul>
+            `
+        }
+    };
+
+    document.querySelectorAll(".info-modal-trigger").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const type = btn.getAttribute("data-type");
+            const data = INFO_MODALS[type];
+            if (!data) return;
+            const overlay = document.getElementById("infoModalOverlay");
+            const title = document.getElementById("infoModalTitle");
+            const body = document.getElementById("infoModalBody");
+            if (overlay && title && body) {
+                title.innerHTML = data.title;
+                body.innerHTML = data.body;
+                overlay.classList.add("active");
+            }
+        });
+    });
+
+    document.getElementById("closeInfoModalBtn")?.addEventListener("click", () => {
+        document.getElementById("infoModalOverlay")?.classList.remove("active");
+    });
+    document.getElementById("infoModalOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "infoModalOverlay") {
+            document.getElementById("infoModalOverlay")?.classList.remove("active");
+        }
     });
 });
 
