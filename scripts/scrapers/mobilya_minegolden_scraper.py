@@ -87,7 +87,6 @@ def extract_product_urls_from_category(cat_url, count=5, global_seen_urls=set())
     return valid_products
 
 def get_product_gallery_images(html):
-    # Isolate product-image block safely
     prod_block_match = re.search(r'<div class="product-image[^">]*">([\s\S]*?)(?:<div class="product-details|<div id="product"|<div class="product-tabs|<div id="product-related)', html)
     target_html = prod_block_match.group(1) if prod_block_match else html
 
@@ -116,6 +115,70 @@ def get_product_gallery_images(html):
 
     sorted_items = sorted(grouped.values(), key=lambda x: x['width'], reverse=True)
     return [item['url'] for item in sorted_items]
+
+def parse_product_specs(html):
+    specs = {
+        "Üretim": "İnegöl / Bursa",
+        "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+        "Garanti": "2 Yıl Üretici Garantisi",
+        "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    }
+
+    tables = re.findall(r'<table[^>]*>([\s\S]*?)</table>', html)
+    
+    for tbl in tables:
+        rows = re.findall(r'<tr[^>]*>([\s\S]*?)</tr>', tbl)
+        
+        parsed_rows = []
+        for r in rows:
+            cols = re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>', r, re.DOTALL)
+            clean_cols = [re.sub(r'<[^>]+>', '', c).strip() for c in cols]
+            clean_cols = [' '.join(c.split()) for c in clean_cols if c.strip()]
+            if clean_cols:
+                parsed_rows.append(clean_cols)
+
+        if not parsed_rows:
+            continue
+
+        is_dim_table = any('genişlik' in ' '.join(r).lower() or 'derinlik' in ' '.join(r).lower() for r in parsed_rows[:2])
+        if is_dim_table:
+            headers = []
+            for r in parsed_rows[:2]:
+                if any('genişlik' in c.lower() for c in r):
+                    headers = r
+                    break
+            
+            dim_texts = []
+            for r in parsed_rows:
+                if r == headers or any(x in ' '.join(r).lower() for x in ['takım modül', 'modül fiyatları', 'birim fiyat']):
+                    continue
+                if len(r) >= 3:
+                    mod_name = r[0]
+                    g = r[1] if len(r) > 1 and r[1] != '-' else ''
+                    d = r[2] if len(r) > 2 and r[2] != '-' else ''
+                    y = r[3] if len(r) > 3 and r[3] != '-' else ''
+                    
+                    parts = []
+                    if g: parts.append(f"G: {g} cm")
+                    if d: parts.append(f"D: {d} cm")
+                    if y: parts.append(f"Y: {y} cm")
+                    
+                    if parts:
+                        dim_texts.append(f"{mod_name} ({', '.join(parts)})")
+            
+            if dim_texts:
+                specs["Takım Ölçüleri"] = " | ".join(dim_texts)
+
+        else:
+            for r in parsed_rows:
+                if len(r) == 2:
+                    k, v = r[0], r[1]
+                    if k.lower() in ['özellik adı', 'özellik', 'başlık', 'modül adı', 'modül', 'özellikleri'] and v.lower() in ['özellik bilgisi', 'açıklama', 'bilgi', 'değer', 'detay']:
+                        continue
+                    if len(k) < 35 and len(v) < 80 and k != v:
+                        specs[k] = v
+
+    return specs
 
 def scrape_product_detail(url, cat_key, subcat_key, current_id):
     html = fetch_url(url)
@@ -167,24 +230,11 @@ def scrape_product_detail(url, cat_key, subcat_key, current_id):
         except Exception as e:
             log(f"  Warning: Failed to download image {remote_img}: {e}")
 
-    # Fallback to main image clone if local gallery is empty
     if not local_gallery:
         local_gallery = [f"assets/minegolden_p{current_id}_1.jpg"]
 
-    # Specs table extraction
-    specs = {
-        "Üretim": "İnegöl / Bursa",
-        "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-        "Garanti": "2 Yıl Üretici Garantisi",
-        "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
-    }
-    
-    table_rows = re.findall(r'<tr[^>]*>\s*<td[^>]*>(.*?)</td>\s*<td[^>]*>(.*?)</td>\s*</tr>', html, re.DOTALL)
-    for k, v in table_rows:
-        clean_k = re.sub(r'<[^>]+>', '', k).strip()
-        clean_v = re.sub(r'<[^>]+>', '', v).strip()
-        if clean_k and clean_v and len(clean_k) < 30 and len(clean_v) < 50:
-            specs[clean_k] = clean_v
+    # Clean specs table extraction
+    specs = parse_product_specs(html)
 
     # Description
     desc_match = re.search(r'id="tab-description"[^>]*>(.*?)</div>', html, re.DOTALL)
@@ -232,7 +282,7 @@ def main():
             prod = scrape_product_detail(url, cat['key'], cat['subcategory'], current_id)
             if prod:
                 all_products.append(prod)
-                log(f"  -> Added: {prod['title']} ({prod['price']} TL) [{len(prod['gallery'])} Ultra HD images | Main: {prod['image']}]")
+                log(f"  -> Added: {prod['title']} ({prod['price']} TL) [{len(prod['gallery'])} Ultra HD images | Specs: {list(prod['specs'].keys())}]")
                 current_id += 1
 
     log(f"\nTotal scraped products: {len(all_products)}")

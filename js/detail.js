@@ -31,7 +31,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "3'lü (G: 225 cm, D: 92 cm, Y: 77 cm) | Berjer (G: 70 cm, D: 70 cm, Y: 90 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/gold-koltuk-takimi"
   },
@@ -63,7 +63,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "3'lü (G: 220 cm, D: 90 cm, Y: 80 cm) | Berjer (G: 88 cm, D: 70 cm, Y: 65 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi-2-3130"
   },
@@ -95,7 +95,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "3'lü (G: 215 cm, D: 100 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/bohem-koltuk-takimi-natural"
   },
@@ -127,7 +127,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "3'lü (G: 210 cm, D: 96 cm, Y: 87 cm) | Berjer (G: 75 cm, D: 90 cm, Y: 80 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/mono-koltuk-takimi-2-3126"
   },
@@ -159,7 +159,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "3'lü Koltuk (G: 240 cm, D: 95 cm, Y: 70 cm) | Berjer (G: 75 cm, D: 70 cm, Y: 95 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/leon-koltuk-takimi-ahsap"
   },
@@ -189,7 +189,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Masa (G: 100 cm, D: 100 cm, Y: 77 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/icon-yuvarlak-masa-sandalye"
   },
@@ -220,7 +220,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Masa (G: 120 cm, D: 120 cm, Y: 80 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/icon-mese-masa-sandalye"
   },
@@ -251,7 +251,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Masa (G: 100 cm, D: 100 cm, Y: 77 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/forte-mese-masa-sandalye"
   },
@@ -282,7 +282,8 @@ const PRODUCTS = [
       "Üretim": "İnegöl / Bursa",
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Takım Ölçüleri": "Masa (G: 140 cm, D: 80 cm, Y: 75 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-81"
   },
@@ -313,7 +314,8 @@ const PRODUCTS = [
       "Üretim": "İnegöl / Bursa",
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Takım Ölçüleri": "Masa (G: 135 cm, D: 80 cm, Y: 75 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-74"
   },
@@ -370,8 +372,7 @@ const PRODUCTS = [
       "Üretim": "İnegöl / Bursa",
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/zen-yatak-odasi-takimi-2-3262"
   },
@@ -403,7 +404,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/dora-yatak-odasi-takimi"
   },
@@ -435,7 +436,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 210 cm, Y: 52 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/elegance-yatak-odasi-takimi"
   },
@@ -467,7 +468,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "6 Kapılı Dolap (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 104 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/luna-yatak-odasi-takimi"
   },
@@ -499,7 +500,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "TV Ünitesi (G: 200 cm, D: 45 cm, Y: 55 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/zen-tv-unitesi-mobilyam-inegolden"
   },
@@ -531,7 +532,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "TV Ünitesi (G: 180 cm, D: 46 cm, Y: 64 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/respiro-tv-unitesi"
   },
@@ -560,7 +561,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/lisa-tv-unitesi"
   },
@@ -589,7 +590,7 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Özellik Adı": "Özellik Bilgisi"
+      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/marian-tv-unitesi"
   },
@@ -620,7 +621,8 @@ const PRODUCTS = [
       "Üretim": "İnegöl / Bursa",
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Takım Ölçüleri": "Tv Ünite (G: 180 cm, D: 42 cm, Y: 43 cm) | Orta Sehpa (İsteğe Bağlı) (G: 105 cm, D: 70 cm, Y: 45 cm)"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/sahra-tv-unitesi-2-3195"
   }
