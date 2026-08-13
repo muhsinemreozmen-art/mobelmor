@@ -142,7 +142,11 @@ const PRODUCTS = [
     "image": "assets/minegolden_p5_1.jpg",
     "gallery": [
       "assets/minegolden_p5_1.jpg",
-      "assets/minegolden_p5_2.jpg"
+      "assets/minegolden_p5_2.jpg",
+      "assets/minegolden_p5_3.jpg",
+      "assets/minegolden_p5_4.jpg",
+      "assets/minegolden_p5_5.jpg",
+      "assets/minegolden_p5_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -161,41 +165,18 @@ const PRODUCTS = [
   },
   {
     "id": 6,
-    "title": "Soft Aynalı Konsol Teşhirden",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 53,
-    "image": "assets/zara_dining_set.jpg",
-    "gallery": [
-      "assets/zara_dining_set.jpg"
-    ],
-    "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
-    ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/soft-aynali-konsol-teshirden"
-  },
-  {
-    "id": 7,
     "title": "İcon Yuvarlak Masa Sandalye",
     "category": "dining",
     "subcategory": "dining-tables",
     "price": 45000,
     "rating": 4.9,
-    "reviewsCount": 56,
-    "image": "assets/zara_dining_set.jpg",
+    "reviewsCount": 53,
+    "image": "assets/minegolden_p6_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p6_1.jpg",
+      "assets/minegolden_p6_2.jpg",
+      "assets/minegolden_p6_3.jpg",
+      "assets/minegolden_p6_4.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -213,16 +194,20 @@ const PRODUCTS = [
     "sourceUrl": "https://www.mobilyaminegolden.com/icon-yuvarlak-masa-sandalye"
   },
   {
-    "id": 8,
+    "id": 7,
     "title": "İcon Meşe Masa Sandalye",
     "category": "dining",
     "subcategory": "dining-tables",
     "price": 45000,
     "rating": 4.9,
-    "reviewsCount": 59,
-    "image": "assets/zara_dining_set.jpg",
+    "reviewsCount": 56,
+    "image": "assets/minegolden_p7_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p7_1.jpg",
+      "assets/minegolden_p7_2.jpg",
+      "assets/minegolden_p7_3.jpg",
+      "assets/minegolden_p7_4.jpg",
+      "assets/minegolden_p7_5.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -240,16 +225,20 @@ const PRODUCTS = [
     "sourceUrl": "https://www.mobilyaminegolden.com/icon-mese-masa-sandalye"
   },
   {
-    "id": 9,
+    "id": 8,
     "title": "Forte Meşe Masa Sandalye",
     "category": "dining",
     "subcategory": "dining-tables",
     "price": 45000,
     "rating": 4.9,
-    "reviewsCount": 62,
-    "image": "assets/zara_dining_set.jpg",
+    "reviewsCount": 59,
+    "image": "assets/minegolden_p8_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p8_1.jpg",
+      "assets/minegolden_p8_2.jpg",
+      "assets/minegolden_p8_3.jpg",
+      "assets/minegolden_p8_4.jpg",
+      "assets/minegolden_p8_5.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -267,8 +256,39 @@ const PRODUCTS = [
     "sourceUrl": "https://www.mobilyaminegolden.com/forte-mese-masa-sandalye"
   },
   {
-    "id": 10,
+    "id": 9,
     "title": "Seramik Mutfak Masası 81",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 62,
+    "image": "assets/minegolden_p9_1.jpg",
+    "gallery": [
+      "assets/minegolden_p9_1.jpg",
+      "assets/minegolden_p9_2.jpg",
+      "assets/minegolden_p9_3.jpg",
+      "assets/minegolden_p9_4.jpg",
+      "assets/minegolden_p9_5.jpg",
+      "assets/minegolden_p9_6.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-81"
+  },
+  {
+    "id": 10,
+    "title": "Seramik Mutfak Masası 74",
     "category": "dining",
     "subcategory": "dining-tables",
     "price": 45000,
@@ -295,7 +315,7 @@ const PRODUCTS = [
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-81"
+    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-74"
   },
   {
     "id": 11,
@@ -305,11 +325,9 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 68,
-    "image": "assets/minegolden_p11_1.jpg",
+    "image": "assets/minegolden_p11_2.jpg",
     "gallery": [
-      "assets/minegolden_p11_1.jpg",
-      "assets/minegolden_p11_2.jpg",
-      "assets/minegolden_p11_3.jpg"
+      "assets/minegolden_p11_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -368,7 +386,11 @@ const PRODUCTS = [
     "image": "assets/minegolden_p13_1.jpg",
     "gallery": [
       "assets/minegolden_p13_1.jpg",
-      "assets/minegolden_p13_2.jpg"
+      "assets/minegolden_p13_2.jpg",
+      "assets/minegolden_p13_3.jpg",
+      "assets/minegolden_p13_4.jpg",
+      "assets/minegolden_p13_5.jpg",
+      "assets/minegolden_p13_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -396,7 +418,11 @@ const PRODUCTS = [
     "image": "assets/minegolden_p14_1.jpg",
     "gallery": [
       "assets/minegolden_p14_1.jpg",
-      "assets/minegolden_p14_2.jpg"
+      "assets/minegolden_p14_2.jpg",
+      "assets/minegolden_p14_3.jpg",
+      "assets/minegolden_p14_4.jpg",
+      "assets/minegolden_p14_5.jpg",
+      "assets/minegolden_p14_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -424,7 +450,11 @@ const PRODUCTS = [
     "image": "assets/minegolden_p15_1.jpg",
     "gallery": [
       "assets/minegolden_p15_1.jpg",
-      "assets/minegolden_p15_2.jpg"
+      "assets/minegolden_p15_2.jpg",
+      "assets/minegolden_p15_3.jpg",
+      "assets/minegolden_p15_4.jpg",
+      "assets/minegolden_p15_5.jpg",
+      "assets/minegolden_p15_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -484,7 +514,11 @@ const PRODUCTS = [
     "image": "assets/minegolden_p17_1.jpg",
     "gallery": [
       "assets/minegolden_p17_1.jpg",
-      "assets/minegolden_p17_2.jpg"
+      "assets/minegolden_p17_2.jpg",
+      "assets/minegolden_p17_3.jpg",
+      "assets/minegolden_p17_4.jpg",
+      "assets/minegolden_p17_5.jpg",
+      "assets/minegolden_p17_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -509,9 +543,11 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 49,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p18_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p18_1.jpg",
+      "assets/minegolden_p18_2.jpg",
+      "assets/minegolden_p18_3.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -536,9 +572,11 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 52,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p19_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p19_1.jpg",
+      "assets/minegolden_p19_2.jpg",
+      "assets/minegolden_p19_3.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",

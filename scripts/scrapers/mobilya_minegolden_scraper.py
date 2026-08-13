@@ -37,13 +37,15 @@ CATEGORIES = [
 ]
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7'
 }
 
 def log(msg):
     print(msg, flush=True)
 
-def fetch_url(url, timeout=10):
+def fetch_url(url, timeout=12):
     safe_url = urllib.parse.quote(url, safe=':/?=&#%')
     req = urllib.request.Request(safe_url, headers=HEADERS)
     try:
@@ -53,70 +55,67 @@ def fetch_url(url, timeout=10):
         log(f"Error fetching {url}: {e}")
         return None
 
-def extract_product_urls_from_category(cat_url, count=5):
+def extract_product_urls_from_category(cat_url, count=5, global_seen_urls=set()):
     html = fetch_url(cat_url)
     if not html:
         return []
     
-    raw_links = re.findall(r'<div class="product-thumb[^">]*">[\s\S]*?<a href="(https://www\.mobilyaminegolden\.com/[^"]+)"', html)
+    content_m = re.search(r'<div id="content"[^>]*>([\s\S]*?)<footer', html)
+    c_html = content_m.group(1) if content_m else html
     
-    product_urls = []
-    seen = set()
-    for l in raw_links:
-        if l not in seen and not any(x in l for x in ['login', 'cart', 'checkout', 'account', 'route=', 'catalog']):
-            seen.add(l)
-            product_urls.append(l)
-            if len(product_urls) >= count:
-                break
-    return product_urls
+    name_links = re.findall(r'<div class="name"[^>]*>\s*<a href="(https://www\.mobilyaminegolden\.com/[^"]+)"[^>]*>(.*?)</a>', c_html, re.DOTALL)
+    
+    valid_products = []
+    for link, p_name in name_links:
+        clean_l = link.split('?')[0].rstrip('/')
+        p_title = re.sub(r'<[^>]+>', '', p_name).strip()
+        
+        if clean_l in global_seen_urls or clean_l == cat_url:
+            continue
+        if any(x in clean_l for x in ['javascript', 'route=', 'catalog', 'account', 'indirimli', 'teshir', 'stok', 'paketler', 'modeller', 'tekil', 'bazalar', 'yataklar', 'bebek', 'genc']):
+            continue
+            
+        rel_path = clean_l.replace('https://www.mobilyaminegolden.com/', '')
+        if '/' in rel_path:
+            continue
+            
+        global_seen_urls.add(clean_l)
+        valid_products.append((p_title, clean_l))
+        if len(valid_products) >= count:
+            break
+            
+    return valid_products
 
-def get_product_slug(url):
-    parts = [p for p in url.rstrip('/').split('/') if p]
-    return parts[-1] if parts else ""
-
-def get_isolated_high_res_images(html, url):
-    slug = get_product_slug(url)
-    clean_slug = re.sub(r'-\d+$', '', slug)
-    base_slug = clean_slug.split('-2-')[0].split('-3-')[0]
-
-    # Focus strictly on main product-image section in HTML
-    prod_block_match = re.search(r'<div class="product-image[^">]*">([\s\S]*?)(?:<div class="product-tabs|<div class="journal-carousel|\n\s*<div class="module-item)', html)
+def get_product_gallery_images(html):
+    # Isolate product-image block safely
+    prod_block_match = re.search(r'<div class="product-image[^">]*">([\s\S]*?)(?:<div class="product-details|<div id="product"|<div class="product-tabs|<div id="product-related)', html)
     target_html = prod_block_match.group(1) if prod_block_match else html
 
     raw_imgs = re.findall(r'https://image\.mobilyaminegolden\.com/image/cache/catalog/[^"\'\s>]+\.(?:jpg|png|jpeg|webp)', target_html)
     
-    # Filter out external recommendations/logos
-    slug_tokens = [t for t in base_slug.split('-') if len(t) > 2 and t not in ['takimi', 'odalari', 'unitesi', 'masa']]
-    
-    product_own_imgs = []
-    for img in raw_imgs:
-        if 'product-images' in img and not any(x in img for x in ['musterireferanslari', 'musterilerimizden', 'logo', 'icon', '36x36', 'fav']):
-            if not slug_tokens or any(token in img.lower() for token in slug_tokens):
-                product_own_imgs.append(img)
-
-    # Fallback to all product-images in block if token filtering is too strict
-    if not product_own_imgs:
-        for img in raw_imgs:
-            if 'product-images' in img and not any(x in img for x in ['musterireferanslari', 'musterilerimizden', 'logo', 'icon', '36x36', 'fav']):
-                product_own_imgs.append(img)
-
-    # Group by base photo (ignoring resolution numbers) and select maximum resolution (>= 1000px)
     grouped = {}
-    for img in product_own_imgs:
-        m = re.match(r'^(.*?)(?:-(\d+)x(\d+)(?:h)?)?\.(jpg|png|jpeg|webp)$', img)
-        if m:
-            base_key = m.group(1)
-            w = int(m.group(2)) if m.group(2) else 0
-            h = int(m.group(3)) if m.group(3) else 0
+    for img in raw_imgs:
+        img_lower = img.lower()
+        if any(x in img_lower for x in ['musterireferanslari', 'musterilerimizden', 'logo.png', 'logo.jpg', '36x36', 'favicon', 'avatar']):
+            continue
+        
+        size_m = re.search(r'-(\d+)x(\d+)(?:[a-z])?\.(?:jpg|png|jpeg|webp)$', img)
+        if size_m:
+            w = int(size_m.group(1))
+            h = int(size_m.group(2))
             size = w * h
+            base_key = img[:size_m.start()]
+            clean_base_key = re.sub(r'_inegol_mobilya$', '', base_key)
             
-            if base_key not in grouped or size > grouped[base_key]['size']:
-                grouped[base_key] = {
+            if clean_base_key not in grouped or size > grouped[clean_base_key]['size']:
+                grouped[clean_base_key] = {
                     'url': img,
-                    'size': size
+                    'size': size,
+                    'width': w
                 }
 
-    return [item['url'] for item in grouped.values()]
+    sorted_items = sorted(grouped.values(), key=lambda x: x['width'], reverse=True)
+    return [item['url'] for item in sorted_items]
 
 def scrape_product_detail(url, cat_key, subcat_key, current_id):
     html = fetch_url(url)
@@ -142,8 +141,8 @@ def scrape_product_detail(url, cat_key, subcat_key, current_id):
             except:
                 pass
 
-    # Isolated high-res gallery images
-    valid_imgs = get_isolated_high_res_images(html, url)
+    # Extract high-res gallery images
+    valid_imgs = get_product_gallery_images(html)
 
     # Download images locally
     assets_dir = os.path.join(os.getcwd(), 'assets')
@@ -158,19 +157,19 @@ def scrape_product_detail(url, cat_key, subcat_key, current_id):
         try:
             safe_remote = urllib.parse.quote(remote_img, safe=':/?=&#%')
             req = urllib.request.Request(safe_remote, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=8, context=ctx) as resp, open(local_path, 'wb') as out_f:
+            with urllib.request.urlopen(req, timeout=10, context=ctx) as resp, open(local_path, 'wb') as out_f:
                 out_f.write(resp.read())
             
-            # Check file size (must be > 20KB to ensure high quality)
-            if os.path.getsize(local_path) > 15000:
+            if os.path.getsize(local_path) > 10000:
                 local_gallery.append(relative_path)
             else:
                 log(f"  Warning: Skipped small image ({os.path.getsize(local_path)} bytes) for {remote_img}")
         except Exception as e:
             log(f"  Warning: Failed to download image {remote_img}: {e}")
 
+    # Fallback to main image clone if local gallery is empty
     if not local_gallery:
-        local_gallery = ["assets/zara_dining_set.jpg"]
+        local_gallery = [f"assets/minegolden_p{current_id}_1.jpg"]
 
     # Specs table extraction
     specs = {
@@ -220,21 +219,20 @@ def scrape_product_detail(url, cat_key, subcat_key, current_id):
 def main():
     all_products = []
     current_id = 1
+    global_seen_urls = set()
     
-    log("Starting isolated high-resolution product scraper (5 per category)...")
+    log("Starting 100% unique container-isolated high-resolution product scraper...")
     for cat in CATEGORIES:
         log(f"\n--- Category: {cat['name']} ({cat['key']}) ---")
-        p_urls = extract_product_urls_from_category(cat['url'], count=5)
-        log(f"Found {len(p_urls)} product URLs:")
-        for u in p_urls:
-            log(f"  * {u}")
+        p_list = extract_product_urls_from_category(cat['url'], count=5, global_seen_urls=global_seen_urls)
+        log(f"Extracted {len(p_list)} unique product URLs for {cat['key']}")
 
-        for url in p_urls:
-            log(f"Scraping Product #{current_id}: {url}")
+        for p_title, url in p_list:
+            log(f"Scraping Product #{current_id}: {p_title} ({url})")
             prod = scrape_product_detail(url, cat['key'], cat['subcategory'], current_id)
             if prod:
                 all_products.append(prod)
-                log(f"  -> Added: {prod['title']} ({prod['price']} TL) [{len(prod['gallery'])} ultra high-res images]")
+                log(f"  -> Added: {prod['title']} ({prod['price']} TL) [{len(prod['gallery'])} Ultra HD images | Main: {prod['image']}]")
                 current_id += 1
 
     log(f"\nTotal scraped products: {len(all_products)}")
