@@ -12581,7 +12581,10 @@ const renderProductDetail = () => {
 
     const breadCat = document.getElementById("breadCatLink");
     const breadTitle = document.getElementById("breadTitle");
-    if (breadCat) breadCat.textContent = CATEGORY_NAMES[product.category] || "Koleksiyon";
+    if (breadCat) {
+        breadCat.textContent = CATEGORY_NAMES[product.category] || "Koleksiyon";
+        breadCat.href = `category.html?cat=${product.category}`;
+    }
     if (breadTitle) breadTitle.textContent = product.title;
 
     currentModuleState.productBasePrice = product.price;
