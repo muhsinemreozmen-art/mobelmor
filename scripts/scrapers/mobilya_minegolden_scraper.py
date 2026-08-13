@@ -4,10 +4,37 @@ import ssl
 import re
 import json
 import os
+from difflib import SequenceMatcher
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+
+GENERIC_CATEGORY_WORDS = [
+    'koltuk', 'takımı', 'takım', 'takimi', 'takim', 'set', 'setler', 'koleksiyonu', 'serisi',
+    'yemek', 'odası', 'odasi', 'yatak', 'tv', 'ünitesi', 'unitesi', 'ünite', 'unite',
+    'mutfak', 'masası', 'masasi', 'masa', 'sandalye', 'mobilya', 'mobilyam', 'inegöl', 'inegol'
+]
+
+def get_title_stem(title):
+    cleaned = title.lower()
+    cleaned = re.sub(r'\s+[\d\-\_\.a-z]+$', '', cleaned).strip()
+    words = [w for w in cleaned.split() if w not in GENERIC_CATEGORY_WORDS and not w.isdigit()]
+    return ' '.join(words)
+
+def is_duplicate_product(candidate_title, candidate_url, existing_titles, existing_urls, threshold=0.85):
+    if candidate_url in existing_urls:
+        return True, "URL duplicate"
+    c_stem = get_title_stem(candidate_title)
+    for prev_title in existing_titles:
+        p_stem = get_title_stem(prev_title)
+        if c_stem and p_stem:
+            if c_stem == p_stem:
+                return True, f"Exact model stem match ('{c_stem}')"
+            ratio = SequenceMatcher(None, c_stem, p_stem).ratio()
+            if ratio >= threshold:
+                return True, f"High model stem similarity ({int(ratio*100)}%) between '{c_stem}' and '{p_stem}'"
+    return False, ""
 
 CATEGORIES = [
     {
@@ -55,7 +82,7 @@ def fetch_url(url, timeout=12):
         log(f"Error fetching {url}: {e}")
         return None
 
-def extract_product_urls_from_category(cat_url, count=5, global_seen_urls=set()):
+def extract_product_urls_from_category(cat_url, count=5, global_seen_urls=set(), global_seen_titles=set()):
     html = fetch_url(cat_url)
     if not html:
         return []
@@ -79,7 +106,13 @@ def extract_product_urls_from_category(cat_url, count=5, global_seen_urls=set())
         if '/' in rel_path:
             continue
             
+        dup, reason = is_duplicate_product(p_title, clean_l, global_seen_titles, global_seen_urls)
+        if dup:
+            log(f"  [SKIPPED DUP VARIANT] '{p_title}' -> {reason}")
+            continue
+
         global_seen_urls.add(clean_l)
+        global_seen_titles.add(p_title)
         valid_products.append((p_title, clean_l))
         if len(valid_products) >= count:
             break
@@ -270,11 +303,12 @@ def main():
     all_products = []
     current_id = 1
     global_seen_urls = set()
+    global_seen_titles = set()
     
     log("Starting 100% unique container-isolated high-resolution product scraper...")
     for cat in CATEGORIES:
         log(f"\n--- Category: {cat['name']} ({cat['key']}) ---")
-        p_list = extract_product_urls_from_category(cat['url'], count=5, global_seen_urls=global_seen_urls)
+        p_list = extract_product_urls_from_category(cat['url'], count=5, global_seen_urls=global_seen_urls, global_seen_titles=global_seen_titles)
         log(f"Extracted {len(p_list)} unique product URLs for {cat['key']}")
 
         for p_title, url in p_list:

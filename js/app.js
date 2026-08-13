@@ -289,7 +289,7 @@ const PRODUCTS = [
   },
   {
     "id": 10,
-    "title": "Seramik Mutfak Masası 74",
+    "title": "İpek Yemek Odası Takımı",
     "category": "dining",
     "subcategory": "dining-tables",
     "price": 45000,
@@ -315,21 +315,26 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 135 cm, D: 80 cm, Y: 75 cm)"
+      "Takım Ölçüleri": "Masa (G: 150 cm, D: 90 cm, Y: 78 cm) | Aynalı Konsol (G: 190 cm, D: 41 cm, Y: 78 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-74"
+    "sourceUrl": "https://www.mobilyaminegolden.com/ipek-yemek-odasi-2"
   },
   {
     "id": 11,
-    "title": "Bohem Dolap",
+    "title": "Zen Yatak Odası Takımı",
     "category": "bedroom",
     "subcategory": "beds",
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 68,
-    "image": "assets/minegolden_p11_2.jpg",
+    "image": "assets/minegolden_p11_1.jpg",
     "gallery": [
-      "assets/minegolden_p11_2.jpg"
+      "assets/minegolden_p11_1.jpg",
+      "assets/minegolden_p11_2.jpg",
+      "assets/minegolden_p11_3.jpg",
+      "assets/minegolden_p11_4.jpg",
+      "assets/minegolden_p11_5.jpg",
+      "assets/minegolden_p11_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -343,11 +348,11 @@ const PRODUCTS = [
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-dolap"
+    "sourceUrl": "https://www.mobilyaminegolden.com/zen-yatak-odasi-takimi-2-3262"
   },
   {
     "id": 12,
-    "title": "Zen Yatak Odası Takımı",
+    "title": "Dora Yatak Odası Takımı",
     "category": "bedroom",
     "subcategory": "beds",
     "price": 45000,
@@ -372,13 +377,14 @@ const PRODUCTS = [
       "Üretim": "İnegöl / Bursa",
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zen-yatak-odasi-takimi-2-3262"
+    "sourceUrl": "https://www.mobilyaminegolden.com/dora-yatak-odasi-takimi"
   },
   {
     "id": 13,
-    "title": "Dora Yatak Odası Takımı",
+    "title": "Elegance Yatak Odası Takımı",
     "category": "bedroom",
     "subcategory": "beds",
     "price": 45000,
@@ -404,13 +410,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
+      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 210 cm, Y: 52 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/dora-yatak-odasi-takimi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/elegance-yatak-odasi-takimi"
   },
   {
     "id": 14,
-    "title": "Elegance Yatak Odası Takımı",
+    "title": "Luna Yatak Odası Takımı",
     "category": "bedroom",
     "subcategory": "beds",
     "price": 45000,
@@ -436,13 +442,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 210 cm, Y: 52 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
+      "Takım Ölçüleri": "6 Kapılı Dolap (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 104 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/elegance-yatak-odasi-takimi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/luna-yatak-odasi-takimi"
   },
   {
     "id": 15,
-    "title": "Luna Yatak Odası Takımı",
+    "title": "Masal Yatak Odası Takımı Krem",
     "category": "bedroom",
     "subcategory": "beds",
     "price": 45000,
@@ -451,7 +457,6 @@ const PRODUCTS = [
     "image": "assets/minegolden_p15_1.jpg",
     "gallery": [
       "assets/minegolden_p15_1.jpg",
-      "assets/minegolden_p15_2.jpg",
       "assets/minegolden_p15_3.jpg",
       "assets/minegolden_p15_4.jpg",
       "assets/minegolden_p15_5.jpg",
@@ -468,13 +473,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "6 Kapılı Dolap (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 104 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
+      "Takım Ölçüleri": "Gardırop (G: 242 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 92 cm, D: 42 cm, Y: 165 cm) | Komodin (G: 52 cm, D: 42 cm, Y: 47 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/luna-yatak-odasi-takimi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/masal-yatak-odasi-krem"
   },
   {
     "id": 16,
-    "title": "Zen Tv Ünitesi",
+    "title": "Respiro Tv Ünitesi",
     "category": "office",
     "subcategory": "tv-units",
     "price": 45000,
@@ -500,13 +505,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "TV Ünitesi (G: 200 cm, D: 45 cm, Y: 55 cm)"
+      "Takım Ölçüleri": "TV Ünitesi (G: 180 cm, D: 46 cm, Y: 64 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zen-tv-unitesi-mobilyam-inegolden"
+    "sourceUrl": "https://www.mobilyaminegolden.com/respiro-tv-unitesi"
   },
   {
     "id": 17,
-    "title": "Respiro Tv Ünitesi",
+    "title": "Lisa Tv Ünitesi",
     "category": "office",
     "subcategory": "tv-units",
     "price": 45000,
@@ -516,10 +521,7 @@ const PRODUCTS = [
     "gallery": [
       "assets/minegolden_p17_1.jpg",
       "assets/minegolden_p17_2.jpg",
-      "assets/minegolden_p17_3.jpg",
-      "assets/minegolden_p17_4.jpg",
-      "assets/minegolden_p17_5.jpg",
-      "assets/minegolden_p17_6.jpg"
+      "assets/minegolden_p17_3.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -532,13 +534,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "TV Ünitesi (G: 180 cm, D: 46 cm, Y: 64 cm)"
+      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/respiro-tv-unitesi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/lisa-tv-unitesi"
   },
   {
     "id": 18,
-    "title": "Lisa Tv Ünitesi",
+    "title": "Marian Tv Ünitesi",
     "category": "office",
     "subcategory": "tv-units",
     "price": 45000,
@@ -563,11 +565,11 @@ const PRODUCTS = [
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
       "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/lisa-tv-unitesi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/marian-tv-unitesi"
   },
   {
     "id": 19,
-    "title": "Marian Tv Ünitesi",
+    "title": "Sahra Tv Ünitesi",
     "category": "office",
     "subcategory": "tv-units",
     "price": 45000,
@@ -577,7 +579,10 @@ const PRODUCTS = [
     "gallery": [
       "assets/minegolden_p19_1.jpg",
       "assets/minegolden_p19_2.jpg",
-      "assets/minegolden_p19_3.jpg"
+      "assets/minegolden_p19_3.jpg",
+      "assets/minegolden_p19_4.jpg",
+      "assets/minegolden_p19_5.jpg",
+      "assets/minegolden_p19_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -590,13 +595,13 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
+      "Takım Ölçüleri": "Tv Ünite (G: 180 cm, D: 42 cm, Y: 43 cm) | Orta Sehpa (İsteğe Bağlı) (G: 105 cm, D: 70 cm, Y: 45 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/marian-tv-unitesi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/sahra-tv-unitesi-2-3195"
   },
   {
     "id": 20,
-    "title": "Sahra Tv Ünitesi",
+    "title": "Salvador Tv Üntesi",
     "category": "office",
     "subcategory": "tv-units",
     "price": 45000,
@@ -622,9 +627,9 @@ const PRODUCTS = [
       "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
       "Garanti": "2 Yıl Üretici Garantisi",
       "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Tv Ünite (G: 180 cm, D: 42 cm, Y: 43 cm) | Orta Sehpa (İsteğe Bağlı) (G: 105 cm, D: 70 cm, Y: 45 cm)"
+      "Takım Ölçüleri": "Alt Blok (G: 210 cm, D: 53 cm, Y: 43 cm)"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/sahra-tv-unitesi-2-3195"
+    "sourceUrl": "https://www.mobilyaminegolden.com/salvador-tv-untesi"
   }
 ];
 
