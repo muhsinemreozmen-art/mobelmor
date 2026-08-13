@@ -83,7 +83,7 @@ const showToast = (message, icon = "fa-circle-check") => {
 
 const getFilteredProducts = () => {
     const query = (searchQuery || "").toLowerCase();
-    return PRODUCTS.filter(product => {
+    let filtered = PRODUCTS.filter(product => {
         const matchesCat = (currentCategory === "all" || product.category === currentCategory);
         const matchesSubcat = (currentSubcategory === "all" || product.subcategory === currentSubcategory);
         
@@ -96,8 +96,12 @@ const getFilteredProducts = () => {
         );
         return matchesCat && matchesSubcat && matchesSearch;
     });
-    return filtered.length > 0 ? filtered : PRODUCTS;
-    // .sort((a, b) => {
+
+    if (filtered.length === 0) {
+        filtered = PRODUCTS;
+    }
+
+    return filtered.sort((a, b) => {
         if (currentSort === "price-low") return a.price - b.price;
         if (currentSort === "price-high") return b.price - a.price;
         if (currentSort === "rating") return b.rating - a.rating;
