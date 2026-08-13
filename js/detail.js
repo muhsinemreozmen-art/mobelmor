@@ -11,9 +11,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 38,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p1_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p1_1.jpg",
+      "assets/minegolden_p1_2.jpg",
+      "assets/minegolden_p1_3.jpg",
+      "assets/minegolden_p1_4.jpg",
+      "assets/minegolden_p1_5.jpg",
+      "assets/minegolden_p1_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -38,9 +43,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 41,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p2_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p2_1.jpg",
+      "assets/minegolden_p2_2.jpg",
+      "assets/minegolden_p2_3.jpg",
+      "assets/minegolden_p2_4.jpg",
+      "assets/minegolden_p2_5.jpg",
+      "assets/minegolden_p2_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -65,9 +75,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 44,
-    "image": "assets/minegolden_p3_2.jpg",
+    "image": "assets/minegolden_p3_1.jpg",
     "gallery": [
-      "assets/minegolden_p3_2.jpg"
+      "assets/minegolden_p3_1.jpg",
+      "assets/minegolden_p3_2.jpg",
+      "assets/minegolden_p3_3.jpg",
+      "assets/minegolden_p3_4.jpg",
+      "assets/minegolden_p3_5.jpg",
+      "assets/minegolden_p3_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -92,9 +107,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 47,
-    "image": "assets/minegolden_p4_2.jpg",
+    "image": "assets/minegolden_p4_1.jpg",
     "gallery": [
-      "assets/minegolden_p4_2.jpg"
+      "assets/minegolden_p4_1.jpg",
+      "assets/minegolden_p4_2.jpg",
+      "assets/minegolden_p4_3.jpg",
+      "assets/minegolden_p4_4.jpg",
+      "assets/minegolden_p4_5.jpg",
+      "assets/minegolden_p4_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -119,9 +139,10 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 50,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p5_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p5_1.jpg",
+      "assets/minegolden_p5_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -253,9 +274,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 65,
-    "image": "assets/minegolden_p10_2.jpg",
+    "image": "assets/minegolden_p10_1.jpg",
     "gallery": [
-      "assets/minegolden_p10_2.jpg"
+      "assets/minegolden_p10_1.jpg",
+      "assets/minegolden_p10_2.jpg",
+      "assets/minegolden_p10_3.jpg",
+      "assets/minegolden_p10_4.jpg",
+      "assets/minegolden_p10_5.jpg",
+      "assets/minegolden_p10_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -279,9 +305,11 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 68,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p11_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p11_1.jpg",
+      "assets/minegolden_p11_2.jpg",
+      "assets/minegolden_p11_3.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -305,9 +333,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 71,
-    "image": "assets/minegolden_p12_2.jpg",
+    "image": "assets/minegolden_p12_1.jpg",
     "gallery": [
-      "assets/minegolden_p12_2.jpg"
+      "assets/minegolden_p12_1.jpg",
+      "assets/minegolden_p12_2.jpg",
+      "assets/minegolden_p12_3.jpg",
+      "assets/minegolden_p12_4.jpg",
+      "assets/minegolden_p12_5.jpg",
+      "assets/minegolden_p12_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -332,9 +365,10 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 74,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p13_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p13_1.jpg",
+      "assets/minegolden_p13_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -359,9 +393,10 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 37,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p14_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p14_1.jpg",
+      "assets/minegolden_p14_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -386,9 +421,10 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 40,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p15_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p15_1.jpg",
+      "assets/minegolden_p15_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -413,9 +449,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 43,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p16_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p16_1.jpg",
+      "assets/minegolden_p16_2.jpg",
+      "assets/minegolden_p16_3.jpg",
+      "assets/minegolden_p16_4.jpg",
+      "assets/minegolden_p16_5.jpg",
+      "assets/minegolden_p16_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -440,9 +481,10 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 46,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p17_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p17_1.jpg",
+      "assets/minegolden_p17_2.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -521,9 +563,14 @@ const PRODUCTS = [
     "price": 45000,
     "rating": 4.9,
     "reviewsCount": 55,
-    "image": "assets/zara_dining_set.jpg",
+    "image": "assets/minegolden_p20_1.jpg",
     "gallery": [
-      "assets/zara_dining_set.jpg"
+      "assets/minegolden_p20_1.jpg",
+      "assets/minegolden_p20_2.jpg",
+      "assets/minegolden_p20_3.jpg",
+      "assets/minegolden_p20_4.jpg",
+      "assets/minegolden_p20_5.jpg",
+      "assets/minegolden_p20_6.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
