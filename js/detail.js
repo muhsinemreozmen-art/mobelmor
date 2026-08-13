@@ -11,12 +11,9 @@ const PRODUCTS = [
     "price": 66500,
     "rating": 4.9,
     "reviewsCount": 63,
-    "image": "assets/p_zarayemeko_1e8f6324.jpg",
+    "image": "assets/fullsize_p1_8.jpg",
     "gallery": [
-      "assets/p_zarayemeko_1e8f6324.jpg",
-      "assets/p_zarayemeko_40ce0400.jpg",
-      "assets/p_zarayemeko_484c0fc1.jpg",
-      "assets/p_zarayemeko_db65958d.jpg"
+      "assets/fullsize_p1_8.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
@@ -35,84 +32,113 @@ const PRODUCTS = [
   },
   {
     "id": 2,
-    "title": "Zümrüt Koltuk Takımı",
-    "category": "living",
-    "subcategory": "sofas",
-    "price": 83500,
+    "title": "Asel Yatak Odası Takımı Siyah Detaylı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 80500,
     "rating": 4.9,
-    "reviewsCount": 52,
-    "image": "assets/zumrut_main.jpg",
+    "reviewsCount": 42,
+    "image": "assets/fullsize_p2_8.jpg",
     "gallery": [
-      "assets/zumrut_main.jpg",
-      "assets/zumrut_1.jpg"
+      "assets/fullsize_p2_8.jpg",
+      "assets/fullsize_p2_9.jpg",
+      "assets/fullsize_p2_10.jpg"
     ],
     "badges": [
-      "İNEGÖL ÖZEL KOLEKSİYON",
-      "AHŞAP AYAKLI"
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
     ],
-    "material": "MASİF AHŞAP AYAKLI LÜKS KUMAŞ İNEGÖL TASARIMI",
-    "desc": "Zümrüt Koltuk Takımı, ergonomik sırt yapısı, masif ahşap ayak detayları ve zengin kumaş alternatifiyle oturma odanıza lüks ve konfor katıyor. Orijinal İnegöl zanaatıyla üretilmiştir.",
+    "material": "MODERN KREM RENGİ TASARIM & FLÜTLÜ YÜZEYLİ BAZALI KARYOLA",
+    "desc": "Asel Yatak Odası Takımı siyah detayları, modern krem rengi tasarımı ve flütlü yüzeyleriyle yatak odanıza zarafet katıyor. Fonksiyonel gardırop ve şık karyola ile konfor ve estetiği bir arada yaşayın.",
     "specs": {
       "Modül": "Genişlik",
-      "3'lü Koltuk": "235 cm",
-      "Berjer": "72 cm"
+      "6 Kapılı Dolap": "248 cm",
+      "K.Bazalı Karyola": "295 cm",
+      "Aynalı Şifonyer": "130 cm",
+      "Komodin": "60 cm",
+      "2 Kapılı Askılıklı Dolap": "84 cm"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi-2-3130"
+    "sourceUrl": "https://www.mobilyaminegolden.com/asel-yatak-odasi-siyah-detayli"
   },
   {
     "id": 3,
-    "title": "Pablo Koltuk Takımı",
+    "title": "Zümrüt Koltuk Takımı",
     "category": "living",
     "subcategory": "sofas",
-    "price": 83000,
+    "price": 69500,
     "rating": 4.8,
-    "reviewsCount": 42,
-    "image": "assets/pablo_main.jpg",
+    "reviewsCount": 53,
+    "image": "assets/real_zumrut-koltuk-takimi_5_30f3e7e5.jpg",
     "gallery": [
-      "assets/pablo_main.jpg",
-      "assets/pablo_1.jpg",
-      "assets/pablo_2.jpg"
+      "assets/real_zumrut-koltuk-takimi_5_30f3e7e5.jpg"
     ],
     "badges": [
-      "YENİ KOLEKSİYON",
-      "BOHEM TARZ"
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
     ],
-    "material": "AHŞAP AYAKLI MODERN TASARIM - 32 DANSİTE SÜNGER",
-    "desc": "Pablo Koltuk Takımı ile evinizde modern konforu yaşayın. Şık tasarımı, açık renk kumaşları ve zarif ahşap detaylarıyla ferah bir atmosfer sunar. İnegöl mobilya kalitesiyle uzun yıllar kullanın.",
+    "material": "MODERN & KLASİK ÇİZGİLİ LÜKS DÖŞEME & FIRINLANMIŞ MASİF GÜRGEN",
+    "desc": "Zümrüt Koltuk Takımı, modern ve klasik çizgileri birleştirerek evinize zarafet katıyor. Konforlu oturum alanı ve şık tasarımıyla öne çıkıyor.",
     "specs": {
       "Modül": "Genişlik",
-      "3'lü Koltuk": "230 cm",
-      "Berjer": "68 cm"
+      "3'lü Koltuk": "235 cm",
+      "Berjer": "76 cm",
+      "İskelet Bilgisi": "%100 Fırınlanmış Gürgen"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/pablo-koltuk-takimi-modeli-mobilyam-inegolden"
+    "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi"
   },
   {
     "id": 4,
-    "title": "Asya Yatak Odası Takımı",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 94500,
+    "title": "Pera Yemek Odası Takımı Ceviz",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 92000,
     "rating": 4.9,
-    "reviewsCount": 38,
-    "image": "assets/asya_main.jpg",
+    "reviewsCount": 64,
+    "image": "assets/fullsize_p4_9.jpg",
     "gallery": [
-      "assets/asya_main.jpg",
-      "assets/asya_1.jpg"
+      "assets/fullsize_p4_9.jpg",
+      "assets/fullsize_p4_8.jpg",
+      "assets/fullsize_p4_10.jpg"
     ],
     "badges": [
-      "İNEGÖL ÖZEL KOLEKSİYON",
-      "MASİF MEŞE DOKU"
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
     ],
-    "material": "MASİF MEŞE KAPLAMA & AKRİLİK KREM LAKE & AYNALI GARDIRAP",
-    "desc": "Asya Yatak Odası Takımı, doğal meşe dokusu ve krem lake kombinasyonuyla yatak odanıza huzurlu ve lüks bir hava katar. Geniş gardırop hacmi ve LED aydınlatmalı başlığıyla fonksiyonel şıklık sunar.",
+    "material": "DOĞAL CEVİZ KAPLAMA MASA & AYNLI KONSOL VE TV ÜNİTESİ",
+    "desc": "Pera Yemek Odası Takımı Ceviz, modern tasarımı ve kaliteli işçiliğiyle yemek alanınıza zarafet katıyor. İnegöl mobilya kampanyaları ile şimdi keşfedin!",
     "specs": {
       "Modül": "Genişlik",
-      "Gardırop (6 Kapaklı)": "260 cm",
-      "Karyola & Başlık": "180 cm",
-      "Şifonyer & Ayna": "125 cm",
-      "Komodin (2 Adet)": "60 cm"
+      "Sabit Masa": "200 cm",
+      "Aynalı Konsol": "215 cm",
+      "Sandalye (6 Adet)": "50 cm"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/asya-yatak-odasi-takimi"
+    "sourceUrl": "https://www.mobilyaminegolden.com/pera-yemek-odasi-2-1773"
+  },
+  {
+    "id": 5,
+    "title": "Bohem Koltuk Takımı Krem",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 56000,
+    "rating": 4.9,
+    "reviewsCount": 75,
+    "image": "assets/real_bohem-koltuk-takimi_5_30f3e7e5.jpg",
+    "gallery": [
+      "assets/real_bohem-koltuk-takimi_5_30f3e7e5.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "KREM RENGİ BOHEM LÜKS DÖŞEME & RAHAT SOFT OTURUM",
+    "desc": "Krem rengi bohem koltuk takımı ile salonunuzda modern ve davetkar bir atmosfer yaratın. Rahat ve şık tasarımı İnegöl mobilya kalitesiyle sunuluyor.",
+    "specs": {
+      "Modül": "Genişlik",
+      "3'lü Koltuk": "225 cm",
+      "Berjer": "75 cm",
+      "Sünger": "32 DNS Konfor Sünger"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-koltuk-takimi-krem"
   }
 ];
 

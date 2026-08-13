@@ -1,13 +1,18 @@
 import json
 import re
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+DATA_FILE = ROOT_DIR / "data" / "clean_5_products.json"
 
 # Read clean_5_products.json
-with open("clean_5_products.json", "r", encoding="utf-8") as f:
+with open(DATA_FILE, "r", encoding="utf-8") as f:
     products = json.load(f)
 
 json_str = json.dumps(products, ensure_ascii=False, indent=2)
 
-def update_js(filepath):
+def update_js(filename):
+    filepath = ROOT_DIR / "js" / filename
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
     
@@ -24,3 +29,4 @@ def update_js(filepath):
 
 update_js("app.js")
 update_js("detail.js")
+
