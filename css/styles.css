@@ -106,9 +106,9 @@ button:active,
 }
 
 .logo-text-mobel {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    color: #18181b !important;
+    color: #000000 !important;
     letter-spacing: -0.5px;
     line-height: 1;
     align-self: flex-end;
@@ -117,7 +117,7 @@ button:active,
 .logo-mor-box {
     display: inline-flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
     position: relative;
     line-height: 1;
@@ -125,29 +125,29 @@ button:active,
 }
 
 .logo-text-mor {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    color: #6b21a8 !important;
+    color: #6b1480 !important;
     letter-spacing: -0.5px;
     line-height: 1;
 }
 
 .logo-com-arrow {
-    background-color: #6b21a8 !important;
+    background-color: #6b1480 !important;
     color: #ffffff !important;
-    font-size: 0.5rem;
+    font-size: 0.58rem;
     font-weight: 800;
-    padding: 1px 6px;
-    border-radius: 4px;
+    padding: 2px 11px 2px 6px;
+    border-radius: 2px 0 0 2px;
     margin-bottom: 2px;
     position: relative;
     top: 0;
-    left: 0;
+    left: 2px;
     line-height: 1.1;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(107, 33, 168, 0.25);
-    clip-path: none;
-    align-self: center;
+    text-align: left;
+    clip-path: polygon(0% 0%, 78% 0%, 100% 50%, 78% 100%, 0% 100%);
+    align-self: flex-start;
+    box-shadow: none;
 }
 
 /* Action Buttons */
@@ -706,13 +706,14 @@ button:active,
     }
 
     .logo-text-mobel, .logo-text-mor {
-        font-size: 1.35rem;
+        font-size: 1.4rem;
     }
 
     .logo-com-arrow {
-        font-size: 0.44rem;
-        padding: 1px 5px;
+        font-size: 0.46rem;
+        padding: 1px 9px 1px 4px;
         margin-bottom: 1px;
+        left: 1px;
     }
 
     .cat-pill {
