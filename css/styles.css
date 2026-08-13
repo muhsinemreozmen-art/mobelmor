@@ -142,7 +142,7 @@ button:active,
     margin-bottom: 0px;
     position: relative;
     top: 2px;
-    left: 6px;
+    left: 15px;
     line-height: 1.1;
     text-align: left;
     clip-path: polygon(0% 0%, 78% 0%, 100% 50%, 78% 100%, 0% 100%);
@@ -714,7 +714,7 @@ button:active,
         padding: 1px 9px 1px 4px;
         margin-bottom: 0px;
         top: 2px;
-        left: 5px;
+        left: 12px;
     }
 
     .cat-pill {
