@@ -139,10 +139,10 @@ button:active,
     font-weight: 800;
     padding: 2px 11px 2px 6px;
     border-radius: 2px 0 0 2px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     position: relative;
-    top: 0;
-    left: 2px;
+    top: 2px;
+    left: 6px;
     line-height: 1.1;
     text-align: left;
     clip-path: polygon(0% 0%, 78% 0%, 100% 50%, 78% 100%, 0% 100%);
@@ -712,8 +712,9 @@ button:active,
     .logo-com-arrow {
         font-size: 0.46rem;
         padding: 1px 9px 1px 4px;
-        margin-bottom: 1px;
-        left: 1px;
+        margin-bottom: 0px;
+        top: 2px;
+        left: 5px;
     }
 
     .cat-pill {
