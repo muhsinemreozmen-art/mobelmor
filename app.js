@@ -67,6 +67,36 @@ const PRODUCTS = [
           "Berjer": "68 cm"
       },
       "sourceUrl": "https://www.mobilyaminegolden.com/pablo-koltuk-takimi-modeli-mobilyam-inegolden"
+  },
+  {
+      "id": 3,
+      "title": "Asya Yatak Odası Takımı",
+      "category": "bedroom",
+      "subcategory": "beds",
+      "price": 94500,
+      "rating": 4.9,
+      "reviewsCount": 38,
+      "image": "assets/asya_main.jpg",
+      "gallery": [
+          "assets/asya_main.jpg",
+          "assets/asya_1.jpg",
+          "assets/asya_2.jpg",
+          "assets/asya_3.jpg"
+      ],
+      "badges": [
+          "İNEGÖL ÖZEL KOLEKSİYON",
+          "MASİF MEŞE DOKU"
+      ],
+      "material": "MASİF MEŞE KAPLAMA & AKRİLİK KREM LAKE & AYNALI GARDIRAP",
+      "desc": "Asya Yatak Odası Takımı, doğal meşe dokusu ve krem lake kombinasyonuyla yatak odanıza huzurlu ve lüks bir hava katar. Geniş gardırop hacmi ve LED aydınlatmalı başlığıyla fonksiyonel şıklık sunar.",
+      "specs": {
+          "Modül": "Genişlik",
+          "Gardırop (6 Kapaklı)": "260 cm",
+          "Karyola & Başlık": "180 cm",
+          "Şifonyer & Ayna": "125 cm",
+          "Komodin (2 Adet)": "60 cm"
+      },
+      "sourceUrl": "https://www.mobilyaminegolden.com/asya-yatak-odasi-takimi"
   }
 ];
 
@@ -355,6 +385,51 @@ const openQuickView = (productId) => {
     });
 };
 
+const renderWishlist = () => {
+    const body = document.getElementById("wishlistBody");
+    const footer = document.getElementById("wishlistFooter");
+    if (!body || !footer) return;
+
+    const wishListItems = PRODUCTS.filter(p => wishlist.has(p.id));
+
+    if (wishListItems.length === 0) {
+        body.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#71717a;"><i class="fa-regular fa-heart" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:12px;"></i><p style="margin:0;">Henüz favorilere ürün eklemediniz.</p></div>`;
+        footer.innerHTML = "";
+        return;
+    }
+
+    body.innerHTML = wishListItems.map(item => `
+        <div class="cart-item-row">
+            <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+            <div class="cart-item-info">
+                <h5 class="cart-item-title">${item.title}</h5>
+                <span class="cart-item-price">${formatPrice(item.price)}</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+                <button class="pill-add-btn" onclick="addToCart(${item.id}); toggleWishlist(${item.id}); renderWishlist();" title="Sepete Aktar" style="padding:4px 8px; font-size:0.75rem;">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+                <button class="qty-btn" onclick="toggleWishlist(${item.id}); renderWishlist();" title="Kaldır" style="color:#ef4444 !important;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+
+    footer.innerHTML = `
+        <button class="btn btn-primary btn-block interactive-btn" onclick="wishListItems.forEach(i => addToCart(i.id)); showToast('Tüm favoriler sepete eklendi!', 'fa-basket-shopping');">
+            Tüm Favorileri Sepete Ekle
+        </button>
+    `;
+};
+
+window.toggleWishlist = (id) => {
+    if (wishlist.has(id)) wishlist.delete(id);
+    else wishlist.add(id);
+    updateBadges();
+    renderProducts();
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
 
@@ -405,13 +480,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
     if (searchInput) {
         searchInput.addEventListener("input", (e) => {
             searchQuery = e.target.value;
+            if (clearSearchBtn) clearSearchBtn.style.display = searchQuery ? "inline-flex" : "none";
             renderProducts();
         });
     }
 
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            searchQuery = "";
+            clearSearchBtn.style.display = "none";
+            renderProducts();
+        });
+    }
+
+    const sortSelect = document.getElementById("sortSelect");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+            currentSort = e.target.value;
+            renderProducts();
+        });
+    }
+
+    // Wishlist Drawer Trigger
+    document.getElementById("wishlistBtn")?.addEventListener("click", () => {
+        renderWishlist();
+        document.getElementById("wishlistDrawer")?.classList.add("active");
+        document.getElementById("wishlistOverlay")?.classList.add("active");
+    });
+
+    document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
+        document.getElementById("wishlistDrawer")?.classList.remove("active");
+        document.getElementById("wishlistOverlay")?.classList.remove("active");
+    });
+
+    document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
+        document.getElementById("wishlistDrawer")?.classList.remove("active");
+        document.getElementById("wishlistOverlay")?.classList.remove("active");
+    });
+
+    // Cart Drawer Trigger
     document.getElementById("cartBtn")?.addEventListener("click", () => {
         renderCart();
         document.getElementById("cartDrawer")?.classList.add("active");
@@ -422,14 +534,32 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("cartDrawer")?.classList.remove("active");
         document.getElementById("cartOverlay")?.classList.remove("active");
     });
+
     document.getElementById("cartOverlay")?.addEventListener("click", () => {
         document.getElementById("cartDrawer")?.classList.remove("active");
         document.getElementById("cartOverlay")?.classList.remove("active");
     });
+
     document.getElementById("closeQuickViewBtn")?.addEventListener("click", () => {
         document.getElementById("quickViewOverlay")?.classList.remove("active");
     });
+
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
+
+    // Checkout Form Submit Handling
+    const checkoutForm = document.getElementById("checkoutForm");
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            cart = [];
+            updateBadges();
+            renderCart();
+            document.getElementById("checkoutOverlay")?.classList.remove("active");
+            showToast("Siparişiniz başarıyla alındı! Müşteri temsilcimiz sizinle iletişime geçecektir.", "fa-circle-check");
+            checkoutForm.reset();
+        });
+    }
 });
+

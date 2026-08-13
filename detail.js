@@ -67,6 +67,36 @@ const PRODUCTS = [
           "Berjer": "68 cm"
       },
       "sourceUrl": "https://www.mobilyaminegolden.com/pablo-koltuk-takimi-modeli-mobilyam-inegolden"
+  },
+  {
+      "id": 3,
+      "title": "Asya Yatak Odası Takımı",
+      "category": "bedroom",
+      "subcategory": "beds",
+      "price": 94500,
+      "rating": 4.9,
+      "reviewsCount": 38,
+      "image": "assets/asya_main.jpg",
+      "gallery": [
+          "assets/asya_main.jpg",
+          "assets/asya_1.jpg",
+          "assets/asya_2.jpg",
+          "assets/asya_3.jpg"
+      ],
+      "badges": [
+          "İNEGÖL ÖZEL KOLEKSİYON",
+          "MASİF MEŞE DOKU"
+      ],
+      "material": "MASİF MEŞE KAPLAMA & AKRİLİK KREM LAKE & AYNALI GARDIRAP",
+      "desc": "Asya Yatak Odası Takımı, doğal meşe dokusu ve krem lake kombinasyonuyla yatak odanıza huzurlu ve lüks bir hava katar. Geniş gardırop hacmi ve LED aydınlatmalı başlığıyla fonksiyonel şıklık sunar.",
+      "specs": {
+          "Modül": "Genişlik",
+          "Gardırop (6 Kapaklı)": "260 cm",
+          "Karyola & Başlık": "180 cm",
+          "Şifonyer & Ayna": "125 cm",
+          "Komodin (2 Adet)": "60 cm"
+      },
+      "sourceUrl": "https://www.mobilyaminegolden.com/asya-yatak-odasi-takimi"
   }
 ];
 
@@ -566,6 +596,52 @@ const openCheckoutModal = () => {
     overlay.classList.add("active");
 };
 
+const renderCart = () => {
+    const body = document.getElementById("cartBody");
+    const footer = document.getElementById("cartFooter");
+    if (!body || !footer) return;
+
+    if (cart.length === 0) {
+        body.innerHTML = `<p style="text-align:center; padding:30px; color:#71717a;">Sepetiniz boş.</p>`;
+        footer.innerHTML = "";
+        return;
+    }
+
+    body.innerHTML = cart.map(item => `
+        <div class="cart-item-row">
+            <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+            <div class="cart-item-info">
+                <h5 class="cart-item-title">${item.title}</h5>
+                <span class="cart-item-price">${formatPrice(item.price)}</span>
+            </div>
+            <div class="cart-qty-controls">
+                <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                <span style="font-weight:800;">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+        </div>
+    `).join('');
+
+    const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+    footer.innerHTML = `
+        <div class="cart-total-line">
+            <span>Toplam:</span>
+            <span style="color:#6b21a8;">${formatPrice(subtotal)}</span>
+        </div>
+        <button class="btn btn-primary btn-block interactive-btn" id="openCheckoutBtn">Güvenli Ödemeye Geç</button>
+    `;
+};
+
+window.changeQty = (id, delta) => {
+    const item = cart.find(c => c.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+    updateBadges();
+    renderCart();
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     renderProductDetail();
 
@@ -579,7 +655,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    document.getElementById("cartBtn")?.addEventListener("click", () => {
+        renderCart();
+        document.getElementById("cartDrawer")?.classList.add("active");
+        document.getElementById("cartOverlay")?.classList.add("active");
+    });
+
+    document.getElementById("closeCartBtn")?.addEventListener("click", () => {
+        document.getElementById("cartDrawer")?.classList.remove("active");
+        document.getElementById("cartOverlay")?.classList.remove("active");
+    });
+
+    document.getElementById("cartOverlay")?.addEventListener("click", () => {
+        document.getElementById("cartDrawer")?.classList.remove("active");
+        document.getElementById("cartOverlay")?.classList.remove("active");
+    });
+
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
 });
+
