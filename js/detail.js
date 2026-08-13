@@ -415,7 +415,7 @@ const renderProductDetail = () => {
         detailGrid.innerHTML = `
             <div class="product-gallery-box">
                 <div class="main-image-container" style="position:relative; height:450px; cursor:pointer;" onclick="openLightbox(currentActiveGalleryIndex)" title="Büyütmek için tıklayın">
-                    <img src="${product.image}" alt="${product.title}" id="mainDetailImg" class="main-detail-img" style="pointer-events:none;">
+                    <img src="${product.image}" alt="${product.title}" id="mainDetailImg" class="main-detail-img" style="pointer-events:none;" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     <div class="gallery-badges">
                         <span class="badge-tag" style="background:#6b21a8 !important;">${product.badges?.[0] || 'İNEGÖL'}</span>
                         <span class="badge-tag" style="background:#18181b !important;">%100 ORİJİNAL</span>
@@ -426,7 +426,7 @@ const renderProductDetail = () => {
                 </div>
                 <div class="thumbnail-strip">
                     ${(product.gallery || [product.image]).map((gImg, idx) => `
-                        <img src="${gImg}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="swapMainImg('${gImg}', this, ${idx})" title="Görüntüle" style="cursor:pointer;">
+                        <img src="${gImg}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="swapMainImg('${gImg}', this, ${idx})" title="Görüntüle" style="cursor:pointer;" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     `).join('')}
                 </div>
             </div>

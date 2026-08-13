@@ -217,12 +217,18 @@ const showToast = (message, icon = "fa-circle-check") => {
 };
 
 const getFilteredProducts = () => {
+    const query = (searchQuery || "").toLowerCase();
     return PRODUCTS.filter(product => {
         const matchesCat = (currentCategory === "all" || product.category === currentCategory);
         const matchesSubcat = (currentSubcategory === "all" || product.subcategory === currentSubcategory);
-        const matchesSearch = (!searchQuery || 
-            product.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            product.material.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        const specsText = Object.values(product.specs || {}).join(" ").toLowerCase();
+        const matchesSearch = (!query || 
+            (product.title || "").toLowerCase().includes(query) || 
+            (product.material || "").toLowerCase().includes(query) ||
+            (product.desc || "").toLowerCase().includes(query) ||
+            specsText.includes(query)
+        );
         return matchesCat && matchesSubcat && matchesSearch;
     }).sort((a, b) => {
         if (currentSort === "price-low") return a.price - b.price;
@@ -262,7 +268,7 @@ const renderProducts = () => {
         return `
             <article class="product-card" data-id="${item.id}">
                 <div class="card-image-box">
-                    <img src="${item.image}" alt="${item.title}" class="card-img">
+                    <img src="${item.image}" alt="${item.title}" class="card-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     <div class="badge-pills-stack">
                         ${item.badges.map(b => `<span class="${b.includes('MASİF') || b.includes('YENİ') ? 'pill-purple' : 'pill-dark'}">${b}</span>`).join('')}
                     </div>
