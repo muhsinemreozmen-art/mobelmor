@@ -1,30 +1,538 @@
 [
   {
     "id": 1,
-    "title": "Zara Yemek Odası Takımı Siyah",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 66500,
+    "title": "Gold Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 45000,
     "rating": 4.9,
-    "reviewsCount": 63,
+    "reviewsCount": 38,
     "image": "assets/zara_dining_set.jpg",
     "gallery": [
       "assets/zara_dining_set.jpg"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL",
-      "ÖZEL SERİ"
+      "%100 ORİJİNAL"
     ],
-    "material": "AKRİLİK SİYAH LAKE MERMER DOKULU MASİF MASA & AYNALI KONSOL",
-    "desc": "Zara Yemek Odası Takımı Siyah ile modern ve şık bir yemek alanı yaratın. İnegöl usta zanaatkarlarının el işçiliği masif ahşap işleme, akrilik siyah lake mermer doku, bronz pirinç detaylı ayaklar ve fonksiyonel aynalı konsoluyla evinize değer ve ahenk katar.",
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
     "specs": {
-      "Modül": "Genişlik",
-      "Masa (Açılır)": "175-215 cm",
-      "Sandalye (6 Adet)": "50 cm",
-      "Aynalı Konsol": "205 cm",
-      "Konsol Aynası": "120 cm"
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
     },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zara-yemek-odasi-siyah"
+    "sourceUrl": "https://www.mobilyaminegolden.com/gold-koltuk-takimi"
+  },
+  {
+    "id": 2,
+    "title": "Zümrüt Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 41,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi-2-3130"
+  },
+  {
+    "id": 3,
+    "title": "Bohem Koltuk Takımı Natural",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 44,
+    "image": "assets/minegolden_p3_2.jpg",
+    "gallery": [
+      "assets/minegolden_p3_2.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-koltuk-takimi-natural"
+  },
+  {
+    "id": 4,
+    "title": "Mono Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 47,
+    "image": "assets/minegolden_p4_2.jpg",
+    "gallery": [
+      "assets/minegolden_p4_2.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/mono-koltuk-takimi-2-3126"
+  },
+  {
+    "id": 5,
+    "title": "Leon Koltuk Takımı Ahşap",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 50,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/leon-koltuk-takimi-ahsap"
+  },
+  {
+    "id": 6,
+    "title": "Soft Aynalı Konsol Teşhirden",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 53,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/soft-aynali-konsol-teshirden"
+  },
+  {
+    "id": 7,
+    "title": "İcon Yuvarlak Masa Sandalye",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 56,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/icon-yuvarlak-masa-sandalye"
+  },
+  {
+    "id": 8,
+    "title": "İcon Meşe Masa Sandalye",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 59,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/icon-mese-masa-sandalye"
+  },
+  {
+    "id": 9,
+    "title": "Forte Meşe Masa Sandalye",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 62,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/forte-mese-masa-sandalye"
+  },
+  {
+    "id": 10,
+    "title": "Seramik Mutfak Masası 81",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 65,
+    "image": "assets/minegolden_p10_2.jpg",
+    "gallery": [
+      "assets/minegolden_p10_2.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-81"
+  },
+  {
+    "id": 11,
+    "title": "Bohem Dolap",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 68,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-dolap"
+  },
+  {
+    "id": 12,
+    "title": "Zen Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 71,
+    "image": "assets/minegolden_p12_2.jpg",
+    "gallery": [
+      "assets/minegolden_p12_2.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/zen-yatak-odasi-takimi-2-3262"
+  },
+  {
+    "id": 13,
+    "title": "Dora Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 74,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/dora-yatak-odasi-takimi"
+  },
+  {
+    "id": 14,
+    "title": "Elegance Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 37,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/elegance-yatak-odasi-takimi"
+  },
+  {
+    "id": 15,
+    "title": "Luna Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 40,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/luna-yatak-odasi-takimi"
+  },
+  {
+    "id": 16,
+    "title": "Zen Tv Ünitesi",
+    "category": "office",
+    "subcategory": "tv-units",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 43,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/zen-tv-unitesi-mobilyam-inegolden"
+  },
+  {
+    "id": 17,
+    "title": "Respiro Tv Ünitesi",
+    "category": "office",
+    "subcategory": "tv-units",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 46,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/respiro-tv-unitesi"
+  },
+  {
+    "id": 18,
+    "title": "Lisa Tv Ünitesi",
+    "category": "office",
+    "subcategory": "tv-units",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 49,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/lisa-tv-unitesi"
+  },
+  {
+    "id": 19,
+    "title": "Marian Tv Ünitesi",
+    "category": "office",
+    "subcategory": "tv-units",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 52,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/marian-tv-unitesi"
+  },
+  {
+    "id": 20,
+    "title": "Sahra Tv Ünitesi",
+    "category": "office",
+    "subcategory": "tv-units",
+    "price": 45000,
+    "rating": 4.9,
+    "reviewsCount": 55,
+    "image": "assets/zara_dining_set.jpg",
+    "gallery": [
+      "assets/zara_dining_set.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
+    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
+    "specs": {
+      "Üretim": "İnegöl / Bursa",
+      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
+      "Garanti": "2 Yıl Üretici Garantisi",
+      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/sahra-tv-unitesi-2-3195"
   }
 ]
