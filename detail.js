@@ -40,6 +40,33 @@ const PRODUCTS = [
       "Konsol Aynası": "120 cm"
     },
     "sourceUrl": "https://www.mobilyaminegolden.com/zara-yemek-odasi-siyah"
+  },
+  {
+      "id": 2,
+      "title": "Pablo Koltuk Takımı",
+      "category": "living",
+      "subcategory": "sofas",
+      "price": 83000,
+      "rating": 4.8,
+      "reviewsCount": 42,
+      "image": "assets/pablo_main.jpg",
+      "gallery": [
+          "assets/pablo_main.jpg",
+          "assets/pablo_1.jpg",
+          "assets/pablo_2.jpg"
+      ],
+      "badges": [
+          "YENİ KOLEKSİYON",
+          "BOHEM TARZ"
+      ],
+      "material": "AHŞAP AYAKLI MODERN TASARIM - 32 DANSİTE SÜNGER",
+      "desc": "Pablo Koltuk Takımı ile evinizde modern konforu yaşayın. Şık tasarımı, açık renk kumaşları ve zarif ahşap detaylarıyla ferah bir atmosfer sunar. İnegöl mobilya kalitesiyle uzun yıllar kullanın.",
+      "specs": {
+          "Modül": "Genişlik",
+          "3'lü Koltuk": "230 cm",
+          "Berjer": "68 cm"
+      },
+      "sourceUrl": "https://www.mobilyaminegolden.com/pablo-koltuk-takimi-modeli-mobilyam-inegolden"
   }
 ];
 
