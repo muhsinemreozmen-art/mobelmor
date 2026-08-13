@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya</title>
+    <meta name="title" content="Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya">
+    <meta name="description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları. Koltuk takımları, yemek odaları ve yatak odası koleksiyonları.">
+
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%236b21a8'/><text x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='sans-serif'>M</text></svg>">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=1786609999">
+</head>
+<body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
+
+    <!-- Sticky Header -->
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo" id="brandLogo">
+                <div class="logo-main-title">
+                    <span class="logo-text-mobel">mobel</span>
+                    <span class="logo-text-mor">mor</span>
+                    <span class="logo-com-arrow">.com</span>
+                </div>
+            </a>
+
+            <div class="header-action-buttons">
+                <button class="circle-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="badge-count" id="wishlistBadge">0</span>
+                </button>
+                <button class="circle-btn interactive-btn" id="cartBtn" title="Sepetim">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span class="badge-count" id="cartBadge">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="container search-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Masif masa, berjer, konsol veya yatak ara..." autocomplete="off">
+                <button class="clear-btn" id="clearSearchBtn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <!-- Category Bar -->
+        <nav class="category-scroll-wrapper">
+            <div class="container category-container">
+                <button class="cat-pill active interactive-btn" data-category="all">
+                    <i class="fa-solid fa-border-all"></i> Tüm Koleksiyon
+                </button>
+
+                <!-- Oturma Odası -->
+                <div class="cat-dropdown-wrapper">
+                    <button class="cat-pill interactive-btn" data-category="living">
+                        <i class="fa-solid fa-couch"></i> Oturma Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" data-cat="living" data-sub="sofas"><i class="fa-solid fa-couch"></i> Koltuk &amp; Takımlar</a>
+                        <a href="#" class="dropdown-item" data-cat="living" data-sub="armchairs"><i class="fa-solid fa-chair"></i> Berjerler</a>
+                        <a href="#" class="dropdown-item" data-cat="living" data-sub="tables"><i class="fa-solid fa-table"></i> Sehpalar</a>
+                        <a href="#" class="dropdown-item" data-cat="living" data-sub="consoles"><i class="fa-solid fa-tv"></i> Konsollar &amp; TV Ünitesi</a>
+                    </div>
+                </div>
+
+                <!-- Yemek Odası -->
+                <div class="cat-dropdown-wrapper">
+                    <button class="cat-pill interactive-btn" data-category="dining">
+                        <i class="fa-solid fa-utensils"></i> Yemek Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" data-cat="dining" data-sub="dining-tables"><i class="fa-solid fa-utensils"></i> Yemek Masaları</a>
+                        <a href="#" class="dropdown-item" data-cat="dining" data-sub="chairs"><i class="fa-solid fa-chair"></i> Sandalyeler</a>
+                        <a href="#" class="dropdown-item" data-cat="dining" data-sub="buffets"><i class="fa-solid fa-dumpster-fire"></i> Büfeler &amp; Konsollar</a>
+                    </div>
+                </div>
+
+                <!-- Yatak Odası -->
+                <div class="cat-dropdown-wrapper">
+                    <button class="cat-pill interactive-btn" data-category="bedroom">
+                        <i class="fa-solid fa-bed"></i> Yatak Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" data-cat="bedroom" data-sub="beds"><i class="fa-solid fa-bed"></i> Karyola &amp; Yataklar</a>
+                        <a href="#" class="dropdown-item" data-cat="bedroom" data-sub="nightstands"><i class="fa-solid fa-table-cells"></i> Komodinler</a>
+                        <a href="#" class="dropdown-item" data-cat="bedroom" data-sub="wardrobes"><i class="fa-solid fa-door-closed"></i> Gardıroplar</a>
+                    </div>
+                </div>
+
+                <!-- Çalışma Odası -->
+                <div class="cat-dropdown-wrapper">
+                    <button class="cat-pill interactive-btn" data-category="office">
+                        <i class="fa-solid fa-briefcase"></i> Çalışma Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" data-cat="office" data-sub="desks"><i class="fa-solid fa-laptop-code"></i> Çalışma Masaları</a>
+                        <a href="#" class="dropdown-item" data-cat="office" data-sub="bookcases"><i class="fa-solid fa-book"></i> Kitaplıklar</a>
+                    </div>
+                </div>
+
+                <span class="ar-pill-tag"><i class="fa-solid fa-cube"></i> AR Destekli</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="main-layout container">
+        <div class="sort-card-box">
+            <div class="filter-count-badge" id="productCountBadge">Tüm Koleksiyon Listeleniyor</div>
+            <div class="sort-controls">
+                <span class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sırala:</span>
+                <select id="sortSelect" class="sort-dropdown">
+                    <option value="featured">Öne Çıkanlar</option>
+                    <option value="price-low">Fiyat: Düşükten Yükseğe</option>
+                    <option value="price-high">Fiyat: Yüksekten Düşüğe</option>
+                    <option value="rating">Müşteri Puanı</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <section class="product-grid" id="productGrid"></section>
+    </main>
+
+    <!-- Slide-over Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-basket-shopping"></i> Alışveriş Sepetim</h3>
+            <button class="close-btn interactive-btn" id="closeCartBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-body" id="cartBody"></div>
+        <div class="cart-footer" id="cartFooter"></div>
+    </aside>
+
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quickViewOverlay">
+        <div class="modal-card">
+            <button class="close-btn modal-close interactive-btn" id="closeQuickViewBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div id="quickViewContent"></div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkoutOverlay">
+        <div class="modal-card">
+            <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Ödeme</h3>
+            <p style="color:#71717a; font-size:0.88rem;">256-Bit SSL korumalı hızlı sipariş tamamlama ekranı.</p>
+
+            <form id="checkoutForm" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+                <input type="text" placeholder="Ad Soyad" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="tel" placeholder="Telefon Numarası (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <textarea placeholder="Teslimat Adresi" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+
+                <div style="background:#faf5ff; padding:12px 16px; border-radius:10px; border:1px solid #e9d5ff; display:flex; justify-content:space-between; font-weight:800;">
+                    <span>Toplam Ödenecek:</span>
+                    <span id="checkoutTotal" style="color:#6b21a8;">₺0</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:6px;">
+                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; Bitir
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application JavaScript Logic -->
+    <script src="app.js?v=99991"></script>
+</body>
+</html>

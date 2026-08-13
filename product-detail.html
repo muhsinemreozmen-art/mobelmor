@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <title>Ürün Detayı | Mobelmor.com</title>
+
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%236b21a8'/><text x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='sans-serif'>M</text></svg>">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=1786609999">
+</head>
+<body style="background-color: #ffffff !important; color: #18181b !important; color-scheme: light !important;">
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-main-title">
+                    <span class="logo-text-mobel">mobel</span>
+                    <span class="logo-text-mor">mor</span>
+                    <span class="logo-com-arrow">.com</span>
+                </div>
+            </a>
+
+            <div class="header-action-buttons">
+                <a href="index.html" class="circle-btn interactive-btn" title="Ana Sayfaya Dön">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                <button class="circle-btn interactive-btn" id="cartBtn" title="Sepetim">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span class="badge-count" id="cartBadge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb Nav -->
+    <div class="breadcrumb-nav">
+        <div class="container breadcrumb-container">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <i class="fa-solid fa-chevron-right separator"></i>
+            <a href="index.html" id="breadCatLink">Koleksiyon</a>
+            <i class="fa-solid fa-chevron-right separator"></i>
+            <span class="active-crumb" id="breadTitle">Ürün Detayı</span>
+        </div>
+    </div>
+
+    <!-- Product Detail Main Container -->
+    <section class="product-detail-section" style="background:#ffffff !important; padding:20px 0 60px 0;">
+        <div class="container">
+            <!-- Top Product Grid (Gallery & Right Buy Box) -->
+            <div class="product-detail-grid" id="detailGrid" style="border:none; box-shadow:none; padding:0;">
+                <!-- Rendered via detail.js -->
+            </div>
+
+            <!-- Combination / Module Price Table (Modül Fiyatları Tablosu) -->
+            <div class="module-price-section" id="modulePriceSection">
+                <!-- Rendered via detail.js -->
+            </div>
+
+            <!-- Inegol Tabs Section (Açıklama | Yorumlar | Taksit Seçenekleri) -->
+            <div class="inegol-tabs-nav">
+                <button class="inegol-tab-btn active" data-tab="inegolDescTab">Açıklama</button>
+                <button class="inegol-tab-btn" data-tab="inegolReviewsTab">Yorumlar (0)</button>
+                <button class="inegol-tab-btn" data-tab="inegolInstallmentTab">Taksit Seçenekleri</button>
+            </div>
+
+            <div class="tab-content active" id="inegolDescTab">
+                <div class="specs-double-grid">
+                    <!-- Left Column: Takım Modül Ölçüleri & Özellikler -->
+                    <div>
+                        <h4 style="margin:0 0 10px 0; color:#334155; font-size:0.9rem; font-weight:800;">Takım Modül Ölçüleri</h4>
+                        <table class="specs-sub-table" id="moduleDimsTable">
+                            <!-- Rendered via detail.js -->
+                        </table>
+
+                        <h4 style="margin:20px 0 10px 0; color:#334155; font-size:0.9rem; font-weight:800;">Özellik Bilgileri</h4>
+                        <table class="specs-sub-table" id="featureSpecsTable" style="text-align:left;">
+                            <!-- Rendered via detail.js -->
+                        </table>
+                    </div>
+
+                    <!-- Right Column: Genel Bilgiler Listesi -->
+                    <div>
+                        <h4 style="margin:0 0 12px 0; color:#0f172a; font-size:0.95rem; font-weight:800;">Genel Bilgiler</h4>
+                        <ul class="general-info-list">
+                            <li><i class="fa-solid fa-square-check"></i> Tüm ürünlerimiz 2 yıl üretici garantilidir.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Türkiye'nin her yerine teslimat yapılmaktadır.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Avrupa'nın her yerine teslimat yapılmaktadır.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Ürün bedelinden hariç olarak şehrinize göre nakliye ve kurulum bedeli belirlenir.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Yatak Odalarında Fiyatlandırmamızda Yatak Süngeri hariçtir.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Bu ürün Orijinal İnegöl Mobilyasıdır.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="inegolReviewsTab">
+                <p style="color:#64748b; padding:20px 0;">Bu ürün için henüz yorum yapılmamış. İlk yorumu siz yapın!</p>
+            </div>
+
+            <div class="tab-content" id="inegolInstallmentTab">
+                <p style="color:#334155; padding:10px 0; font-weight:700;">Tüm Kredi Kartlarına 6 Ay Vade Farksız Taksit İmkanı!</p>
+            </div>
+
+            <!-- Related Products Section -->
+            <div class="related-products-section" style="margin-top:60px;">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-layer-group" style="color:#134e4a;"></i> İlgili Ürün Önerileri</h2>
+                    <p>Aynı kategorideki diğer İnegöl modelleri</p>
+                </div>
+                <div class="product-grid" id="relatedGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-basket-shopping"></i> Alışveriş Sepetim</h3>
+            <button class="close-btn interactive-btn" id="closeCartBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-body" id="cartBody"></div>
+        <div class="cart-footer" id="cartFooter"></div>
+    </aside>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Product Detail Logic JS -->
+    <script src="detail.js?v=99991"></script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+[
+  {
+    "id": 1,
+    "title": "Mobilyam İnegölden",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 12500,
+    "rating": 4.9,
+    "reviewsCount": 27,
+    "image": "assets/inegol_prod_1.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Mobilyam İnegölden - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 2,
+    "title": "İndirimli Ürünler",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 12500,
+    "rating": 5.0,
+    "reviewsCount": 36,
+    "image": "assets/inegol_prod_2.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "İndirimli Ürünler - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 3,
+    "title": "Mağaza Teşhir Ürünleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 12500,
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "image": "assets/inegol_prod_3.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Mağaza Teşhir Ürünleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 4,
+    "title": "Stoklu Bulunan Ürünler",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 12500,
+    "rating": 4.9,
+    "reviewsCount": 54,
+    "image": "assets/inegol_prod_4.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Stoklu Bulunan Ürünler - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 5,
+    "title": "Bohem Düğün Paketleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 12500,
+    "rating": 5.0,
+    "reviewsCount": 23,
+    "image": "assets/inegol_prod_5.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Düğün Paketleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 6,
+    "title": "Luxury Düğün Paketleri",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 12500,
+    "rating": 4.8,
+    "reviewsCount": 32,
+    "image": "assets/inegol_prod_6.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Luxury Düğün Paketleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 7,
+    "title": "Trend Düğün Paketleri",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 12500,
+    "rating": 4.9,
+    "reviewsCount": 41,
+    "image": "assets/inegol_prod_7.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Trend Düğün Paketleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 8,
+    "title": "Ahşap Ayaklı Koltuk Takımları",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 32500,
+    "rating": 5.0,
+    "reviewsCount": 50,
+    "image": "assets/inegol_prod_8.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Ahşap Ayaklı Koltuk Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 9,
+    "title": "Bohem Koltuk Takımları",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 32500,
+    "rating": 4.8,
+    "reviewsCount": 19,
+    "image": "assets/inegol_prod_9.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Koltuk Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 10,
+    "title": "Chester Tasarımlı Koltuk Takımları",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 32500,
+    "rating": 4.9,
+    "reviewsCount": 28,
+    "image": "assets/inegol_prod_10.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Chester Tasarımlı Koltuk Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 11,
+    "title": "Metal Ayaklı Koltuk Takımları",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 32500,
+    "rating": 5.0,
+    "reviewsCount": 37,
+    "image": "assets/inegol_prod_11.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Metal Ayaklı Koltuk Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 12,
+    "title": "Bohem Yatak Odası Modelleri",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 24800,
+    "rating": 4.8,
+    "reviewsCount": 46,
+    "image": "assets/inegol_prod_12.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Yatak Odası Modelleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 13,
+    "title": "Kapaklı Yatak Odası Modelleri",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 24800,
+    "rating": 4.9,
+    "reviewsCount": 55,
+    "image": "assets/inegol_prod_13.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Kapaklı Yatak Odası Modelleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 14,
+    "title": "Sürgülü Yatak Odası Modelleri",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 24800,
+    "rating": 5.0,
+    "reviewsCount": 24,
+    "image": "assets/inegol_prod_14.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Sürgülü Yatak Odası Modelleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 15,
+    "title": "Bohem Tarzda Yemek Odaları",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 24800,
+    "rating": 4.8,
+    "reviewsCount": 33,
+    "image": "assets/inegol_prod_15.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Tarzda Yemek Odaları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 16,
+    "title": "Tv Üniteleri",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 11200,
+    "rating": 4.9,
+    "reviewsCount": 42,
+    "image": "assets/inegol_prod_16.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Tv Üniteleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 17,
+    "title": "Genç Odaları",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 12500,
+    "rating": 5.0,
+    "reviewsCount": 51,
+    "image": "assets/inegol_prod_17.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Genç Odaları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 18,
+    "title": "Sehpalar",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 5400,
+    "rating": 4.8,
+    "reviewsCount": 20,
+    "image": "assets/inegol_prod_18.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Sehpalar - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 19,
+    "title": "Çok Satanlar",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 12500,
+    "rating": 4.9,
+    "reviewsCount": 29,
+    "image": "assets/inegol_prod_19.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Çok Satanlar - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 20,
+    "title": "Düğün Paketleri",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 12500,
+    "rating": 5.0,
+    "reviewsCount": 38,
+    "image": "assets/inegol_prod_20.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Düğün Paketleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 21,
+    "title": "Fırsat Ürünleri",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 12500,
+    "rating": 4.8,
+    "reviewsCount": 47,
+    "image": "assets/inegol_prod_21.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Fırsat Ürünleri - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 22,
+    "title": "Koltuk Takımları",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 32500,
+    "rating": 4.9,
+    "reviewsCount": 56,
+    "image": "assets/inegol_prod_22.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Koltuk Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 23,
+    "title": "Yatak Odaları",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 24800,
+    "rating": 5.0,
+    "reviewsCount": 25,
+    "image": "assets/inegol_prod_23.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Yatak Odaları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 24,
+    "title": "Yemek Odaları",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 24800,
+    "rating": 4.8,
+    "reviewsCount": 34,
+    "image": "assets/inegol_prod_24.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA",
+      "EN ÇOK SATAN",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Yemek Odaları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  },
+  {
+    "id": 25,
+    "title": "Köşe Takımları",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 32500,
+    "rating": 4.9,
+    "reviewsCount": 43,
+    "image": "assets/inegol_prod_25.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "MASİF VE DOKUMA"
+    ],
+    "material": "İnegöl Masif Ahşap & Keten Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Köşe Takımları - İnegöl mobilya ustaları tarafından fırınlanmış gürgen iskelet ve leke tutmaz özel kumaş dokusuyla üretilmiştir."
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "ld": {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "Pablo Koltuk Takımı",
+    "image": "https://image.mobilyaminegolden.com/image/cache/catalog/product-images/bohem-koltuk-takimlari/pablo-koltuk-takimi/69fe866ab52c4_69d4ca743fec4_pablo-koltuk-takimi-1-bohem-117496-17-B-2661x1331.jpg",
+    "description": "Pablo Koltuk Takımı Şık tasarımıyla dikkat çekiyor. Ahşap Ayaklı modelleri içinde şık ve kalitesi ile öne çıkan bu ürünü Hemen inceleyin!",
+    "sku": "",
+    "mpn": "",
+    "model": "DML-002",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "TRY",
+      "price": "83000.00",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Mobilyam İnegölden"
+      },
+      "priceValidUntil": "2027-08-13",
+      "url": "https://www.mobilyaminegolden.com/pablo-koltuk-takimi-modeli-mobilyam-inegolden"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Damla Sofa"
+    }
+  },
+  "images": [],
+  "title": "Pablo Koltuk Takımı",
+  "price_new": "83000.00",
+  "price_old": null,
+  "dimensions": [
+    [
+      "Modül",
+      "Genişlik",
+      "Derinlik",
+      "Yükseklik"
+    ],
+    [
+      "3'lü",
+      "230",
+      "97",
+      "90"
+    ],
+    [
+      "Berjer",
+      "68",
+      "82",
+      "94"
+    ]
+  ],
+  "features": []
+}

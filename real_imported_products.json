@@ -1,0 +1,442 @@
+[
+  {
+    "id": 1,
+    "title": "Mobilyam İnegölden",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 4.9,
+    "reviewsCount": 21,
+    "image": "assets/inegol_real_1.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Mobilyam İnegölden - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 2,
+    "title": "İndirimli Ürünler",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 5.0,
+    "reviewsCount": 28,
+    "image": "assets/inegol_real_2.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "İndirimli Ürünler - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 3,
+    "title": "Mağaza Teşhir Ürünleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 4.8,
+    "reviewsCount": 35,
+    "image": "assets/inegol_real_3.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Mağaza Teşhir Ürünleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 4,
+    "title": "Stoklu Bulunan Ürünler",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 4.9,
+    "reviewsCount": 42,
+    "image": "assets/inegol_real_4.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Stoklu Bulunan Ürünler - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 5,
+    "title": "Bohem Düğün Paketleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 5.0,
+    "reviewsCount": 14,
+    "image": "assets/inegol_real_5.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Düğün Paketleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 6,
+    "title": "Luxury Düğün Paketleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 4.8,
+    "reviewsCount": 21,
+    "image": "assets/inegol_real_6.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Luxury Düğün Paketleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 7,
+    "title": "Trend Düğün Paketleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 18500,
+    "rating": 4.9,
+    "reviewsCount": 28,
+    "image": "assets/inegol_real_7.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Trend Düğün Paketleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 8,
+    "title": "Ahşap Ayaklı Koltuk Takımları",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 34800,
+    "rating": 5.0,
+    "reviewsCount": 35,
+    "image": "assets/inegol_real_8.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Ahşap Ayaklı Koltuk Takımları - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 9,
+    "title": "Bohem Koltuk Takımları",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 34800,
+    "rating": 4.8,
+    "reviewsCount": 42,
+    "image": "assets/inegol_real_9.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Koltuk Takımları - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 10,
+    "title": "Chester Tasarımlı Koltuk Takımları",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 34800,
+    "rating": 4.9,
+    "reviewsCount": 14,
+    "image": "assets/inegol_real_10.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Chester Tasarımlı Koltuk Takımları - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 11,
+    "title": "Metal Ayaklı Koltuk Takımları",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 34800,
+    "rating": 5.0,
+    "reviewsCount": 21,
+    "image": "assets/inegol_real_11.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Metal Ayaklı Koltuk Takımları - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 12,
+    "title": "Bohem Yatak Odası Modelleri",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 26500,
+    "rating": 4.8,
+    "reviewsCount": 28,
+    "image": "assets/inegol_real_12.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Yatak Odası Modelleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 13,
+    "title": "Kapaklı Yatak Odası Modelleri",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 26500,
+    "rating": 4.9,
+    "reviewsCount": 35,
+    "image": "assets/inegol_real_13.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Kapaklı Yatak Odası Modelleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 14,
+    "title": "Sürgülü Yatak Odası Modelleri",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 26500,
+    "rating": 5.0,
+    "reviewsCount": 42,
+    "image": "assets/inegol_real_14.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Sürgülü Yatak Odası Modelleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 15,
+    "title": "Bohem Tarzda Yemek Odaları",
+    "category": "living",
+    "subcategory": "tables",
+    "price": 22900,
+    "rating": 4.8,
+    "reviewsCount": 14,
+    "image": "assets/inegol_real_15.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "EN ÇOK SATAN",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bohem Tarzda Yemek Odaları - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 16,
+    "title": "Tekil Masalar",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 18500,
+    "rating": 4.9,
+    "reviewsCount": 21,
+    "image": "assets/inegol_real_16.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Tekil Masalar - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 17,
+    "title": "Ahşap Ayaklı Tv Üniteleri",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 14200,
+    "rating": 5.0,
+    "reviewsCount": 28,
+    "image": "assets/inegol_real_17.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Ahşap Ayaklı Tv Üniteleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 18,
+    "title": "Bebek Odası",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 18500,
+    "rating": 4.8,
+    "reviewsCount": 35,
+    "image": "assets/inegol_real_18.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF",
+      "EN ÇOK SATAN"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Bebek Odası - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 19,
+    "title": "Luxury Koltuk Takımı Modelleri",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 34800,
+    "rating": 4.9,
+    "reviewsCount": 42,
+    "image": "assets/inegol_real_19.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Luxury Koltuk Takımı Modelleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  },
+  {
+    "id": 20,
+    "title": "Luxury Yatak Odası Modelleri",
+    "category": "living",
+    "subcategory": "consoles",
+    "price": 26500,
+    "rating": 5.0,
+    "reviewsCount": 14,
+    "image": "assets/inegol_real_20.jpg",
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 MASİF",
+      "3D / AR"
+    ],
+    "material": "İnegöl Masif Ahşap & Özel Dokuma Kumaş",
+    "arSupported": true,
+    "colors": [
+      "#d4a373",
+      "#6b21a8",
+      "#18181b"
+    ],
+    "desc": "Luxury Yatak Odası Modelleri - İnegöl usta işçiliği ile %100 fırınlanmış ahşap gövde yapısı ve leke tutmaz silinebilir lüks döşeme kumaşı."
+  }
+]

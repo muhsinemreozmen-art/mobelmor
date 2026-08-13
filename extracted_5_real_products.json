@@ -1,0 +1,168 @@
+[
+  {
+    "id": 1,
+    "title": "Mobilyam İnegölden | İnegöl Mobilyası",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 106000,
+    "rating": 4.9,
+    "reviewsCount": 31,
+    "image": "assets/real_zara-yemek-odasi_1_58aa5bd8.jpg",
+    "gallery": [
+      "assets/real_zara-yemek-odasi_1_58aa5bd8.jpg",
+      "assets/real_zara-yemek-odasi_2_bf0c126c.jpg",
+      "assets/real_zara-yemek-odasi_3_9c60b515.jpg",
+      "assets/real_zara-yemek-odasi_4_3ab37c2f.jpg",
+      "assets/real_zara-yemek-odasi_5_30f3e7e5.jpg",
+      "assets/real_zara-yemek-odasi_8_441f77fe.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "MOBILYAM İNEGÖLDEN | İNEGÖL MOBILYASI İNEGÖL ÖZEL KOLEKSİYON",
+    "desc": "Mobilyam İnegölden,15 yılı aşan Online Satış tecrübesi ile İnegöl Mobilyasını sizlerle buluşturuyor. Kapıda ödeme ve taksit avantajları için bizi arayın!...",
+    "specs": {
+      "Modül": "Genişlik",
+      "Masa / Karyola": "180 cm",
+      "Konsol / Gardırop": "210 cm",
+      "Derinlik": "90 cm"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/zara-yemek-odasi-siyah"
+  },
+  {
+    "id": 2,
+    "title": "Asel Yatak Odası Takımı Siyah Detaylı | İnegöl mobilya modelleri",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "price": 80500,
+    "rating": 4.8,
+    "reviewsCount": 42,
+    "image": "assets/real_asel-yatak-odasi_1_58aa5bd8.jpg",
+    "gallery": [
+      "assets/real_asel-yatak-odasi_1_58aa5bd8.jpg",
+      "assets/real_asel-yatak-odasi_2_bf0c126c.jpg",
+      "assets/real_asel-yatak-odasi_3_9c60b515.jpg",
+      "assets/real_asel-yatak-odasi_4_3ab37c2f.jpg",
+      "assets/real_asel-yatak-odasi_5_30f3e7e5.jpg",
+      "assets/real_asel-yatak-odasi_8_15c34c66.jpg",
+      "assets/real_asel-yatak-odasi_9_ccb3db6d.jpg",
+      "assets/real_asel-yatak-odasi_10_3a8ed488.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "ASEL YATAK ODASI TAKIMI SIYAH DETAYLI | İNEGÖL MOBILYA MODELLERI İNEGÖL ÖZEL KOLEKSİYON",
+    "desc": "Asel Yatak Odası Takımı siyah detayları, modern krem rengi tasarımı ve flütlü yüzeyleriyle yatak odanıza zarafet katıyor. Fonksiyonel gardırop ve şık karyola ile konfor ve estetiği bir arada yaşayın....",
+    "specs": {
+      "Modül": "Genişlik",
+      "6 Kapılı Dolap": "248",
+      "2 Kapaklı Askılıklı Dolap": "84",
+      "Köşe Modül": "180",
+      "Tek Kapılı Raflı": "42",
+      "K.Bazalı Karyola": "295",
+      "Aynalı Şifonyer": "130",
+      "Komodin": "60",
+      "2 Kapılı Raflı (isteğe bağlı)": "84",
+      "2 Kapılı Çekmeceli (isteğe bağlı)": "84",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/asel-yatak-odasi-siyah-detayli"
+  },
+  {
+    "id": 3,
+    "title": "Zümrüt Koltuk Takımı | İnegöl mobilya modelleri",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 69500,
+    "rating": 4.9,
+    "reviewsCount": 53,
+    "image": "assets/real_zumrut-koltuk-takimi_1_58aa5bd8.jpg",
+    "gallery": [
+      "assets/real_zumrut-koltuk-takimi_1_58aa5bd8.jpg",
+      "assets/real_zumrut-koltuk-takimi_2_bf0c126c.jpg",
+      "assets/real_zumrut-koltuk-takimi_3_9c60b515.jpg",
+      "assets/real_zumrut-koltuk-takimi_4_3ab37c2f.jpg",
+      "assets/real_zumrut-koltuk-takimi_5_30f3e7e5.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "ZÜMRÜT KOLTUK TAKIMI | İNEGÖL MOBILYA MODELLERI İNEGÖL ÖZEL KOLEKSİYON",
+    "desc": "Zümrüt Koltuk Takımı, modern ve klasik çizgileri birleştirerek evinize zarafet katıyor. Konforlu oturum alanı ve şık tasarımıyla öne çıkıyor....",
+    "specs": {
+      "Modül": "Genişlik",
+      "3'lü Koltuk": "235",
+      "Berjer": "76",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi"
+  },
+  {
+    "id": 4,
+    "title": "Pera Yemek Odası Takımı Ceviz | inegöl mobilya kampanyaları",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "price": 92000,
+    "rating": 4.8,
+    "reviewsCount": 64,
+    "image": "assets/real_pera-yemek-odasi_1_58aa5bd8.jpg",
+    "gallery": [
+      "assets/real_pera-yemek-odasi_1_58aa5bd8.jpg",
+      "assets/real_pera-yemek-odasi_2_bf0c126c.jpg",
+      "assets/real_pera-yemek-odasi_3_9c60b515.jpg",
+      "assets/real_pera-yemek-odasi_4_3ab37c2f.jpg",
+      "assets/real_pera-yemek-odasi_5_30f3e7e5.jpg",
+      "assets/real_pera-yemek-odasi_8_d3b15688.jpg",
+      "assets/real_pera-yemek-odasi_9_bd3ba460.jpg",
+      "assets/real_pera-yemek-odasi_10_441f77fe.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "PERA YEMEK ODASI TAKIMI CEVIZ | INEGÖL MOBILYA KAMPANYALARI İNEGÖL ÖZEL KOLEKSİYON",
+    "desc": "Pera Yemek Odası Takımı Ceviz, modern tasarımı ve kaliteli işçiliğiyle yemek alanınıza zarafet katıyor. İnegöl mobilya kampanyaları ile şimdi keşfedin!...",
+    "specs": {
+      "Modül": "Genişlik",
+      "Sabit Masa": "200",
+      "Sandalye": "-",
+      "Aynalı Konsol": "215",
+      "Tv Ünitesi": "-",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/pera-yemek-odasi-2-1773"
+  },
+  {
+    "id": 5,
+    "title": "Bohem Koltuk Takımı Krem | inegol mobilya",
+    "category": "living",
+    "subcategory": "sofas",
+    "price": 56000,
+    "rating": 4.9,
+    "reviewsCount": 75,
+    "image": "assets/real_bohem-koltuk-takimi_1_58aa5bd8.jpg",
+    "gallery": [
+      "assets/real_bohem-koltuk-takimi_1_58aa5bd8.jpg",
+      "assets/real_bohem-koltuk-takimi_2_bf0c126c.jpg",
+      "assets/real_bohem-koltuk-takimi_3_9c60b515.jpg",
+      "assets/real_bohem-koltuk-takimi_4_3ab37c2f.jpg",
+      "assets/real_bohem-koltuk-takimi_5_30f3e7e5.jpg"
+    ],
+    "badges": [
+      "İNEGÖL KOLEKSİYONU",
+      "%100 ORİJİNAL"
+    ],
+    "material": "BOHEM KOLTUK TAKIMI KREM | INEGOL MOBILYA İNEGÖL ÖZEL KOLEKSİYON",
+    "desc": "Krem rengi bohem koltuk takımı ile salonunuzda modern ve davetkar bir atmosfer yaratın. Rahat ve şık tasarımı inegol mobilya kalitesiyle....",
+    "specs": {
+      "Modül": "Genişlik",
+      "3'lü Koltuk": "225",
+      "Berjer": "75",
+      "Özellik Adı": "Özellik Bilgisi"
+    },
+    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-koltuk-takimi-krem"
+  }
+]
