@@ -752,17 +752,65 @@ const createLightbox = () => {
 
 window.goToSlide = (idx) => {
     const track = document.getElementById('galleryCarouselTrack');
-    if (!track) return;
+    const pid = getProductIdFromUrl();
+    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+
+    if (idx < 0) idx = 0;
+    if (idx >= gallery.length) idx = gallery.length - 1;
+
     currentActiveGalleryIndex = idx;
-    const slideWidth = track.clientWidth;
-    track.scrollTo({ left: idx * slideWidth, behavior: 'smooth' });
+    if (track) {
+        const slideWidth = track.clientWidth || track.offsetWidth;
+        track.scrollTo({ left: idx * slideWidth, behavior: 'smooth' });
+    }
     updateActiveSlide(idx);
 };
 
 let galleryScrollDebounce = null;
 const setupGalleryCarousel = () => {
     const track = document.getElementById('galleryCarouselTrack');
-    if (!track) return;
+    const wrapper = document.querySelector('.gallery-carousel-wrapper');
+    if (!track || !wrapper) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isHorizontalSwipe = false;
+
+    wrapper.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isHorizontalSwipe = false;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchmove', (e) => {
+        if (e.touches.length !== 1) return;
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = currentX - touchStartX;
+        const diffY = currentY - touchStartY;
+
+        // If horizontal movement is greater than vertical, prevent page scroll
+        if (Math.abs(diffX) > 8 && Math.abs(diffX) > Math.abs(diffY)) {
+            isHorizontalSwipe = true;
+            if (e.cancelable) e.preventDefault();
+        }
+    }, { passive: false });
+
+    wrapper.addEventListener('touchend', (e) => {
+        if (!isHorizontalSwipe) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const diffX = touchEndX - touchStartX;
+
+        if (diffX < -30) {
+            // Swipe left -> Next image
+            goToSlide(currentActiveGalleryIndex + 1);
+        } else if (diffX > 30) {
+            // Swipe right -> Previous image
+            goToSlide(currentActiveGalleryIndex - 1);
+        }
+    }, { passive: true });
 
     track.addEventListener('scroll', () => {
         if (galleryScrollDebounce) clearTimeout(galleryScrollDebounce);
