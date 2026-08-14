@@ -485,8 +485,9 @@ button:active,
 .vivense-nav-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 8px;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0 4px;
     position: relative !important;
     overflow: visible !important;
     white-space: nowrap;
@@ -506,9 +507,9 @@ button:active,
 .vivense-nav-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 12px 10px;
-    font-size: 0.72rem;
+    gap: 5px;
+    padding: 11px 8px;
+    font-size: 0.70rem;
     font-weight: 700;
     color: #18181b !important;
     text-decoration: none !important;
@@ -522,15 +523,15 @@ button:active,
 }
 
 .badge-icon-circle {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: #6b21a8;
     color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     flex-shrink: 0;
 }
 
@@ -548,17 +549,17 @@ button:active,
     position: static !important;
     display: inline-flex;
     align-items: center;
-    flex-shrink: 1;
+    flex-shrink: 0;
 }
 
 .vivense-nav-link {
     display: block;
-    padding: 14px 8px;
-    font-size: 0.71rem;
+    padding: 12px 6px;
+    font-size: 0.67rem;
     font-weight: 700;
     color: #27272a !important;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     text-decoration: none !important;
     position: relative;
     transition: color 0.15s ease;
@@ -570,7 +571,7 @@ button:active,
     font-size: 1.1rem;
     line-height: 0.8;
     letter-spacing: 1px;
-    padding: 14px 8px;
+    padding: 12px 6px;
 }
 
 .vivense-nav-link:hover,
@@ -585,8 +586,8 @@ button:active,
     content: '';
     position: absolute;
     bottom: 0;
-    left: 8px;
-    right: 8px;
+    left: 6px;
+    right: 6px;
     height: 2.5px;
     background-color: transparent;
     border-radius: 2px 2px 0 0;
@@ -599,17 +600,17 @@ button:active,
     background-color: #18181b !important;
 }
 
-@media (max-width: 1280px) and (min-width: 992px) {
+@media (max-width: 1300px) and (min-width: 992px) {
     .vivense-nav-link {
-        padding: 14px 5px;
-        font-size: 0.66rem;
+        padding: 12px 4px;
+        font-size: 0.63rem;
     }
     .vivense-nav-badge {
-        padding: 12px 6px;
-        font-size: 0.68rem;
+        padding: 10px 5px;
+        font-size: 0.64rem;
     }
     .vivense-nav-badge .badge-text {
-        font-size: 0.68rem;
+        font-size: 0.64rem;
     }
 }
 
@@ -1219,18 +1220,32 @@ button:active,
 
 .slide-brand-watermark {
     position: absolute;
-    top: 24px;
-    right: 28px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: rgba(30, 41, 59, 0.7);
+    top: 20px;
+    right: 24px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #18181b !important;
     text-transform: lowercase;
     letter-spacing: 0.06em;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(6px);
-    padding: 5px 14px;
-    border-radius: 20px;
+    background: #ffffff !important;
+    border: 1.5px solid #e4e4e7;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    padding: 6px 16px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 6;
+}
+
+.slide-brand-watermark::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #6b21a8;
+    border-radius: 50%;
+    display: inline-block;
 }
 
 /* Dots inside the image (bottom-right of left photo) */
