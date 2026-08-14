@@ -782,7 +782,12 @@ const attachCardEventListeners = () => {
 
         const goToDetail = (e) => {
             if (e.target.closest(".card-heart-btn") || e.target.closest(".add-to-cart-btn") || e.target.closest(".quick-view-btn")) return;
-            window.location.href = `product-detail.html?id=${id}`;
+            const item = PRODUCTS.find(p => p.id === parseInt(id));
+            if (item && window.getCleanProductUrl) {
+                window.location.href = window.getCleanProductUrl(item.id, item.title);
+            } else {
+                window.location.href = `urun-detay.html?id=${id}`;
+            }
         };
 
         if (imgBox) imgBox.addEventListener("click", goToDetail);
@@ -1021,8 +1026,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return PRODUCTS.some(p => p.category === currentCategory && p.subcategory === subKey);
             });
 
+            const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
             subcatBar.innerHTML = availableSubs.map(([subKey, subName]) => `
-                <a href="category.html?cat=${currentCategory}&sub=${subKey}" class="subcat-chip ${currentSubcategory === subKey ? 'active' : ''}">
+                <a href="kategori.html?c=${catSlug}&sub=${subKey}" class="subcat-chip ${currentSubcategory === subKey ? 'active' : ''}">
                     ${subName}
                 </a>
             `).join('');
@@ -1048,13 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = cat;
         currentSubcategory = sub;
 
-        let newUrl = window.location.pathname.includes("category.html") ? "category.html" : "index.html";
-        if (cat !== "all" || sub !== "all") {
-            newUrl += `?cat=${cat}`;
-            if (sub !== "all") {
-                newUrl += `&sub=${sub}`;
-            }
-        }
+        const newUrl = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori.html?cat=${cat}&sub=${sub}`;
 
         if (updateHistory && window.history.pushState) {
             window.history.pushState({ cat, sub }, "", newUrl);
@@ -1095,15 +1095,19 @@ document.addEventListener("DOMContentLoaded", () => {
             search = window.location.href.substring(window.location.href.indexOf("?"));
         }
         const urlParams = new URLSearchParams(search);
+        const cParam = urlParams.get("c");
         const catParam = urlParams.get("cat");
         const subParam = urlParams.get("sub");
-        if (catParam) {
-            currentCategory = catParam;
-            currentSubcategory = subParam || "all";
-        } else {
-            currentCategory = "all";
-            currentSubcategory = "all";
+
+        let resolvedCat = "all";
+        if (cParam) {
+            resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
+        } else if (catParam) {
+            resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
         }
+
+        currentCategory = resolvedCat;
+        currentSubcategory = subParam || "all";
         updateActiveCategoryUI();
         renderProducts();
     };

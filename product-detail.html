@@ -9,6 +9,9 @@
     
     <title>Ürün Detayı | Mobelmor.com</title>
 
+    <!-- Clean URL Engine -->
+    <script src="js/url-cleaner.js?v=10000"></script>
+
     <!-- SVG Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="shortcut icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -28,7 +31,7 @@
     <!-- Header -->
     <header class="app-header">
         <div class="container header-container">
-            <a href="index.html" class="brand-logo">
+            <a href="./" class="brand-logo">
                 <div class="logo-main-title">
                     <span class="logo-text-mobel">mobel</span>
                     <span class="logo-mor-box">
@@ -39,7 +42,7 @@
             </a>
 
             <div class="header-action-buttons">
-                <a href="index.html" class="circle-btn interactive-btn" title="Ana Sayfaya Dön">
+                <a href="./" class="circle-btn interactive-btn" title="Ana Sayfaya Dön">
                     <i class="fa-solid fa-house"></i>
                 </a>
                 <button class="circle-btn interactive-btn" id="cartBtn" title="Sepetim">
@@ -53,9 +56,9 @@
     <!-- Breadcrumb Nav -->
     <div class="breadcrumb-nav">
         <div class="container breadcrumb-container">
-            <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="./"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
             <i class="fa-solid fa-chevron-right separator"></i>
-            <a href="index.html" id="breadCatLink">Koleksiyon</a>
+            <a href="kategori.html?c=all" id="breadCatLink">Koleksiyon</a>
             <i class="fa-solid fa-chevron-right separator"></i>
             <span class="active-crumb" id="breadTitle">Ürün Detayı</span>
         </div>
@@ -102,7 +105,7 @@
                         <ul class="general-info-list">
                             <li><i class="fa-solid fa-square-check"></i> Tüm ürünlerimiz 2 yıl üretici garantilidir.</li>
                             <li><i class="fa-solid fa-square-check"></i> Türkiye'nin her yerine teslimat yapılmaktadır.</li>
-                            <li><i class="fa-solid fa-square-check"></i> Avrupa'nın her yerine teslimat yapılmaktadır.</li>
+                            <li><i class="fa-solid fa-square-check"></i> Avrupa'nin her yerine teslimat yapılmaktadır.</li>
                             <li><i class="fa-solid fa-square-check"></i> Ürün bedelinden hariç olarak şehrinize göre nakliye ve kurulum bedeli belirlenir.</li>
                             <li><i class="fa-solid fa-square-check"></i> Yatak Odalarında Fiyatlandırmamızda Yatak Süngeri hariçtir.</li>
                             <li><i class="fa-solid fa-square-check"></i> Bu ürün Orijinal İnegöl Mobilyasıdır.</li>
@@ -152,11 +155,11 @@
                 <div class="footer-col">
                     <h4 class="footer-heading">Hızlı Erişim</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Ana Sayfa</a></li>
-                        <li><a href="category.html?cat=all"><i class="fa-solid fa-chevron-right"></i> Tüm Koleksiyon</a></li>
-                        <li><a href="category.html?cat=living"><i class="fa-solid fa-chevron-right"></i> Oturma Odası</a></li>
-                        <li><a href="category.html?cat=dining"><i class="fa-solid fa-chevron-right"></i> Yemek Odası</a></li>
-                        <li><a href="category.html?cat=bedroom"><i class="fa-solid fa-chevron-right"></i> Yatak Odası</a></li>
+                        <li><a href="./"><i class="fa-solid fa-chevron-right"></i> Ana Sayfa</a></li>
+                        <li><a href="kategori.html?c=tum-koleksiyon"><i class="fa-solid fa-chevron-right"></i> Tüm Koleksiyon</a></li>
+                        <li><a href="kategori.html?c=oturma-odasi"><i class="fa-solid fa-chevron-right"></i> Oturma Odası</a></li>
+                        <li><a href="kategori.html?c=yemek-odasi"><i class="fa-solid fa-chevron-right"></i> Yemek Odası</a></li>
+                        <li><a href="kategori.html?c=yatak-odasi"><i class="fa-solid fa-chevron-right"></i> Yatak Odası</a></li>
                     </ul>
                 </div>
 
@@ -268,6 +271,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Product Detail Logic JS -->
-    <script src="js/detail.js?v=99998"></script>
+    <script src="js/detail.js?v=10000"></script>
 </body>
 </html>

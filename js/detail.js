@@ -664,7 +664,16 @@ const showToast = (message, icon = "fa-circle-check") => {
 const getProductIdFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const idStr = params.get("id");
-    return idStr ? parseInt(idStr) : 1;
+    if (idStr) {
+        const parsed = parseInt(idStr);
+        if (!isNaN(parsed)) return parsed;
+    }
+    const slugStr = params.get("slug");
+    if (slugStr) {
+        const found = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === slugStr);
+        if (found) return found.id;
+    }
+    return 1;
 };
 
 
@@ -864,11 +873,16 @@ const renderProductDetail = () => {
 
     document.title = `${product.title} | Mobelmor.com`;
 
+    if (window.history && window.history.replaceState && window.getCleanProductUrl) {
+        const cleanUrl = window.getCleanProductUrl(product.id, product.title);
+        window.history.replaceState(null, '', cleanUrl);
+    }
+
     const breadCat = document.getElementById("breadCatLink");
     const breadTitle = document.getElementById("breadTitle");
     if (breadCat) {
         breadCat.textContent = CATEGORY_NAMES[product.category] || "Koleksiyon";
-        breadCat.href = `category.html?cat=${product.category}`;
+        breadCat.href = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(product.category) : `kategori.html?c=${product.category}`;
     }
     if (breadTitle) breadTitle.textContent = product.title;
 
@@ -1094,8 +1108,10 @@ const renderRelatedProducts = (currentProduct) => {
         related = PRODUCTS.filter(p => p.id !== currentProduct.id && p.category === currentProduct.category).slice(0, 4);
     }
 
-    grid.innerHTML = related.map(item => `
-        <article class="product-card" onclick="window.location.href='product-detail.html?id=${item.id}'" style="cursor: pointer;">
+    grid.innerHTML = related.map(item => {
+        const itemUrl = window.getCleanProductUrl ? window.getCleanProductUrl(item.id, item.title) : `urun-detay.html?id=${item.id}`;
+        return `
+        <article class="product-card" onclick="window.location.href='${itemUrl}'" style="cursor: pointer;">
             <div class="card-image-box">
                 <img src="${item.image}" alt="${item.title}" class="card-img">
             </div>
@@ -1104,11 +1120,11 @@ const renderRelatedProducts = (currentProduct) => {
                 <h3 class="card-product-title">${item.title}</h3>
                 <div class="card-price-row">
                     <span class="card-price-text">${formatPrice(item.price)}</span>
-                    <button class="pill-add-btn" onclick="event.stopPropagation(); window.location.href='product-detail.html?id=${item.id}'">İncele</button>
+                    <button class="pill-add-btn" onclick="event.stopPropagation(); window.location.href='${itemUrl}'">İncele</button>
                 </div>
             </div>
         </article>
-    `).join('');
+    `}).join('');
 };
 
 const addToCart = (productId, qty = 1) => {
