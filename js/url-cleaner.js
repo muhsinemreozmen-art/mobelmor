@@ -3,19 +3,12 @@
    ========================================== */
 
 (function() {
-    // 1. Instantly strip ".html" and "index.html" from browser URL bar on page load using History API
+    // 1. Clean index.html to clean root URL
     if (window.history && window.history.replaceState) {
         var path = window.location.pathname;
-        var cleanPath = path;
-
         if (path.endsWith('/index.html') || path.endsWith('index.html')) {
-            cleanPath = path.replace(/\/index\.html$/, '/').replace(/index\.html$/, '');
+            var cleanPath = path.replace(/\/index\.html$/, '/').replace(/index\.html$/, '');
             if (!cleanPath) cleanPath = '/';
-        } else if (path.endsWith('.html')) {
-            cleanPath = path.replace(/\.html$/, '');
-        }
-
-        if (cleanPath !== path) {
             var newUrl = window.location.origin + cleanPath + window.location.search + window.location.hash;
             window.history.replaceState(null, '', newUrl);
         }

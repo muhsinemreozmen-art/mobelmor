@@ -954,7 +954,7 @@ const renderProductDetail = () => {
     document.title = `${product.title} | Mobelmor.com`;
 
     if (window.history && window.history.replaceState && window.getCleanProductUrl) {
-        const cleanUrl = window.getCleanProductUrl(product.id, product.title).replace(/\.html/, '');
+        const cleanUrl = window.getCleanProductUrl(product.id, product.title);
         window.history.replaceState(null, '', cleanUrl);
     }
 
