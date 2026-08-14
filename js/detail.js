@@ -881,10 +881,12 @@ const renderProductDetail = () => {
     const breadCat = document.getElementById("breadCatLink");
     const breadTitle = document.getElementById("breadTitle");
     if (breadCat) {
-        breadCat.textContent = CATEGORY_NAMES[product.category] || "Koleksiyon";
+        breadCat.innerHTML = `<i class="fa-solid fa-layer-group"></i> <span>${CATEGORY_NAMES[product.category] || "Koleksiyon"}</span>`;
         breadCat.href = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(product.category) : `kategori.html?c=${product.category}`;
     }
-    if (breadTitle) breadTitle.textContent = product.title;
+    if (breadTitle) {
+        breadTitle.innerHTML = `<span class="mb-live-dot"></span> <span>${product.title}</span>`;
+    }
 
     currentModuleState.productBasePrice = product.price;
     currentModuleState.mainUnitPrice = product.price;
@@ -899,8 +901,8 @@ const renderProductDetail = () => {
                 <div class="main-image-container" style="position:relative; height:450px; cursor:pointer;" onclick="openLightbox(currentActiveGalleryIndex)" title="Büyütmek için tıklayın">
                     <img src="${product.image}" alt="${product.title}" id="mainDetailImg" class="main-detail-img" style="pointer-events:none;" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     <div class="gallery-badges">
-                        <span class="badge-tag" style="background:#6b21a8 !important;">${product.badges?.[0] || 'İNEGÖL'}</span>
-                        <span class="badge-tag" style="background:#18181b !important;">%100 ORİJİNAL</span>
+                        <span class="badge-tag"><i class="fa-solid fa-gem"></i> ${product.badges?.[0] || 'İNEGÖL KOLEKSİYONU'}</span>
+                        <span class="badge-tag badge-dark-glass"><i class="fa-solid fa-shield-check"></i> %100 ORİJİNAL</span>
                     </div>
                     <div class="zoom-hint-badge">
                         <i class="fa-solid fa-expand"></i> Tam Ekran Büyüt

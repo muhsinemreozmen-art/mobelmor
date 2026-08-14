@@ -837,15 +837,23 @@ button:active,
     }
 }
 
-/* Breadcrumbs */
-.breadcrumb-nav {
-    background-color: #ffffff;
-    border-bottom: 1px solid #f4f4f5;
-    padding: 12px 0;
+/* ==========================================================================
+   Breadcrumbs - Completely Hidden
+   ========================================================================== */
+.breadcrumb-nav,
+.breadcrumb-container,
+.breadcrumb-nav-wrapper {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
+/* Category Hero Banner Breadcrumbs Override */
 .category-hero-banner .breadcrumb-nav {
-    background-color: transparent !important;
     background: transparent !important;
     border: none !important;
     border-bottom: none !important;
@@ -853,29 +861,38 @@ button:active,
     margin-bottom: 12px !important;
 }
 
-.category-hero-banner .breadcrumb-nav a {
-    color: rgba(255, 255, 255, 0.88) !important;
-    background: transparent !important;
-    text-decoration: none;
-    font-weight: 600;
-    transition: opacity 0.2s ease;
+.category-hero-banner .breadcrumb-container a,
+.category-hero-banner .crumb-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 3px 10px !important;
+    border-radius: 999px !important;
 }
 
-.category-hero-banner .breadcrumb-nav a:hover {
+.category-hero-banner .breadcrumb-container a:hover,
+.category-hero-banner .crumb-link:hover {
     color: #ffffff !important;
-    opacity: 1;
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-.category-hero-banner .breadcrumb-nav .separator {
+.category-hero-banner .breadcrumb-container a i,
+.category-hero-banner .crumb-link i {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.category-hero-banner .breadcrumb-container .separator,
+.category-hero-banner .crumb-sep {
     color: rgba(255, 255, 255, 0.5) !important;
-    background: transparent !important;
 }
 
-.category-hero-banner .breadcrumb-nav .active-crumb,
+.category-hero-banner .breadcrumb-container .active-crumb,
 .category-hero-banner #categoryBreadcrumbTitle {
+    background: rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
-    background: transparent !important;
-    font-weight: 800;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: none !important;
 }
 
 /* Full Page Product Detail Main Section */
@@ -939,20 +956,44 @@ button:active,
 
 .gallery-badges {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 14px;
+    left: 14px;
     display: flex;
-    gap: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+    z-index: 15;
+    pointer-events: none;
 }
 
 .badge-tag {
-    background-color: #6b21a8 !important;
-    color: #ffffff !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.72rem;
     font-weight: 800;
-    padding: 4px 10px;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 2px 8px rgba(107, 33, 168, 0.25);
+    letter-spacing: 0.03em;
+    padding: 6px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    background: rgba(107, 33, 168, 0.88) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(107, 33, 168, 0.35);
+}
+
+.badge-dark-glass,
+.gallery-badges .badge-tag:nth-child(2) {
+    background: rgba(15, 23, 42, 0.85) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.badge-tag i {
+    font-size: 0.75rem;
 }
 
 .thumbnail-strip {

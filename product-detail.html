@@ -39,7 +39,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=1786609999">
+    <link rel="stylesheet" href="css/styles.min.css?v=1786680771">
 </head>
 <body style="background-color: #ffffff !important; color: #18181b !important; color-scheme: light !important;">
 
@@ -68,14 +68,32 @@
         </div>
     </header>
 
-    <!-- Breadcrumb Nav -->
-    <div class="breadcrumb-nav">
-        <div class="container breadcrumb-container">
-            <a href="./"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
-            <i class="fa-solid fa-chevron-right separator"></i>
-            <a href="kategori.html?c=all" id="breadCatLink">Koleksiyon</a>
-            <i class="fa-solid fa-chevron-right separator"></i>
-            <span class="active-crumb" id="breadTitle">Ürün Detayı</span>
+    <!-- Breadcrumb Nav (Hidden) -->
+    <div class="breadcrumb-nav" style="display:none !important;" aria-hidden="true">
+        <div class="container">
+            <div class="breadcrumb-container">
+                <a href="javascript:history.back()" class="mb-back-pill" title="Önceki Sayfaya Dön">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Geri</span>
+                </a>
+                <span class="mb-pill-divider"></span>
+                <nav class="mb-trail" aria-label="Sayfa Konumu">
+                    <a href="./" class="mb-crumb-pill">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        <span>Ana Sayfa</span>
+                    </a>
+                    <i class="fa-solid fa-chevron-right mb-sep"></i>
+                    <a href="kategori.html?c=all" id="breadCatLink" class="mb-crumb-pill">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Koleksiyon</span>
+                    </a>
+                    <i class="fa-solid fa-chevron-right mb-sep"></i>
+                    <span class="mb-crumb-pill active" id="breadTitle">
+                        <span class="mb-live-dot"></span>
+                        <span>Ürün Detayı</span>
+                    </span>
+                </nav>
+            </div>
         </div>
     </div>
 
