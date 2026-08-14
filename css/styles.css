@@ -951,7 +951,7 @@ button:active,
 .product-gallery-box {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -960,10 +960,13 @@ button:active,
 .gallery-carousel-wrapper {
     position: relative;
     width: 100%;
+    height: 380px;
     border-radius: var(--radius-md);
     overflow: hidden;
     background-color: #ffffff !important;
     border: 1px solid #e4e4e7 !important;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior-x: contain;
 }
 
 .gallery-carousel-track {
@@ -974,11 +977,9 @@ button:active,
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     width: 100%;
-    cursor: grab;
-}
-
-.gallery-carousel-track:active {
-    cursor: grabbing;
+    height: 100%;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior-x: contain;
 }
 
 .gallery-carousel-track::-webkit-scrollbar {
@@ -988,8 +989,7 @@ button:active,
 .gallery-slide {
     flex: 0 0 100%;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    max-height: 480px;
+    height: 100%;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     position: relative;
@@ -997,27 +997,30 @@ button:active,
     align-items: center;
     justify-content: center;
     background-color: #ffffff !important;
+    box-sizing: border-box;
+    padding: 8px;
 }
 
 .gallery-slide-img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain !important;
     background-color: #ffffff !important;
     user-select: none;
     -webkit-user-drag: none;
-    padding: 6px;
 }
 
 .gallery-counter-pill {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
+    bottom: 10px;
+    right: 10px;
     background: rgba(15, 23, 42, 0.75) !important;
     color: #ffffff !important;
     font-size: 0.75rem;
     font-weight: 700;
-    padding: 4px 10px;
+    padding: 3px 9px;
     border-radius: 20px;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -1028,44 +1031,40 @@ button:active,
 
 @media (max-width: 640px) {
     .gallery-carousel-wrapper {
+        height: 230px;
         border-radius: 12px;
     }
     .gallery-slide {
-        aspect-ratio: 4 / 3;
-        height: 280px;
-        max-height: 300px;
-    }
-    .gallery-slide-img {
         padding: 4px;
     }
 }
 
 .gallery-badges {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    left: 10px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     z-index: 15;
     pointer-events: none;
 }
 
 @media (max-width: 640px) {
     .gallery-badges {
-        top: 8px;
-        left: 8px;
-        gap: 6px;
+        top: 6px;
+        left: 6px;
+        gap: 5px;
     }
     .badge-tag {
-        font-size: 0.62rem !important;
-        padding: 4px 9px !important;
+        font-size: 0.6rem !important;
+        padding: 3px 8px !important;
         gap: 4px !important;
         border-radius: 6px !important;
         letter-spacing: 0.02em !important;
     }
     .badge-tag i {
-        font-size: 0.65rem !important;
+        font-size: 0.62rem !important;
     }
 }
 
@@ -1102,41 +1101,50 @@ button:active,
 
 .thumbnail-strip {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: thin;
+    padding: 4px 2px 6px 2px;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
 }
 
-@media (max-width: 640px) {
-    .thumbnail-strip {
-        gap: 8px;
-        padding-bottom: 2px;
-    }
-    .thumb-img {
-        width: 66px !important;
-        height: 66px !important;
-        flex-shrink: 0;
-        border-radius: 8px !important;
-    }
+.thumbnail-strip::-webkit-scrollbar {
+    display: none;
 }
 
 .thumb-img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: var(--radius-md);
-    object-fit: cover;
+    object-fit: contain !important;
+    background-color: #ffffff !important;
     border: 2px solid #e4e4e7 !important;
-    opacity: 0.7;
+    opacity: 0.65;
     transition: all 0.2s ease;
     flex-shrink: 0;
+    padding: 2px;
+    cursor: pointer;
 }
 
 .thumb-img:hover, .thumb-img.active {
     opacity: 1;
     border-color: #6b21a8 !important;
+    box-shadow: 0 2px 8px rgba(107, 33, 168, 0.2);
     transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+    .thumbnail-strip {
+        gap: 6px;
+        padding: 2px 0 4px 0;
+    }
+    .thumb-img {
+        width: 54px !important;
+        height: 54px !important;
+        flex-shrink: 0;
+        border-radius: 8px !important;
+    }
 }
 
 /* Right Info Column */

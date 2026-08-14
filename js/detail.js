@@ -759,45 +759,19 @@ window.goToSlide = (idx) => {
     updateActiveSlide(idx);
 };
 
+let galleryScrollDebounce = null;
 const setupGalleryCarousel = () => {
     const track = document.getElementById('galleryCarouselTrack');
     if (!track) return;
 
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-
-    track.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-        track.style.scrollBehavior = 'auto';
-    });
-    track.addEventListener('mouseleave', () => { 
-        if (isDown) {
-            isDown = false;
-            track.style.scrollBehavior = 'smooth';
-        }
-    });
-    track.addEventListener('mouseup', () => { 
-        if (isDown) {
-            isDown = false;
-            track.style.scrollBehavior = 'smooth';
-        }
-    });
-    track.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 1.2;
-        track.scrollLeft = scrollLeft - walk;
-    });
-
     track.addEventListener('scroll', () => {
-        const slideWidth = track.clientWidth;
-        if (slideWidth <= 0) return;
-        const idx = Math.round(track.scrollLeft / slideWidth);
-        updateActiveSlide(idx);
+        if (galleryScrollDebounce) clearTimeout(galleryScrollDebounce);
+        galleryScrollDebounce = setTimeout(() => {
+            const slideWidth = track.clientWidth;
+            if (slideWidth <= 0) return;
+            const idx = Math.round(track.scrollLeft / slideWidth);
+            updateActiveSlide(idx);
+        }, 50);
     }, { passive: true });
 };
 
@@ -805,10 +779,19 @@ const updateActiveSlide = (idx) => {
     currentActiveGalleryIndex = idx;
     const numEl = document.getElementById('currentSlideNum');
     if (numEl) numEl.textContent = idx + 1;
-    document.querySelectorAll('#galleryThumbStrip .thumb-img').forEach((thumb, i) => {
+    
+    const thumbs = document.querySelectorAll('#galleryThumbStrip .thumb-img');
+    const strip = document.getElementById('galleryThumbStrip');
+    
+    thumbs.forEach((thumb, i) => {
         if (i === idx) {
             thumb.classList.add('active');
-            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            if (strip) {
+                const thumbLeft = thumb.offsetLeft;
+                const thumbWidth = thumb.offsetWidth;
+                const stripWidth = strip.offsetWidth;
+                strip.scrollTo({ left: thumbLeft - (stripWidth / 2) + (thumbWidth / 2), behavior: 'smooth' });
+            }
         } else {
             thumb.classList.remove('active');
         }
