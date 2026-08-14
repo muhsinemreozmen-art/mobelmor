@@ -1,5 +1,5 @@
 /* ==========================================
-   mobelmor.com - Clean Extensionless URL Engine (v=10001)
+   mobelmor.com - Clean URL Engine (v=10002)
    ========================================== */
 
 (function() {
@@ -62,42 +62,33 @@
         'all': 'all'
     };
 
-    // 4. URL Builder Helpers (Extensionless)
+    // 4. URL Builder Helpers (Safe HTML target for server fetch, cleaned via replaceState)
     window.getCleanHomeUrl = function() {
         return './';
     };
 
     window.getCleanCategoryUrl = function(categoryKey, subcategoryKey) {
         var slug = window.CATEGORY_SLUGS[categoryKey] || categoryKey || 'tum-koleksiyon';
-        var page = window.location.hostname.includes('github.io') ? 'kategori.html' : 'kategori';
         if (subcategoryKey && subcategoryKey !== 'all') {
-            return `${page}?c=${slug}&sub=${subcategoryKey}`;
+            return `kategori.html?c=${slug}&sub=${subcategoryKey}`;
         }
-        return `${page}?c=${slug}`;
+        return `kategori.html?c=${slug}`;
     };
 
     window.getCleanProductUrl = function(productId, title) {
         var slug = window.slugify(title || '');
-        var page = window.location.hostname.includes('github.io') ? 'urun-detay.html' : 'urun-detay';
         if (slug) {
-            return `${page}?id=${productId}&slug=${slug}`;
+            return `urun-detay.html?id=${productId}&slug=${slug}`;
         }
-        return `${page}?id=${productId}`;
+        return `urun-detay.html?id=${productId}`;
     };
 
     // 5. Global Link Cleaner Handler on DOM load
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('a').forEach(function(a) {
             var href = a.getAttribute('href');
-            if (href) {
-                if (href === 'index.html' || href === './index.html' || href === '/index.html') {
-                    a.setAttribute('href', './');
-                } else if (href.includes('.html') && !href.startsWith('http') && !href.startsWith('//')) {
-                    // For internal links, replace .html with extensionless equivalent if not on strict github pages
-                    if (!window.location.hostname.includes('github.io')) {
-                        a.setAttribute('href', href.replace('.html', ''));
-                    }
-                }
+            if (href === 'index.html' || href === './index.html' || href === '/index.html') {
+                a.setAttribute('href', './');
             }
         });
     });

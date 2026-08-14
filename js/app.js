@@ -1054,15 +1054,20 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = cat;
         currentSubcategory = sub;
 
-        const newUrl = (window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori?c=${cat}&sub=${sub}`).replace(/\.html/, '');
+        const rawUrl = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori.html?c=${cat}&sub=${sub}`;
+        const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
 
-        if (updateHistory && window.history.pushState) {
-            window.history.pushState({ cat, sub }, "", newUrl);
+        if (isCategoryPage) {
+            const cleanUrl = rawUrl.replace(/\.html/, '');
+            if (updateHistory && window.history.pushState) {
+                window.history.pushState({ cat, sub }, "", cleanUrl);
+            }
+            document.querySelectorAll(".cat-dropdown-wrapper").forEach(w => w.classList.remove("open"));
+            updateActiveCategoryUI();
+            renderProducts();
+        } else {
+            window.location.href = rawUrl;
         }
-
-        document.querySelectorAll(".cat-dropdown-wrapper").forEach(w => w.classList.remove("open"));
-        updateActiveCategoryUI();
-        renderProducts();
     };
 
     document.querySelectorAll(".cat-pill").forEach(pill => {
