@@ -734,12 +734,16 @@ const renderProducts = () => {
         return;
     }
 
-    grid.innerHTML = filtered.map(item => {
+    grid.innerHTML = filtered.map((item, idx) => {
         const isFav = wishlist.has(item.id);
+        const isLCP = idx === 0;
+        const imgAttr = isLCP 
+            ? 'loading="eager" fetchpriority="high" decoding="sync"' 
+            : 'loading="lazy" decoding="async"';
         return `
             <article class="product-card" data-id="${item.id}">
                 <div class="card-image-box">
-                    <img src="${item.image}" alt="${item.title}" class="card-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                    <img src="${item.image}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     <div class="badge-pills-stack">
                         ${item.badges.map(b => `<span class="${b.includes('MASİF') || b.includes('YENİ') ? 'pill-purple' : 'pill-dark'}">${b}</span>`).join('')}
                     </div>
