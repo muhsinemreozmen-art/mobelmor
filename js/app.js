@@ -740,10 +740,11 @@ const renderProducts = () => {
         const imgAttr = isLCP 
             ? 'loading="eager" fetchpriority="high" decoding="sync"' 
             : 'loading="lazy" decoding="async"';
+        const webpImage = item.image ? item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/zumrut_main.webp';
         return `
             <article class="product-card" data-id="${item.id}">
                 <div class="card-image-box">
-                    <img src="${item.image}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                    <img src="${webpImage}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='${item.image}';">
                     <div class="badge-pills-stack">
                         ${item.badges.map(b => `<span class="${b.includes('MASİF') || b.includes('YENİ') ? 'pill-purple' : 'pill-dark'}">${b}</span>`).join('')}
                     </div>
