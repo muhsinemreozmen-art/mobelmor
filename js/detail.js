@@ -1006,13 +1006,13 @@ const renderModulePriceSection = (product) => {
 
     const rows = modules.map(m => `
         <tr>
-            <td style="font-weight:800;text-align:left;padding-left:20px;">${m.label}</td>
-            <td style="color:#18181b;font-weight:700;">${formatPrice(m.price)}</td>
+            <td style="font-weight:700;text-align:left;padding-left:20px;color:#1e293b;">${m.label}</td>
+            <td style="color:#334155;font-weight:700;">${formatPrice(m.price)}</td>
             <td>
                 <div class="qty-counter-box">
-                    <button class="qty-counter-btn" onclick="updateModuleQty('${m.id}',-1)">-</button>
+                    <button class="qty-counter-btn" onclick="updateModuleQty('${m.id}',-1)" aria-label="Adet Azalt"><i class="fa-solid fa-minus"></i></button>
                     <span class="qty-counter-val" id="mod_${m.id}_qty">${m.qty}</span>
-                    <button class="qty-counter-btn" onclick="updateModuleQty('${m.id}',1)">+</button>
+                    <button class="qty-counter-btn" onclick="updateModuleQty('${m.id}',1)" aria-label="Adet Artır"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </td>
             <td style="font-weight:800;color:#6b21a8;" id="mod_${m.id}_sub">${formatPrice(m.price * m.qty)}</td>
@@ -1020,7 +1020,13 @@ const renderModulePriceSection = (product) => {
     `).join('');
 
     container.innerHTML = `
-        <div class="module-header-title">${product.title.toUpperCase()} FİYAT HESAPLAYICI</div>
+        <div class="module-header-title">
+            <div class="module-header-left">
+                <span class="module-header-icon-box"><i class="fa-solid fa-sliders"></i></span>
+                <span class="module-header-text"><strong>${product.title}</strong> Modül & Fiyat Hesaplayıcı</span>
+            </div>
+            <span class="module-live-tag"><i class="fa-solid fa-bolt"></i> Canlı Hesaplama</span>
+        </div>
         <div class="module-table-wrapper">
             <table class="module-table">
                 <thead><tr><th>Modül</th><th>Birim Fiyat</th><th>Adet</th><th>Ara Toplam</th></tr></thead>
