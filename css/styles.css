@@ -4678,6 +4678,216 @@ button:active,
     box-shadow: 0 4px 12px rgba(107, 33, 168, 0.4);
 }
 
+/* =========================================================================
+   Vivense-Style Mobile Off-Canvas Drawer Menu & Accordions
+   ========================================================================= */
+.mobile-drawer-overlay,
+.mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 99990;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-drawer-overlay.active,
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-cat-drawer,
+.mobile-menu-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 86%;
+    max-width: 380px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 99999;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.mobile-cat-drawer.active,
+.mobile-menu-drawer.active {
+    transform: translateX(0);
+}
+
+.mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e4e4e7;
+    background: #faf9fc;
+}
+
+.mobile-drawer-brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-drawer-brand .brand-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #18181b;
+    letter-spacing: -0.02em;
+}
+
+.mobile-drawer-brand .brand-name strong {
+    color: #6b21a8;
+}
+
+.mobile-drawer-brand .brand-sub {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.mobile-drawer-close-btn {
+    background: #f1f5f9;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #18181b;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mobile-drawer-close-btn:hover {
+    background: #e2e8f0;
+    transform: rotate(90deg);
+}
+
+.mobile-drawer-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.mobile-cat-accordion {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.mobile-cat-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #1e293b;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mobile-cat-header:hover,
+.mobile-cat-accordion.open .mobile-cat-header {
+    background: #faf5ff;
+    color: #6b21a8;
+}
+
+.mobile-cat-header .acc-arrow {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    transition: transform 0.25s ease;
+}
+
+.mobile-cat-accordion.open .acc-arrow {
+    transform: rotate(180deg);
+    color: #6b21a8;
+}
+
+.mobile-cat-body {
+    display: none;
+    padding: 8px 20px 14px 20px;
+    background: #ffffff;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-cat-accordion.open .mobile-cat-body {
+    display: flex;
+}
+
+.mobile-subcat-link {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #475569;
+    text-decoration: none;
+    padding: 5px 0 5px 12px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.mobile-subcat-link:hover {
+    color: #6b21a8;
+    border-left-color: #6b21a8;
+    transform: translateX(4px);
+}
+
+.mobile-subcat-link.bold-all {
+    font-weight: 800;
+    color: #6b21a8;
+    border-left-color: #c084fc;
+}
+
+.mobile-drawer-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #e4e4e7;
+    background: #faf9fc;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mobile-drawer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.mobile-drawer-badge.collection {
+    background: #fdf4ff;
+    color: #6b21a8;
+    border-color: #f0abfc;
+}
+
+.mobile-drawer-badge.best-price {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
 /* ==========================================
    Footer Component Styles
    ========================================== */

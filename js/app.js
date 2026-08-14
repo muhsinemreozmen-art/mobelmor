@@ -1512,9 +1512,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Vivense-Style Mobile Menu Drawer & Accordion
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn");
-    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
-    const mobileMenuDrawer = document.getElementById("mobileMenuDrawer");
+    const closeMobileMenuBtn = document.getElementById("mobileDrawerCloseBtn") || document.getElementById("closeMobileMenuBtn");
+    const mobileMenuOverlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    const mobileMenuDrawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
 
     function openMobileDrawer() {
         mobileMenuDrawer?.classList.add("active");
