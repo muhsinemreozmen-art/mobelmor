@@ -270,18 +270,22 @@ button:active,
 
 .header-action-btn .badge-count {
     position: absolute;
-    top: -2px;
-    right: -2px;
-    background: #6b21a8;
-    color: #ffffff;
-    font-size: 0.65rem;
+    top: -4px;
+    right: -4px;
+    background: #6b21a8 !important;
+    color: #ffffff !important;
+    font-size: 0.74rem;
     font-weight: 800;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    border-radius: 999px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 2px 6px rgba(107, 33, 168, 0.35);
+    line-height: 1;
 }
 
 .mobile-search-row {
@@ -409,15 +413,18 @@ button:active,
     right: -4px;
     background-color: #6b21a8 !important;
     color: #ffffff !important;
-    font-size: 0.65rem;
+    font-size: 0.74rem;
     font-weight: 800;
-    width: 18px;
-    height: 18px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
     border-radius: var(--radius-full);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #ffffff !important;
+    box-shadow: 0 2px 6px rgba(107, 33, 168, 0.35);
+    line-height: 1;
 }
 
 /* Search Bar */
@@ -1467,42 +1474,57 @@ button:active,
     border-radius: 2px;
 }
 
-/* Slider Edge Arrows */
+/* Slider Edge Arrows (Rounded & Elegant) */
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 38px;
-    height: 52px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #e2e8f0;
-    color: #1e293b;
-    font-size: 1.1rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #18181b !important;
+    font-size: 1.05rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slider-arrow:hover {
-    background: #0f172a;
-    color: #ffffff;
-    border-color: #0f172a;
+    background: #18181b !important;
+    color: #ffffff !important;
+    border-color: #18181b !important;
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
 }
 
 .slider-arrow.prev-arrow {
-    left: 0;
-    border-radius: 0 8px 8px 0;
-    border-left: none;
+    left: 18px !important;
+    border-radius: 50% !important;
 }
 
 .slider-arrow.next-arrow {
-    right: 0;
-    border-radius: 8px 0 0 8px;
-    border-right: none;
+    right: 18px !important;
+    border-radius: 50% !important;
+}
+
+@media (max-width: 768px) {
+    .slider-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .slider-arrow.prev-arrow {
+        left: 10px !important;
+    }
+    .slider-arrow.next-arrow {
+        right: 10px !important;
+    }
 }
 
 /* Responsive Breakpoints */
@@ -1556,13 +1578,15 @@ button:active,
 .sort-card-box {
     background-color: #ffffff !important;
     border-radius: var(--radius-md);
-    padding: 10px 16px;
+    padding: 10px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border: 1px solid #e4e4e7 !important;
     margin-bottom: 18px;
-    gap: 10px;
+    gap: 12px;
+    min-height: 56px;
+    box-sizing: border-box;
 }
 
 .filter-count-badge {
@@ -1570,21 +1594,32 @@ button:active,
     font-weight: 800;
     color: #6b21a8 !important;
     background-color: #f3e8ff !important;
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    margin: 0;
 }
 
 .sort-controls {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    margin: 0;
 }
 
 .sort-label {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 700;
     color: #52525b !important;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.2;
+    margin: 0;
 }
 
 .sort-dropdown {
@@ -1596,6 +1631,11 @@ button:active,
     font-weight: 700;
     color: #18181b !important;
     outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+    margin: 0;
 }
 
 /* Product Cards Grid - Responsive Breakpoints & Layout Shift Prevention */
@@ -1738,19 +1778,22 @@ button:active,
 }
 
 .card-material-tag {
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 800;
     color: #6b21a8 !important;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
 }
 
 .card-product-title {
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     font-weight: 800;
-    color: #18181b !important;
-    line-height: 1.3;
-    margin-bottom: 4px;
+    color: #0f172a !important;
+    line-height: 1.35;
+    margin-bottom: 6px;
     cursor: pointer !important;
+    letter-spacing: -0.01em;
 }
 
 .card-product-title:hover {
@@ -1763,10 +1806,12 @@ button:active,
     gap: 4px;
     font-size: 0.75rem;
     color: #f59e0b !important;
+    margin-bottom: 4px;
 }
 
 .rating-count-text {
-    color: #71717a !important;
+    color: #64748b !important;
+    font-weight: 600;
 }
 
 .card-price-row {
@@ -1774,14 +1819,16 @@ button:active,
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: 8px;
-    border-top: 1px solid #f4f4f5 !important;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9 !important;
 }
 
 .card-price-text {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #18181b !important;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #6b21a8 !important;
+    letter-spacing: -0.02em;
+    line-height: 1;
 }
 
 .card-actions-group {
