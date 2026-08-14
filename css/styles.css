@@ -86,19 +86,84 @@ button:active,
 /* Header Component */
 .app-header {
     background-color: #ffffff !important;
-    border-bottom: 1px solid #e4e4e7 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     position: sticky;
     top: 0;
     z-index: 10000;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
 .header-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 16px;
+    background-color: #ffffff !important;
+}
+
+.header-left-col {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px 8px 16px;
-    background-color: #ffffff !important;
+    justify-content: flex-start;
+}
+
+.desktop-search-wrap {
+    width: 100%;
+    max-width: 380px;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 0 16px;
+    transition: all 0.25s ease;
+}
+
+.search-box:focus-within {
+    background: #ffffff;
+    border-color: #6b21a8;
+    box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 10px 10px 10px 8px;
+    font-size: 0.88rem;
+    color: #18181b;
+    outline: none;
+    font-family: inherit;
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.search-icon {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.clear-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.header-center-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Official Brand Logo Styling */
@@ -122,7 +187,7 @@ button:active,
 }
 
 .logo-text-mobel {
-    font-size: 1.55rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #000000 !important;
     letter-spacing: -0.5px;
@@ -140,7 +205,7 @@ button:active,
 }
 
 .logo-text-mor {
-    font-size: 1.55rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #6b1480 !important;
     letter-spacing: -0.5px;
@@ -151,7 +216,7 @@ button:active,
 .logo-com-arrow {
     background-color: #6b1480 !important;
     color: #ffffff !important;
-    font-size: 0.50rem;
+    font-size: 0.52rem;
     font-weight: 800;
     padding: 1.5px 10px 1.5px 5px;
     border-radius: 2px 0 0 2px;
@@ -163,6 +228,82 @@ button:active,
     text-align: left;
     clip-path: polygon(0% 0%, 78% 0%, 100% 50%, 78% 100%, 0% 100%);
     font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+.header-right-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #334155;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.header-action-btn:hover {
+    color: #6b21a8;
+    background: #f8fafc;
+}
+
+.header-action-btn i {
+    font-size: 1.15rem;
+}
+
+.header-action-btn .badge-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #6b21a8;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-search-row {
+    display: none;
+    padding: 0 16px 12px 16px;
+}
+
+@media (max-width: 991px) {
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 14px;
+    }
+    .desktop-search-wrap {
+        display: none;
+    }
+    .mobile-search-row {
+        display: block;
+    }
+    .header-action-btn .action-btn-text {
+        display: none;
+    }
 }
 
 .footer-logo-badge {
@@ -186,13 +327,6 @@ button:active,
 .footer-logo-badge .logo-com-arrow {
     background-color: #6b1480 !important;
     color: #ffffff !important;
-}
-
-/* Action Buttons */
-.header-action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .circle-btn {
@@ -995,9 +1129,9 @@ button:active,
     }
 }
 
-/* Vivense-Style Hero Slider Section */
+/* Vivense-Style Hero Slider Section (Symmetric & Premium) */
 .vivense-hero-slider-section {
-    padding: 18px 0 10px 0;
+    padding: 20px 0 10px 0;
     background: #faf9fc;
 }
 
@@ -1006,14 +1140,14 @@ button:active,
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #e4e4e7;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .slider-track {
     position: relative;
     width: 100%;
-    min-height: 470px;
+    min-height: 480px;
 }
 
 .slider-slide {
@@ -1023,7 +1157,7 @@ button:active,
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.45s ease, visibility 0.45s ease;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
     z-index: 1;
 }
 
@@ -1036,16 +1170,18 @@ button:active,
 
 .slide-grid {
     display: grid;
-    grid-template-columns: 54% 46%;
-    min-height: 470px;
+    grid-template-columns: 50% 50%;
+    min-height: 480px;
     align-items: stretch;
 }
 
 .slide-image-col {
     position: relative;
     overflow: hidden;
-    background: #f4f4f5;
+    background: #f1f5f9;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slide-img-link {
@@ -1053,79 +1189,103 @@ button:active,
     width: 100%;
     height: 100%;
     position: relative;
-    text-decoration: none !important;
 }
 
 .slide-main-img {
     width: 100%;
     height: 100%;
+    min-height: 480px;
     object-fit: cover;
     display: block;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s ease;
 }
 
 .slide-img-link:hover .slide-main-img {
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .slide-brand-watermark {
     position: absolute;
-    top: 20px;
-    right: 24px;
+    top: 24px;
+    right: 28px;
     font-size: 0.88rem;
     font-weight: 700;
-    color: rgba(24, 24, 27, 0.65);
+    color: rgba(30, 41, 59, 0.7);
     text-transform: lowercase;
     letter-spacing: 0.06em;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(4px);
-    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    padding: 5px 14px;
     border-radius: 20px;
 }
 
+/* Dots inside the image (bottom-right of left photo) */
+.slider-dots.inside-image {
+    position: absolute;
+    bottom: 20px;
+    right: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 5;
+}
+
+.slider-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1.5px solid #ffffff;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slider-dot.active {
+    background: #ffffff;
+    width: 24px;
+    border-radius: 6px;
+}
+
+/* Slide Content Column */
 .slide-content-col {
-    padding: 38px 44px;
+    padding: 44px 48px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background: #ffffff;
 }
 
-.slide-content-header {
+.slide-top-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 8px;
+    gap: 20px;
+}
+
+.slide-title-block {
+    display: flex;
+    flex-direction: column;
 }
 
 .slide-tag-badge {
     display: inline-block;
-    font-size: 0.72rem;
+    align-self: flex-start;
+    font-size: 0.74rem;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #18181b;
-    border-bottom: 2.5px solid #18181b;
+    color: #1e293b;
+    border-bottom: 2.5px solid #1e293b;
     padding-bottom: 2px;
     margin-bottom: 8px;
 }
 
-.slide-tag-badge.gold {
-    color: #d97706;
-    border-bottom-color: #d97706;
-}
-
-.slide-tag-badge.purple {
-    color: #6b21a8;
-    border-bottom-color: #6b21a8;
-}
-
-.slide-tag-badge.red {
-    color: #dc2626;
-    border-bottom-color: #dc2626;
-}
+.slide-tag-badge.gold { color: #d97706; border-bottom-color: #d97706; }
+.slide-tag-badge.purple { color: #6b21a8; border-bottom-color: #6b21a8; }
+.slide-tag-badge.red { color: #dc2626; border-bottom-color: #dc2626; }
 
 .slide-main-title {
     margin: 0;
@@ -1135,76 +1295,101 @@ button:active,
 }
 
 .slide-main-title .title-primary {
-    font-size: 2.5rem;
+    font-size: 2.7rem;
     font-weight: 900;
-    color: #18181b;
+    color: #0f172a;
     letter-spacing: -0.02em;
     text-transform: uppercase;
 }
 
 .slide-main-title .title-secondary {
-    font-size: 2.05rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    color: #27272a;
+    color: #1e293b;
     letter-spacing: -0.01em;
     text-transform: uppercase;
 }
 
-/* Vivense-Style Yellow Promotion Card */
+/* Vivense Yellow Promo Card */
 .slide-promo-card {
     background: #ffc233;
     color: #18181b;
-    padding: 12px 18px;
-    border-radius: 12px;
+    padding: 14px 20px;
+    border-radius: 14px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(255, 194, 51, 0.35);
+    box-shadow: 0 4px 14px rgba(255, 194, 51, 0.4);
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: rotate(-1.5deg);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .slide-promo-card .promo-small {
-    font-size: 0.64rem;
+    font-size: 0.65rem;
     font-weight: 800;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     line-height: 1;
 }
 
 .slide-promo-card .promo-big {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 900;
     line-height: 1.1;
     margin: 3px 0 1px 0;
-    letter-spacing: 0.02em;
 }
 
 .slide-promo-card .promo-discount {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 900;
     letter-spacing: -0.01em;
 }
 
 .slide-desc {
-    font-size: 0.92rem;
-    line-height: 1.55;
-    color: #52525b;
-    margin: 10px 0 18px 0;
-    max-width: 440px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #475569;
+    margin: 16px 0 24px 0;
+    max-width: 480px;
 }
 
-/* 3 Circular Feature Thumbnails */
+/* Bottom Row: CTA Button + 3 Feature Previews */
+.slide-bottom-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.slide-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #334155;
+    color: #ffffff !important;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.slide-cta-btn:hover {
+    background: #6b21a8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.25);
+}
+
 .slide-features-row {
     display: flex;
-    align-items: center;
-    gap: 22px;
-    margin-bottom: 20px;
-    padding-top: 14px;
-    border-top: 1px solid #f1f1f4;
+    align-items: flex-start;
+    gap: 18px;
 }
 
 .feature-item {
@@ -1213,16 +1398,17 @@ button:active,
     align-items: center;
     gap: 6px;
     text-align: center;
+    width: 72px;
 }
 
 .feature-circle-img {
-    width: 66px;
-    height: 66px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     overflow: hidden;
-    border: 2.5px solid #e4e4e7;
-    background: #f4f4f5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 2px solid #e2e8f0;
+    background: #f8fafc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
@@ -1239,149 +1425,97 @@ button:active,
 }
 
 .feature-label {
-    font-size: 0.73rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: #52525b;
+    color: #475569;
+    line-height: 1.2;
 }
 
-/* Slider CTA Button */
-.slide-action-row {
-    margin-top: 4px;
+.feature-underline {
+    width: 100%;
+    height: 2px;
+    background: #cbd5e1;
+    margin-top: 2px;
+    border-radius: 2px;
 }
 
-.slide-cta-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: #27272a;
-    color: #ffffff !important;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-decoration: none !important;
-    transition: all 0.25s ease;
-}
-
-.slide-cta-btn:hover {
-    background: #6b21a8;
-    transform: translateX(3px);
-    box-shadow: 0 6px 20px rgba(107, 33, 168, 0.3);
-}
-
-/* Slider Arrows */
+/* Slider Edge Arrows */
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 1px solid #e4e4e7;
-    color: #18181b;
-    font-size: 1.05rem;
+    width: 38px;
+    height: 52px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.2s ease;
 }
 
 .slider-arrow:hover {
-    background: #18181b;
+    background: #0f172a;
     color: #ffffff;
-    border-color: #18181b;
+    border-color: #0f172a;
 }
 
 .slider-arrow.prev-arrow {
-    left: 16px;
+    left: 0;
+    border-radius: 0 8px 8px 0;
+    border-left: none;
 }
 
 .slider-arrow.next-arrow {
-    right: 16px;
+    right: 0;
+    border-radius: 8px 0 0 8px;
+    border-right: none;
 }
 
-/* Slider Dots */
-.slider-dots {
-    position: absolute;
-    bottom: 18px;
-    left: 27%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-}
-
-.slider-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.65);
-    border: 2px solid #ffffff;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.25s ease;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-.slider-dot.active {
-    background: #ffffff;
-    width: 26px;
-    border-radius: 6px;
-}
-
-/* Responsive Styles for Hero Slider */
+/* Responsive Breakpoints */
 @media (max-width: 991px) {
     .slide-grid {
         grid-template-columns: 1fr;
         min-height: auto;
     }
     .slide-image-col {
-        min-height: 260px;
-        max-height: 300px;
+        min-height: 280px;
+        max-height: 320px;
+    }
+    .slide-main-img {
+        min-height: 280px;
     }
     .slide-content-col {
         padding: 24px 20px;
     }
     .slide-main-title .title-primary {
-        font-size: 1.85rem;
+        font-size: 2rem;
     }
     .slide-main-title .title-secondary {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     .slide-promo-card {
-        padding: 8px 12px;
+        padding: 10px 14px;
+        min-width: 120px;
     }
-    .slide-promo-card .promo-small {
-        font-size: 0.58rem;
-    }
-    .slide-promo-card .promo-big {
-        font-size: 0.9rem;
-    }
-    .slide-promo-card .promo-discount {
-        font-size: 0.82rem;
-    }
-    .slider-dots {
-        left: 50%;
-        bottom: 12px;
-    }
-    .feature-circle-img {
-        width: 52px;
-        height: 52px;
+    .slide-bottom-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
     }
     .slide-features-row {
-        gap: 16px;
+        justify-content: center;
     }
-    .slider-arrow {
-        width: 36px;
-        height: 36px;
-        font-size: 0.9rem;
+    .slide-cta-btn {
+        justify-content: center;
     }
 }
+
 
 /* Main Layout */
 .main-layout {

@@ -47,17 +47,29 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260814_2225">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260814_2230">
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
     <!-- Sticky Header -->
     <header class="app-header">
         <div class="container header-container">
-            <div class="header-left-group">
+            <!-- Left: Desktop Search / Mobile Hamburger -->
+            <div class="header-left-col">
                 <button class="mobile-hamburger-btn interactive-btn" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+                <div class="desktop-search-wrap">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Evin için ne arıyorsun?" autocomplete="off">
+                        <button class="clear-btn" id="clearSearchBtn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Official Brand Logo -->
+            <div class="header-center-col">
                 <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
                     <div class="logo-main-title">
                         <span class="logo-text-mobel">mobel</span>
@@ -69,24 +81,28 @@
                 </a>
             </div>
 
-            <div class="header-action-buttons">
-                <button class="circle-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="badge-count" id="wishlistBadge">0</span>
-                </button>
-                <button class="circle-btn interactive-btn" id="cartBtn" title="Sepetim">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                    <span class="badge-count" id="cartBadge">0</span>
-                </button>
+            <!-- Right: User Action Buttons -->
+            <div class="header-right-col">
+                <div class="header-action-buttons">
+                    <button class="header-action-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
+                        <i class="fa-regular fa-heart"></i>
+                        <span class="action-btn-text">Favorilerim</span>
+                        <span class="badge-count" id="wishlistBadge">0</span>
+                    </button>
+                    <button class="header-action-btn interactive-btn" id="cartBtn" title="Sepetim">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span class="action-btn-text">Sepetim</span>
+                        <span class="badge-count" id="cartBadge">0</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Search Bar -->
-        <div class="container search-container">
+        <!-- Mobile Search Bar (only visible on mobile) -->
+        <div class="container mobile-search-row">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchInput" placeholder="Masif masa, berjer, konsol veya yatak ara..." autocomplete="off">
-                <button class="clear-btn" id="clearSearchBtn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+                <input type="text" id="mobileSearchInput" placeholder="Evin için ne arıyorsun?" autocomplete="off" oninput="const val=this.value; const s=document.getElementById('searchInput'); if(s){ s.value=val; s.dispatchEvent(new Event('input')); }">
             </div>
         </div>
 
@@ -647,11 +663,18 @@
                                     <img src="assets/minegolden_p1_1.jpg" alt="Milo Köşe Koltuk Takımı" class="slide-main-img" loading="eager">
                                     <span class="slide-brand-watermark">mobelmor collection</span>
                                 </a>
+                                <!-- Pagination Dots inside image (bottom right) -->
+                                <div class="slider-dots inside-image" id="sliderDots">
+                                    <button class="slider-dot active" data-index="0" aria-label="Slayt 1"></button>
+                                    <button class="slider-dot" data-index="1" aria-label="Slayt 2"></button>
+                                    <button class="slider-dot" data-index="2" aria-label="Slayt 3"></button>
+                                    <button class="slider-dot" data-index="3" aria-label="Slayt 4"></button>
+                                </div>
                             </div>
                             <!-- Right: Editorial Content -->
                             <div class="slide-content-col">
-                                <div class="slide-content-header">
-                                    <div class="slide-title-wrap">
+                                <div class="slide-top-header">
+                                    <div class="slide-title-block">
                                         <span class="slide-tag-badge">YENİ</span>
                                         <h2 class="slide-main-title">
                                             <span class="title-primary">MİLO</span>
@@ -667,37 +690,38 @@
                                 </div>
 
                                 <p class="slide-desc">
-                                    İnegöl usta işçiliği, geniş sandık alanı ve konforlu yatak fonksiyonuyla modern yaşam alanınıza kusursuz uyum sağlar.
+                                    Kompakt tasarımı, sandık alanı ve yatak fonksiyonuyla yaşam alanınıza kolayca uyum sağlar.
                                 </p>
 
-                                <!-- 3 Circular Feature Thumbnails -->
-                                <div class="slide-features-row">
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p1_2.jpg" alt="Yataklı Fonksiyon">
-                                        </div>
-                                        <span class="feature-label">Yataklı</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p1_3.jpg" alt="Sandık & Depolama">
-                                        </div>
-                                        <span class="feature-label">Depolama</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p1_4.jpg" alt="Kompakt Tasarım">
-                                        </div>
-                                        <span class="feature-label">Kompakt</span>
-                                    </div>
-                                </div>
-
-                                <!-- CTA Button -->
-                                <div class="slide-action-row">
+                                <div class="slide-bottom-row">
                                     <a href="urun-detay.html?id=1" class="slide-cta-btn">
                                         <span>Hemen Keşfet</span>
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </a>
+
+                                    <div class="slide-features-row">
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p1_2.jpg" alt="Yataklı">
+                                            </div>
+                                            <span class="feature-label">Yataklı</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p1_3.jpg" alt="Depolama">
+                                            </div>
+                                            <span class="feature-label">Depolama</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p1_4.jpg" alt="Kompakt">
+                                            </div>
+                                            <span class="feature-label">Kompakt</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -715,15 +739,14 @@
                             </div>
                             <!-- Right: Editorial Content -->
                             <div class="slide-content-col">
-                                <div class="slide-content-header">
-                                    <div class="slide-title-wrap">
+                                <div class="slide-top-header">
+                                    <div class="slide-title-block">
                                         <span class="slide-tag-badge gold">ÖZEL KOLEKSİYON</span>
                                         <h2 class="slide-main-title">
                                             <span class="title-primary">MİLANO</span>
                                             <span class="title-secondary">YEMEK ODASI</span>
                                         </h2>
                                     </div>
-                                    <!-- Promo Yellow Card -->
                                     <div class="slide-promo-card">
                                         <span class="promo-small">SEZON FIRSATI</span>
                                         <strong class="promo-big">2. ÜRÜNE</strong>
@@ -735,34 +758,35 @@
                                     Doğal ahşap dokusu, açılır fonksiyonlu masası ve ergonomik sandalyeleriyle şık akşam yemeklerinin vazgeçilmez merkezi.
                                 </p>
 
-                                <!-- 3 Circular Feature Thumbnails -->
-                                <div class="slide-features-row">
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p8_2.jpg" alt="Açılır Masa">
-                                        </div>
-                                        <span class="feature-label">Açılır Masa</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p8_3.jpg" alt="6 Sandalye">
-                                        </div>
-                                        <span class="feature-label">6 Sandalye</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p8_4.jpg" alt="Masif Konsol">
-                                        </div>
-                                        <span class="feature-label">Aynalı Konsol</span>
-                                    </div>
-                                </div>
-
-                                <!-- CTA Button -->
-                                <div class="slide-action-row">
+                                <div class="slide-bottom-row">
                                     <a href="urun-detay.html?id=8" class="slide-cta-btn">
                                         <span>Koleksiyonu İncele</span>
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </a>
+
+                                    <div class="slide-features-row">
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p8_2.jpg" alt="Açılır Masa">
+                                            </div>
+                                            <span class="feature-label">Açılır Masa</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p8_3.jpg" alt="6 Sandalye">
+                                            </div>
+                                            <span class="feature-label">6 Sandalye</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p8_4.jpg" alt="Konsol">
+                                            </div>
+                                            <span class="feature-label">Konsol</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -771,24 +795,21 @@
                     <!-- SLIDE 3: ASİL YATAK ODASI TAKIMI -->
                     <div class="slider-slide" data-index="2">
                         <div class="slide-grid">
-                            <!-- Left: Lifestyle Image -->
                             <div class="slide-image-col">
                                 <a href="urun-detay.html?id=4" class="slide-img-link">
                                     <img src="assets/minegolden_p4_1.jpg" alt="Asil Yatak Odası Takımı" class="slide-main-img" loading="lazy">
                                     <span class="slide-brand-watermark">mobelmor collection</span>
                                 </a>
                             </div>
-                            <!-- Right: Editorial Content -->
                             <div class="slide-content-col">
-                                <div class="slide-content-header">
-                                    <div class="slide-title-wrap">
+                                <div class="slide-top-header">
+                                    <div class="slide-title-block">
                                         <span class="slide-tag-badge purple">EDİTÖRÜN SEÇİMİ</span>
                                         <h2 class="slide-main-title">
                                             <span class="title-primary">ASİL</span>
                                             <span class="title-secondary">YATAK ODASI</span>
                                         </h2>
                                     </div>
-                                    <!-- Promo Yellow Card -->
                                     <div class="slide-promo-card">
                                         <span class="promo-small">HEDİYELİ ÜRÜN</span>
                                         <strong class="promo-big">ÜCRETSİZ</strong>
@@ -800,34 +821,35 @@
                                     Geniş depolama hacimli reflekte cam kapaklı gardırobu ve konforlu bazalı karyolasıyla hayalinizdeki yatak odası atmosferi.
                                 </p>
 
-                                <!-- 3 Circular Feature Thumbnails -->
-                                <div class="slide-features-row">
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p4_2.jpg" alt="Cam Kapak">
-                                        </div>
-                                        <span class="feature-label">Cam Kapak</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p4_3.jpg" alt="Geniş Baza">
-                                        </div>
-                                        <span class="feature-label">Geniş Baza</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p4_4.jpg" alt="Şifonyer & Ayna">
-                                        </div>
-                                        <span class="feature-label">Şifonyer</span>
-                                    </div>
-                                </div>
-
-                                <!-- CTA Button -->
-                                <div class="slide-action-row">
+                                <div class="slide-bottom-row">
                                     <a href="urun-detay.html?id=4" class="slide-cta-btn">
                                         <span>Şimdi Keşfet</span>
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </a>
+
+                                    <div class="slide-features-row">
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p4_2.jpg" alt="Cam Kapak">
+                                            </div>
+                                            <span class="feature-label">Cam Kapak</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p4_3.jpg" alt="Geniş Baza">
+                                            </div>
+                                            <span class="feature-label">Geniş Baza</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p4_4.jpg" alt="Şifonyer">
+                                            </div>
+                                            <span class="feature-label">Şifonyer</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -836,24 +858,21 @@
                     <!-- SLIDE 4: MARİAN TV ÜNİTESİ & TAMAMLAYICI -->
                     <div class="slider-slide" data-index="3">
                         <div class="slide-grid">
-                            <!-- Left: Lifestyle Image -->
                             <div class="slide-image-col">
                                 <a href="urun-detay.html?id=18" class="slide-img-link">
                                     <img src="assets/minegolden_p18_1.jpg" alt="Marian Tv Ünitesi" class="slide-main-img" loading="lazy">
                                     <span class="slide-brand-watermark">mobelmor collection</span>
                                 </a>
                             </div>
-                            <!-- Right: Editorial Content -->
                             <div class="slide-content-col">
-                                <div class="slide-content-header">
-                                    <div class="slide-title-wrap">
+                                <div class="slide-top-header">
+                                    <div class="slide-title-block">
                                         <span class="slide-tag-badge red">EN İYİ FİYAT</span>
                                         <h2 class="slide-main-title">
                                             <span class="title-primary">MARİAN</span>
                                             <span class="title-secondary">TV ÜNİTESİ</span>
                                         </h2>
                                     </div>
-                                    <!-- Promo Yellow Card -->
                                     <div class="slide-promo-card">
                                         <span class="promo-small">SINIRLI STOK</span>
                                         <strong class="promo-big">PEŞİN FİYATINA</strong>
@@ -865,46 +884,39 @@
                                     Minimalist ahşap çizgileri, gizli kablo kanalları ve şık dolap detaylarıyla salonunuzu modern bir sanat köşesine dönüştürün.
                                 </p>
 
-                                <!-- 3 Circular Feature Thumbnails -->
-                                <div class="slide-features-row">
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p18_2.jpg" alt="Masif Ağaç">
-                                        </div>
-                                        <span class="feature-label">Masif Ağaç</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p18_3.jpg" alt="Geniş Dolap">
-                                        </div>
-                                        <span class="feature-label">Geniş Çekmece</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <div class="feature-circle-img">
-                                            <img src="assets/minegolden_p19_2.jpg" alt="Duvar Modülü">
-                                        </div>
-                                        <span class="feature-label">Duvar Modülü</span>
-                                    </div>
-                                </div>
-
-                                <!-- CTA Button -->
-                                <div class="slide-action-row">
+                                <div class="slide-bottom-row">
                                     <a href="urun-detay.html?id=18" class="slide-cta-btn">
                                         <span>Ürünü Gör</span>
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </a>
+
+                                    <div class="slide-features-row">
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p18_2.jpg" alt="Masif Ahşap">
+                                            </div>
+                                            <span class="feature-label">Masif Ahşap</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p18_3.jpg" alt="Geniş Çekmece">
+                                            </div>
+                                            <span class="feature-label">Çekmece</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                        <div class="feature-item">
+                                            <div class="feature-circle-img">
+                                                <img src="assets/minegolden_p19_2.jpg" alt="Duvar Rafı">
+                                            </div>
+                                            <span class="feature-label">Duvar Rafı</span>
+                                            <div class="feature-underline"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Slider Pagination Dots -->
-                <div class="slider-dots" id="sliderDots">
-                    <button class="slider-dot active" data-index="0" aria-label="Slayt 1"></button>
-                    <button class="slider-dot" data-index="1" aria-label="Slayt 2"></button>
-                    <button class="slider-dot" data-index="2" aria-label="Slayt 3"></button>
-                    <button class="slider-dot" data-index="3" aria-label="Slayt 4"></button>
                 </div>
             </div>
         </div>

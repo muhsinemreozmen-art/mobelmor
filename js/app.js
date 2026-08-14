@@ -1559,7 +1559,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const heroSlider = document.getElementById("heroSlider");
     if (heroSlider) {
         const slides = heroSlider.querySelectorAll(".slider-slide");
-        const dots = heroSlider.querySelectorAll(".slider-dot");
         const prevBtn = document.getElementById("sliderPrevBtn");
         const nextBtn = document.getElementById("sliderNextBtn");
         let currentSlide = 0;
@@ -1573,8 +1572,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     slide.classList.remove("active");
                 }
             });
-            dots.forEach((dot, i) => {
-                if (i === index) {
+            heroSlider.querySelectorAll(".slider-dot").forEach((dot) => {
+                const idx = parseInt(dot.getAttribute("data-index"), 10);
+                if (idx === index) {
                     dot.classList.add("active");
                 } else {
                     dot.classList.remove("active");
@@ -1593,18 +1593,21 @@ document.addEventListener("DOMContentLoaded", () => {
             goToSlide(prev);
         }
 
-        prevBtn?.addEventListener("click", () => {
+        prevBtn?.addEventListener("click", (e) => {
+            e.stopPropagation();
             prevSlide();
             resetInterval();
         });
 
-        nextBtn?.addEventListener("click", () => {
+        nextBtn?.addEventListener("click", (e) => {
+            e.stopPropagation();
             nextSlide();
             resetInterval();
         });
 
-        dots.forEach(dot => {
-            dot.addEventListener("click", () => {
+        heroSlider.querySelectorAll(".slider-dot").forEach(dot => {
+            dot.addEventListener("click", (e) => {
+                e.stopPropagation();
                 const idx = parseInt(dot.getAttribute("data-index"), 10);
                 if (!isNaN(idx)) {
                     goToSlide(idx);
