@@ -1021,10 +1021,7 @@ const renderModulePriceSection = (product) => {
 
     container.innerHTML = `
         <div class="module-header-title">
-            <div class="module-header-left">
-                <span class="module-header-icon-box"><i class="fa-solid fa-sliders"></i></span>
-                <span class="module-header-text"><strong>${product.title}</strong> Modül & Fiyat Hesaplayıcı</span>
-            </div>
+            <span class="module-header-text">Modül & Fiyat Hesaplayıcı</span>
             <span class="module-live-tag"><i class="fa-solid fa-bolt"></i> Canlı Hesaplama</span>
         </div>
         <div class="module-table-wrapper">
