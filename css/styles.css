@@ -1820,7 +1820,6 @@ button:active,
 .card-image-box {
     position: relative;
     width: 100%;
-    height: 180px;
     aspect-ratio: 4 / 3;
     background-color: #f4f4f6 !important;
     overflow: hidden;
@@ -1829,7 +1828,6 @@ button:active,
 
 @media (max-width: 480px) {
     .card-image-box {
-        height: 140px;
         aspect-ratio: 4 / 3;
     }
 }
@@ -1839,6 +1837,7 @@ button:active,
     height: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    image-rendering: auto;
     transition: transform 0.4s ease;
 }
 
