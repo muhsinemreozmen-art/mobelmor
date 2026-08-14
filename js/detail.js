@@ -750,25 +750,75 @@ const createLightbox = () => {
     }, { passive: true });
 };
 
+window.goToSlide = (idx) => {
+    const track = document.getElementById('galleryCarouselTrack');
+    if (!track) return;
+    currentActiveGalleryIndex = idx;
+    const slideWidth = track.clientWidth;
+    track.scrollTo({ left: idx * slideWidth, behavior: 'smooth' });
+    updateActiveSlide(idx);
+};
+
+const setupGalleryCarousel = () => {
+    const track = document.getElementById('galleryCarouselTrack');
+    if (!track) return;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    track.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        track.style.scrollBehavior = 'auto';
+    });
+    track.addEventListener('mouseleave', () => { 
+        if (isDown) {
+            isDown = false;
+            track.style.scrollBehavior = 'smooth';
+        }
+    });
+    track.addEventListener('mouseup', () => { 
+        if (isDown) {
+            isDown = false;
+            track.style.scrollBehavior = 'smooth';
+        }
+    });
+    track.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.2;
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    track.addEventListener('scroll', () => {
+        const slideWidth = track.clientWidth;
+        if (slideWidth <= 0) return;
+        const idx = Math.round(track.scrollLeft / slideWidth);
+        updateActiveSlide(idx);
+    }, { passive: true });
+};
+
+const updateActiveSlide = (idx) => {
+    currentActiveGalleryIndex = idx;
+    const numEl = document.getElementById('currentSlideNum');
+    if (numEl) numEl.textContent = idx + 1;
+    document.querySelectorAll('#galleryThumbStrip .thumb-img').forEach((thumb, i) => {
+        if (i === idx) {
+            thumb.classList.add('active');
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+            thumb.classList.remove('active');
+        }
+    });
+};
+
 window.swapMainImg = (src, thumb, idx) => {
     if (typeof idx === 'number') {
-        currentActiveGalleryIndex = idx;
-    } else {
-        const pid = getProductIdFromUrl();
-        const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
-        const gallery = product.gallery || [product.image];
-        const found = gallery.indexOf(src);
-        if (found !== -1) currentActiveGalleryIndex = found;
+        goToSlide(idx);
     }
-    const main = document.getElementById('mainDetailImg');
-    if (main) {
-        main.src = src;
-        main.style.transition = 'opacity .18s';
-        main.style.opacity = '0.5';
-        setTimeout(() => main.style.opacity = '1', 180);
-    }
-    document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
-    if (thumb) thumb.classList.add('active');
 };
 
 window.openLightbox = (startIndex = 0) => {
@@ -833,11 +883,7 @@ const updateLightboxView = () => {
         lbCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
     }
 
-    const currentSrc = lightboxGallery[lightboxCurrentIndex];
-    const thumbs = document.querySelectorAll('.thumb-img');
-    if (thumbs[lightboxCurrentIndex]) {
-        swapMainImg(currentSrc, thumbs[lightboxCurrentIndex], lightboxCurrentIndex);
-    }
+    goToSlide(lightboxCurrentIndex);
 
     document.querySelectorAll('.lb-thumb-img').forEach((t, i) => {
         if (i === lightboxCurrentIndex) {
@@ -870,6 +916,7 @@ let currentModuleState = {
 const renderProductDetail = () => {
     const pid = getProductIdFromUrl();
     const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
 
     document.title = `${product.title} | Mobelmor.com`;
 
@@ -898,68 +945,75 @@ const renderProductDetail = () => {
     if (detailGrid) {
         detailGrid.innerHTML = `
             <div class="product-gallery-box">
-                <div class="main-image-container" style="position:relative; height:450px; cursor:pointer;" onclick="openLightbox(currentActiveGalleryIndex)" title="Büyütmek için tıklayın">
-                    <img src="${product.image}" alt="${product.title}" id="mainDetailImg" class="main-detail-img" style="pointer-events:none;" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                <div class="gallery-carousel-wrapper">
+                    <div class="gallery-carousel-track" id="galleryCarouselTrack">
+                        ${gallery.map((gImg, idx) => `
+                            <div class="gallery-slide" data-index="${idx}">
+                                <img src="${gImg}" alt="${product.title} - Görsel ${idx + 1}" class="gallery-slide-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                            </div>
+                        `).join('')}
+                    </div>
                     <div class="gallery-badges">
                         <span class="badge-tag"><i class="fa-solid fa-gem"></i> ${product.badges?.[0] || 'İNEGÖL KOLEKSİYONU'}</span>
                         <span class="badge-tag badge-dark-glass"><i class="fa-solid fa-shield-check"></i> %100 ORİJİNAL</span>
                     </div>
-                    <div class="zoom-hint-badge">
-                        <i class="fa-solid fa-expand"></i> Tam Ekran Büyüt
+                    <div class="gallery-counter-pill">
+                        <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
                 </div>
-                <div class="thumbnail-strip">
-                    ${(product.gallery || [product.image]).map((gImg, idx) => `
-                        <img src="${gImg}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="swapMainImg('${gImg}', this, ${idx})" title="Görüntüle" style="cursor:pointer;" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                <div class="thumbnail-strip" id="galleryThumbStrip">
+                    ${gallery.map((gImg, idx) => `
+                        <img src="${gImg}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})" title="Görsel ${idx + 1}" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                     `).join('')}
                 </div>
             </div>
 
-            <div class="product-info-box" style="padding-left:10px;">
-                <span style="font-size:0.72rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.06em;">Ürün Kodu: MBL-${String(product.id).padStart(3,'0')}</span>
-                <h1 class="detail-title" style="font-size:1.75rem; margin:4px 0 8px 0; color:#18181b; line-height:1.25;">${product.title}</h1>
-                <span style="color:#16a34a; font-weight:700; font-size:0.78rem; margin-bottom:14px; display:flex; align-items:center; gap:5px;"><i class="fa-solid fa-circle-check"></i> Stokta Var &nbsp;·&nbsp; Ücretsiz Kurulum</span>
+            <div class="product-info-box">
+                <span class="detail-product-code">Ürün Kodu: MBL-${String(product.id).padStart(3,'0')}</span>
+                <h1 class="detail-title">${product.title}</h1>
+                <div class="detail-stock-badge"><i class="fa-solid fa-circle-check"></i> Stokta Var &nbsp;·&nbsp; Ücretsiz Kurulum</div>
 
-                <div style="font-size:2.2rem; font-weight:900; color:#6b21a8; margin-bottom:14px; letter-spacing:-0.5px;" id="topMainPriceDisplay">
+                <div class="detail-price-main" id="topMainPriceDisplay">
                     ${formatPrice(product.price)}
                 </div>
 
-                <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-                    <div style="display:flex; align-items:center; gap:10px; font-size:0.8rem; color:#52525b;">
-                        <i class="fa-solid fa-euro-sign" style="color:#6b21a8;width:14px;text-align:center;"></i>
+                <div class="detail-features-card">
+                    <div class="feature-card-item">
+                        <i class="fa-solid fa-euro-sign feature-icon"></i>
                         <span>Euro fiyatı için tıklayın</span>
                     </div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; color:#52525b; padding:8px 0; border-top:1px dashed #e9d5ff;">
-                        <span style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-percent" style="color:#6b21a8;width:14px;text-align:center;"></i> 6 Ay Vade Farksız Taksit</span>
-                        <strong id="installmentPriceVal" style="color:#6b21a8;">${formatPrice(Math.round(product.price / 6))}/ay</strong>
+                    <div class="feature-card-item feature-bordered-top">
+                        <span class="feature-label-wrap"><i class="fa-solid fa-percent feature-icon"></i> 6 Ay Vade Farksız Taksit</span>
+                        <strong id="installmentPriceVal" class="feature-highlight-purple">${formatPrice(Math.round(product.price / 6))}/ay</strong>
                     </div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.8rem; color:#52525b; padding:8px 0; border-top:1px dashed #e9d5ff;">
-                        <span style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-tag" style="color:#6b21a8;width:14px;text-align:center;"></i> %10 Ön Ödeme İndirimi</span>
-                        <strong id="prepaymentPriceVal" style="color:#16a34a;">${formatPrice(Math.round(product.price * 0.9))}</strong>
+                    <div class="feature-card-item feature-bordered-top">
+                        <span class="feature-label-wrap"><i class="fa-solid fa-tag feature-icon"></i> %10 Ön Ödeme İndirimi</span>
+                        <strong id="prepaymentPriceVal" class="feature-highlight-green">${formatPrice(Math.round(product.price * 0.9))}</strong>
                     </div>
-                    <div style="display:flex; align-items:center; gap:10px; font-size:0.8rem; color:#52525b; padding-top:8px; border-top:1px dashed #e9d5ff;">
-                        <i class="fa-solid fa-truck-fast" style="color:#6b21a8;width:14px;text-align:center;"></i>
+                    <div class="feature-card-item feature-bordered-top">
+                        <i class="fa-solid fa-truck-fast feature-icon"></i>
                         <span>Tahmini Teslimat: <strong>05.09.2026</strong></span>
                     </div>
                 </div>
 
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <button class="mobelmor-cart-btn interactive-btn" id="topDetailAddToCartBtn" style="width:100%;padding:13px;font-size:0.95rem;border-radius:10px;letter-spacing:0.02em;">
+                <div class="product-action-buttons-group">
+                    <button class="mobelmor-cart-btn interactive-btn" id="topDetailAddToCartBtn">
                         <i class="fa-solid fa-cart-shopping"></i> Sepete Ekle
                     </button>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                        <button style="display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:opacity .18s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-                            <i class="fa-brands fa-whatsapp" style="font-size:1.05rem;"></i> WhatsApp Sipariş
-                        </button>
-                        <button style="display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;background:#18181b;color:#fff;border:none;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:opacity .18s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-                            <i class="fa-solid fa-palette" style="font-size:0.95rem;"></i> Kumaş Seçenekleri
-                        </button>
+                    <div class="secondary-actions-grid">
+                        <a href="https://wa.me/905320000000?text=${encodeURIComponent(product.title + ' hakkında bilgi almak istiyorum')}" target="_blank" class="action-btn-whatsapp interactive-btn">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Sipariş
+                        </a>
+                        <a href="kumas-kartelasi.html" class="action-btn-fabric interactive-btn">
+                            <i class="fa-solid fa-palette"></i> Kumaş Seçenekleri
+                        </a>
                     </div>
                 </div>
             </div>
         `;
     }
 
+    setupGalleryCarousel();
     renderModulePriceSection(product);
     renderSpecsAndGeneralInfo(product);
     renderRelatedProducts(product);
