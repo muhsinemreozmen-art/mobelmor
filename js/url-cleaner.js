@@ -1,14 +1,24 @@
 /* ==========================================
-   mobelmor.com - Clean URL Engine (v=10000)
+   mobelmor.com - Clean Extensionless URL Engine (v=10001)
    ========================================== */
 
 (function() {
-    // 1. Instantly clean "index.html" from browser URL bar if user lands on mobelmor.com/index.html
-    if (window.location.pathname.endsWith('/index.html') || window.location.pathname.endsWith('index.html')) {
-        var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/').replace(/index\.html$/, '');
-        if (!cleanPath) cleanPath = './';
-        var newUrl = window.location.origin + cleanPath + window.location.search + window.location.hash;
-        window.history.replaceState(null, '', newUrl);
+    // 1. Instantly strip ".html" and "index.html" from browser URL bar on page load using History API
+    if (window.history && window.history.replaceState) {
+        var path = window.location.pathname;
+        var cleanPath = path;
+
+        if (path.endsWith('/index.html') || path.endsWith('index.html')) {
+            cleanPath = path.replace(/\/index\.html$/, '/').replace(/index\.html$/, '');
+            if (!cleanPath) cleanPath = '/';
+        } else if (path.endsWith('.html')) {
+            cleanPath = path.replace(/\.html$/, '');
+        }
+
+        if (cleanPath !== path) {
+            var newUrl = window.location.origin + cleanPath + window.location.search + window.location.hash;
+            window.history.replaceState(null, '', newUrl);
+        }
     }
 
     // 2. Turkish Slugify Helper
@@ -52,33 +62,42 @@
         'all': 'all'
     };
 
-    // 4. URL Builder Helpers
+    // 4. URL Builder Helpers (Extensionless)
     window.getCleanHomeUrl = function() {
         return './';
     };
 
     window.getCleanCategoryUrl = function(categoryKey, subcategoryKey) {
         var slug = window.CATEGORY_SLUGS[categoryKey] || categoryKey || 'tum-koleksiyon';
+        var page = window.location.hostname.includes('github.io') ? 'kategori.html' : 'kategori';
         if (subcategoryKey && subcategoryKey !== 'all') {
-            return `kategori.html?c=${slug}&sub=${subcategoryKey}`;
+            return `${page}?c=${slug}&sub=${subcategoryKey}`;
         }
-        return `kategori.html?c=${slug}`;
+        return `${page}?c=${slug}`;
     };
 
     window.getCleanProductUrl = function(productId, title) {
         var slug = window.slugify(title || '');
+        var page = window.location.hostname.includes('github.io') ? 'urun-detay.html' : 'urun-detay';
         if (slug) {
-            return `urun-detay.html?id=${productId}&slug=${slug}`;
+            return `${page}?id=${productId}&slug=${slug}`;
         }
-        return `urun-detay.html?id=${productId}`;
+        return `${page}?id=${productId}`;
     };
 
     // 5. Global Link Cleaner Handler on DOM load
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('a').forEach(function(a) {
             var href = a.getAttribute('href');
-            if (href === 'index.html' || href === './index.html' || href === '/index.html') {
-                a.setAttribute('href', './');
+            if (href) {
+                if (href === 'index.html' || href === './index.html' || href === '/index.html') {
+                    a.setAttribute('href', './');
+                } else if (href.includes('.html') && !href.startsWith('http') && !href.startsWith('//')) {
+                    // For internal links, replace .html with extensionless equivalent if not on strict github pages
+                    if (!window.location.hostname.includes('github.io')) {
+                        a.setAttribute('href', href.replace('.html', ''));
+                    }
+                }
             }
         });
     });

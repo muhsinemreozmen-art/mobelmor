@@ -1054,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = cat;
         currentSubcategory = sub;
 
-        const newUrl = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori.html?cat=${cat}&sub=${sub}`;
+        const newUrl = (window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori?c=${cat}&sub=${sub}`).replace(/\.html/, '');
 
         if (updateHistory && window.history.pushState) {
             window.history.pushState({ cat, sub }, "", newUrl);
