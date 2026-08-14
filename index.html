@@ -30,8 +30,17 @@
     <!-- Fonts & Icons (Non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+    <style>
+      @font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
+      @font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-style: normal;
+        font-weight: 400 900;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/plusjakartasans/v8/L0x5DF4xlVMF-BfR8bXMIhJHg45mwgGE686_2g.woff2) format('woff2');
+      }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
@@ -150,7 +159,30 @@
         </div>
 
         <!-- Product Grid -->
-        <section class="product-grid" id="productGrid"></section>
+        <section class="product-grid" id="productGrid">
+            <article class="product-card" data-id="1">
+                <div class="card-image-box">
+                    <img src="assets/minegolden_p1_1.webp" alt="Gold Koltuk Takımı" class="card-img" width="400" height="300" loading="eager" fetchpriority="high" decoding="sync" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.jpg';">
+                    <div class="badge-pills-stack">
+                        <span class="pill-purple">İNEGÖL KOLEKSİYONU</span>
+                        <span class="pill-purple">%100 ORİJİNAL</span>
+                    </div>
+                    <button class="card-heart-btn interactive-btn" data-id="1" aria-label="Favorilere Ekle"><i class="fa-regular fa-heart"></i></button>
+                </div>
+                <div class="card-details">
+                    <span class="card-material-tag">İNEGÖL ÜRETİMİ MASİF AĞAÇ &amp; İTHAL LÜKS KAPLAMA</span>
+                    <h3 class="card-product-title" data-id="1">Gold Koltuk Takımı</h3>
+                    <div class="rating-line"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span class="rating-count-text">4.9 (38)</span></div>
+                    <div class="card-price-row">
+                        <span class="card-price-text">₺45.000</span>
+                        <div class="card-actions-group">
+                            <button class="circle-view-btn interactive-btn" data-id="1" aria-label="Hızlı İncele"><i class="fa-solid fa-eye"></i></button>
+                            <button class="pill-add-btn interactive-btn" data-id="1" aria-label="Sepete Ekle"><i class="fa-solid fa-plus"></i> Ekle</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
     </main>
 
     <!-- Footer -->
