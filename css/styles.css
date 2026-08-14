@@ -1194,6 +1194,13 @@ button:active,
     height: 60vh;
     max-height: 620px;
     overflow: hidden;
+    user-select: none;
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.fullwidth-slider-wrapper:active {
+    cursor: grabbing;
 }
 
 .slider-track {
@@ -1209,7 +1216,7 @@ button:active,
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s ease;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
     z-index: 1;
 }
 
@@ -1460,9 +1467,9 @@ button:active,
     }
 
     .fullwidth-slider-wrapper {
-        min-height: 480px;
-        height: auto;
-        max-height: none;
+        min-height: 500px;
+        height: 500px;
+        max-height: 520px;
     }
 
     .mobile-vivense-poster {
@@ -1472,9 +1479,10 @@ button:active,
         text-align: center;
         position: relative;
         width: 100%;
-        min-height: 480px;
+        height: 100%;
+        min-height: 500px;
         background: #fef08a; /* Warm pastel sunny yellow */
-        padding: 24px 16px 42px 16px;
+        padding: 22px 16px 36px 16px;
         box-sizing: border-box;
         overflow: hidden;
     }

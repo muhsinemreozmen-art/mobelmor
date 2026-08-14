@@ -1555,16 +1555,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Vivense-Style Hero Slider Engine
+    // Vivense-Style Hero Slider Engine (Full Drag / Swipe / Autoplay / Arrow / Dot Navigation)
     const heroSlider = document.getElementById("heroSlider");
     if (heroSlider) {
         const slides = heroSlider.querySelectorAll(".slider-slide");
         const prevBtn = document.getElementById("sliderPrevBtn");
         const nextBtn = document.getElementById("sliderNextBtn");
+        const dots = heroSlider.querySelectorAll(".slider-dot");
         let currentSlide = 0;
         let sliderInterval = null;
 
         function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+
             slides.forEach((slide, i) => {
                 if (i === index) {
                     slide.classList.add("active");
@@ -1572,7 +1576,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     slide.classList.remove("active");
                 }
             });
-            heroSlider.querySelectorAll(".slider-dot").forEach((dot) => {
+
+            dots.forEach((dot) => {
                 const idx = parseInt(dot.getAttribute("data-index"), 10);
                 if (idx === index) {
                     dot.classList.add("active");
@@ -1584,29 +1589,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         function nextSlide() {
-            let next = (currentSlide + 1) % slides.length;
-            goToSlide(next);
+            goToSlide(currentSlide + 1);
         }
 
         function prevSlide() {
-            let prev = (currentSlide - 1 + slides.length) % slides.length;
-            goToSlide(prev);
+            goToSlide(currentSlide - 1);
         }
 
         prevBtn?.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
             prevSlide();
             resetInterval();
         });
 
         nextBtn?.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
             nextSlide();
             resetInterval();
         });
 
-        heroSlider.querySelectorAll(".slider-dot").forEach(dot => {
+        dots.forEach(dot => {
             dot.addEventListener("click", (e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 const idx = parseInt(dot.getAttribute("data-index"), 10);
                 if (!isNaN(idx)) {
@@ -1618,7 +1624,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function startAutoplay() {
             if (!sliderInterval) {
-                sliderInterval = setInterval(nextSlide, 5500);
+                sliderInterval = setInterval(nextSlide, 4500);
             }
         }
 
@@ -1637,23 +1643,54 @@ document.addEventListener("DOMContentLoaded", () => {
         heroSlider.addEventListener("mouseenter", stopAutoplay);
         heroSlider.addEventListener("mouseleave", startAutoplay);
 
-        // Touch Swipe Support
-        let touchStartX = 0;
-        let touchEndX = 0;
-        heroSlider.addEventListener("touchstart", (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+        // Universal Pointer & Touch Drag / Swipe Interaction
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
 
-        heroSlider.addEventListener("touchend", (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) {
-                nextSlide();
-                resetInterval();
-            } else if (touchEndX - touchStartX > 50) {
+        function onDragStart(e) {
+            isDragging = true;
+            stopAutoplay();
+            startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        }
+
+        function onDragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            const endX = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientX : startX) : e.clientX;
+            const endY = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientY : startY) : e.clientY;
+
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            // Only act if horizontal movement exceeds vertical movement and threshold
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
+                if (diffX > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+            resetInterval();
+        }
+
+        heroSlider.addEventListener("touchstart", onDragStart, { passive: true });
+        heroSlider.addEventListener("touchend", onDragEnd, { passive: true });
+        heroSlider.addEventListener("mousedown", onDragStart);
+        heroSlider.addEventListener("mouseup", onDragEnd);
+
+        // Keyboard navigation
+        window.addEventListener("keydown", (e) => {
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+            if (e.key === "ArrowLeft") {
                 prevSlide();
                 resetInterval();
+            } else if (e.key === "ArrowRight") {
+                nextSlide();
+                resetInterval();
             }
-        }, { passive: true });
+        });
 
         startAutoplay();
     }
