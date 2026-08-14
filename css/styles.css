@@ -479,38 +479,36 @@ button:active,
     position: relative !important;
     z-index: 99999 !important;
     overflow: visible !important;
+    box-sizing: border-box;
 }
 
 .vivense-nav-container {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 2px;
-    padding: 0 16px;
+    justify-content: space-between;
+    padding: 0 8px;
     position: relative !important;
     overflow: visible !important;
     white-space: nowrap;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 @media (max-width: 991px) {
-    .vivense-nav-container {
-        overflow-x: auto !important;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
+    .vivense-nav-wrapper {
+        display: none !important;
     }
-}
-
-.vivense-nav-container::-webkit-scrollbar {
-    display: none;
 }
 
 /* Badges on Left */
 .vivense-nav-badge {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 13px 14px;
-    font-size: 0.76rem;
+    gap: 6px;
+    padding: 12px 10px;
+    font-size: 0.72rem;
     font-weight: 700;
     color: #18181b !important;
     text-decoration: none !important;
@@ -524,15 +522,15 @@ button:active,
 }
 
 .badge-icon-circle {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: #6b21a8;
     color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     flex-shrink: 0;
 }
 
@@ -550,28 +548,29 @@ button:active,
     position: static !important;
     display: inline-flex;
     align-items: center;
-    flex-shrink: 0;
+    flex-shrink: 1;
 }
 
 .vivense-nav-link {
     display: block;
-    padding: 15px 13px;
-    font-size: 0.74rem;
+    padding: 14px 8px;
+    font-size: 0.71rem;
     font-weight: 700;
     color: #27272a !important;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-decoration: none !important;
     position: relative;
     transition: color 0.15s ease;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .vivense-nav-link.dots-link {
     font-size: 1.1rem;
     line-height: 0.8;
     letter-spacing: 1px;
-    padding: 15px 12px;
+    padding: 14px 8px;
 }
 
 .vivense-nav-link:hover,
@@ -586,8 +585,8 @@ button:active,
     content: '';
     position: absolute;
     bottom: 0;
-    left: 10px;
-    right: 10px;
+    left: 8px;
+    right: 8px;
     height: 2.5px;
     background-color: transparent;
     border-radius: 2px 2px 0 0;
@@ -598,6 +597,20 @@ button:active,
 .vivense-nav-item.is-open .vivense-nav-link::after,
 .vivense-nav-item.active .vivense-nav-link::after {
     background-color: #18181b !important;
+}
+
+@media (max-width: 1280px) and (min-width: 992px) {
+    .vivense-nav-link {
+        padding: 14px 5px;
+        font-size: 0.66rem;
+    }
+    .vivense-nav-badge {
+        padding: 12px 6px;
+        font-size: 0.68rem;
+    }
+    .vivense-nav-badge .badge-text {
+        font-size: 0.68rem;
+    }
 }
 
 /* Mega Menu Dropdown Container */
