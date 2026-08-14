@@ -1132,25 +1132,29 @@ button:active,
     }
 }
 
-/* Vivense-Style Hero Slider Section (Symmetric & Premium) */
-.vivense-hero-slider-section {
-    padding: 20px 0 10px 0;
-    background: #faf9fc;
+/* =========================================================================
+   Full-Width Hero Slider (İstikbal-Style Edge-to-Edge)
+   ========================================================================= */
+.fullwidth-hero-slider-section {
+    width: 100%;
+    position: relative;
+    background: #0f172a;
+    overflow: hidden;
 }
 
-.vivense-slider-wrapper {
+.fullwidth-slider-wrapper {
     position: relative;
-    background: #ffffff;
-    border-radius: 16px;
+    width: 100%;
+    min-height: 520px;
+    height: 60vh;
+    max-height: 620px;
     overflow: hidden;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .slider-track {
     position: relative;
     width: 100%;
-    min-height: 480px;
+    height: 100%;
 }
 
 .slider-slide {
@@ -1160,346 +1164,263 @@ button:active,
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s ease;
     z-index: 1;
 }
 
 .slider-slide.active {
-    position: relative;
     opacity: 1;
     visibility: visible;
     z-index: 2;
 }
 
-.slide-grid {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    min-height: 480px;
-    align-items: stretch;
-}
-
-.slide-image-col {
-    position: relative;
-    overflow: hidden;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.slide-img-link {
-    display: block;
+.slide-full-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    position: relative;
+    z-index: 1;
 }
 
-.slide-main-img {
+.slide-bg-img {
     width: 100%;
     height: 100%;
-    min-height: 480px;
     object-fit: cover;
+    object-position: center center;
     display: block;
-    transition: transform 0.5s ease;
-}
-
-.slide-img-link:hover .slide-main-img {
     transform: scale(1.02);
+    transition: transform 6s ease;
 }
 
-.slide-brand-watermark {
+.slider-slide.active .slide-bg-img {
+    transform: scale(1);
+}
+
+.slide-overlay-gradient {
     position: absolute;
-    top: 20px;
-    right: 24px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #18181b !important;
-    text-transform: lowercase;
-    letter-spacing: 0.06em;
-    pointer-events: none;
-    background: #ffffff !important;
-    border: 1.5px solid #e4e4e7;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
-    padding: 6px 16px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    z-index: 6;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.70) 35%, rgba(15, 23, 42, 0.25) 65%, rgba(15, 23, 42, 0.10) 100%);
+    z-index: 2;
 }
 
-.slide-brand-watermark::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: #6b21a8;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-/* Dots inside the image (bottom-right of left photo) */
-.slider-dots.inside-image {
-    position: absolute;
-    bottom: 20px;
-    right: 28px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.slide-inner-container {
+    position: relative;
     z-index: 5;
-}
-
-.slider-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1.5px solid #ffffff;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.25s ease;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-.slider-dot.active {
-    background: #ffffff;
-    width: 24px;
-    border-radius: 6px;
-}
-
-/* Slide Content Column */
-.slide-content-col {
-    padding: 44px 48px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background: #ffffff;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
 }
 
-.slide-top-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
+.slide-hero-content {
+    max-width: 560px;
+    color: #ffffff;
 }
 
-.slide-title-block {
-    display: flex;
-    flex-direction: column;
-}
-
-.slide-tag-badge {
-    display: inline-block;
-    align-self: flex-start;
-    font-size: 0.74rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #1e293b;
-    border-bottom: 2.5px solid #1e293b;
-    padding-bottom: 2px;
+.slide-script-subtitle {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-style: italic;
+    color: #f8fafc;
     margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.02em;
+    font-family: 'Plus Jakarta Sans', Georgia, serif;
 }
 
-.slide-tag-badge.gold { color: #d97706; border-bottom-color: #d97706; }
-.slide-tag-badge.purple { color: #6b21a8; border-bottom-color: #6b21a8; }
-.slide-tag-badge.red { color: #dc2626; border-bottom-color: #dc2626; }
-
-.slide-main-title {
-    margin: 0;
-    line-height: 1.05;
-    display: flex;
-    flex-direction: column;
-}
-
-.slide-main-title .title-primary {
-    font-size: 2.7rem;
+.slide-hero-title {
+    font-size: 3rem;
     font-weight: 900;
-    color: #0f172a;
-    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #ffffff;
     text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
 }
 
-.slide-main-title .title-secondary {
+.slide-hero-title span {
     font-size: 2.2rem;
     font-weight: 800;
-    color: #1e293b;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
+    display: block;
+    color: #f1f5f9;
 }
 
-/* Vivense Yellow Promo Card */
-.slide-promo-card {
-    background: #ffc233;
-    color: #18181b;
-    padding: 14px 20px;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 0 4px 14px rgba(255, 194, 51, 0.4);
-    flex-shrink: 0;
+.slide-hero-pricing {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 22px;
 }
 
-.slide-promo-card .promo-small {
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+.slide-hero-pricing .old-price {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-decoration: line-through;
+    text-decoration-color: #ef4444;
+    text-decoration-thickness: 2.5px;
+    opacity: 0.95;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.slide-hero-pricing .current-price {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
     line-height: 1;
 }
 
-.slide-promo-card .promo-big {
-    font-size: 1.1rem;
-    font-weight: 900;
-    line-height: 1.1;
-    margin: 3px 0 1px 0;
-}
-
-.slide-promo-card .promo-discount {
-    font-size: 1rem;
-    font-weight: 900;
-    letter-spacing: -0.01em;
-}
-
-.slide-desc {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #475569;
-    margin: 16px 0 24px 0;
-    max-width: 480px;
-}
-
-/* Bottom Row: CTA Button + 3 Feature Previews */
-.slide-bottom-row {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    padding-top: 18px;
-    border-top: 1px solid #f1f5f9;
-}
-
-.slide-cta-btn {
+.btn-hero-cta {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: #334155;
-    color: #ffffff !important;
-    padding: 13px 28px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
+    background: #ffffff;
+    color: #0f172a !important;
+    font-size: 0.95rem;
+    font-weight: 800;
+    padding: 13px 32px;
+    border-radius: 999px;
     text-decoration: none !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     transition: all 0.25s ease;
-    white-space: nowrap;
 }
 
-.slide-cta-btn:hover {
+.btn-hero-cta:hover {
     background: #6b21a8;
+    color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.25);
+    box-shadow: 0 8px 26px rgba(107, 33, 168, 0.6);
 }
 
-.slide-features-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 18px;
+.slide-hero-disclaimer {
+    margin-top: 22px;
+    font-size: 0.76rem;
+    color: #cbd5e1;
+    opacity: 0.9;
+    line-height: 1.4;
+    max-width: 480px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
-.feature-item {
+.slide-bottom-badges {
+    position: absolute;
+    bottom: 24px;
+    right: 16px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 5;
+}
+
+.hero-badge-pill {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    text-align: center;
-    width: 72px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.feature-circle-img {
-    width: 64px;
-    height: 64px;
+.slider-dots.centered-dots {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-dots.centered-dots .slider-dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #e2e8f0;
-    background: #f8fafc;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    transition: transform 0.25s ease, border-color 0.25s ease;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0;
 }
 
-.feature-circle-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.slider-dots.centered-dots .slider-dot.active {
+    background: #ffffff;
+    width: 28px;
+    border-radius: 999px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
 }
 
-.feature-item:hover .feature-circle-img {
-    transform: scale(1.08);
-    border-color: #6b21a8;
-}
-
-.feature-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #475569;
-    line-height: 1.2;
-}
-
-.feature-underline {
-    width: 100%;
-    height: 2px;
-    background: #cbd5e1;
-    margin-top: 2px;
-    border-radius: 2px;
-}
-
-/* Slider Edge Arrows (Rounded & Elegant) */
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50% !important;
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    color: #18181b !important;
-    font-size: 1.05rem;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    color: #0f172a !important;
+    font-size: 1.15rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.25s ease;
 }
 
 .slider-arrow:hover {
-    background: #18181b !important;
-    color: #ffffff !important;
-    border-color: #18181b !important;
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    background: #ffffff !important;
+    color: #6b21a8 !important;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35) !important;
 }
 
 .slider-arrow.prev-arrow {
-    left: 18px !important;
-    border-radius: 50% !important;
+    left: 24px !important;
 }
 
 .slider-arrow.next-arrow {
-    right: 18px !important;
-    border-radius: 50% !important;
+    right: 24px !important;
 }
 
-@media (max-width: 768px) {
-    .slider-arrow {
-        width: 36px;
-        height: 36px;
-        font-size: 0.9rem;
+@media (max-width: 991px) {
+    .fullwidth-slider-wrapper {
+        min-height: 460px;
+        height: auto;
+    }
+    .slide-overlay-gradient {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%);
+    }
+    .slide-inner-container {
+        justify-content: flex-end;
+        padding-bottom: 60px;
+    }
+    .slide-hero-title {
+        font-size: 2.2rem;
+    }
+    .slide-hero-title span {
+        font-size: 1.6rem;
+    }
+    .slide-hero-pricing .current-price {
+        font-size: 2.2rem;
+    }
+    .slide-bottom-badges {
+        display: none;
     }
     .slider-arrow.prev-arrow {
         left: 10px !important;
@@ -1508,26 +1429,6 @@ button:active,
         right: 10px !important;
     }
 }
-
-/* Responsive Breakpoints */
-@media (max-width: 991px) {
-    .slide-grid {
-        grid-template-columns: 1fr;
-        min-height: auto;
-    }
-    .slide-image-col {
-        min-height: 280px;
-        max-height: 320px;
-    }
-    .slide-main-img {
-        min-height: 280px;
-    }
-    .slide-content-col {
-        padding: 24px 20px;
-    }
-    .slide-main-title .title-primary {
-        font-size: 2rem;
-    }
     .slide-main-title .title-secondary {
         font-size: 1.6rem;
     }
