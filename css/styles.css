@@ -1,7 +1,7 @@
-/* ==========================================
-   mobelmor.com - Organik & Modern Mobilya
-   MASTER STYLESHEET FOR INDEX & DETAIL (v=4000)
-   ========================================== */
+/* Font Display Swap for Lighthouse Optimization */
+@font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
+@font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
 
 :root {
     color-scheme: light !important;
