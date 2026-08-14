@@ -2690,6 +2690,10 @@ button:active,
     border-top: 1px solid #1e293b;
 }
 
+.app-footer .logo-text-mor {
+    color: #c084fc !important;
+}
+
 .footer-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
@@ -2721,7 +2725,7 @@ button:active,
 }
 
 .footer-desc {
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
     font-size: 0.88rem;
     line-height: 1.6;
     margin-bottom: 18px;
@@ -2735,12 +2739,12 @@ button:active,
 
 .footer-badge-pill {
     background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1 !important;
+    color: #e2e8f0 !important;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.78rem;
     font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .footer-heading {
@@ -2759,7 +2763,7 @@ button:active,
     left: 0;
     width: 32px;
     height: 3px;
-    background: #a855f7;
+    background: #c084fc;
     border-radius: 3px;
 }
 
@@ -2773,7 +2777,7 @@ button:active,
 }
 
 .footer-links a {
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
     text-decoration: none;
     font-size: 0.88rem;
     transition: all 0.2s ease;
@@ -2783,7 +2787,7 @@ button:active,
 }
 
 .footer-links a:hover {
-    color: #c084fc !important;
+    color: #e9d5ff !important;
     transform: translateX(4px);
 }
 
@@ -2797,12 +2801,12 @@ button:active,
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
     font-size: 0.88rem;
 }
 
 .contact-item i {
-    color: #a855f7 !important;
+    color: #c084fc !important;
     font-size: 1rem;
     margin-top: 2px;
 }
@@ -2816,7 +2820,11 @@ button:active,
     flex-wrap: wrap;
     gap: 16px;
     font-size: 0.82rem;
-    color: #64748b !important;
+    color: #94a3b8 !important;
+}
+
+.footer-bottom p {
+    color: #94a3b8 !important;
 }
 
 .payment-icons {
