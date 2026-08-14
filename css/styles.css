@@ -326,7 +326,49 @@ button:active,
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
         padding: 10px 14px;
+        min-height: 52px;
+    }
+    .header-left-col,
+    .header-left-group {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        z-index: 2;
+    }
+    .header-center-col {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+    }
+    .header-left-group .brand-logo {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        z-index: 1;
+    }
+    .brand-logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .header-right-col {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 0 0 auto;
+        margin-left: auto;
+        z-index: 2;
     }
     .desktop-search-wrap {
         display: none;
@@ -365,7 +407,12 @@ button:active,
         font-size: 1rem;
     }
     .header-action-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         gap: 6px !important;
+        margin-left: auto;
+        z-index: 2;
     }
     .header-action-btn {
         padding: 6px 8px !important;

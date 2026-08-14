@@ -41,17 +41,28 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260814_2130">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260815_0105">
 </head>
-<body style="background-color: #ffffff !important; color: #18181b !important; color-scheme: light !important;">
+<body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
-    <!-- Header -->
+    <!-- Sticky Header -->
     <header class="app-header">
         <div class="container header-container">
-            <div class="header-left-group">
+            <!-- Left: Desktop Search / Mobile Hamburger -->
+            <div class="header-left-col">
                 <button class="mobile-hamburger-btn interactive-btn" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+                <div class="desktop-search-wrap">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Evin için ne arıyorsun?" autocomplete="off" onkeydown="if(event.key==='Enter'){window.location.href='kategori.html?c=tum-koleksiyon&q='+encodeURIComponent(this.value);}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Official Brand Logo -->
+            <div class="header-center-col">
                 <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
                     <div class="logo-main-title">
                         <span class="logo-text-mobel">mobel</span>
@@ -63,14 +74,32 @@
                 </a>
             </div>
 
-            <div class="header-action-buttons">
-                <a href="./" class="circle-btn interactive-btn" title="Ana Sayfaya Dön">
-                    <i class="fa-solid fa-house"></i>
-                </a>
-                <button class="circle-btn interactive-btn" id="cartBtn" title="Sepetim">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                    <span class="badge-count" id="cartBadge">0</span>
-                </button>
+            <!-- Right: User Action Buttons -->
+            <div class="header-right-col">
+                <div class="header-action-buttons">
+                    <a href="javascript:void(0)" onclick="alert('Üyelik ve Giriş Sistemi yakında aktif olacaktır.')" class="header-action-btn interactive-btn mobile-user-btn" title="Hesabım" aria-label="Hesabım">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="action-btn-text">Giriş</span>
+                    </a>
+                    <button class="header-action-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
+                        <i class="fa-regular fa-heart"></i>
+                        <span class="action-btn-text">Favorilerim</span>
+                        <span class="badge-count" id="wishlistBadge">0</span>
+                    </button>
+                    <button class="header-action-btn interactive-btn" id="cartBtn" title="Sepetim">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span class="action-btn-text">Sepetim</span>
+                        <span class="badge-count" id="cartBadge">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar (only visible on mobile) -->
+        <div class="container mobile-search-row">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="mobileSearchInput" placeholder="Evin için ne arıyorsun?" autocomplete="off" onkeydown="if(event.key==='Enter'){window.location.href='kategori.html?c=tum-koleksiyon&q='+encodeURIComponent(this.value);}">
             </div>
         </div>
 
