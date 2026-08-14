@@ -1073,11 +1073,11 @@ const renderSpecsAndGeneralInfo = (product) => {
     if (dimsTable) {
         if (specEntries.length > 0) {
             const rows = specEntries.map(([k, v]) =>
-                `<tr><td style="font-weight:700;color:#334155;width:55%;">${k}</td><td>${v}${/^\d+$/.test(v.trim()) ? ' cm' : ''}</td></tr>`
+                `<tr><th class="spec-label">${k}</th><td class="spec-value">${v}${/^\d+$/.test(v.trim()) ? ' cm' : ''}</td></tr>`
             ).join('');
             dimsTable.innerHTML = `<tbody>${rows}</tbody>`;
         } else {
-            dimsTable.innerHTML = '<tbody><tr><td colspan="2" style="color:#94a3b8;padding:12px;">Ölçü bilgisi mevcut değil.</td></tr></tbody>';
+            dimsTable.innerHTML = '<tbody><tr><td colspan="2" style="color:#94a3b8;padding:14px;text-align:left;">Ölçü bilgisi mevcut değil.</td></tr></tbody>';
         }
     }
 
@@ -1096,7 +1096,7 @@ const renderSpecsAndGeneralInfo = (product) => {
         ].filter(Boolean);
 
         featureTable.innerHTML = `<tbody>${generalFeatures.map(([k,v]) =>
-            `<tr><th style="width:45%;font-weight:700;">${k}</th><td>${v}</td></tr>`
+            `<tr><th class="spec-label">${k}</th><td class="spec-value">${v}</td></tr>`
         ).join('')}</tbody>`;
     }
 };
