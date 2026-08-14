@@ -931,6 +931,458 @@ button:active,
     font-weight: 800;
 }
 
+/* =========================================================================
+   Vivense-Style Top Campaign Strip & Hero Slider
+   ========================================================================= */
+.vivense-campaign-strip {
+    background: #ffffff;
+    border-bottom: 1px solid #f1f1f4;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #3f3f46;
+    letter-spacing: 0.02em;
+}
+
+.campaign-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.campaign-brand {
+    font-weight: 800;
+    color: #18181b;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.03em;
+}
+
+.campaign-brand i {
+    color: #6b21a8;
+}
+
+.campaign-sep {
+    color: #d4d4d8;
+    font-weight: 300;
+}
+
+.campaign-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.campaign-item i {
+    color: #71717a;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .vivense-campaign-strip {
+        padding: 8px 0;
+        font-size: 0.74rem;
+    }
+    .campaign-strip-inner {
+        gap: 10px;
+    }
+    .campaign-sep:nth-child(n+6),
+    .campaign-item:nth-child(n+6) {
+        display: none;
+    }
+}
+
+/* Vivense-Style Hero Slider Section */
+.vivense-hero-slider-section {
+    padding: 18px 0 10px 0;
+    background: #faf9fc;
+}
+
+.vivense-slider-wrapper {
+    position: relative;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e4e4e7;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+}
+
+.slider-track {
+    position: relative;
+    width: 100%;
+    min-height: 470px;
+}
+
+.slider-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+    z-index: 1;
+}
+
+.slider-slide.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+.slide-grid {
+    display: grid;
+    grid-template-columns: 54% 46%;
+    min-height: 470px;
+    align-items: stretch;
+}
+
+.slide-image-col {
+    position: relative;
+    overflow: hidden;
+    background: #f4f4f5;
+    display: flex;
+}
+
+.slide-img-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none !important;
+}
+
+.slide-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-img-link:hover .slide-main-img {
+    transform: scale(1.03);
+}
+
+.slide-brand-watermark {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(24, 24, 27, 0.65);
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.slide-content-col {
+    padding: 38px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+.slide-content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.slide-tag-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #18181b;
+    border-bottom: 2.5px solid #18181b;
+    padding-bottom: 2px;
+    margin-bottom: 8px;
+}
+
+.slide-tag-badge.gold {
+    color: #d97706;
+    border-bottom-color: #d97706;
+}
+
+.slide-tag-badge.purple {
+    color: #6b21a8;
+    border-bottom-color: #6b21a8;
+}
+
+.slide-tag-badge.red {
+    color: #dc2626;
+    border-bottom-color: #dc2626;
+}
+
+.slide-main-title {
+    margin: 0;
+    line-height: 1.05;
+    display: flex;
+    flex-direction: column;
+}
+
+.slide-main-title .title-primary {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #18181b;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.slide-main-title .title-secondary {
+    font-size: 2.05rem;
+    font-weight: 800;
+    color: #27272a;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+}
+
+/* Vivense-Style Yellow Promotion Card */
+.slide-promo-card {
+    background: #ffc233;
+    color: #18181b;
+    padding: 12px 18px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(255, 194, 51, 0.35);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-1.5deg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.slide-promo-card .promo-small {
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.slide-promo-card .promo-big {
+    font-size: 1.05rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 3px 0 1px 0;
+    letter-spacing: 0.02em;
+}
+
+.slide-promo-card .promo-discount {
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+}
+
+.slide-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #52525b;
+    margin: 10px 0 18px 0;
+    max-width: 440px;
+}
+
+/* 3 Circular Feature Thumbnails */
+.slide-features-row {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 20px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f1f4;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.feature-circle-img {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2.5px solid #e4e4e7;
+    background: #f4f4f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-circle-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.feature-item:hover .feature-circle-img {
+    transform: scale(1.08);
+    border-color: #6b21a8;
+}
+
+.feature-label {
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: #52525b;
+}
+
+/* Slider CTA Button */
+.slide-action-row {
+    margin-top: 4px;
+}
+
+.slide-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #27272a;
+    color: #ffffff !important;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+}
+
+.slide-cta-btn:hover {
+    background: #6b21a8;
+    transform: translateX(3px);
+    box-shadow: 0 6px 20px rgba(107, 33, 168, 0.3);
+}
+
+/* Slider Arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    color: #18181b;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.slider-arrow:hover {
+    background: #18181b;
+    color: #ffffff;
+    border-color: #18181b;
+}
+
+.slider-arrow.prev-arrow {
+    left: 16px;
+}
+
+.slider-arrow.next-arrow {
+    right: 16px;
+}
+
+/* Slider Dots */
+.slider-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 27%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.65);
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slider-dot.active {
+    background: #ffffff;
+    width: 26px;
+    border-radius: 6px;
+}
+
+/* Responsive Styles for Hero Slider */
+@media (max-width: 991px) {
+    .slide-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+    .slide-image-col {
+        min-height: 260px;
+        max-height: 300px;
+    }
+    .slide-content-col {
+        padding: 24px 20px;
+    }
+    .slide-main-title .title-primary {
+        font-size: 1.85rem;
+    }
+    .slide-main-title .title-secondary {
+        font-size: 1.5rem;
+    }
+    .slide-promo-card {
+        padding: 8px 12px;
+    }
+    .slide-promo-card .promo-small {
+        font-size: 0.58rem;
+    }
+    .slide-promo-card .promo-big {
+        font-size: 0.9rem;
+    }
+    .slide-promo-card .promo-discount {
+        font-size: 0.82rem;
+    }
+    .slider-dots {
+        left: 50%;
+        bottom: 12px;
+    }
+    .feature-circle-img {
+        width: 52px;
+        height: 52px;
+    }
+    .slide-features-row {
+        gap: 16px;
+    }
+    .slider-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+}
+
 /* Main Layout */
 .main-layout {
     padding: 18px 0 60px 0;
