@@ -1,7 +1,13 @@
 /* Font Display Swap for Lighthouse Optimization */
 @font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
 @font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
-@font-face { font-family: 'Plus Jakarta Sans'; font-display: swap; }
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/plusjakartasans/v8/L0x5DF4xlVMF-BfR8bXMIhJHg45mwgGE686_2g.woff2) format('woff2');
+}
 
 :root {
     color-scheme: light !important;
