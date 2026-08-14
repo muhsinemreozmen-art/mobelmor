@@ -909,6 +909,144 @@ window.changeQty = (id, delta) => {
     renderCart();
 };
 
+// ── Lightbox Gallery System for app.js (Vivense Design) ────────────────
+let lbGallery = [];
+let lbCurrentIndex = 0;
+
+const createGlobalLightbox = () => {
+    let lb = document.getElementById('mbl-lightbox');
+    if (lb) return lb;
+
+    lb = document.createElement('div');
+    lb.id = 'mbl-lightbox';
+    lb.className = 'mbl-lightbox-overlay';
+    lb.innerHTML = `
+        <button type="button" class="lb-vivense-close" id="mbl-lb-close-btn" onclick="closeGlobalLightbox()" title="Kapat (Esc)" aria-label="Kapat">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button type="button" class="lb-vivense-nav lb-vivense-prev" id="mbl-lb-prev" title="Önceki" aria-label="Önceki Fotoğraf">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" class="lb-vivense-nav lb-vivense-next" id="mbl-lb-next" title="Sonraki" aria-label="Sonraki Fotoğraf">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="lb-vivense-card" id="mbl-lb-card">
+            <div class="lb-vivense-header">
+                <span class="lb-vivense-title" id="mbl-lb-title">ÜRÜN GÖRSELİ</span>
+            </div>
+            <div class="lb-vivense-body" id="mbl-lb-wrapper">
+                <img id="mbl-lightbox-img" class="lb-vivense-img" src="" alt="Büyük Ürün Görseli">
+            </div>
+            <div class="lb-vivense-footer">
+                <span class="lb-vivense-counter" id="mbl-lb-counter">1/1</span>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(lb);
+
+    document.getElementById('mbl-lb-prev')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateGlobalLightbox(-1);
+    });
+    document.getElementById('mbl-lb-next')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateGlobalLightbox(1);
+    });
+
+    lb.addEventListener('click', (e) => {
+        if (!e.target.closest('#mbl-lb-card') && !e.target.closest('#mbl-lb-prev') && !e.target.closest('#mbl-lb-next')) {
+            closeGlobalLightbox();
+        }
+    });
+
+    // Touch swipe support
+    const lbCard = document.getElementById('mbl-lb-card');
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lbCard?.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+
+    lbCard?.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length > 0) {
+            const diffX = e.changedTouches[0].clientX - touchStartX;
+            const diffY = e.changedTouches[0].clientY - touchStartY;
+            if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) navigateGlobalLightbox(1);
+                else navigateGlobalLightbox(-1);
+            }
+        }
+    }, { passive: true });
+
+    document.addEventListener('keydown', (e) => {
+        const activeLb = document.getElementById('mbl-lightbox');
+        if (!activeLb || !activeLb.classList.contains('active')) return;
+
+        if (e.key === 'Escape') closeGlobalLightbox();
+        else if (e.key === 'ArrowLeft') navigateGlobalLightbox(-1);
+        else if (e.key === 'ArrowRight') navigateGlobalLightbox(1);
+    });
+
+    return lb;
+};
+
+window.openGlobalLightbox = (gallery, startIndex = 0, title = '') => {
+    const lb = createGlobalLightbox();
+    lbGallery = Array.isArray(gallery) && gallery.length > 0 ? gallery : [];
+    if (lbGallery.length === 0) return;
+
+    lbCurrentIndex = Math.max(0, Math.min(startIndex, lbGallery.length - 1));
+
+    const titleEl = document.getElementById('mbl-lb-title');
+    if (titleEl) titleEl.textContent = (title || 'ÜRÜN GÖRSELİ').toUpperCase();
+
+    updateGlobalLightboxView();
+
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+};
+
+window.closeGlobalLightbox = () => {
+    const lb = document.getElementById('mbl-lightbox');
+    if (lb) lb.classList.remove('active');
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+};
+
+window.navigateGlobalLightbox = (direction) => {
+    if (!lbGallery || lbGallery.length === 0) return;
+
+    if (typeof direction === 'number' && (direction === 1 || direction === -1)) {
+        lbCurrentIndex = (lbCurrentIndex + direction + lbGallery.length) % lbGallery.length;
+    } else if (typeof direction === 'number') {
+        lbCurrentIndex = Math.max(0, Math.min(direction, lbGallery.length - 1));
+    }
+
+    updateGlobalLightboxView();
+};
+
+const updateGlobalLightboxView = () => {
+    const lbImg = document.getElementById('mbl-lightbox-img');
+    const lbCounter = document.getElementById('mbl-lb-counter');
+    if (!lbImg) return;
+
+    lbImg.style.opacity = '0.3';
+
+    setTimeout(() => {
+        lbImg.src = lbGallery[lbCurrentIndex];
+        lbImg.style.opacity = '1';
+    }, 80);
+
+    if (lbCounter) {
+        lbCounter.textContent = `${lbCurrentIndex + 1}/${lbGallery.length}`;
+    }
+};
+
 const openQuickView = (productId) => {
     const product = PRODUCTS.find(p => p.id === productId);
     if (!product) return;
@@ -916,22 +1054,75 @@ const openQuickView = (productId) => {
     const content = document.getElementById("quickViewContent");
     if (!overlay || !content) return;
 
+    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+    let activeQuickIdx = 0;
+
     content.innerHTML = `
-        <div style="display:flex; gap:20px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:240px;">
-                <img src="${product.image}" alt="${product.title}" style="width:100%; height:260px; object-fit:cover; border-radius:14px;">
+        <div style="display:flex; gap:24px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:280px; display:flex; flex-direction:column; gap:10px;">
+                <div style="position:relative; width:100%; height:290px; border-radius:14px; overflow:hidden; background:#f4f4f6; cursor:zoom-in;" id="quickMainImgBox" title="Fotoğrafı Büyüt (Tıkla)">
+                    <img id="quickMainImg" src="${gallery[0]}" alt="${product.title}" style="width:100%; height:100%; object-fit:contain; background:#ffffff; transition:transform 0.3s ease;">
+                    <button type="button" class="gallery-zoom-trigger-btn" id="quickZoomBtn" title="Büyük Fotoğrafı Görüntüle" style="position:absolute; top:8px; right:8px; z-index:10;">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i> <span>Büyüt</span>
+                    </button>
+                    <div class="gallery-counter-pill" id="quickCounterPill" style="position:absolute; bottom:8px; right:8px; z-index:10;">
+                        1 / ${gallery.length}
+                    </div>
+                </div>
+                ${gallery.length > 1 ? `
+                    <div style="display:flex; gap:8px; overflow-x:auto; padding:2px 0;" id="quickThumbStrip">
+                        ${gallery.map((g, idx) => `
+                            <img src="${g}" class="thumb-img ${idx === 0 ? 'active' : ''}" data-idx="${idx}" style="width:54px; height:54px; border-radius:8px; object-fit:contain; background:#fff; cursor:pointer; flex-shrink:0;">
+                        `).join('')}
+                    </div>
+                ` : ''}
             </div>
-            <div style="flex:1.2; min-width:260px;">
-                <span style="color:#6b21a8; font-weight:800; font-size:0.75rem;">${product.material}</span>
-                <h2 style="margin:4px 0 8px 0; color:#18181b;">${product.title}</h2>
-                <p style="color:#52525b; font-size:0.88rem;">${product.desc}</p>
-                <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:1.4rem; font-weight:800;">${formatPrice(product.price)}</span>
-                    <button class="pill-add-btn interactive-btn" id="modalAddCart">Sepete Ekle</button>
+            <div style="flex:1.2; min-width:260px; display:flex; flex-direction:column;">
+                <span style="color:#6b21a8; font-weight:800; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">${product.material || 'İnegöl Mobilyası'}</span>
+                <h2 style="margin:6px 0 10px 0; color:#18181b; font-size:1.45rem; line-height:1.3;">${product.title}</h2>
+                <div style="color:#16a34a; font-weight:700; font-size:0.8rem; margin-bottom:12px;"><i class="fa-solid fa-circle-check"></i> Stokta Var &nbsp;·&nbsp; Ücretsiz Kurulum</div>
+                <p style="color:#52525b; font-size:0.88rem; line-height:1.5; margin-bottom:16px;">${product.desc || ''}</p>
+                <div style="margin-top:auto; padding-top:16px; border-top:1px solid #f4f4f5; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <span style="font-size:1.6rem; font-weight:900; color:#6b21a8;">${formatPrice(product.price)}</span>
+                    <div style="display:flex; gap:8px;">
+                        <a href="${window.getCleanProductUrl ? window.getCleanProductUrl(product.id, product.title) : `urun-detay.html?id=${product.id}`}" class="btn interactive-btn" style="background:#f4f4f5; color:#18181b; padding:10px 16px; border-radius:999px; font-weight:700; font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Detay
+                        </a>
+                        <button class="pill-add-btn interactive-btn" id="modalAddCart" style="padding:10px 20px; font-size:0.88rem;">
+                            <i class="fa-solid fa-cart-shopping"></i> Sepete Ekle
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     `;
+
+    // Quick view thumbnail switching
+    content.querySelectorAll('#quickThumbStrip img').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            const idx = parseInt(thumb.getAttribute('data-idx'));
+            activeQuickIdx = idx;
+            const mainImg = document.getElementById('quickMainImg');
+            const pill = document.getElementById('quickCounterPill');
+            if (mainImg) mainImg.src = gallery[idx];
+            if (pill) pill.textContent = `${idx + 1} / ${gallery.length}`;
+            content.querySelectorAll('#quickThumbStrip img').forEach((t, i) => {
+                if (i === idx) t.classList.add('active');
+                else t.classList.remove('active');
+            });
+        });
+    });
+
+    // Open lightbox on clicking quick view main image or zoom button
+    const openLB = () => {
+        openGlobalLightbox(gallery, activeQuickIdx, product.title);
+    };
+
+    document.getElementById('quickMainImgBox')?.addEventListener('click', openLB);
+    document.getElementById('quickZoomBtn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLB();
+    });
 
     overlay.classList.add("active");
     document.getElementById("modalAddCart")?.addEventListener("click", () => {
@@ -1306,5 +1497,63 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("popstate", () => {
         handleUrlParams();
     });
+
+    // Vivense-Style Mega Menu Interaction (Desktop)
+    const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
+    megaNavItems.forEach(item => {
+        item.addEventListener("mouseenter", () => {
+            megaNavItems.forEach(other => { if (other !== item) other.classList.remove("is-open"); });
+            item.classList.add("is-open");
+        });
+        item.addEventListener("mouseleave", () => {
+            item.classList.remove("is-open");
+        });
+    });
+
+    // Vivense-Style Mobile Menu Drawer & Accordion
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn");
+    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+    const mobileMenuDrawer = document.getElementById("mobileMenuDrawer");
+
+    function openMobileDrawer() {
+        mobileMenuDrawer?.classList.add("active");
+        mobileMenuOverlay?.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileDrawer() {
+        mobileMenuDrawer?.classList.remove("active");
+        mobileMenuOverlay?.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    mobileMenuBtn?.addEventListener("click", openMobileDrawer);
+    closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
+    mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
+
+    // Mobile Drawer Wishlist / Cart Triggers
+    document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
+        closeMobileDrawer();
+        document.getElementById("wishlistBtn")?.click();
+    });
+    document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
+        closeMobileDrawer();
+        document.getElementById("cartBtn")?.click();
+    });
+
+    // Mobile Drawer Category Accordions
+    document.querySelectorAll(".mobile-cat-header").forEach(header => {
+        header.addEventListener("click", (e) => {
+            e.preventDefault();
+            const accordion = header.closest(".mobile-cat-accordion");
+            const isOpen = accordion.classList.contains("open");
+            document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
+            if (!isOpen) {
+                accordion.classList.add("open");
+            }
+        });
+    });
 });
+
 

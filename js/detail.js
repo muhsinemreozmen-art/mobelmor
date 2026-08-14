@@ -676,53 +676,79 @@ const getProductIdFromUrl = () => {
     return 1;
 };
 
-
-
 // ── Lightbox Gallery State & Logic ───────────────────────────────────────
 let lightboxGallery = [];
 let lightboxCurrentIndex = 0;
 let currentActiveGalleryIndex = 0;
-let touchStartX = 0;
 
-const createLightbox = () => {
-    if (document.getElementById('mbl-lightbox')) return;
-    const lb = document.createElement('div');
+window.handleSlideClick = (event, idx) => {
+    if (event) {
+        event.stopPropagation();
+    }
+    const targetIdx = typeof idx === 'number' ? idx : currentActiveGalleryIndex;
+    openLightbox(targetIdx);
+};
+
+window.createLightbox = () => {
+    let lb = document.getElementById('mbl-lightbox');
+    if (lb) return lb;
+
+    lb = document.createElement('div');
     lb.id = 'mbl-lightbox';
     lb.className = 'mbl-lightbox-overlay';
     lb.innerHTML = `
-        <div class="mbl-lightbox-header">
-            <div class="lb-header-info">
-                <span class="lb-counter" id="lbCounter">1 / 1</span>
-                <span class="lb-title" id="lbTitle">Ürün Görseli</span>
+        <button type="button" class="lb-vivense-close" id="lbClose" onclick="closeLightbox()" title="Kapat (Esc)" aria-label="Kapat">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button type="button" class="lb-vivense-nav lb-vivense-prev" id="lbPrev" onclick="navigateLightbox(-1)" title="Önceki" aria-label="Önceki Fotoğraf">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" class="lb-vivense-nav lb-vivense-next" id="lbNext" onclick="navigateLightbox(1)" title="Sonraki" aria-label="Sonraki Fotoğraf">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="lb-vivense-card" id="lbCard">
+            <div class="lb-vivense-header">
+                <span class="lb-vivense-title" id="lbTitle">ÜRÜN GÖRSELİ</span>
             </div>
-            <button class="lb-close-btn" id="lbClose" title="Kapat (Esc)">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div class="mbl-lightbox-body" id="lbBody">
-            <button class="lb-nav-btn lb-prev-btn" id="lbPrev" title="Önceki (Sol Ok)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="lb-img-wrapper">
-                <img id="lbImg" class="lb-img" src="" alt="Büyütülmüş Ürün Görseli">
+            <div class="lb-vivense-body" id="lbImgWrapper">
+                <img id="lbImg" class="lb-vivense-img" src="" alt="Büyük Ürün Görseli">
             </div>
-            <button class="lb-nav-btn lb-next-btn" id="lbNext" title="Sonraki (Sağ Ok)"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-        <div class="mbl-lightbox-footer">
-            <div class="lb-thumb-strip" id="lbThumbStrip"></div>
+            <div class="lb-vivense-footer">
+                <span class="lb-vivense-counter" id="lbCounter">1/1</span>
+            </div>
         </div>
     `;
     document.body.appendChild(lb);
 
-    // Event listeners
-    document.getElementById('lbClose').addEventListener('click', closeLightbox);
-    document.getElementById('lbPrev').addEventListener('click', () => navigateLightbox(-1));
-    document.getElementById('lbNext').addEventListener('click', () => navigateLightbox(1));
-
-    // Close on clicking overlay background
+    // Close on clicking backdrop outside the card
     lb.addEventListener('click', (e) => {
-        if (e.target.classList.contains('mbl-lightbox-body') || e.target.classList.contains('lb-img-wrapper')) {
+        if (!e.target.closest('#lbCard') && !e.target.closest('#lbPrev') && !e.target.closest('#lbNext')) {
             closeLightbox();
         }
     });
+
+    // Touch swipe on card
+    const lbCard = document.getElementById('lbCard');
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lbCard?.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+
+    lbCard?.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length > 0) {
+            const diffX = e.changedTouches[0].clientX - touchStartX;
+            const diffY = e.changedTouches[0].clientY - touchStartY;
+            if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) navigateLightbox(1);
+                else navigateLightbox(-1);
+            }
+        }
+    }, { passive: true });
 
     // Keyboard controls
     document.addEventListener('keydown', (e) => {
@@ -734,20 +760,7 @@ const createLightbox = () => {
         else if (e.key === 'ArrowRight') navigateLightbox(1);
     });
 
-    // Touch swipe support
-    const lbBody = document.getElementById('lbBody');
-    lbBody.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    lbBody.addEventListener('touchend', (e) => {
-        const touchEndX = e.changedTouches[0].screenX;
-        const diff = touchEndX - touchStartX;
-        if (Math.abs(diff) > 40) {
-            if (diff < 0) navigateLightbox(1);
-            else navigateLightbox(-1);
-        }
-    }, { passive: true });
+    return lb;
 };
 
 window.goToSlide = (idx) => {
@@ -775,43 +788,53 @@ const setupGalleryCarousel = () => {
 
     let touchStartX = 0;
     let touchStartY = 0;
-    let isHorizontalSwipe = false;
+    let touchStartTime = 0;
+    let hasMoved = false;
 
+    // Direct touch gesture handler that reliably detects TAP vs SWIPE
     wrapper.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
-        isHorizontalSwipe = false;
+        touchStartTime = Date.now();
+        hasMoved = false;
     }, { passive: true });
 
     wrapper.addEventListener('touchmove', (e) => {
         if (e.touches.length !== 1) return;
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const diffX = currentX - touchStartX;
-        const diffY = currentY - touchStartY;
-
-        // If horizontal movement is greater than vertical, prevent page scroll
-        if (Math.abs(diffX) > 8 && Math.abs(diffX) > Math.abs(diffY)) {
-            isHorizontalSwipe = true;
-            if (e.cancelable) e.preventDefault();
-        }
-    }, { passive: false });
-
-    wrapper.addEventListener('touchend', (e) => {
-        if (!isHorizontalSwipe) return;
-        const touchEndX = e.changedTouches[0].clientX;
-        const diffX = touchEndX - touchStartX;
-
-        if (diffX < -30) {
-            // Swipe left -> Next image
-            goToSlide(currentActiveGalleryIndex + 1);
-        } else if (diffX > 30) {
-            // Swipe right -> Previous image
-            goToSlide(currentActiveGalleryIndex - 1);
+        const diffX = e.touches[0].clientX - touchStartX;
+        const diffY = e.touches[0].clientY - touchStartY;
+        if (Math.abs(diffX) > 18 || Math.abs(diffY) > 18) {
+            hasMoved = true;
         }
     }, { passive: true });
 
+    wrapper.addEventListener('touchend', (e) => {
+        if (e.target.closest('.gallery-zoom-trigger-btn') || e.target.closest('.gallery-badges')) return;
+        
+        const touchDuration = Date.now() - touchStartTime;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // If it was a quick touch with minimal displacement -> TAP to open Lightbox!
+        if (!hasMoved && Math.abs(diffX) < 18 && Math.abs(diffY) < 18 && touchDuration < 380) {
+            openLightbox(currentActiveGalleryIndex);
+            return;
+        }
+
+        // If it was a deliberate swipe gesture
+        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+                goToSlide(currentActiveGalleryIndex + 1);
+            } else {
+                goToSlide(currentActiveGalleryIndex - 1);
+            }
+        }
+    }, { passive: true });
+
+    // Track native horizontal scroll update
     track.addEventListener('scroll', () => {
         if (galleryScrollDebounce) clearTimeout(galleryScrollDebounce);
         galleryScrollDebounce = setTimeout(() => {
@@ -853,7 +876,7 @@ window.swapMainImg = (src, thumb, idx) => {
 };
 
 window.openLightbox = (startIndex = 0) => {
-    createLightbox();
+    const lb = createLightbox();
     const pid = getProductIdFromUrl();
     const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
     lightboxGallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
@@ -867,21 +890,21 @@ window.openLightbox = (startIndex = 0) => {
         lightboxCurrentIndex = currentActiveGalleryIndex;
     }
 
-    const lb = document.getElementById('mbl-lightbox');
     const titleEl = document.getElementById('lbTitle');
-    if (titleEl) titleEl.textContent = product.title;
+    if (titleEl) titleEl.textContent = (product.title || 'ÜRÜN GÖRSELİ').toUpperCase();
 
-    renderLightboxThumbs();
     updateLightboxView();
 
     lb.classList.add('active');
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 };
 
 window.closeLightbox = () => {
     const lb = document.getElementById('mbl-lightbox');
     if (lb) lb.classList.remove('active');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 };
 
 window.navigateLightbox = (direction) => {
@@ -902,38 +925,17 @@ const updateLightboxView = () => {
     if (!lbImg) return;
 
     lbImg.style.opacity = '0.3';
-    lbImg.style.transform = 'scale(0.96)';
 
     setTimeout(() => {
         lbImg.src = lightboxGallery[lightboxCurrentIndex];
         lbImg.style.opacity = '1';
-        lbImg.style.transform = 'scale(1)';
-    }, 120);
+    }, 60);
 
     if (lbCounter) {
-        lbCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
+        lbCounter.textContent = `${lightboxCurrentIndex + 1}/${lightboxGallery.length}`;
     }
 
     goToSlide(lightboxCurrentIndex);
-
-    document.querySelectorAll('.lb-thumb-img').forEach((t, i) => {
-        if (i === lightboxCurrentIndex) {
-            t.classList.add('active');
-            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        } else {
-            t.classList.remove('active');
-        }
-    });
-};
-
-const renderLightboxThumbs = () => {
-    const strip = document.getElementById('lbThumbStrip');
-    if (!strip) return;
-
-    strip.innerHTML = lightboxGallery.map((src, i) => `
-        <img src="${src}" class="lb-thumb-img ${i === lightboxCurrentIndex ? 'active' : ''}" 
-             onclick="navigateLightbox(${i})" title="Görsel ${i + 1}">
-    `).join('');
 };
 
 let currentModuleState = {
@@ -979,7 +981,7 @@ const renderProductDetail = () => {
                 <div class="gallery-carousel-wrapper">
                     <div class="gallery-carousel-track" id="galleryCarouselTrack">
                         ${gallery.map((gImg, idx) => `
-                            <div class="gallery-slide" data-index="${idx}">
+                            <div class="gallery-slide" data-index="${idx}" onclick="handleSlideClick(event, ${idx})" title="Fotoğrafı Büyüt">
                                 <img src="${gImg}" alt="${product.title} - Görsel ${idx + 1}" class="gallery-slide-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                             </div>
                         `).join('')}
@@ -988,6 +990,10 @@ const renderProductDetail = () => {
                         <span class="badge-tag"><i class="fa-solid fa-gem"></i> ${product.badges?.[0] || 'İNEGÖL KOLEKSİYONU'}</span>
                         <span class="badge-tag badge-dark-glass"><i class="fa-solid fa-shield-check"></i> %100 ORİJİNAL</span>
                     </div>
+                    <button type="button" class="gallery-zoom-trigger-btn" onclick="openLightbox(currentActiveGalleryIndex)" title="Fotoğrafı Büyüt">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                        <span>Büyüt</span>
+                    </button>
                     <div class="gallery-counter-pill">
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
@@ -1285,6 +1291,7 @@ window.changeQty = (id, delta) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    createLightbox();
     renderProductDetail();
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -1436,5 +1443,59 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("infoModalOverlay")?.classList.remove("active");
         }
     });
+
+    // Vivense-Style Mega Menu Interaction (Desktop)
+    const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
+    megaNavItems.forEach(item => {
+        item.addEventListener("mouseenter", () => {
+            megaNavItems.forEach(other => { if (other !== item) other.classList.remove("is-open"); });
+            item.classList.add("is-open");
+        });
+        item.addEventListener("mouseleave", () => {
+            item.classList.remove("is-open");
+        });
+    });
+
+    // Vivense-Style Mobile Menu Drawer & Accordion
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn");
+    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+    const mobileMenuDrawer = document.getElementById("mobileMenuDrawer");
+
+    function openMobileDrawer() {
+        mobileMenuDrawer?.classList.add("active");
+        mobileMenuOverlay?.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileDrawer() {
+        mobileMenuDrawer?.classList.remove("active");
+        mobileMenuOverlay?.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    mobileMenuBtn?.addEventListener("click", openMobileDrawer);
+    closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
+    mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
+
+    // Mobile Drawer Wishlist / Cart Triggers
+    document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
+        closeMobileDrawer();
+        document.getElementById("cartBtn")?.click();
+    });
+
+    // Mobile Drawer Category Accordions
+    document.querySelectorAll(".mobile-cat-header").forEach(header => {
+        header.addEventListener("click", (e) => {
+            e.preventDefault();
+            const accordion = header.closest(".mobile-cat-accordion");
+            const isOpen = accordion.classList.contains("open");
+            document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
+            if (!isOpen) {
+                accordion.classList.add("open");
+            }
+        });
+    });
 });
+
 

@@ -46,7 +46,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=1786682931">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260814_2130">
     <style>
         .category-hero-banner {
             background: linear-gradient(135deg, #6b21a8 0%, #4c1d95 100%);
@@ -105,15 +105,20 @@
     <!-- Sticky Header -->
     <header class="app-header">
         <div class="container header-container">
-            <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
-                <div class="logo-main-title">
-                    <span class="logo-text-mobel">mobel</span>
-                    <span class="logo-mor-box">
-                        <span class="logo-com-arrow">.com</span>
-                        <span class="logo-text-mor">mor</span>
-                    </span>
-                </div>
-            </a>
+            <div class="header-left-group">
+                <button class="mobile-hamburger-btn interactive-btn" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
+                    <div class="logo-main-title">
+                        <span class="logo-text-mobel">mobel</span>
+                        <span class="logo-mor-box">
+                            <span class="logo-com-arrow">.com</span>
+                            <span class="logo-text-mor">mor</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
 
             <div class="header-action-buttons">
                 <button class="circle-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
@@ -136,65 +141,524 @@
             </div>
         </div>
 
-        <!-- Category Bar -->
-        <nav class="category-scroll-wrapper">
-            <div class="container category-container">
-                <a href="kategori.html?c=tum-koleksiyon" class="cat-pill interactive-btn" data-category="all">
-                    <i class="fa-solid fa-border-all"></i> Tüm Koleksiyon
+        <!-- Vivense-Style Category Mega Navigation Bar -->
+        <nav class="vivense-nav-wrapper">
+            <div class="container vivense-nav-container">
+                <!-- Badges on Left -->
+                <a href="kategori.html?c=tum-koleksiyon" class="vivense-nav-badge collection-badge" title="Mobelmor Collection">
+                    <span class="badge-icon-circle"><i class="fa-solid fa-gem"></i></span>
+                    <span class="badge-text">Mobelmor Collection</span>
                 </a>
 
-                <!-- Oturma Odası -->
-                <div class="cat-dropdown-wrapper">
-                    <a href="kategori.html?c=oturma-odasi" class="cat-pill interactive-btn" data-category="living">
-                        <i class="fa-solid fa-couch"></i> Oturma Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="kategori.html?c=oturma-odasi&sub=sofas" class="dropdown-item" data-cat="living" data-sub="sofas"><i class="fa-solid fa-couch"></i> Koltuk &amp; Takımlar</a>
-                        <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="dropdown-item" data-cat="living" data-sub="armchairs"><i class="fa-solid fa-chair"></i> Berjerler</a>
-                        <a href="kategori.html?c=oturma-odasi&sub=tables" class="dropdown-item" data-cat="living" data-sub="tables"><i class="fa-solid fa-table"></i> Sehpalar</a>
-                        <a href="kategori.html?c=oturma-odasi&sub=consoles" class="dropdown-item" data-cat="living" data-sub="consoles"><i class="fa-solid fa-tv"></i> Konsollar &amp; TV Ünitesi</a>
+                <a href="kategori.html?c=tum-koleksiyon&filter=best-price" class="vivense-nav-badge best-price-badge" title="En İyi Fiyat">
+                    <span class="badge-icon-circle red"><i class="fa-solid fa-tag"></i></span>
+                    <span class="badge-text">EN İYİ FİYAT</span>
+                </a>
+
+                <!-- 1. OTURMA ODASI -->
+                <div class="vivense-nav-item has-mega active">
+                    <a href="kategori.html?c=oturma-odasi" class="vivense-nav-link">OTURMA ODASI</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Köşe Koltuk</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Koltuk Takımı</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Kanepe + Koltuk</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=armchairs">Berjer</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=armchairs">Sallanan Sandalye + Koltuk</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Katlanır Yataklı Koltuk</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=tables">Orta Sehpa</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=tables">Yan Sehpa</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=tables">Zigon Sehpa</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri">Tv Ünitesi</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=bookcases">Kitaplık</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=consoles">Dresuar</a></li>
+                                    <li><a href="kategori.html?c=oturma-odasi&sub=armchairs">Puf</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p1_1.webp" alt="Editör Seçkisi: Koltuk" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Editör Seçkisi: Koltuk</span>
+                                </a>
+                                <a href="kategori.html?c=oturma-odasi&sub=tables" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p2_1.webp" alt="Editör Seçkisi: Tamamlayıcı" onerror="this.onerror=null; this.src='assets/minegolden_p2_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Editör Seçkisi: Tamamlayıcı</span>
+                                </a>
+                                <a href="kategori.html?c=tum-koleksiyon" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/asya_main.webp" alt="Düğün Sezonu" onerror="this.onerror=null; this.src='assets/asya_main.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Düğün Sezonu</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Yemek Odası -->
-                <div class="cat-dropdown-wrapper">
-                    <a href="kategori.html?c=yemek-odasi" class="cat-pill interactive-btn" data-category="dining">
-                        <i class="fa-solid fa-utensils"></i> Yemek Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="dropdown-item" data-cat="dining" data-sub="dining-tables"><i class="fa-solid fa-utensils"></i> Yemek Masaları</a>
-                        <a href="kategori.html?c=yemek-odasi&sub=chairs" class="dropdown-item" data-cat="dining" data-sub="chairs"><i class="fa-solid fa-chair"></i> Sandalyeler</a>
-                        <a href="kategori.html?c=yemek-odasi&sub=buffets" class="dropdown-item" data-cat="dining" data-sub="buffets"><i class="fa-solid fa-dumpster-fire"></i> Büfeler &amp; Konsollar</a>
+                <!-- 2. YEMEK ODASI + MUTFAK -->
+                <div class="vivense-nav-item has-mega">
+                    <a href="kategori.html?c=yemek-odasi" class="vivense-nav-link">YEMEK ODASI + MUTFAK</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Yemek Odası Takımı</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Yemek Masası</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=chairs">Sandalye</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=buffets">Konsol &amp; Aynası</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=buffets">Vitrin &amp; Gümüşlük</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Mutfak Masası Takımı</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=chairs">Bar Masası &amp; Sandalyesi</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=chairs">Bank &amp; Bench</a></li>
+                                    <li><a href="kategori.html?c=yemek-odasi&sub=buffets">Servis Sehpası</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p3_1.webp" alt="Masif Yemek Masaları" onerror="this.onerror=null; this.src='assets/minegolden_p3_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Masif Yemek Masaları</span>
+                                </a>
+                                <a href="kategori.html?c=yemek-odasi&sub=chairs" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/armchair.webp" alt="Tasarım Sandalyeler" onerror="this.onerror=null; this.src='assets/armchair.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Tasarım Sandalyeler</span>
+                                </a>
+                                <a href="kategori.html?c=yemek-odasi&sub=buffets" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p4_1.webp" alt="Modern Konsollar" onerror="this.onerror=null; this.src='assets/minegolden_p4_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Modern Konsollar</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Yatak Odası -->
-                <div class="cat-dropdown-wrapper">
-                    <a href="kategori.html?c=yatak-odasi" class="cat-pill interactive-btn" data-category="bedroom">
-                        <i class="fa-solid fa-bed"></i> Yatak Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="kategori.html?c=yatak-odasi&sub=beds" class="dropdown-item" data-cat="bedroom" data-sub="beds"><i class="fa-solid fa-bed"></i> Karyola &amp; Yataklar</a>
-                        <a href="kategori.html?c=yatak-odasi&sub=nightstands" class="dropdown-item" data-cat="bedroom" data-sub="nightstands"><i class="fa-solid fa-table-cells"></i> Komodinler</a>
-                        <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="dropdown-item" data-cat="bedroom" data-sub="wardrobes"><i class="fa-solid fa-door-closed"></i> Gardıroplar</a>
+                <!-- 3. YATAK ODASI -->
+                <div class="vivense-nav-item has-mega">
+                    <a href="kategori.html?c=yatak-odasi" class="vivense-nav-link">YATAK ODASI</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yatak-odasi">Yatak Odası Takımı</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=beds">Karyola &amp; Yatak</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Gardırop</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=nightstands">Komodin</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Şifonyer</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=beds">Baza &amp; Başlık</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Makyaj Masası</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Yatak Ucu Puf</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Boy Aynası</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=yatak-odasi" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/asya_main.webp" alt="Lüks Yatak Odaları" onerror="this.onerror=null; this.src='assets/asya_main.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Lüks Yatak Odaları</span>
+                                </a>
+                                <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/bed.webp" alt="Akıllı Gardıroplar" onerror="this.onerror=null; this.src='assets/bed.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Akıllı Gardıroplar</span>
+                                </a>
+                                <a href="kategori.html?c=yatak-odasi&sub=beds" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p6_1.webp" alt="Özel Baza Başlık" onerror="this.onerror=null; this.src='assets/minegolden_p6_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Özel Baza Başlık</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Çalışma Odası -->
-                <div class="cat-dropdown-wrapper">
-                    <a href="kategori.html?c=tv-uniteleri" class="cat-pill interactive-btn" data-category="office">
-                        <i class="fa-solid fa-briefcase"></i> Çalışma Odası <i class="fa-solid fa-chevron-down pill-arrow"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="kategori.html?c=tv-uniteleri&sub=desks" class="dropdown-item" data-cat="office" data-sub="desks"><i class="fa-solid fa-laptop-code"></i> Çalışma Masaları</a>
-                        <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="dropdown-item" data-cat="office" data-sub="bookcases"><i class="fa-solid fa-book"></i> Kitaplıklar</a>
+                <!-- 4. UYKU GRUBU -->
+                <div class="vivense-nav-item has-mega">
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="vivense-nav-link">UYKU GRUBU</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=beds">Ortopedik Yataklar</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=beds">Visco &amp; Latex Yatak</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=beds">Sandıklı Bazalar</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yatak-odasi">Yastık &amp; Yorgan</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Alez &amp; Koruyucu</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi">Nevresim Takımları</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=yatak-odasi&sub=beds" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/bed.webp" alt="Doğal Uyku Koleksiyonu" onerror="this.onerror=null; this.src='assets/bed.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Doğal Uyku Koleksiyonu</span>
+                                </a>
+                                <a href="kategori.html?c=yatak-odasi" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/asya_main.webp" alt="Sandıklı Baza Çözümleri" onerror="this.onerror=null; this.src='assets/asya_main.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Sandıklı Baza Çözümleri</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <span class="ar-pill-tag"><i class="fa-solid fa-cube"></i> AR Destekli</span>
+                <!-- 5. BAHÇE -->
+                <div class="vivense-nav-item">
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="vivense-nav-link">BAHÇE</a>
+                </div>
+
+                <!-- 6. DOLAP + ANTRE -->
+                <div class="vivense-nav-item has-mega">
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="vivense-nav-link">DOLAP + ANTRE</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Sürgülü Gardırop</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Kapaklı Gardırop</a></li>
+                                    <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Giyinme Odası Modülleri</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=tv-uniteleri">Portmanto &amp; Vestiyer</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri">Ayakkabılık</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri">Dresuar &amp; Ayna</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/asya_main.webp" alt="Geniş Hacimli Dolaplar" onerror="this.onerror=null; this.src='assets/asya_main.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Geniş Hacimli Dolaplar</span>
+                                </a>
+                                <a href="kategori.html?c=tv-uniteleri" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p4_1.webp" alt="Şık Antre Mobilyaları" onerror="this.onerror=null; this.src='assets/minegolden_p4_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Şık Antre Mobilyaları</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. ÇALIŞMA ODASI -->
+                <div class="vivense-nav-item has-mega">
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="vivense-nav-link">ÇALIŞMA ODASI</a>
+                    <div class="vivense-mega-dropdown">
+                        <div class="mega-content-grid">
+                            <div class="mega-col">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=desks">Çalışma Masası</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=bookcases">Kitaplık</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=desks">Yönetici Masaları</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-col border-left">
+                                <ul class="mega-link-list">
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=desks">Çalışma Koltuğu</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri&sub=bookcases">Duvar Rafları</a></li>
+                                    <li><a href="kategori.html?c=tv-uniteleri">Keson &amp; Çekmecelik</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-visuals-col">
+                                <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p8_1.webp" alt="Masif Çalışma Masaları" onerror="this.onerror=null; this.src='assets/minegolden_p8_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Masif Çalışma Masaları</span>
+                                </a>
+                                <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mega-circle-card">
+                                    <div class="mega-circle-img-wrap">
+                                        <img src="assets/minegolden_p7_1.webp" alt="Modern Kitaplıklar" onerror="this.onerror=null; this.src='assets/minegolden_p7_1.jpg';">
+                                    </div>
+                                    <span class="mega-circle-title">Modern Kitaplıklar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. ÇOCUK + GENÇ -->
+                <div class="vivense-nav-item">
+                    <a href="kategori.html?c=yatak-odasi" class="vivense-nav-link">ÇOCUK + GENÇ</a>
+                </div>
+
+                <!-- 9. DEKORASYON -->
+                <div class="vivense-nav-item">
+                    <a href="kategori.html?c=tum-koleksiyon" class="vivense-nav-link">DEKORASYON</a>
+                </div>
+
+                <!-- 10. MARKALAR -->
+                <div class="vivense-nav-item">
+                    <a href="kategori.html?c=tum-koleksiyon" class="vivense-nav-link">MARKALAR</a>
+                </div>
+
+                <!-- 11. More (...) -->
+                <div class="vivense-nav-item">
+                    <a href="kategori.html?c=tum-koleksiyon" class="vivense-nav-link dots-link" title="Tüm Koleksiyon">···</a>
+                </div>
             </div>
         </nav>
     </header>
+
+    <!-- Vivense-Style Mobile Menu Drawer -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+        <div class="mobile-drawer-header">
+            <button class="mobile-drawer-close-btn" id="closeMobileMenuBtn" aria-label="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <a href="./" class="brand-logo" aria-label="Mobelmor Ana Sayfa">
+                <div class="logo-main-title">
+                    <span class="logo-text-mobel">mobel</span>
+                    <span class="logo-mor-box">
+                        <span class="logo-com-arrow">.com</span>
+                        <span class="logo-text-mor">mor</span>
+                    </span>
+                </div>
+            </a>
+            <div class="mobile-drawer-header-actions">
+                <button class="circle-btn-sm" id="mobileDrawerWishlistBtn" title="Favoriler">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button class="circle-btn-sm" id="mobileDrawerCartBtn" title="Sepet">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Box inside Mobile Drawer -->
+        <div class="mobile-drawer-search">
+            <form onsubmit="event.preventDefault(); const val=document.getElementById('mobileDrawerSearchInput').value; if(val){ window.location.href='kategori.html?c=tum-koleksiyon&q='+encodeURIComponent(val); }">
+                <div class="search-box-mobile">
+                    <input type="text" placeholder="Evin için ne arıyorsun?" class="mobile-search-input" id="mobileDrawerSearchInput">
+                    <button type="submit" class="mobile-search-btn" aria-label="Ara"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Vivense-Style Mobile Category Accordion List -->
+        <div class="mobile-category-list">
+            <!-- 1. OTURMA ODASI -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">OTURMA ODASI</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=oturma-odasi" class="mobile-subcat-link bold-all">Tüm Oturma Odası Ürünleri</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Köşe Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Koltuk Takımı</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Kanepe + Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Berjer</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Sallanan Sandalye + Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Katlanır Yataklı Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Orta Sehpa</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Yan Sehpa</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Zigon Sehpa</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Tv Ünitesi</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=consoles" class="mobile-subcat-link">Dresuar</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Puf</a>
+                </div>
+            </div>
+
+            <!-- 2. YEMEK ODASI + MUTFAK -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">YEMEK ODASI + MUTFAK</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link bold-all">Tüm Yemek Odası Ürünleri</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Odası Takımı</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Masası</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Sandalye</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Konsol &amp; Aynası</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Vitrin &amp; Gümüşlük</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Mutfak Masası Takımı</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Bar Masası &amp; Sandalyesi</a>
+                </div>
+            </div>
+
+            <!-- 3. YATAK ODASI -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">YATAK ODASI</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Yatak Odası Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Yatak Odası Takımı</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Karyola &amp; Yatak</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Gardırop</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=nightstands" class="mobile-subcat-link">Komodin</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Şifonyer</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Baza &amp; Başlık</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Makyaj Masası</a>
+                </div>
+            </div>
+
+            <!-- 4. UYKU GRUBU -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">UYKU GRUBU</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link bold-all">Tüm Uyku Grubu Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Ortopedik Yataklar</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Visco &amp; Latex Yatak</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Sandıklı Bazalar</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Yastık &amp; Yorgan</a>
+                </div>
+            </div>
+
+            <!-- 5. SOFRA + PİŞİRME -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">SOFRA + PİŞİRME</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Yemek Takımları</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Çatal Kaşık Bıçak</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Tencere &amp; Tava Setleri</a>
+                </div>
+            </div>
+
+            <!-- 6. BAHÇE + BALKON -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">BAHÇE + BALKON</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link bold-all">Tüm Bahçe Mobilyaları</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Bahçe Oturma Grubu</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Balkon Masası &amp; Sandalye</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Salıncak &amp; Şezlong</a>
+                </div>
+            </div>
+
+            <!-- 7. DOLAP + ANTRE -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">DOLAP + ANTRE</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link bold-all">Tüm Dolap &amp; Antre Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Sürgülü Gardırop</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Kapaklı Gardırop</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Portmanto &amp; Vestiyer</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Ayakkabılık</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Dresuar &amp; Ayna</a>
+                </div>
+            </div>
+
+            <!-- 8. ÇALIŞMA ODASI + OFİS -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">ÇALIŞMA ODASI + OFİS</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link bold-all">Tüm Çalışma Odası Ürünleri</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Masası</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Koltuğu</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Duvar Rafları</a>
+                </div>
+            </div>
+
+            <!-- 9. BEBEK + ÇOCUK + GENÇ -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">BEBEK + ÇOCUK + GENÇ</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Bebek &amp; Genç Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Genç Odası Takımı</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Ranza &amp; Karyola</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Bebek Beşikleri</a>
+                </div>
+            </div>
+
+            <!-- 10. DEKORASYON -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">DEKORASYON</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Dekorasyon Ürünleri</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Aynalar</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Tablo &amp; Duvar Dekoru</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Aydınlatma &amp; Lambader</a>
+                </div>
+            </div>
+
+            <!-- 11. HALI -->
+            <div class="mobile-cat-accordion">
+                <button class="mobile-cat-header" type="button">
+                    <span class="cat-name">HALI</span>
+                    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+                </button>
+                <div class="mobile-cat-body">
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Halı Ürünleri</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Modern Halılar</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Yolluk &amp; Kilim</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Special Badges inside Mobile Menu -->
+        <div class="mobile-drawer-footer">
+            <a href="kategori.html?c=tum-koleksiyon" class="mobile-drawer-badge collection">
+                <i class="fa-solid fa-gem"></i> Mobelmor Collection
+            </a>
+            <a href="kategori.html?c=tum-koleksiyon&filter=best-price" class="mobile-drawer-badge best-price">
+                <i class="fa-solid fa-tag"></i> EN İYİ FİYAT
+            </a>
+        </div>
+    </div>
 
     <!-- Category Hero Header Banner -->
     <div class="category-hero-banner" id="categoryBanner">
@@ -396,6 +860,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/app.js?v=1786682931" defer></script>
+    <script src="js/app.js?v=20260814_2048" defer></script>
 </body>
 </html>
