@@ -139,7 +139,7 @@
             <div class="filter-count-badge" id="productCountBadge">Tüm Koleksiyon Listeleniyor</div>
             <div class="sort-controls">
                 <span class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sırala:</span>
-                <select id="sortSelect" class="sort-dropdown">
+                <select id="sortSelect" class="sort-dropdown" aria-label="Ürünleri Sırala">
                     <option value="featured">Öne Çıkanlar</option>
                     <option value="price-low">Fiyat: Düşükten Yükseğe</option>
                     <option value="price-high">Fiyat: Yüksekten Düşüğe</option>
@@ -231,7 +231,7 @@
     <aside class="cart-drawer" id="wishlistDrawer">
         <div class="cart-header" style="background:#fcf5ff; border-bottom:1px solid #f3e8ff;">
             <h3 style="color:#6b21a8;"><i class="fa-regular fa-heart"></i> Favori Ürünlerim</h3>
-            <button class="close-btn interactive-btn" id="closeWishlistBtn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-btn interactive-btn" id="closeWishlistBtn" aria-label="Favoriler Çekmecesini Kapat"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="cart-body" id="wishlistBody"></div>
         <div class="cart-footer" id="wishlistFooter"></div>
@@ -242,7 +242,7 @@
     <aside class="cart-drawer" id="cartDrawer">
         <div class="cart-header">
             <h3><i class="fa-solid fa-basket-shopping"></i> Alışveriş Sepetim</h3>
-            <button class="close-btn interactive-btn" id="closeCartBtn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-btn interactive-btn" id="closeCartBtn" aria-label="Sepeti Kapat"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="cart-body" id="cartBody"></div>
         <div class="cart-footer" id="cartFooter"></div>
@@ -251,7 +251,7 @@
     <!-- Quick View Modal -->
     <div class="modal-overlay" id="quickViewOverlay">
         <div class="modal-card">
-            <button class="close-btn modal-close interactive-btn" id="closeQuickViewBtn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-btn modal-close interactive-btn" id="closeQuickViewBtn" aria-label="Hızlı İncelemeyi Kapat"><i class="fa-solid fa-xmark"></i></button>
             <div id="quickViewContent"></div>
         </div>
     </div>
@@ -259,7 +259,7 @@
     <!-- Checkout Modal -->
     <div class="modal-overlay" id="checkoutOverlay">
         <div class="modal-card">
-            <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn" aria-label="Ödeme Ekranını Kapat"><i class="fa-solid fa-xmark"></i></button>
             <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Ödeme</h3>
             <p style="color:#71717a; font-size:0.88rem;">256-Bit SSL korumalı hızlı sipariş tamamlama ekranı.</p>
 

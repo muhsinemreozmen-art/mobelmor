@@ -747,7 +747,7 @@ const renderProducts = () => {
                     <div class="badge-pills-stack">
                         ${item.badges.map(b => `<span class="${b.includes('MASİF') || b.includes('YENİ') ? 'pill-purple' : 'pill-dark'}">${b}</span>`).join('')}
                     </div>
-                    <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${item.id}" title="Favorilere Ekle">
+                    <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${item.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle">
                         <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
                     </button>
                 </div>
@@ -762,10 +762,10 @@ const renderProducts = () => {
                     <div class="card-price-row">
                         <span class="card-price-text">${formatPrice(item.price)}</span>
                         <div class="card-actions-group">
-                            <button class="circle-view-btn quick-view-btn" data-id="${item.id}" title="Hızlı İncele">
+                            <button class="circle-view-btn quick-view-btn" data-id="${item.id}" title="Hızlı İncele" aria-label="Hızlı İncele">
                                 <i class="fa-regular fa-eye"></i>
                             </button>
-                            <button class="pill-add-btn add-to-cart-btn" data-id="${item.id}">
+                            <button class="pill-add-btn add-to-cart-btn" data-id="${item.id}" aria-label="Sepete Ekle">
                                 <i class="fa-solid fa-cart-plus"></i> Ekle
                             </button>
                         </div>
