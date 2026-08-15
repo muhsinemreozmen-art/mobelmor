@@ -47,18 +47,31 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260815_0505">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260815_0510">
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
     <!-- Sticky Header -->
     <header class="app-header">
         <div class="container header-container">
-            <!-- Left: Desktop Search / Mobile Hamburger -->
+            <!-- Left: Brand Logo (+ Mobile Hamburger) -->
             <div class="header-left-col">
                 <button class="mobile-hamburger-btn interactive-btn" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+                <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
+                    <div class="logo-main-title">
+                        <span class="logo-text-mobel">mobel</span>
+                        <span class="logo-mor-box">
+                            <span class="logo-text-mor">mor</span>
+                            <span class="logo-com-arrow">.com</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Center: Desktop Search -->
+            <div class="header-center-col">
                 <div class="desktop-search-wrap">
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -66,19 +79,6 @@
                         <button class="clear-btn" id="clearSearchBtn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Center: Official Brand Logo -->
-            <div class="header-center-col">
-                <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
-                    <div class="logo-main-title">
-                        <span class="logo-text-mobel">mobel</span>
-                        <span class="logo-mor-box">
-                            <span class="logo-com-arrow">.com</span>
-                            <span class="logo-text-mor">mor</span>
-                        </span>
-                    </div>
-                </a>
             </div>
 
             <!-- Right: User Action Buttons -->
