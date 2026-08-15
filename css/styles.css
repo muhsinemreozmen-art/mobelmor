@@ -5270,3 +5270,479 @@ button:active,
     transform: translateX(0);
 }
 
+/* =========================================================================
+   Mobile Curated Showcase Sections (Vivense Sequential Order)
+   ========================================================================= */
+.mobile-curated-showcase {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .mobile-curated-showcase {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 24px;
+        background-color: #faf9fc;
+    }
+
+    .vivense-showcase-block {
+        margin-bottom: 32px;
+    }
+
+    .vivense-sec-title {
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        font-size: 1.12rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #27272a;
+        text-align: center;
+        margin: 28px 0 16px 0;
+        text-transform: uppercase;
+    }
+
+    /* 1 & 4: 2-Column Product Cards Row */
+    .vivense-prod-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .vivense-mini-card {
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        text-decoration: none;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f4f4f5;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .vivense-mini-card:active {
+        transform: scale(0.98);
+    }
+
+    .vmc-img-box {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background: #f8fafc;
+        overflow: hidden;
+    }
+
+    .vmc-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .vmc-circle-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        z-index: 2;
+    }
+
+    .vmc-badge-purple {
+        background: #e0e7ff;
+        color: #1e1b4b;
+        border: 1.5px solid #c7d2fe;
+    }
+
+    .vmc-badge-purple span {
+        font-size: 0.46rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    .vmc-badge-purple strong {
+        font-size: 0.95rem;
+        font-weight: 900;
+        margin: 1px 0;
+    }
+
+    .vmc-badge-gold {
+        background: #fef3c7;
+        color: #78350f;
+        border: 1.5px solid #fde68a;
+    }
+
+    .vmc-badge-gold span {
+        font-size: 0.46rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    .vmc-badge-gold strong {
+        font-size: 0.95rem;
+        font-weight: 900;
+        margin: 1px 0;
+    }
+
+    .vmc-percent-tag {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #e11d48;
+        color: #ffffff;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 3px 6px;
+        border-radius: 0 0 0 6px;
+        z-index: 2;
+    }
+
+    .vmc-body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .vmc-brand-pill {
+        display: inline-block;
+        align-self: flex-start;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-bottom: 6px;
+        text-transform: lowercase;
+    }
+
+    .pill-collection {
+        background: #334155;
+        color: #ffffff;
+    }
+
+    .pill-best-price {
+        background: #ea580c;
+        color: #ffffff;
+        text-transform: uppercase;
+        font-size: 0.62rem;
+    }
+
+    .vmc-title {
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #18181b;
+        margin: 0 0 6px 0;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .vmc-price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin-top: auto;
+    }
+
+    .vmc-current-price {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #18181b;
+    }
+
+    .vmc-old-price {
+        font-size: 0.76rem;
+        color: #a1a1aa;
+        text-decoration: line-through;
+    }
+
+    .vmc-sepette-price {
+        font-size: 0.80rem;
+        color: #b91c1c;
+        font-weight: 700;
+        margin-top: 2px;
+    }
+
+    .vmc-fast-delivery {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #f0fdf4;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-top: 6px;
+        align-self: flex-start;
+    }
+
+    /* 2: Sepette İndirimler Banner Row */
+    .vivense-banner-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .vivense-promo-banner-card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+    }
+
+    .vpbc-img-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f4f4f5;
+    }
+
+    .vpbc-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .vpbc-corner-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+    }
+
+    .vpbc-corner-badge span {
+        font-size: 0.52rem;
+        font-weight: 700;
+        color: #3f3f46;
+    }
+
+    .vpbc-corner-badge strong {
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: #18181b;
+        margin: 2px 0;
+    }
+
+    .vivense-action-link {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #0d9488;
+        margin-top: 8px;
+        display: inline-block;
+    }
+
+    /* 3 & 5: Moodboard / Lifestyle Cards */
+    .vivense-moodboard-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .vivense-mood-card,
+    .vivense-lifestyle-card {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        aspect-ratio: 3 / 4;
+        background: #27272a;
+    }
+
+    .vivense-mood-card img,
+    .vivense-lifestyle-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .vmood-overlay-box,
+    .vlfc-content {
+        position: absolute;
+        inset: 0;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+        color: #ffffff;
+    }
+
+    .vlfc-sub {
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: #facc15;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    .vmood-overlay-box h4,
+    .vlfc-title {
+        font-size: 0.92rem;
+        font-weight: 800;
+        margin: 0 0 6px 0;
+        line-height: 1.25;
+        color: #ffffff;
+    }
+
+    .vmood-overlay-box p,
+    .vlfc-text {
+        font-size: 0.72rem;
+        line-height: 1.35;
+        color: #e4e4e7;
+        margin: 0 0 10px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .vmood-btn,
+    .vlfc-btn {
+        display: inline-block;
+        align-self: flex-start;
+        background: rgba(255, 255, 255, 0.95);
+        color: #18181b;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 5px 10px;
+        border-radius: 999px;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Big Feature Living Space Card */
+    .vivense-big-feature-card {
+        background: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #f4f4f5;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-top: 14px;
+    }
+
+    .vbfc-img-wrap {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+    }
+
+    .vbfc-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .vbfc-body {
+        padding: 16px;
+        text-align: center;
+    }
+
+    .vbfc-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #18181b;
+        margin: 0 0 6px 0;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .vbfc-desc {
+        font-size: 0.82rem;
+        color: #52525b;
+        line-height: 1.45;
+        margin: 0 0 12px 0;
+    }
+
+    .vbfc-link {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: #0d9488;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    /* 6: 2026 Yaz Trendleri 8-Grid */
+    .vivense-trends-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .vtrend-card {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        aspect-ratio: 4 / 3;
+        text-decoration: none;
+        background: #18181b;
+    }
+
+    .vtrend-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .vtrend-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #0d9488;
+        color: #ffffff;
+        padding: 3px 6px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+        z-index: 2;
+    }
+
+    .vtrend-badge .vt-old {
+        font-size: 0.58rem;
+        text-decoration: line-through;
+        opacity: 0.85;
+    }
+
+    .vtrend-badge .vt-curr {
+        font-size: 0.76rem;
+        font-weight: 800;
+    }
+
+    .vtrend-name {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 18px 8px 8px 8px;
+        background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+        color: #ffffff;
+        font-size: 0.80rem;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+        z-index: 2;
+    }
+}
+
