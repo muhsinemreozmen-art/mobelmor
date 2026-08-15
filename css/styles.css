@@ -94,11 +94,11 @@ button:active,
 }
 
 .header-container {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 24px;
+    gap: 32px;
     min-height: 62px;
     background-color: #ffffff !important;
 }
@@ -108,26 +108,24 @@ button:active,
     align-items: center;
     justify-content: flex-start;
     gap: 12px;
-    position: relative;
-    z-index: 2;
+    flex-shrink: 0;
 }
 
 .header-center-col {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: calc(100% - 440px);
-    max-width: 620px;
+    position: static !important;
+    transform: none !important;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
-    z-index: 1;
+    pointer-events: auto;
+    width: 100%;
 }
 
 .desktop-search-wrap {
     width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     pointer-events: auto;
