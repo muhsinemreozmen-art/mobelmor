@@ -1299,16 +1299,35 @@ document.addEventListener("DOMContentLoaded", () => {
         const cParam = urlParams.get("c");
         const catParam = urlParams.get("cat");
         const subParam = urlParams.get("sub");
+        const filterParam = urlParams.get("filter");
 
         let resolvedCat = "all";
+        let resolvedSub = "all";
+
         if (cParam) {
             resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
         } else if (catParam) {
             resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
+        } else {
+            // Check direct pathname: /oturma-odasi or /oturma-odasi/sofas
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            if (pathParts.length > 0) {
+                const first = pathParts[0].replace(/\.html$/, '');
+                if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[first]) {
+                    resolvedCat = window.SLUG_TO_CATEGORY[first];
+                    if (pathParts[1]) {
+                        resolvedSub = pathParts[1];
+                    }
+                }
+            }
+        }
+
+        if (subParam) {
+            resolvedSub = subParam;
         }
 
         currentCategory = resolvedCat;
-        currentSubcategory = subParam || "all";
+        currentSubcategory = resolvedSub;
         updateActiveCategoryUI();
         renderProducts();
     };

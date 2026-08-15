@@ -1,0 +1,33 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "rewrites": [
+      { "source": "/oturma-odasi", "destination": "/kategori.html" },
+      { "source": "/oturma-odasi/**", "destination": "/kategori.html" },
+      { "source": "/yemek-odasi", "destination": "/kategori.html" },
+      { "source": "/yemek-odasi/**", "destination": "/kategori.html" },
+      { "source": "/yatak-odasi", "destination": "/kategori.html" },
+      { "source": "/yatak-odasi/**", "destination": "/kategori.html" },
+      { "source": "/bahce", "destination": "/kategori.html" },
+      { "source": "/bahce/**", "destination": "/kategori.html" },
+      { "source": "/tv-uniteleri", "destination": "/kategori.html" },
+      { "source": "/tv-uniteleri/**", "destination": "/kategori.html" },
+      { "source": "/dekorasyon", "destination": "/kategori.html" },
+      { "source": "/aydinlatma", "destination": "/kategori.html" },
+      { "source": "/hali", "destination": "/kategori.html" },
+      { "source": "/tum-koleksiyon", "destination": "/kategori.html" },
+      { "source": "/tum-urunler", "destination": "/kategori.html" },
+      { "source": "/sepette-indirimler", "destination": "/kategori.html" },
+      { "source": "/cok-satanlar", "destination": "/kategori.html" },
+      { "source": "/2026-yaz-trendleri", "destination": "/kategori.html" },
+      { "source": "/urun/**", "destination": "/urun-detay.html" }
+    ]
+  }
+}

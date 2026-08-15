@@ -1,0 +1,35 @@
+RewriteEngine On
+RewriteBase /
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Remove .html extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Clean Category URLs
+RewriteRule ^oturma-odasi/?$ kategori.html?c=oturma-odasi [L,QSA]
+RewriteRule ^oturma-odasi/([^/]+)/?$ kategori.html?c=oturma-odasi&sub=$1 [L,QSA]
+RewriteRule ^yemek-odasi/?$ kategori.html?c=yemek-odasi [L,QSA]
+RewriteRule ^yemek-odasi/([^/]+)/?$ kategori.html?c=yemek-odasi&sub=$1 [L,QSA]
+RewriteRule ^yatak-odasi/?$ kategori.html?c=yatak-odasi [L,QSA]
+RewriteRule ^yatak-odasi/([^/]+)/?$ kategori.html?c=yatak-odasi&sub=$1 [L,QSA]
+RewriteRule ^bahce/?$ kategori.html?c=bahce [L,QSA]
+RewriteRule ^bahce/([^/]+)/?$ kategori.html?c=bahce&sub=$1 [L,QSA]
+RewriteRule ^tv-uniteleri/?$ kategori.html?c=tv-uniteleri [L,QSA]
+RewriteRule ^tv-uniteleri/([^/]+)/?$ kategori.html?c=tv-uniteleri&sub=$1 [L,QSA]
+RewriteRule ^dekorasyon/?$ kategori.html?c=dekorasyon [L,QSA]
+RewriteRule ^aydinlatma/?$ kategori.html?c=aydinlatma [L,QSA]
+RewriteRule ^hali/?$ kategori.html?c=hali [L,QSA]
+RewriteRule ^tum-koleksiyon/?$ kategori.html?c=tum-koleksiyon [L,QSA]
+RewriteRule ^tum-urunler/?$ kategori.html?c=tum-koleksiyon [L,QSA]
+RewriteRule ^sepette-indirimler/?$ kategori.html?c=tum-koleksiyon&filter=sepette-indirim [L,QSA]
+RewriteRule ^cok-satanlar/?$ kategori.html?c=tum-koleksiyon&filter=best-seller [L,QSA]
+RewriteRule ^2026-yaz-trendleri/?$ kategori.html?c=tum-koleksiyon&filter=trends [L,QSA]
+
+# Clean Product URLs
+RewriteRule ^urun/([^/]+)/?$ urun-detay.html?slug=$1 [L,QSA]

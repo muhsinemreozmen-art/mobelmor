@@ -673,6 +673,14 @@ const getProductIdFromUrl = () => {
         const found = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === slugStr);
         if (found) return found.id;
     }
+    // Also check pathname: /urun/slug or /slug
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+    if (lastPart && !lastPart.includes('detail') && !lastPart.includes('detay')) {
+        const cleanLast = lastPart.replace(/\.html$/, '');
+        const found = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === cleanLast);
+        if (found) return found.id;
+    }
     return 1;
 };
 
