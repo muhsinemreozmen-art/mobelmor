@@ -5300,14 +5300,25 @@ button:active,
         text-transform: uppercase;
     }
 
-    /* 1 & 4: 2-Column Product Cards Row */
+    /* 1 & 4: Horizontal Scrollable Product Carousel */
     .vivense-prod-row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
         gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 4px 14px 4px;
+        scrollbar-width: none;
+    }
+
+    .vivense-prod-row::-webkit-scrollbar {
+        display: none;
     }
 
     .vivense-mini-card {
+        flex: 0 0 172px;
+        max-width: 172px;
+        scroll-snap-align: start;
         display: flex;
         flex-direction: column;
         background: #ffffff;
@@ -5487,14 +5498,25 @@ button:active,
         align-self: flex-start;
     }
 
-    /* 2: Sepette İndirimler Banner Row */
+    /* 2: Horizontal Scrollable Sepette İndirimler Banner Carousel */
     .vivense-banner-row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
         gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 4px 14px 4px;
+        scrollbar-width: none;
+    }
+
+    .vivense-banner-row::-webkit-scrollbar {
+        display: none;
     }
 
     .vivense-promo-banner-card {
+        flex: 0 0 185px;
+        max-width: 185px;
+        scroll-snap-align: start;
         display: flex;
         flex-direction: column;
         text-decoration: none;
@@ -5551,16 +5573,27 @@ button:active,
         display: inline-block;
     }
 
-    /* 3 & 5: Moodboard / Lifestyle Cards */
+    /* 3 & 5: Horizontal Scrollable Moodboard & Lifestyle Cards Carousel */
     .vivense-moodboard-row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
         gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 4px 14px 4px;
+        scrollbar-width: none;
         margin-bottom: 16px;
+    }
+
+    .vivense-moodboard-row::-webkit-scrollbar {
+        display: none;
     }
 
     .vivense-mood-card,
     .vivense-lifestyle-card {
+        flex: 0 0 215px;
+        max-width: 215px;
+        scroll-snap-align: start;
         position: relative;
         border-radius: 8px;
         overflow: hidden;
