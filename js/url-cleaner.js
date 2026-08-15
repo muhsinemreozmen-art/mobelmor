@@ -62,23 +62,23 @@
 
     // 3. Clean URL Generator Helpers
     window.getCleanHomeUrl = function() {
-        return './';
+        return '/';
     };
 
     window.getCleanCategoryUrl = function(categoryKey, subcategoryKey) {
         var slug = window.CATEGORY_SLUGS[categoryKey] || categoryKey || 'tum-koleksiyon';
         if (subcategoryKey && subcategoryKey !== 'all') {
-            return `kategori.html?c=${slug}&sub=${subcategoryKey}`;
+            return `/kategori.html?c=${slug}&sub=${subcategoryKey}`;
         }
-        return `kategori.html?c=${slug}`;
+        return `/kategori.html?c=${slug}`;
     };
 
     window.getCleanProductUrl = function(productId, title) {
         var slug = window.slugify(title || '');
         if (slug) {
-            return `urun-detay.html?id=${productId}&slug=${slug}`;
+            return `/urun-detay.html?id=${productId}&slug=${slug}`;
         }
-        return `urun-detay.html?id=${productId}`;
+        return `/urun-detay.html?id=${productId}`;
     };
 
     // 4. Client-side URL Cleaner & PushState Router for Clean Address Bar

@@ -1250,19 +1250,19 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = cat;
         currentSubcategory = sub;
 
-        const rawUrl = window.getCleanCategoryUrl ? window.getCleanCategoryUrl(cat, sub) : `kategori.html?c=${cat}&sub=${sub}`;
+        const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[cat] || cat) : cat;
+        const targetUrl = (sub && sub !== 'all') ? `/kategori.html?c=${catSlug}&sub=${sub}` : `/kategori.html?c=${catSlug}`;
         const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
 
         if (isCategoryPage) {
-            const cleanUrl = rawUrl.replace(/\.html/, '');
-            if (updateHistory && window.history.pushState) {
-                window.history.pushState({ cat, sub }, "", cleanUrl);
+            if (updateHistory && window.history && window.history.pushState) {
+                window.history.pushState({ cat, sub }, "", targetUrl);
             }
             document.querySelectorAll(".cat-dropdown-wrapper").forEach(w => w.classList.remove("open"));
             updateActiveCategoryUI();
             renderProducts();
         } else {
-            window.location.href = rawUrl;
+            window.location.href = targetUrl;
         }
     };
 
