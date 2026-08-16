@@ -85,7 +85,110 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0645">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0650">
+    <style id="header-alignment-guarantee">
+        .app-header .header-container,
+        .vivense-nav-wrapper .vivense-nav-container,
+        .vivense-campaign-strip .campaign-strip-inner {
+            max-width: 1240px !important;
+            width: 100% !important;
+            margin: 0 auto !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+            box-sizing: border-box !important;
+        }
+        .mobile-hamburger-btn,
+        .hide-on-desktop {
+            display: none !important;
+        }
+        @media (max-width: 991px) {
+            .mobile-hamburger-btn,
+            .hide-on-desktop {
+                display: inline-flex !important;
+            }
+        }
+        .vivense-campaign-strip {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding: 9px 0 !important;
+            width: 100% !important;
+        }
+        .campaign-strip-inner {
+            display: grid !important;
+            grid-template-columns: repeat(5, 1fr) !important;
+            align-items: center !important;
+        }
+        .campaign-trust-col {
+            display: flex !important;
+            align-items: center !important;
+            position: relative !important;
+            width: 100% !important;
+        }
+        .campaign-trust-col:not(:last-child)::after {
+            content: '' !important;
+            position: absolute !important;
+            right: 0 !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: 1px !important;
+            height: 14px !important;
+            background-color: #e2e8f0 !important;
+        }
+        .campaign-trust-col.col-1 {
+            justify-content: flex-start !important;
+        }
+        .campaign-trust-col.col-2,
+        .campaign-trust-col.col-3,
+        .campaign-trust-col.col-4 {
+            justify-content: center !important;
+        }
+        .campaign-trust-col.col-5 {
+            justify-content: flex-end !important;
+        }
+        .campaign-trust-item {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+            font-size: 0.74rem !important;
+            font-weight: 500 !important;
+            color: #475569 !important;
+            white-space: nowrap !important;
+        }
+        .campaign-trust-item i {
+            color: #64748b !important;
+            font-size: 0.82rem !important;
+        }
+        .campaign-trust-item.brand-item {
+            font-size: 0.74rem !important;
+            font-weight: 700 !important;
+            color: #1e293b !important;
+        }
+        .campaign-trust-item.brand-item i {
+            color: #6b21a8 !important;
+            font-size: 0.86rem !important;
+        }
+        .campaign-trust-item .brand-mor {
+            color: #6b21a8 !important;
+            font-weight: 800 !important;
+        }
+        .vivense-nav-link {
+            padding: 12px 5px !important;
+            font-size: 0.69rem !important;
+        }
+        @media (min-width: 1200px) {
+            .vivense-nav-link {
+                padding: 12px 7px !important;
+                font-size: 0.715rem !important;
+            }
+        }
+        .vivense-nav-link.dots-link {
+            padding: 12px 0 12px 6px !important;
+        }
+        .vivense-nav-badge {
+            padding: 12px 10px 12px 0 !important;
+        }
+    </style>
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
