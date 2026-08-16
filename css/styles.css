@@ -6238,26 +6238,26 @@ body.modal-open {
     background: transparent;
 }
 
-/* Display Dropdown on Hover or Focus or Active (Desktop) */
-.user-menu-wrapper:hover .user-menu-dropdown,
-.user-menu-wrapper:focus-within .user-menu-dropdown,
-.user-menu-dropdown.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
+/* Desktop: Show on Hover or Active */
+@media (min-width: 992px) {
+    .user-menu-wrapper:hover .user-menu-dropdown,
+    .user-menu-dropdown.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+    }
+
+    .header-dropdown-wrapper:hover .header-hover-dropdown,
+    .header-hover-dropdown.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(-50%) translateY(0) !important;
+        pointer-events: auto !important;
+    }
 }
 
-.header-dropdown-wrapper:hover .header-hover-dropdown,
-.header-dropdown-wrapper:focus-within .header-hover-dropdown,
-.header-hover-dropdown.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateX(-50%) translateY(0) !important;
-    pointer-events: auto !important;
-}
-
-/* Mobile & Tablet Responsive Alignment */
+/* Mobile & Tablet: Only .active controls open/close */
 @media (max-width: 991px) {
     .header-dropdown-wrapper,
     .user-menu-wrapper {
@@ -6274,17 +6274,20 @@ body.modal-open {
         max-width: 300px !important;
         margin-left: auto !important;
         margin-right: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
         transform: translateY(6px) !important;
         box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
         border-radius: 14px !important;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease !important;
     }
 
-    .user-menu-wrapper:hover .user-menu-dropdown,
-    .user-menu-wrapper:focus-within .user-menu-dropdown,
-    .user-menu-dropdown.active,
-    .header-dropdown-wrapper:hover .header-hover-dropdown,
-    .header-dropdown-wrapper:focus-within .header-hover-dropdown,
-    .header-hover-dropdown.active {
+    .header-hover-dropdown.active,
+    .user-menu-dropdown.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
         transform: translateY(0) !important;
     }
 }

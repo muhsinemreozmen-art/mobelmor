@@ -1557,20 +1557,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const orderTrackDropdown = document.getElementById("orderTrackDropdown");
 
     orderTrackBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         document.getElementById("userMenuDropdown")?.classList.remove("active");
         if (orderTrackDropdown) {
-            orderTrackDropdown.classList.toggle("active");
+            const isCurrentlyActive = orderTrackDropdown.classList.contains("active");
+            if (isCurrentlyActive) {
+                orderTrackDropdown.classList.remove("active");
+                orderTrackBtn.blur();
+            } else {
+                orderTrackDropdown.classList.add("active");
+            }
         }
     });
 
     // Auth Button Click Handling
-    document.getElementById("headerAuthBtn")?.addEventListener("click", (e) => {
+    const headerAuthBtn = document.getElementById("headerAuthBtn");
+    const userMenuDropdown = document.getElementById("userMenuDropdown");
+
+    headerAuthBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         orderTrackDropdown?.classList.remove("active");
-        const dropdown = document.getElementById("userMenuDropdown");
-        if (dropdown) {
-            dropdown.classList.toggle("active");
+        if (userMenuDropdown) {
+            const isCurrentlyActive = userMenuDropdown.classList.contains("active");
+            if (isCurrentlyActive) {
+                userMenuDropdown.classList.remove("active");
+                headerAuthBtn.blur();
+            } else {
+                userMenuDropdown.classList.add("active");
+            }
         }
     });
 
@@ -1580,7 +1596,7 @@ document.addEventListener("DOMContentLoaded", () => {
             orderTrackDropdown?.classList.remove("active");
         }
         if (!e.target.closest("#headerAuthContainer")) {
-            document.getElementById("userMenuDropdown")?.classList.remove("active");
+            userMenuDropdown?.classList.remove("active");
         }
     });
 
