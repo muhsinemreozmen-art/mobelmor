@@ -1438,6 +1438,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    const formatDisplayName = (name) => {
+        if (!name) return "Giriş";
+        const firstWord = name.trim().split(/\s+/)[0];
+        if (!firstWord) return "Giriş";
+        return firstWord.charAt(0).toLocaleUpperCase('tr-TR') + firstWord.slice(1).toLocaleLowerCase('tr-TR');
+    };
+
+    const formatFullName = (name) => {
+        if (!name) return "";
+        return name.trim().split(/\s+/).map(word => 
+            word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR')
+        ).join(' ');
+    };
+
     const updateAuthUI = () => {
         const user = getCurrentUser();
         const authBtn = document.getElementById("headerAuthBtn");
@@ -1445,12 +1459,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropdown = document.getElementById("userMenuDropdown");
 
         if (user) {
+            const dispName = formatDisplayName(user.name);
             authBtn?.classList.add("logged-in");
-            if (authText) authText.textContent = user.name.split(" ")[0];
+            if (authText) authText.textContent = dispName;
             if (dropdown) {
                 dropdown.innerHTML = `
                     <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
-                        <i class="fa-solid fa-circle-user" style="color:#6b21a8;"></i> Hoş geldiniz, ${user.name.split(" ")[0]}
+                        <i class="fa-solid fa-circle-user" style="color:#6b21a8;"></i> Hoş geldiniz, ${dispName}
                     </div>
                     <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim &amp; Takip</a>
                     <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>

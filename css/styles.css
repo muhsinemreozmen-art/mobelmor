@@ -331,6 +331,10 @@ button:active,
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
+#headerAuthText {
+    text-transform: capitalize !important;
+}
+
 .header-action-btn:hover {
     color: #18181b;
     background: #ffffff;
