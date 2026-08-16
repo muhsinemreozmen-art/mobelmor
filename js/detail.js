@@ -1377,14 +1377,9 @@ const renderModulePriceSection = (product) => {
             <div class="module-total-side">
                 <span style="font-size:0.80rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">Hesaplanan Toplam:</span>
                 <span class="grand-total-val" id="moduleGrandTotal">${formatPrice(product.price)}</span>
-                <button class="mobelmor-cart-btn interactive-btn" id="moduleAddToCartBtn">
-                    <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
-                </button>
             </div>
         </div>
     `;
-
-    document.getElementById("moduleAddToCartBtn")?.addEventListener("click", () => addToCart(product.id, 1));
 };
 
 // DYNAMIC LIVE CALCULATOR

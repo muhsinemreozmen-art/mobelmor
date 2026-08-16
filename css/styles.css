@@ -3264,6 +3264,10 @@ button:active,
     .mobile-sticky-buy-bar {
         display: flex !important;
     }
+    .vbuy-primary-btn,
+    .mobelmor-cart-btn {
+        display: none !important;
+    }
     body {
         padding-bottom: 74px !important;
     }
