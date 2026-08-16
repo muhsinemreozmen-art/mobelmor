@@ -6907,3 +6907,502 @@ body.modal-open {
     }
 }
 
+/* =========================================================================
+   Vivense-Style Homepage Sections Architecture
+   ========================================================================= */
+.vivense-home-sections {
+    padding: 32px 0 60px 0;
+    background-color: #faf9fc;
+    width: 100%;
+}
+
+.vivense-sec-header {
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.vivense-sec-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+}
+
+.vivense-showcase-section {
+    margin-bottom: 48px;
+}
+
+/* 1. SEPETTE İNDİRİMLER (4 Promo Cards) */
+.sepette-promo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.sepette-promo-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sepette-promo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.sepette-card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.sepette-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.sepette-promo-card:hover .sepette-card-img-wrap img {
+    transform: scale(1.03);
+}
+
+.sepette-corner-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ffffff;
+    padding: 6px 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.15;
+    border-bottom-left-radius: 6px;
+}
+
+.sepette-corner-badge .badge-sub {
+    font-size: 0.60rem;
+    font-weight: 600;
+    color: #1e293b;
+    letter-spacing: 0.04em;
+}
+
+.sepette-corner-badge .badge-num {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.sepette-promo-footer {
+    padding: 12px 4px 6px 4px;
+}
+
+.sepette-action-link {
+    color: #0d9488;
+    font-weight: 600;
+    font-size: 0.82rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s ease;
+}
+
+.sepette-promo-card:hover .sepette-action-link {
+    color: #0f766e;
+    text-decoration: underline;
+}
+
+/* 2 & 6. PRODUCT CAROUSELS (SON GEZDİKLERİNİZ & ÇOK SATANLAR) */
+.vivense-carousel-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.vivense-carousel-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+}
+
+.vivense-carousel-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.15s ease;
+}
+
+.vivense-carousel-btn:hover {
+    background: #18181b;
+    color: #ffffff;
+    border-color: #18181b;
+}
+
+.vivense-carousel-btn.prev-btn {
+    left: -19px;
+}
+
+.vivense-carousel-btn.next-btn {
+    right: -19px;
+}
+
+.vprod-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vprod-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.vprod-img-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    background: #f8fafc;
+    overflow: hidden;
+}
+
+.vprod-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.vprod-card:hover .vprod-img-box img {
+    transform: scale(1.03);
+}
+
+.vprod-circle-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #e0e7ff;
+    color: #3730a3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.vprod-circle-badge span {
+    font-size: 0.52rem;
+    font-weight: 700;
+}
+
+.vprod-circle-badge strong {
+    font-size: 0.88rem;
+    font-weight: 800;
+}
+
+.vprod-percent-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc2626;
+    color: #ffffff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.vprod-brand-pill {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.vprod-brand-pill.pill-best-price {
+    background: #ea580c;
+    color: #ffffff;
+}
+
+.vprod-brand-pill.pill-collection {
+    background: #1e293b;
+    color: #ffffff;
+}
+
+.vprod-body {
+    padding: 12px 10px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.vprod-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vprod-price-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.vprod-curr-price {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.vprod-old-price {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.vprod-sepette-row {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #dc2626;
+}
+
+/* 3 & 5. MOODBOARD / INSPIRATION 3-COLUMN GRIDS */
+.vivense-mood-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.vmood-curation-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f1f5f9;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.vmood-curation-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.vmood-curation-card:hover img {
+    transform: scale(1.04);
+}
+
+.vmood-top-overlay {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(40, 25, 18, 0.68);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 16px;
+    border-radius: 6px;
+    color: #ffffff;
+    max-width: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.vmood-tag-top {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #e2e8f0;
+    text-decoration: underline;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.vmood-top-overlay h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: #ffffff;
+    line-height: 1.25;
+}
+
+.vmood-top-overlay p {
+    font-size: 0.68rem;
+    color: #f8fafc;
+    margin: 0;
+    line-height: 1.35;
+    opacity: 0.92;
+}
+
+.vmood-bottom-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: #ffffff;
+    color: #1e293b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.vmood-curation-card:hover .vmood-bottom-btn {
+    background: #18181b;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* 4. ASYMMETRICAL LIVING SPACE SHOWCASE (Travo Yaşam Alanı) */
+.vivense-concept-showcase {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.concept-left-hero {
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 380px;
+    background-color: #f8fafc;
+}
+
+.concept-left-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.concept-right-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.concept-text-box {
+    padding: 10px 8px;
+}
+
+.concept-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+}
+
+.concept-desc {
+    font-size: 0.86rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 14px 0;
+}
+
+.concept-link {
+    color: #0d9488;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.concept-link:hover {
+    text-decoration: underline;
+}
+
+.concept-right-img-box {
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background-color: #f1f5f9;
+}
+
+.concept-right-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive Rules */
+@media (max-width: 991px) {
+    .sepette-promo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .vivense-carousel-track {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .vivense-mood-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .vivense-concept-showcase {
+        grid-template-columns: 1fr;
+    }
+    .concept-left-hero {
+        min-height: 240px;
+    }
+}
+
