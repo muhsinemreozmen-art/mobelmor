@@ -1225,14 +1225,14 @@ const renderModulePriceSection = (product) => {
                     <button class="qty-counter-btn" onclick="updateModuleQty('${m.id}',1)" aria-label="Adet Artır"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </td>
-            <td style="font-weight:800;color:#6b21a8;" id="mod_${m.id}_sub">${formatPrice(m.price * m.qty)}</td>
+            <td style="font-weight:800;color:#0f172a;" id="mod_${m.id}_sub">${formatPrice(m.price * m.qty)}</td>
         </tr>
     `).join('');
 
     container.innerHTML = `
         <div class="module-header-title">
-            <span class="module-header-text">Modül & Fiyat Hesaplayıcı</span>
-            <span class="module-live-tag"><i class="fa-solid fa-bolt"></i> Canlı Hesaplama</span>
+            <span class="module-header-text">MODÜL & FİYAT HESAPLAYICI</span>
+            <span class="module-live-tag"><i class="fa-solid fa-bolt"></i> CANLI HESAPLAMA</span>
         </div>
         <div class="module-table-wrapper">
             <table class="module-table">
@@ -1240,10 +1240,10 @@ const renderModulePriceSection = (product) => {
                 <tbody>${rows}</tbody>
             </table>
             <div class="module-total-side">
-                <span style="font-size:0.85rem;font-weight:800;color:#71717a;margin-bottom:4px;">Hesaplanan Toplam:</span>
+                <span style="font-size:0.80rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">Hesaplanan Toplam:</span>
                 <span class="grand-total-val" id="moduleGrandTotal">${formatPrice(product.price)}</span>
                 <button class="mobelmor-cart-btn interactive-btn" id="moduleAddToCartBtn">
-                    <i class="fa-solid fa-cart-shopping"></i> Sepete Ekle
+                    <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
                 </button>
             </div>
         </div>

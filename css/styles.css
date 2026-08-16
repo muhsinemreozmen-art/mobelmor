@@ -4959,56 +4959,52 @@ body.modal-open {
 
 .module-price-section {
     background-color: #ffffff !important;
-    border: 1px solid #e9d5ff !important;
-    border-radius: 14px;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px;
     margin-top: 24px;
     margin-bottom: 30px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(107, 33, 168, 0.06);
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .module-header-title {
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
+    background: #f8fafc !important;
     padding: 14px 20px !important;
-    border-bottom: 1px solid #e9d5ff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .module-header-text {
-    font-size: 0.95rem;
-    color: #4c1d95 !important;
-    letter-spacing: -0.01em;
+    font-size: 0.92rem;
+    color: #1e293b !important;
+    letter-spacing: 0.04em;
     font-weight: 700;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    text-transform: uppercase;
 }
 
 .module-live-tag {
-    background: #ffffff !important;
-    color: #7c3aed !important;
+    background: #ecfdf5 !important;
+    color: #065f46 !important;
     font-size: 0.72rem;
     font-weight: 700;
-    padding: 5px 12px;
+    padding: 4px 12px;
     border-radius: 20px;
-    border: 1px solid #ddd6fe !important;
+    border: 1px solid #a7f3d0 !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 1px 4px rgba(107, 33, 168, 0.06);
-    letter-spacing: 0.3px;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    letter-spacing: 0.04em;
 }
 
 .module-table-wrapper {
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: 0;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 @media (max-width: 860px) {
@@ -5024,15 +5020,16 @@ body.modal-open {
 }
 
 .module-table th {
-    background-color: #faf8ff !important;
-    color: #475569 !important;
-    font-size: 0.82rem;
+    background-color: #ffffff !important;
+    color: #64748b !important;
+    font-size: 0.78rem;
     font-weight: 700;
     padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     border-right: 1px solid #f8fafc !important;
     text-align: center;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .module-table th:first-child {
@@ -5061,10 +5058,10 @@ body.modal-open {
     border-bottom: 1px solid #f1f5f9 !important;
     border-right: 1px solid #f8fafc !important;
     text-align: center;
-    font-size: 0.88rem;
-    color: #1e293b !important;
+    font-size: 0.86rem;
+    color: #334155 !important;
     vertical-align: middle;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-weight: 600;
 }
 
 .module-table td:first-child {
@@ -5078,7 +5075,7 @@ body.modal-open {
 .module-table td:nth-child(2) {
     width: 21%;
     text-align: center !important;
-    color: #334155 !important;
+    color: #475569 !important;
     font-weight: 600;
 }
 
@@ -5091,125 +5088,48 @@ body.modal-open {
     width: 21%;
     text-align: center !important;
     font-weight: 800;
-    color: #6b21a8 !important;
+    color: #0f172a !important;
 }
 
 .qty-counter-box {
     display: inline-flex;
     align-items: center;
     background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 10px;
-    padding: 3px;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px;
+    padding: 2px 4px;
     gap: 3px;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
-}
-
-/* Checkout Scrollable Contract Reader */
-.checkout-contract-container {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-top: 2px;
-}
-.contract-tabs-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 8px;
-}
-.contract-tab-buttons {
-    display: flex;
-    gap: 6px;
-}
-.contract-tab-btn {
-    background: #e2e8f0;
-    color: #475569;
-    border: none;
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-size: 0.74rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.contract-tab-btn.active {
-    background: #6b21a8 !important;
-    color: #ffffff !important;
-    box-shadow: 0 2px 6px rgba(107, 33, 168, 0.2);
-}
-.contract-scroll-hint {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.contract-content-box {
-    max-height: 125px;
-    overflow-y: auto;
-    font-size: 0.75rem;
-    color: #475569;
-    line-height: 1.55;
-    padding-right: 6px;
-    margin-top: 8px;
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
-}
-.contract-content-box::-webkit-scrollbar {
-    width: 5px;
-}
-.contract-content-box::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-}
-.contract-content-box::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-}
-.contract-content-box::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
 }
 
 .qty-counter-btn {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     background-color: #ffffff !important;
-    color: #6b21a8 !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 7px;
-    font-size: 0.75rem;
-    font-weight: 800;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
     cursor: pointer !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: all 0.15s ease;
 }
 
 .qty-counter-btn:hover {
-    background-color: #6b21a8 !important;
+    background-color: #0f766e !important;
     color: #ffffff !important;
-    border-color: #6b21a8 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(107, 33, 168, 0.25);
-}
-
-.qty-counter-btn:active {
-    transform: scale(0.92);
+    border-color: #0f766e !important;
 }
 
 .qty-counter-val {
-    width: 32px;
+    width: 30px;
     text-align: center;
-    font-weight: 800;
-    font-size: 0.95rem;
+    font-weight: 700;
+    font-size: 0.88rem;
     color: #0f172a !important;
     user-select: none;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 @media (max-width: 640px) {
@@ -5217,16 +5137,16 @@ body.modal-open {
         padding: 10px 14px !important;
     }
     .module-header-text {
-        font-size: 0.88rem !important;
+        font-size: 0.84rem !important;
     }
     .module-live-tag {
-        font-size: 0.68rem !important;
+        font-size: 0.65rem !important;
         padding: 3px 8px !important;
     }
     .module-table th, 
     .module-table td {
         padding: 10px 4px !important;
-        font-size: 0.78rem !important;
+        font-size: 0.76rem !important;
     }
     .module-table th:first-child,
     .module-table td:first-child {
@@ -5248,28 +5168,26 @@ body.modal-open {
     .qty-counter-box {
         padding: 2px !important;
         gap: 1px !important;
-        border-radius: 8px !important;
     }
     .qty-counter-btn {
-        width: 24px !important;
-        height: 24px !important;
+        width: 22px !important;
+        height: 22px !important;
         font-size: 0.68rem !important;
-        border-radius: 6px !important;
     }
     .qty-counter-val {
-        width: 20px !important;
-        font-size: 0.82rem !important;
+        width: 18px !important;
+        font-size: 0.80rem !important;
     }
     .module-total-side {
         border-left: none !important;
-        border-top: 1px solid #e9d5ff !important;
+        border-top: 1px solid #e2e8f0 !important;
         padding: 16px 12px !important;
     }
 }
 
 .module-total-side {
-    background-color: #faf8ff !important;
-    border-left: 1px solid #e9d5ff !important;
+    background-color: #f8fafc !important;
+    border-left: 1px solid #e2e8f0 !important;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -5278,35 +5196,38 @@ body.modal-open {
 }
 
 .grand-total-val {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #6b21a8 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2.0rem;
+    font-weight: 800;
+    color: #991b1b !important;
     margin-bottom: 14px;
+    letter-spacing: -0.02em;
     transition: all 0.2s ease;
 }
 
 .mobelmor-cart-btn {
     width: 100%;
-    background-color: #6b21a8 !important;
+    background-color: #0f766e !important;
     color: #ffffff !important;
     padding: 14px 20px;
-    border-radius: var(--radius-full);
+    border-radius: 4px;
     font-weight: 800;
     font-size: 0.95rem;
+    letter-spacing: 0.04em;
     border: none;
     cursor: pointer !important;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 14px rgba(107, 33, 168, 0.25);
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
 }
 
 .mobelmor-cart-btn:hover {
-    background-color: #581c87 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.35);
+    background-color: #0d9488 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(15, 118, 110, 0.35);
 }
 
 /* Mobelmor Purple Theme Cards */
