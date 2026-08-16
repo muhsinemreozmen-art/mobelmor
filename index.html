@@ -1479,9 +1479,37 @@
                     <span id="checkoutTotal" style="color:#6b21a8;">₺0</span>
                 </div>
 
-                <label class="checkout-terms-label">
-                    <input type="checkbox" id="checkoutTerms" required checked>
-                    <span><a href="mesafeli-satis-sozlesmesi.html" target="_blank">Mesafeli Satış Sözleşmesi</a> ve <a href="gizlilik-guvenlik.html" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum, onaylıyorum.</span>
+                <!-- Inline Scrollable Contract & KVKK Reader -->
+                <div class="checkout-contract-container">
+                    <div class="contract-tabs-row">
+                        <div class="contract-tab-buttons">
+                            <button type="button" class="contract-tab-btn active" id="btnContractMss">Mesafeli Satış Sözleşmesi</button>
+                            <button type="button" class="contract-tab-btn" id="btnContractKvkk">KVKK Metni</button>
+                        </div>
+                        <span class="contract-scroll-hint"><i class="fa-solid fa-arrows-up-down"></i> Kaydırılabilir</span>
+                    </div>
+                    <div class="contract-content-box" id="contractContentBox">
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 1 - TARAFLAR:</strong><br>
+                        <strong>SATICI:</strong> Mobelmor İnegöl Mobilya San. ve Tic. Ltd. Şti.<br>
+                        <strong>ALICI:</strong> Mobelmor.com üzerinden sipariş veren nihai tüketici.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 2 - KONU &amp; KAPSAM:</strong><br>
+                        İşbu sözleşmenin konusu, ALICI'nın SATICI'ya ait www.mobelmor.com internet sitesinden siparişini verdiği mobilya ve ev dekorasyon ürünlerinin 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği hükümleri gereğince satışı ve teslimidir.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 3 - TESLİMAT &amp; MONTAJ:</strong><br>
+                        Mobilya ürünleri, özel korumalı ambalajında sigortalı mobilya lojistik araçlarımızla ALICI'nın belirttiği teslimat adresine kata teslim ve ücretsiz profesyonel montaj hizmeti ile ulaştırılır.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 4 - CAYMA HAKKI &amp; İADE:</strong><br>
+                        ALICI, standart ürünlerde 14 gün içinde cayma hakkına sahiptir. Tüketicinin özel istekleri doğrultusunda özel ölçü üretilen veya özel kumaş/renk döşemesi yapılan ürünler, 6502 Sayılı Kanun Madde 15/b uyarınca cayma hakkı istisnası kapsamındadır.</p>
+                        
+                        <p style="margin:0;"><strong>MADDE 5 - GARANTİ:</strong><br>
+                        Tüm ürünlerimiz 2 Yıl Mobelmor Üretici ve İskelet Garantisi altındadır.</p>
+                    </div>
+                </div>
+
+                <label class="checkout-terms-label" style="display:flex; align-items:flex-start; gap:8px; font-size:0.82rem; margin-top:2px; cursor:pointer;">
+                    <input type="checkbox" id="checkoutTerms" required checked style="margin-top:2px; accent-color:#6b21a8; width:16px; height:16px; cursor:pointer;">
+                    <span>Yukarıdaki <strong style="color:#6b21a8;">Mesafeli Satış Sözleşmesi</strong> ve <strong style="color:#6b21a8;">KVKK Metni</strong>'ni okudum, şartları onaylıyorum.</span>
                 </label>
 
                 <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:2px;">

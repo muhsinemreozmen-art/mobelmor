@@ -1403,6 +1403,55 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
 
+    // ── Contract & KVKK Tab Switcher in Checkout Modal ──
+    const btnContractMss = document.getElementById("btnContractMss");
+    const btnContractKvkk = document.getElementById("btnContractKvkk");
+    const contractContentBox = document.getElementById("contractContentBox");
+
+    const mssHtml = `
+        <p style="margin:0 0 6px 0;"><strong>MADDE 1 - TARAFLAR:</strong><br>
+        <strong>SATICI:</strong> Mobelmor İnegöl Mobilya San. ve Tic. Ltd. Şti.<br>
+        <strong>ALICI:</strong> Mobelmor.com üzerinden sipariş veren nihai tüketici.</p>
+        
+        <p style="margin:0 0 6px 0;"><strong>MADDE 2 - KONU &amp; KAPSAM:</strong><br>
+        İşbu sözleşmenin konusu, ALICI'nın SATICI'ya ait www.mobelmor.com internet sitesinden siparişini verdiği mobilya ve ev dekorasyon ürünlerinin 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği hükümleri gereğince satışı ve teslimidir.</p>
+        
+        <p style="margin:0 0 6px 0;"><strong>MADDE 3 - TESLİMAT &amp; MONTAJ:</strong><br>
+        Mobilya ürünleri, özel korumalı ambalajında sigortalı mobilya lojistik araçlarımızla ALICI'nın belirttiği teslimat adresine kata teslim ve ücretsiz profesyonel montaj hizmeti ile ulaştırılır.</p>
+        
+        <p style="margin:0 0 6px 0;"><strong>MADDE 4 - CAYMA HAKKI &amp; İADE:</strong><br>
+        ALICI, standart ürünlerde 14 gün içinde cayma hakkına sahiptir. Tüketicinin özel istekleri doğrultusunda özel ölçü üretilen veya özel kumaş/renk döşemesi yapılan ürünler, 6502 Sayılı Kanun Madde 15/b uyarınca cayma hakkı istisnası kapsamındadır.</p>
+        
+        <p style="margin:0;"><strong>MADDE 5 - GARANTİ:</strong><br>
+        Tüm ürünlerimiz 2 Yıl Mobelmor Üretici ve İskelet Garantisi altındadır.</p>
+    `;
+
+    const kvkkHtml = `
+        <p style="margin:0 0 6px 0;"><strong>1. VERİ SORUMLUSU:</strong><br>
+        6698 sayılı KVKK kapsamında Mobelmor İnegöl Mobilya San. ve Tic. Ltd. Şti. veri sorumlusudur.</p>
+        
+        <p style="margin:0 0 6px 0;"><strong>2. İŞLENEN VERİLER VE AMAÇ:</strong><br>
+        Sipariş sürecinde paylaştığınız Ad, Soyad, Telefon, E-posta ve Teslimat Adresi bilgileriniz; siparişin teyit edilmesi, özel mobilya üretim/döşeme planlaması, sigortalı nakliye ile adresinize teslimatın sağlanması ve faturalandırma amacıyla işlenmektedir.</p>
+        
+        <p style="margin:0 0 6px 0;"><strong>3. VERİ AKTARIMI:</strong><br>
+        Kişisel verileriniz yalnızca teslimatın gerçekleştirilebilmesi amacıyla yetkili mobilya lojistik ekiplerimiz ve yasal yükümlülükler çerçevesinde yetkili kamu kurumlarıyla paylaşılmaktadır. Üçüncü şahıslara veya reklam şirketlerine asla devredilmez.</p>
+        
+        <p style="margin:0;"><strong>4. HAKLARINIZ:</strong><br>
+        KVKK'nın 11. maddesi uyarınca verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini talep etme ve silinmesini isteme hakkına sahipsiniz.</p>
+    `;
+
+    btnContractMss?.addEventListener("click", () => {
+        btnContractMss.classList.add("active");
+        btnContractKvkk?.classList.remove("active");
+        if (contractContentBox) contractContentBox.innerHTML = mssHtml;
+    });
+
+    btnContractKvkk?.addEventListener("click", () => {
+        btnContractKvkk.classList.add("active");
+        btnContractMss?.classList.remove("active");
+        if (contractContentBox) contractContentBox.innerHTML = kvkkHtml;
+    });
+
     // ── User Authentication & Account System (Simulation & Persistence) ──
     const getCurrentUser = () => {
         try {
