@@ -154,15 +154,15 @@
             <!-- Right: User Action Buttons -->
             <div class="header-right-col">
                 <div class="header-action-buttons">
-                    <!-- Sipariş Takip with Hover Sub-menu -->
+                    <!-- Sipariş Takip with Dropdown -->
                     <div class="header-dropdown-wrapper" id="orderTrackContainer">
-                        <a href="siparislerim.html" class="header-action-btn interactive-btn" title="Sipariş Takibi" aria-label="Sipariş Takibi" style="text-decoration:none;">
+                        <button type="button" class="header-action-btn interactive-btn" id="orderTrackBtn" title="Sipariş Takibi" aria-label="Sipariş Takibi">
                             <i class="fa-solid fa-truck-fast"></i>
                             <span class="action-btn-text">Sipariş Takip</span>
-                        </a>
-                        <div class="header-hover-dropdown">
-                            <div style="padding:8px 12px; font-size:0.80rem; font-weight:800; color:#6b21a8; border-bottom:1px solid #f4f4f5;">
-                                <i class="fa-solid fa-truck-fast"></i> Sipariş Takip Merkezi
+                        </button>
+                        <div class="header-hover-dropdown" id="orderTrackDropdown">
+                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
+                                <i class="fa-solid fa-truck-fast" style="color:#6b21a8;"></i> Sipariş Takip Merkezi
                             </div>
                             <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-magnifying-glass" style="color:#6b21a8;"></i> Sipariş No ile Sorgula</a>
                             <a href="siparislerim.html#timeline" class="user-dropdown-item"><i class="fa-solid fa-clock-rotate-left" style="color:#6b21a8;"></i> Üretim &amp; Sevkiyat Takibi</a>

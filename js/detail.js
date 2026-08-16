@@ -1491,20 +1491,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Auth Button Click Handling
-    document.getElementById("headerAuthBtn")?.addEventListener("click", (e) => {
+    // Order Track Button Click / Tap Handling (Desktop & Mobile)
+    const orderTrackBtn = document.getElementById("orderTrackBtn");
+    const orderTrackDropdown = document.getElementById("orderTrackDropdown");
+
+    orderTrackBtn?.addEventListener("click", (e) => {
         e.stopPropagation();
-        const user = getCurrentUser();
-        const dropdown = document.getElementById("userMenuDropdown");
-        if (user && dropdown) {
-            dropdown.classList.toggle("active");
-        } else {
-            document.getElementById("authModalOverlay")?.classList.add("active");
+        document.getElementById("userMenuDropdown")?.classList.remove("active");
+        if (orderTrackDropdown) {
+            orderTrackDropdown.classList.toggle("active");
         }
     });
 
-    // Close user dropdown on outside click
+    // Auth Button Click Handling
+    document.getElementById("headerAuthBtn")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        orderTrackDropdown?.classList.remove("active");
+        const dropdown = document.getElementById("userMenuDropdown");
+        if (dropdown) {
+            dropdown.classList.toggle("active");
+        }
+    });
+
+    // Close header dropdowns on outside click
     document.addEventListener("click", (e) => {
+        if (!e.target.closest("#orderTrackContainer")) {
+            orderTrackDropdown?.classList.remove("active");
+        }
         if (!e.target.closest("#headerAuthContainer")) {
             document.getElementById("userMenuDropdown")?.classList.remove("active");
         }
