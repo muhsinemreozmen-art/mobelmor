@@ -910,13 +910,13 @@ button:active,
 
 .vivense-nav-link {
     display: block;
-    padding: 12px 7.5px;
+    padding: 12px 5px;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.715rem;
+    font-size: 0.69rem;
     font-weight: 600;
     color: #334155 !important;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     text-decoration: none !important;
     position: relative;
     transition: color 0.15s ease;
@@ -924,11 +924,18 @@ button:active,
     white-space: nowrap;
 }
 
+@media (min-width: 1200px) {
+    .vivense-nav-link {
+        padding: 12px 7px;
+        font-size: 0.715rem;
+    }
+}
+
 .vivense-nav-link.dots-link {
     font-size: 1.1rem;
     line-height: 0.8;
     letter-spacing: 1px;
-    padding: 12px 8px;
+    padding: 12px 0 12px 6px;
     color: #64748b !important;
 }
 
