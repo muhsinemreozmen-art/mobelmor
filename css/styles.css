@@ -856,7 +856,7 @@ button:active,
     gap: 0;
     padding: 0 16px;
     position: static !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     white-space: nowrap;
     width: 100%;
     max-width: 1240px;
@@ -875,16 +875,16 @@ button:active,
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 12px 10px 12px 0;
+    padding: 11px 8px 11px 0;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.73rem;
+    font-size: 0.71rem;
     font-weight: 600;
     color: #1e293b !important;
     text-decoration: none !important;
     border-right: 1px solid #f1f5f9;
     flex-shrink: 0;
     transition: all 0.15s ease;
-    letter-spacing: 0.01em;
+    letter-spacing: 0;
 }
 
 .vivense-nav-badge:hover {
@@ -910,14 +910,14 @@ button:active,
 }
 
 .best-price-badge {
-    padding: 12px 12px;
+    padding: 11px 8px;
     margin-right: 2px;
 }
 
 .best-price-badge .badge-text {
     color: #ea580c !important;
     font-weight: 700;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
 }
 
 /* Category Items */
@@ -930,13 +930,13 @@ button:active,
 
 .vivense-nav-link {
     display: block;
-    padding: 12px 5px;
+    padding: 11px 3.5px;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.69rem;
+    font-size: 0.68rem;
     font-weight: 600;
     color: #334155 !important;
     text-transform: uppercase;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.01em;
     text-decoration: none !important;
     position: relative;
     transition: color 0.15s ease;
@@ -944,18 +944,18 @@ button:active,
     white-space: nowrap;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
     .vivense-nav-link {
-        padding: 12px 7px;
-        font-size: 0.715rem;
+        padding: 11px 5.5px;
+        font-size: 0.70rem;
     }
 }
 
 .vivense-nav-link.dots-link {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 0.8;
     letter-spacing: 1px;
-    padding: 12px 0 12px 6px;
+    padding: 11px 0 11px 4px;
     color: #64748b !important;
 }
 
