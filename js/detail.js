@@ -1342,12 +1342,177 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
 
-    // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent)
+    // ── User Authentication & Account System (Simulation & Persistence) ──
+    const getCurrentUser = () => {
+        try {
+            return JSON.parse(localStorage.getItem("mobelmor_current_user") || "null");
+        } catch {
+            return null;
+        }
+    };
+
+    const updateAuthUI = () => {
+        const user = getCurrentUser();
+        const authBtn = document.getElementById("headerAuthBtn");
+        const authText = document.getElementById("headerAuthText");
+        const dropdown = document.getElementById("userMenuDropdown");
+        const greeting = document.getElementById("userMenuGreeting");
+
+        if (user) {
+            if (authText) authText.textContent = user.name.split(" ")[0];
+            if (greeting) greeting.textContent = `Hoş geldiniz, ${user.name}`;
+
+            // Autofill checkout fields if empty
+            const cName = document.getElementById("checkoutName");
+            const cEmail = document.getElementById("checkoutEmail");
+            const cPhone = document.getElementById("checkoutPhone");
+            const cAddr = document.getElementById("checkoutAddress");
+            if (cName && !cName.value) cName.value = user.name || "";
+            if (cEmail && !cEmail.value) cEmail.value = user.email || "";
+            if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
+            if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
+        } else {
+            if (authText) authText.textContent = "Giriş";
+            if (greeting) greeting.textContent = "Hoş geldiniz";
+        }
+    };
+
+    // Auth Button Click Handling
+    document.getElementById("headerAuthBtn")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const user = getCurrentUser();
+        const dropdown = document.getElementById("userMenuDropdown");
+        if (user && dropdown) {
+            dropdown.classList.toggle("active");
+        } else {
+            document.getElementById("authModalOverlay")?.classList.add("active");
+        }
+    });
+
+    // Close user dropdown on outside click
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest("#headerAuthContainer")) {
+            document.getElementById("userMenuDropdown")?.classList.remove("active");
+        }
+    });
+
+    // Logout Handling
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+        localStorage.removeItem("mobelmor_current_user");
+        document.getElementById("userMenuDropdown")?.classList.remove("active");
+        updateAuthUI();
+        showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
+    });
+
+    // Auth Modal Tabs
+    const tabLoginBtn = document.getElementById("tabLoginBtn");
+    const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+
+    tabLoginBtn?.addEventListener("click", () => {
+        tabLoginBtn.classList.add("active");
+        tabLoginBtn.style.color = "#6b21a8";
+        tabLoginBtn.style.borderBottom = "2px solid #6b21a8";
+        tabLoginBtn.style.fontWeight = "800";
+        tabRegisterBtn.classList.remove("active");
+        tabRegisterBtn.style.color = "#71717a";
+        tabRegisterBtn.style.borderBottom = "none";
+        tabRegisterBtn.style.fontWeight = "700";
+        if (loginForm) loginForm.style.display = "flex";
+        if (registerForm) registerForm.style.display = "none";
+    });
+
+    tabRegisterBtn?.addEventListener("click", () => {
+        tabRegisterBtn.classList.add("active");
+        tabRegisterBtn.style.color = "#6b21a8";
+        tabRegisterBtn.style.borderBottom = "2px solid #6b21a8";
+        tabRegisterBtn.style.fontWeight = "800";
+        tabLoginBtn.classList.remove("active");
+        tabLoginBtn.style.color = "#71717a";
+        tabLoginBtn.style.borderBottom = "none";
+        tabLoginBtn.style.fontWeight = "700";
+        if (registerForm) registerForm.style.display = "flex";
+        if (loginForm) loginForm.style.display = "none";
+    });
+
+    document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
+        document.getElementById("authModalOverlay")?.classList.remove("active");
+    });
+    document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "authModalOverlay") {
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+        }
+    });
+
+    // Login Submit
+    loginForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
+        const pass = document.getElementById("loginPassword")?.value.trim();
+
+        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
+        const existing = users.find(u => u.email === email && u.password === pass);
+
+        if (existing) {
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(existing));
+            updateAuthUI();
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+            showToast(`Hoş geldiniz, ${existing.name}!`, "fa-circle-check");
+            loginForm.reset();
+        } else {
+            const userObj = {
+                id: "USR-" + Date.now().toString().slice(-4),
+                name: email.split("@")[0].toUpperCase(),
+                email: email,
+                phone: "0530 000 00 00",
+                password: pass
+            };
+            users.push(userObj);
+            localStorage.setItem("mobelmor_users", JSON.stringify(users));
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(userObj));
+            updateAuthUI();
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+            showToast(`Giriş başarılı! Hoş geldiniz.`, "fa-circle-check");
+            loginForm.reset();
+        }
+    });
+
+    // Register Submit
+    registerForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("regName")?.value.trim();
+        const email = document.getElementById("regEmail")?.value.trim().toLowerCase();
+        const phone = document.getElementById("regPhone")?.value.trim();
+        const password = document.getElementById("regPassword")?.value.trim();
+
+        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
+        const newUser = {
+            id: "USR-" + Date.now().toString().slice(-4),
+            name,
+            email,
+            phone,
+            password
+        };
+        users.push(newUser);
+        localStorage.setItem("mobelmor_users", JSON.stringify(users));
+        localStorage.setItem("mobelmor_current_user", JSON.stringify(newUser));
+
+        updateAuthUI();
+        document.getElementById("authModalOverlay")?.classList.remove("active");
+        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+        registerForm.reset();
+    });
+
+    updateAuthUI();
+
+    // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent with Order ID & Tracking)
     const checkoutForm = document.getElementById("checkoutForm");
     if (checkoutForm) {
         checkoutForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const name = document.getElementById("checkoutName")?.value.trim() || "";
+            const email = document.getElementById("checkoutEmail")?.value.trim() || "";
             const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
             const address = document.getElementById("checkoutAddress")?.value.trim() || "";
             const note = document.getElementById("checkoutNote")?.value.trim() || "";
@@ -1365,12 +1530,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+            const newOrderId = "MBL-" + Math.floor(100000 + Math.random() * 900000);
 
             // Store order locally
             const orderData = {
-                id: "MBL-" + Date.now().toString().slice(-6),
+                id: newOrderId,
                 date: orderDate,
-                customer: { name, phone, address, note },
+                status: "preparing",
+                statusText: "İmalat & Hazırlık Aşamasında",
+                customer: { name, email, phone, address, note },
                 items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty })),
                 total: subtotal
             };
@@ -1387,6 +1555,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
             waMsg += `👤 *Müşteri:* ${name}\n`;
+            waMsg += `📧 *E-Posta:* ${email}\n`;
             waMsg += `📞 *Telefon:* ${phone}\n`;
             waMsg += `📍 *Adres:* ${address}\n`;
             if (note) waMsg += `📝 *Not:* ${note}\n`;
@@ -1407,7 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateBadges();
             renderCart();
             document.getElementById("checkoutOverlay")?.classList.remove("active");
-            showToast("Siparişiniz alındı! WhatsApp ile iletiliyor...", "fa-circle-check");
+            showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
             checkoutForm.reset();
 
             // Open WhatsApp with prefilled order

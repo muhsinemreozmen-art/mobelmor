@@ -1403,12 +1403,377 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
 
-    // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent)
+    // ── User Authentication & Account System (Simulation & Persistence) ──
+    const getCurrentUser = () => {
+        try {
+            return JSON.parse(localStorage.getItem("mobelmor_current_user") || "null");
+        } catch {
+            return null;
+        }
+    };
+
+    const updateAuthUI = () => {
+        const user = getCurrentUser();
+        const authBtn = document.getElementById("headerAuthBtn");
+        const authText = document.getElementById("headerAuthText");
+        const dropdown = document.getElementById("userMenuDropdown");
+        const greeting = document.getElementById("userMenuGreeting");
+        const userGreetingOnPage = document.getElementById("userGreeting");
+
+        if (user) {
+            if (authText) authText.textContent = user.name.split(" ")[0];
+            if (greeting) greeting.textContent = `Hoş geldiniz, ${user.name}`;
+            if (userGreetingOnPage) {
+                userGreetingOnPage.innerHTML = `<span style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Giriş Yapıldı:</span> ${user.name} (${user.email})`;
+            }
+
+            // Autofill checkout fields if empty
+            const cName = document.getElementById("checkoutName");
+            const cEmail = document.getElementById("checkoutEmail");
+            const cPhone = document.getElementById("checkoutPhone");
+            const cAddr = document.getElementById("checkoutAddress");
+            if (cName && !cName.value) cName.value = user.name || "";
+            if (cEmail && !cEmail.value) cEmail.value = user.email || "";
+            if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
+            if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
+        } else {
+            if (authText) authText.textContent = "Giriş";
+            if (greeting) greeting.textContent = "Hoş geldiniz";
+            if (userGreetingOnPage) {
+                userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="document.getElementById('authModalOverlay')?.classList.add('active')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
+            }
+        }
+    };
+
+    // Auth Button Click Handling
+    document.getElementById("headerAuthBtn")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const user = getCurrentUser();
+        const dropdown = document.getElementById("userMenuDropdown");
+        if (user && dropdown) {
+            dropdown.classList.toggle("active");
+        } else {
+            document.getElementById("authModalOverlay")?.classList.add("active");
+        }
+    });
+
+    // Close user dropdown on outside click
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest("#headerAuthContainer")) {
+            document.getElementById("userMenuDropdown")?.classList.remove("active");
+        }
+    });
+
+    // Logout Handling
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+        localStorage.removeItem("mobelmor_current_user");
+        document.getElementById("userMenuDropdown")?.classList.remove("active");
+        updateAuthUI();
+        showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
+        if (window.location.pathname.includes("siparislerim")) {
+            setTimeout(() => window.location.reload(), 500);
+        }
+    });
+
+    // Auth Modal Tabs
+    const tabLoginBtn = document.getElementById("tabLoginBtn");
+    const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+
+    tabLoginBtn?.addEventListener("click", () => {
+        tabLoginBtn.classList.add("active");
+        tabLoginBtn.style.color = "#6b21a8";
+        tabLoginBtn.style.borderBottom = "2px solid #6b21a8";
+        tabLoginBtn.style.fontWeight = "800";
+        tabRegisterBtn.classList.remove("active");
+        tabRegisterBtn.style.color = "#71717a";
+        tabRegisterBtn.style.borderBottom = "none";
+        tabRegisterBtn.style.fontWeight = "700";
+        if (loginForm) loginForm.style.display = "flex";
+        if (registerForm) registerForm.style.display = "none";
+    });
+
+    tabRegisterBtn?.addEventListener("click", () => {
+        tabRegisterBtn.classList.add("active");
+        tabRegisterBtn.style.color = "#6b21a8";
+        tabRegisterBtn.style.borderBottom = "2px solid #6b21a8";
+        tabRegisterBtn.style.fontWeight = "800";
+        tabLoginBtn.classList.remove("active");
+        tabLoginBtn.style.color = "#71717a";
+        tabLoginBtn.style.borderBottom = "none";
+        tabLoginBtn.style.fontWeight = "700";
+        if (registerForm) registerForm.style.display = "flex";
+        if (loginForm) loginForm.style.display = "none";
+    });
+
+    document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
+        document.getElementById("authModalOverlay")?.classList.remove("active");
+    });
+    document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "authModalOverlay") {
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+        }
+    });
+
+    // Login Submit
+    loginForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
+        const pass = document.getElementById("loginPassword")?.value.trim();
+
+        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
+        const existing = users.find(u => u.email === email && u.password === pass);
+
+        if (existing) {
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(existing));
+            updateAuthUI();
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+            showToast(`Hoş geldiniz, ${existing.name}!`, "fa-circle-check");
+            loginForm.reset();
+            if (window.location.pathname.includes("siparislerim")) renderOrdersPage();
+        } else {
+            // Auto login/create simulation for seamless testing
+            const userObj = {
+                id: "USR-" + Date.now().toString().slice(-4),
+                name: email.split("@")[0].toUpperCase(),
+                email: email,
+                phone: "0530 000 00 00",
+                password: pass
+            };
+            users.push(userObj);
+            localStorage.setItem("mobelmor_users", JSON.stringify(users));
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(userObj));
+            updateAuthUI();
+            document.getElementById("authModalOverlay")?.classList.remove("active");
+            showToast(`Giriş başarılı! Hoş geldiniz.`, "fa-circle-check");
+            loginForm.reset();
+            if (window.location.pathname.includes("siparislerim")) renderOrdersPage();
+        }
+    });
+
+    // Register Submit
+    registerForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("regName")?.value.trim();
+        const email = document.getElementById("regEmail")?.value.trim().toLowerCase();
+        const phone = document.getElementById("regPhone")?.value.trim();
+        const password = document.getElementById("regPassword")?.value.trim();
+
+        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
+        const newUser = {
+            id: "USR-" + Date.now().toString().slice(-4),
+            name,
+            email,
+            phone,
+            password
+        };
+        users.push(newUser);
+        localStorage.setItem("mobelmor_users", JSON.stringify(users));
+        localStorage.setItem("mobelmor_current_user", JSON.stringify(newUser));
+
+        updateAuthUI();
+        document.getElementById("authModalOverlay")?.classList.remove("active");
+        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+        registerForm.reset();
+        if (window.location.pathname.includes("siparislerim")) renderOrdersPage();
+    });
+
+    updateAuthUI();
+
+    // ── Seed Demo Orders if not exists ──
+    const initOrdersStorage = () => {
+        const stored = localStorage.getItem("mobelmor_orders");
+        if (!stored) {
+            const demoOrders = [
+                {
+                    id: "MBL-782190",
+                    date: "15.08.2026 14:30",
+                    status: "shipping", // preparing, quality, shipping, delivered
+                    statusText: "Sevkiyatta / Özel Mobilya Lojistiğinde",
+                    customer: {
+                        name: "Ahmet Yılmaz",
+                        email: "ahmet@example.com",
+                        phone: "0532 111 22 33",
+                        address: "Nilüfer, Bursa",
+                        note: "Krem kadife kumaş döşemesi uygulandı."
+                    },
+                    items: [
+                        { id: 1, title: "Gold Koltuk Takımı", price: 45000, qty: 1 }
+                    ],
+                    total: 45000
+                }
+            ];
+            localStorage.setItem("mobelmor_orders", JSON.stringify(demoOrders));
+        }
+    };
+    initOrdersStorage();
+
+    // ── Orders & Tracking Page Logic (siparislerim.html) ──
+    const renderOrdersPage = () => {
+        const listContainer = document.getElementById("ordersListContainer");
+        if (!listContainer) return;
+
+        const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+        const currentUser = getCurrentUser();
+
+        let displayOrders = allOrders;
+        if (currentUser) {
+            displayOrders = allOrders.filter(o => 
+                (o.customer?.email && o.customer.email.toLowerCase() === currentUser.email.toLowerCase()) ||
+                (o.customer?.phone && o.customer.phone === currentUser.phone)
+            );
+            if (displayOrders.length === 0) displayOrders = allOrders; // fallback to all for easy test
+        }
+
+        renderOrdersList(displayOrders);
+    };
+
+    const renderOrdersList = (orders) => {
+        const listContainer = document.getElementById("ordersListContainer");
+        if (!listContainer) return;
+
+        if (!orders || orders.length === 0) {
+            listContainer.innerHTML = `
+                <div class="order-card" style="text-align:center; padding:48px 20px; color:#71717a;">
+                    <i class="fa-solid fa-box-open" style="font-size:3rem; color:#cbd5e1; margin-bottom:16px;"></i>
+                    <h3 style="color:#18181b; margin:0 0 8px 0;">Kayıtlı Sipariş Bulunamadı</h3>
+                    <p style="margin:0 0 16px 0; font-size:0.9rem;">Henüz kayıtlı bir siparişiniz görünmüyor veya arama kriteriyle eşleşen sipariş yok.</p>
+                    <a href="kategori.html?c=tum-koleksiyon" class="btn btn-primary interactive-btn" style="padding:10px 24px; text-decoration:none; display:inline-block;">Koleksiyonu İncele</a>
+                </div>
+            `;
+            return;
+        }
+
+        listContainer.innerHTML = orders.map(order => {
+            const statusKey = order.status || "preparing";
+            let pillClass = "status-preparing";
+            let statusLabel = "İmalat & Hazırlık Aşamasında";
+            let stepIndex = 1; // 1: Order received, 2: Crafting/Wood, 3: Quality Check, 4: Delivered
+
+            if (statusKey === "quality") {
+                pillClass = "status-preparing";
+                statusLabel = "Kalite Kontrol & Paketleme";
+                stepIndex = 2;
+            } else if (statusKey === "shipping") {
+                pillClass = "status-shipping";
+                statusLabel = "Lojistik Sevkiyatında";
+                stepIndex = 3;
+            } else if (statusKey === "delivered") {
+                pillClass = "status-delivered";
+                statusLabel = "Teslim Edildi & Kuruldu";
+                stepIndex = 4;
+            }
+
+            return `
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div>
+                            <span class="order-id-badge"><i class="fa-solid fa-hashtag"></i> ${order.id}</span>
+                            <span style="font-size:0.85rem; color:#71717a; margin-left:12px;"><i class="fa-regular fa-calendar"></i> ${order.date}</span>
+                        </div>
+                        <span class="order-status-pill ${pillClass}">
+                            <i class="fa-solid fa-circle" style="font-size:0.55rem;"></i> ${order.statusText || statusLabel}
+                        </span>
+                    </div>
+
+                    <!-- 4-Step Furniture Delivery Timeline -->
+                    <div class="order-timeline">
+                        <div class="timeline-step ${stepIndex >= 1 ? 'completed' : ''}">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-check"></i></div>
+                            <div class="timeline-label">Sipariş Alındı</div>
+                        </div>
+                        <div class="timeline-step ${stepIndex > 2 ? 'completed' : (stepIndex === 2 ? 'active' : '')}">
+                            <div class="timeline-icon-box">${stepIndex > 2 ? '<i class="fa-solid fa-check"></i>' : '2'}</div>
+                            <div class="timeline-label">İskelet &amp; Döşeme</div>
+                        </div>
+                        <div class="timeline-step ${stepIndex > 3 ? 'completed' : (stepIndex === 3 ? 'active' : '')}">
+                            <div class="timeline-icon-box">${stepIndex > 3 ? '<i class="fa-solid fa-check"></i>' : '3'}</div>
+                            <div class="timeline-label">Sevkiyat &amp; Nakliye</div>
+                        </div>
+                        <div class="timeline-step ${stepIndex === 4 ? 'completed' : ''}">
+                            <div class="timeline-icon-box">${stepIndex === 4 ? '<i class="fa-solid fa-check"></i>' : '4'}</div>
+                            <div class="timeline-label">Montaj &amp; Teslim</div>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <table class="order-items-table">
+                        <thead>
+                            <tr>
+                                <th>Ürün Adı</th>
+                                <th>Adet</th>
+                                <th>Birim Fiyat</th>
+                                <th style="text-align:right;">Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${(order.items || []).map(item => `
+                                <tr>
+                                    <td style="font-weight:700;"><i class="fa-solid fa-couch" style="color:#6b21a8; margin-right:6px;"></i> ${item.title}</td>
+                                    <td>${item.qty} Adet</td>
+                                    <td>${formatPrice(item.price)}</td>
+                                    <td style="text-align:right; font-weight:800; color:#6b21a8;">${formatPrice(item.price * item.qty)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="order-info-footer">
+                        <div style="font-size:0.85rem; color:#52525b;">
+                            <strong>Teslimat Adresi:</strong> ${order.customer?.address || 'Belirtilmedi'} 
+                            ${order.customer?.note ? `<br><span style="color:#6b21a8;"><strong>Not:</strong> ${order.customer.note}</span>` : ''}
+                        </div>
+                        <div style="display:flex; align-items:center; gap:16px;">
+                            <span style="font-size:1.15rem; font-weight:900; color:#18181b;">Toplam: <span style="color:#6b21a8;">${formatPrice(order.total || 0)}</span></span>
+                            <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${order.id} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="btn interactive-btn" style="background:#f4f4f5; color:#18181b; padding:8px 14px; border-radius:999px; font-size:0.82rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="fa-brands fa-whatsapp" style="color:#16a34a;"></i> Destek Al
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    };
+
+    // Lookup Form Submit
+    const lookupForm = document.getElementById("orderLookupForm");
+    if (lookupForm) {
+        lookupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const orderIdInput = document.getElementById("lookupOrderId")?.value.trim().toUpperCase();
+            const emailInput = document.getElementById("lookupEmail")?.value.trim().toLowerCase();
+
+            const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+            const matched = allOrders.filter(o => {
+                const idMatch = o.id && o.id.toUpperCase().includes(orderIdInput);
+                const emailMatch = (o.customer?.email && o.customer.email.toLowerCase().includes(emailInput)) ||
+                                   (o.customer?.phone && o.customer.phone.includes(emailInput));
+                return idMatch || emailMatch;
+            });
+
+            if (matched.length > 0) {
+                renderOrdersList(matched);
+                showToast(`${matched.length} adet sipariş bulundu.`, "fa-circle-check");
+                document.getElementById("ordersListContainer")?.scrollIntoView({ behavior: "smooth" });
+            } else {
+                showToast("Girdiğiniz bilgilere ait sipariş bulunamadı.", "fa-triangle-exclamation");
+                renderOrdersList([]);
+            }
+        });
+    }
+
+    if (window.location.pathname.includes("siparislerim")) {
+        renderOrdersPage();
+    }
+
+    // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent with Order ID & Tracking)
     const checkoutForm = document.getElementById("checkoutForm");
     if (checkoutForm) {
         checkoutForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const name = document.getElementById("checkoutName")?.value.trim() || "";
+            const email = document.getElementById("checkoutEmail")?.value.trim() || "";
             const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
             const address = document.getElementById("checkoutAddress")?.value.trim() || "";
             const note = document.getElementById("checkoutNote")?.value.trim() || "";
@@ -1426,12 +1791,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+            const newOrderId = "MBL-" + Math.floor(100000 + Math.random() * 900000);
 
             // Store order locally
             const orderData = {
-                id: "MBL-" + Date.now().toString().slice(-6),
+                id: newOrderId,
                 date: orderDate,
-                customer: { name, phone, address, note },
+                status: "preparing",
+                statusText: "İmalat & Hazırlık Aşamasında",
+                customer: { name, email, phone, address, note },
                 items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty })),
                 total: subtotal
             };
@@ -1448,6 +1816,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
             waMsg += `👤 *Müşteri:* ${name}\n`;
+            waMsg += `📧 *E-Posta:* ${email}\n`;
             waMsg += `📞 *Telefon:* ${phone}\n`;
             waMsg += `📍 *Adres:* ${address}\n`;
             if (note) waMsg += `📝 *Not:* ${note}\n`;
@@ -1468,7 +1837,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateBadges();
             renderCart();
             document.getElementById("checkoutOverlay")?.classList.remove("active");
-            showToast("Siparişiniz alındı! WhatsApp ile iletiliyor...", "fa-circle-check");
+            showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
             checkoutForm.reset();
 
             // Open WhatsApp with prefilled order

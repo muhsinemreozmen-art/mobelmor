@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siparişlerim & Sipariş Takibi | Mobelmor.com</title>
+    <meta name="description" content="Mobelmor siparişlerinizi anlık olarak takip edin. Üye girişi yaparak veya e-posta ve sipariş numaranız ile mobilya siparişinizin imalat ve kargo durumunu öğrenin.">
+    <!-- Security & Hardening Meta Tags -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="js/url-cleaner.js?v=11000"></script>
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="shortcut icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260816">
+    <style>
+        .orders-container { max-width: 1080px; margin: 36px auto 60px auto; padding: 0 16px; }
+        .orders-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .orders-title { font-size: 1.75rem; font-weight: 800; color: #18181b; display: flex; align-items: center; gap: 10px; margin: 0; }
+        .track-search-card { background: #ffffff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #f4f4f5; margin-bottom: 30px; }
+        .track-search-title { font-size: 1.15rem; font-weight: 700; color: #6b21a8; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; }
+        .track-search-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-top: 16px; }
+        @media (max-width: 768px) { .track-search-form { grid-template-columns: 1fr; } }
+        .track-input { padding: 12px 16px; border: 1px solid #e4e4e7; border-radius: 10px; font-size: 0.95rem; outline: none; transition: border-color 0.2s ease; }
+        .track-input:focus { border-color: #6b21a8; box-shadow: 0 0 0 3px rgba(107,33,168,0.1); }
+        .order-card { background: #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border: 1px solid #f4f4f5; }
+        .order-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f4f4f5; padding-bottom: 16px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+        .order-id-badge { font-weight: 800; color: #6b21a8; font-size: 1.1rem; }
+        .order-status-pill { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+        .status-preparing { background: #fef3c7; color: #b45309; }
+        .status-shipping { background: #e0f2fe; color: #0369a1; }
+        .status-delivered { background: #dcfce7; color: #15803d; }
+        
+        /* Timeline */
+        .order-timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 24px 0; position: relative; }
+        .timeline-step { text-align: center; position: relative; }
+        .timeline-step::before { content: ''; position: absolute; top: 14px; left: -50%; width: 100%; height: 3px; background: #e4e4e7; z-index: 1; }
+        .timeline-step:first-child::before { display: none; }
+        .timeline-step.completed::before { background: #16a34a; }
+        .timeline-step.active::before { background: #6b21a8; }
+        .timeline-icon-box { width: 32px; height: 32px; border-radius: 50%; background: #e4e4e7; color: #71717a; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; position: relative; z-index: 2; font-size: 0.85rem; font-weight: bold; }
+        .timeline-step.completed .timeline-icon-box { background: #16a34a; color: #ffffff; }
+        .timeline-step.active .timeline-icon-box { background: #6b21a8; color: #ffffff; box-shadow: 0 0 0 4px rgba(107,33,168,0.2); }
+        .timeline-label { font-size: 0.8rem; font-weight: 700; color: #3f3f46; }
+        
+        .order-items-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        .order-items-table th { text-align: left; padding: 8px 12px; font-size: 0.82rem; color: #71717a; border-bottom: 1px solid #f4f4f5; }
+        .order-items-table td { padding: 10px 12px; font-size: 0.9rem; color: #18181b; border-bottom: 1px solid #fafafa; }
+        .order-info-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 1px solid #f4f4f5; flex-wrap: wrap; gap: 12px; }
+    </style>
+</head>
+<body style="background-color: #faf9fc !important; color: #18181b !important;">
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
+                <div class="logo-main-title">
+                    <span class="logo-text-mobel">mobel</span>
+                    <span class="logo-mor-box">
+                        <span class="logo-com-arrow">.com</span>
+                        <span class="logo-text-mor">mor</span>
+                    </span>
+                </div>
+            </a>
+
+            <div class="header-action-buttons">
+                <a href="./" class="circle-btn interactive-btn" title="Ana Sayfa">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                <button class="circle-btn interactive-btn" id="headerAuthBtn" title="Hesabım / Giriş Yap">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="orders-container">
+        <!-- Title & User Status -->
+        <div class="orders-header">
+            <h1 class="orders-title"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Sipariş Takibi &amp; Geçmişi</h1>
+            <div id="userGreeting" style="font-size: 0.95rem; color: #52525b;"></div>
+        </div>
+
+        <!-- Guest / Quick Lookup Search Card -->
+        <div class="track-search-card">
+            <h2 class="track-search-title"><i class="fa-solid fa-magnifying-glass"></i> Üye Olmadan Hızlı Sipariş Sorgulama</h2>
+            <p style="color:#71717a; font-size:0.88rem; margin:0;">Sipariş oluştururken kullandığınız e-posta adresinizi ve Sipariş Numaranızı (Örn: <code>MBL-782190</code>) girerek güncel imalat ve kargo durumunu anında öğrenebilirsiniz.</p>
+            
+            <form class="track-search-form" id="orderLookupForm">
+                <input type="text" id="lookupOrderId" class="track-input" placeholder="Sipariş No (Örn: MBL-782190)" required>
+                <input type="email" id="lookupEmail" class="track-input" placeholder="E-Posta veya Telefon" required>
+                <button type="submit" class="btn btn-primary interactive-btn" style="padding:12px 24px; font-weight:700; white-space:nowrap;">
+                    <i class="fa-solid fa-truck-fast"></i> Siparişi Sorgula
+                </button>
+            </form>
+        </div>
+
+        <!-- Dynamic Results Container -->
+        <div id="ordersListContainer">
+            <!-- Will be populated dynamically by JS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container footer-container">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <a href="./" class="brand-logo footer-logo">
+                        <div class="logo-main-title">
+                            <span class="logo-text-mobel">mobel</span>
+                            <span class="logo-mor-box">
+                                <span class="logo-com-arrow">.com</span>
+                                <span class="logo-text-mor">mor</span>
+                            </span>
+                        </div>
+                    </a>
+                    <p class="footer-desc">Evinizin ahengini değiştiren, %100 masif ve organik İnegöl mobilyaları.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-heading">Müşteri Hizmetleri</h4>
+                    <ul class="footer-links">
+                        <li><a href="garanti-iade.html"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
+                        <li><a href="kumas-kartelasi.html"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
+                        <li><a href="mesafeli-satis-sozlesmesi.html"><i class="fa-solid fa-chevron-right"></i> Mesafeli Satış Sözleşmesi</a></li>
+                        <li><a href="gizlilik-guvenlik.html"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> SSS</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mobelmor.com - Tüm Hakları Saklıdır. Orijinal İnegöl Mobilyası.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Auth Modal (Giriş Yap / Üye Ol) -->
+    <div class="modal-overlay" id="authModalOverlay">
+        <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+            <button class="close-btn modal-close interactive-btn" id="closeAuthModalBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
+                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+                <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Giriş Yap
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display:none; flex-direction:column; gap:12px;">
+                <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Ücretsiz Üye Ol
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/app.js?v=20260816_02" defer></script>
+</body>
+</html>

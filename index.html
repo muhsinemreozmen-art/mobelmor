@@ -122,10 +122,25 @@
             <!-- Right: User Action Buttons -->
             <div class="header-right-col">
                 <div class="header-action-buttons">
-                    <a href="javascript:void(0)" onclick="alert('Üyelik ve Giriş Sistemi yakında aktif olacaktır.')" class="header-action-btn interactive-btn mobile-user-btn" title="Hesabım" aria-label="Hesabım">
-                        <i class="fa-regular fa-user"></i>
-                        <span class="action-btn-text">Giriş</span>
+                    <a href="siparislerim.html" class="header-action-btn interactive-btn" title="Sipariş Takibi" aria-label="Sipariş Takibi" style="text-decoration:none;">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <span class="action-btn-text">Sipariş Takip</span>
                     </a>
+                    
+                    <div class="user-menu-wrapper" id="headerAuthContainer">
+                        <button class="header-action-btn interactive-btn" id="headerAuthBtn" title="Hesabım / Giriş Yap" aria-label="Hesabım">
+                            <i class="fa-regular fa-user"></i>
+                            <span class="action-btn-text" id="headerAuthText">Giriş</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="userMenuDropdown">
+                            <div style="padding:8px 12px; font-size:0.82rem; color:#71717a; border-bottom:1px solid #f4f4f5;" id="userMenuGreeting">Hoş geldiniz</div>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim</a>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Bilgilerim</a>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
+                        </div>
+                    </div>
+
                     <button class="header-action-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
                         <i class="fa-regular fa-heart"></i>
                         <span class="action-btn-text">Favorilerim</span>
@@ -1454,6 +1469,7 @@
 
             <form id="checkoutForm" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
                 <input type="text" id="checkoutName" placeholder="Adınız ve Soyadınız" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="email" id="checkoutEmail" placeholder="E-Posta Adresiniz (Sipariş Takibi İçin)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
                 <input type="tel" id="checkoutPhone" placeholder="Telefon Numaranız (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
                 <textarea id="checkoutAddress" placeholder="Teslimat Adresi (İl, İlçe, Mahalle, Cadde/Sokak, Bina No)" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
                 <input type="text" id="checkoutNote" placeholder="Varsa Özel Sipariş/Kumaş Notunuz (Opsiyonel)" style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
@@ -1475,6 +1491,41 @@
         </div>
     </div>
 
+    <!-- Universal Auth Modal (Giriş Yap / Üye Ol) -->
+    <div class="modal-overlay" id="authModalOverlay">
+        <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+            <button class="close-btn modal-close interactive-btn" id="closeAuthModalBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
+                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+                <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Giriş Yap
+                </button>
+                <p style="text-align:center; font-size:0.82rem; color:#71717a; margin:4px 0 0 0;">
+                    Üye olmadan sipariş takip etmek için <a href="siparislerim.html" style="color:#6b21a8; font-weight:600;">tıklayınız</a>.
+                </p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display:none; flex-direction:column; gap:12px;">
+                <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Ücretsiz Üye Ol
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com%20üzerinden%20bilgi%20almak%20istiyorum." target="_blank" class="whatsapp-float-btn" title="WhatsApp Canlı Destek">
         <i class="fa-brands fa-whatsapp"></i>
@@ -1484,6 +1535,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/app.js?v=20260814_2048" defer></script>
+    <script src="js/app.js?v=20260816_02" defer></script>
 </body>
 </html>
