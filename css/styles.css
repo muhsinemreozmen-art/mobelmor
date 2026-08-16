@@ -219,12 +219,14 @@ button:active,
     align-items: center;
 }
 
-.mobile-hamburger-btn {
+.mobile-hamburger-btn,
+.hide-on-desktop {
     display: none !important;
 }
 
 @media (max-width: 991px) {
-    .mobile-hamburger-btn {
+    .mobile-hamburger-btn,
+    .hide-on-desktop {
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
