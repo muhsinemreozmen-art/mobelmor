@@ -771,6 +771,57 @@ window.createLightbox = () => {
     return lb;
 };
 
+window.openLightbox = (startIndex = 0) => {
+    const pid = getProductIdFromUrl();
+    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    lightboxGallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+    lightboxCurrentIndex = typeof startIndex === 'number' && startIndex >= 0 && startIndex < lightboxGallery.length ? startIndex : 0;
+
+    const lb = window.createLightbox();
+    const titleEl = document.getElementById('lbTitle');
+    if (titleEl && product) {
+        titleEl.textContent = (product.title || 'ÜRÜN GÖRSELİ').toUpperCase();
+    }
+
+    window.updateLightboxView();
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeLightbox = () => {
+    const lb = document.getElementById('mbl-lightbox');
+    if (lb) {
+        lb.classList.remove('active');
+    }
+    document.body.style.overflow = '';
+};
+
+window.navigateLightbox = (direction) => {
+    if (!lightboxGallery || lightboxGallery.length === 0) return;
+    lightboxCurrentIndex = (lightboxCurrentIndex + direction + lightboxGallery.length) % lightboxGallery.length;
+    window.updateLightboxView();
+};
+
+window.updateLightboxView = () => {
+    const lbImg = document.getElementById('lbImg');
+    const lbCounter = document.getElementById('lbCounter');
+    if (!lightboxGallery || lightboxGallery.length === 0) return;
+
+    const src = lightboxGallery[lightboxCurrentIndex] || '';
+    if (lbImg) {
+        lbImg.src = src;
+        lbImg.alt = `Görsel ${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
+    }
+    if (lbCounter) {
+        lbCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
+    }
+
+    const prevBtn = document.getElementById('lbPrev');
+    const nextBtn = document.getElementById('lbNext');
+    if (prevBtn) prevBtn.style.display = lightboxGallery.length > 1 ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = lightboxGallery.length > 1 ? 'flex' : 'none';
+};
+
 window.goToSlide = (idx) => {
     const track = document.getElementById('galleryCarouselTrack');
     const pid = getProductIdFromUrl();
