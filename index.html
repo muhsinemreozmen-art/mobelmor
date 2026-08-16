@@ -85,7 +85,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0650">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0655">
     <style id="header-alignment-guarantee">
         .app-header .header-container,
         .vivense-nav-wrapper .vivense-nav-container,
@@ -96,6 +96,19 @@
             padding-left: 16px !important;
             padding-right: 16px !important;
             box-sizing: border-box !important;
+        }
+        .header-left-col,
+        .brand-logo {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .header-right-col,
+        .header-action-buttons {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .user-menu-wrapper:last-child {
+            margin-right: 0 !important;
         }
         .mobile-hamburger-btn,
         .hide-on-desktop {
@@ -123,6 +136,8 @@
             align-items: center !important;
             position: relative !important;
             width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         .campaign-trust-col:not(:last-child)::after {
             content: '' !important;
@@ -137,6 +152,10 @@
         .campaign-trust-col.col-1 {
             justify-content: flex-start !important;
         }
+        .campaign-trust-col.col-1 .campaign-trust-item {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
         .campaign-trust-col.col-2,
         .campaign-trust-col.col-3,
         .campaign-trust-col.col-4 {
@@ -144,6 +163,10 @@
         }
         .campaign-trust-col.col-5 {
             justify-content: flex-end !important;
+        }
+        .campaign-trust-col.col-5 .campaign-trust-item {
+            margin-right: 0 !important;
+            padding-right: 0 !important;
         }
         .campaign-trust-item {
             display: inline-flex !important;
@@ -154,6 +177,7 @@
             font-weight: 500 !important;
             color: #475569 !important;
             white-space: nowrap !important;
+            margin: 0 !important;
         }
         .campaign-trust-item i {
             color: #64748b !important;
@@ -185,6 +209,7 @@
         }
         .vivense-nav-badge.collection-badge {
             padding: 11px 8px 11px 0 !important;
+            margin-left: 0 !important;
             font-size: 0.71rem !important;
             letter-spacing: 0 !important;
         }
@@ -195,6 +220,7 @@
         }
         .vivense-nav-link {
             padding: 11px 3.5px !important;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
             font-size: 0.68rem !important;
             letter-spacing: -0.01em !important;
         }
@@ -204,9 +230,14 @@
                 font-size: 0.70rem !important;
             }
         }
+        .vivense-nav-item:last-child {
+            margin-right: 0 !important;
+        }
         .vivense-nav-link.dots-link {
-            padding: 11px 0 11px 4px !important;
+            padding: 11px 0 11px 0 !important;
+            margin-right: 0 !important;
             font-size: 1.05rem !important;
+            letter-spacing: 0 !important;
         }
     </style>
 </head>
