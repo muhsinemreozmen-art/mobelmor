@@ -1477,17 +1477,47 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    window.openAuthModal = (tab = "login") => {
+        const overlay = document.getElementById("authModalOverlay");
+        if (overlay) {
+            overlay.classList.add("active");
+            document.body.classList.add("modal-open");
+        }
+        if (tab === "register") {
+            tabRegisterBtn?.click();
+        } else {
+            tabLoginBtn?.click();
+        }
+    };
+
     const updateAuthUI = () => {
         const user = getCurrentUser();
         const authBtn = document.getElementById("headerAuthBtn");
         const authText = document.getElementById("headerAuthText");
         const dropdown = document.getElementById("userMenuDropdown");
-        const greeting = document.getElementById("userMenuGreeting");
         const userGreetingOnPage = document.getElementById("userGreeting");
 
         if (user) {
             if (authText) authText.textContent = user.name.split(" ")[0];
-            if (greeting) greeting.textContent = `Hoş geldiniz, ${user.name}`;
+            if (dropdown) {
+                dropdown.innerHTML = `
+                    <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
+                        <i class="fa-solid fa-circle-user" style="color:#6b21a8;"></i> Hoş geldiniz, ${user.name.split(" ")[0]}
+                    </div>
+                    <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim &amp; Takip</a>
+                    <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>
+                    <div class="user-dropdown-divider"></div>
+                    <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
+                `;
+                document.getElementById("logoutBtn")?.addEventListener("click", () => {
+                    localStorage.removeItem("mobelmor_current_user");
+                    updateAuthUI();
+                    showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
+                    if (window.location.pathname.includes("siparislerim")) {
+                        setTimeout(() => window.location.reload(), 500);
+                    }
+                });
+            }
             if (userGreetingOnPage) {
                 userGreetingOnPage.innerHTML = `<span style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Giriş Yapıldı:</span> ${user.name} (${user.email})`;
             }
@@ -1503,9 +1533,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
         } else {
             if (authText) authText.textContent = "Giriş";
-            if (greeting) greeting.textContent = "Hoş geldiniz";
+            if (dropdown) {
+                dropdown.innerHTML = `
+                    <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
+                        <i class="fa-regular fa-user" style="color:#6b21a8;"></i> Mobelmor Üyelik
+                    </div>
+                    <a href="javascript:void(0)" onclick="openAuthModal('login')" class="user-dropdown-item"><i class="fa-solid fa-arrow-right-to-bracket" style="color:#6b21a8;"></i> Giriş Yap</a>
+                    <a href="javascript:void(0)" onclick="openAuthModal('register')" class="user-dropdown-item"><i class="fa-solid fa-user-plus" style="color:#6b21a8;"></i> Ücretsiz Kayıt Ol</a>
+                    <div class="user-dropdown-divider"></div>
+                    <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-truck-fast" style="color:#6b21a8;"></i> Sipariş Takip</a>
+                `;
+            }
             if (userGreetingOnPage) {
-                userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="document.getElementById('authModalOverlay')?.classList.add('active')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
+                userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="openAuthModal('login')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
             }
         }
     };

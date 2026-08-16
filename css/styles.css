@@ -6097,50 +6097,60 @@ body.modal-open {
 }
 
 /* ==========================================
-   User Account & Auth Modal Styles
+/* ==========================================
+   User Account & Interactive Header Dropdowns
    ========================================== */
-.user-menu-wrapper {
+.user-menu-wrapper,
+.header-dropdown-wrapper {
     position: relative;
-    display: inline-block;
-}
-
-.user-menu-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #fdf4ff;
-    color: #6b21a8;
-    border: 1px solid #f0abfc;
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.user-menu-btn:hover {
-    background: #fae8ff;
-    transform: translateY(-1px);
-}
-
-.user-menu-dropdown {
+.user-menu-dropdown,
+.header-hover-dropdown {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 4px);
     right: 0;
-    width: 220px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-    border: 1px solid #f4f4f5;
-    padding: 6px;
-    z-index: 10001;
-    display: none;
+    width: 230px;
+    background: #ffffff !important;
+    border-radius: 14px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(107, 33, 168, 0.08);
+    border: 1px solid #e4e4e7 !important;
+    padding: 8px;
+    z-index: 100000 !important;
+    display: flex;
     flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
+    pointer-events: none;
 }
 
-.user-menu-dropdown.active {
-    display: flex;
+/* Invisible Hover Bridge between button and dropdown */
+.user-menu-dropdown::before,
+.header-hover-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: transparent;
+}
+
+/* Display Dropdown on Hover or Focus or Active */
+.user-menu-wrapper:hover .user-menu-dropdown,
+.user-menu-wrapper:focus-within .user-menu-dropdown,
+.user-menu-dropdown.active,
+.header-dropdown-wrapper:hover .header-hover-dropdown,
+.header-dropdown-wrapper:focus-within .header-hover-dropdown,
+.header-hover-dropdown.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
 }
 
 .user-dropdown-item {
@@ -6148,22 +6158,31 @@ body.modal-open {
     align-items: center;
     gap: 10px;
     padding: 10px 14px;
-    color: #3f3f46;
-    font-size: 0.88rem;
-    font-weight: 600;
+    color: #3f3f46 !important;
+    font-size: 0.86rem;
+    font-weight: 700;
     text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.15s ease;
+    border-radius: 10px;
+    transition: all 0.18s ease;
+    cursor: pointer !important;
 }
 
 .user-dropdown-item:hover {
-    background: #fdf4ff;
-    color: #6b21a8;
+    background: #faf5ff !important;
+    color: #6b21a8 !important;
+    transform: translateX(3px);
+}
+
+.user-dropdown-item i {
+    width: 18px;
+    text-align: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
 }
 
 .user-dropdown-divider {
     height: 1px;
     background: #f4f4f5;
-    margin: 4px 0;
+    margin: 6px 0;
 }
 

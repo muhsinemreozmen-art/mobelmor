@@ -122,20 +122,33 @@
             <!-- Right: User Action Buttons -->
             <div class="header-right-col">
                 <div class="header-action-buttons">
-                    <a href="siparislerim.html" class="header-action-btn interactive-btn" title="Sipariş Takibi" aria-label="Sipariş Takibi" style="text-decoration:none;">
-                        <i class="fa-solid fa-truck-fast"></i>
-                        <span class="action-btn-text">Sipariş Takip</span>
-                    </a>
+                    <!-- Sipariş Takip with Hover Sub-menu -->
+                    <div class="header-dropdown-wrapper" id="orderTrackContainer">
+                        <a href="siparislerim.html" class="header-action-btn interactive-btn" title="Sipariş Takibi" aria-label="Sipariş Takibi" style="text-decoration:none;">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <span class="action-btn-text">Sipariş Takip</span>
+                        </a>
+                        <div class="header-hover-dropdown">
+                            <div style="padding:8px 12px; font-size:0.80rem; font-weight:800; color:#6b21a8; border-bottom:1px solid #f4f4f5;">
+                                <i class="fa-solid fa-truck-fast"></i> Sipariş Takip Merkezi
+                            </div>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-magnifying-glass" style="color:#6b21a8;"></i> Sipariş No ile Sorgula</a>
+                            <a href="siparislerim.html#timeline" class="user-dropdown-item"><i class="fa-solid fa-clock-rotate-left" style="color:#6b21a8;"></i> Üretim &amp; Sevkiyat Takibi</a>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="https://wa.me/905300000000?text=Merhaba,%20siparişim%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="user-dropdown-item" style="color:#16a34a;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Canlı Destek</a>
+                        </div>
+                    </div>
                     
+                    <!-- User / Auth with Hover Sub-menu -->
                     <div class="user-menu-wrapper" id="headerAuthContainer">
                         <button class="header-action-btn interactive-btn" id="headerAuthBtn" title="Hesabım / Giriş Yap" aria-label="Hesabım">
                             <i class="fa-regular fa-user"></i>
                             <span class="action-btn-text" id="headerAuthText">Giriş</span>
                         </button>
                         <div class="user-menu-dropdown" id="userMenuDropdown">
-                            <div style="padding:8px 12px; font-size:0.82rem; color:#71717a; border-bottom:1px solid #f4f4f5;" id="userMenuGreeting">Hoş geldiniz</div>
+                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;" id="userMenuGreeting">Hoş geldiniz</div>
                             <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim</a>
-                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Bilgilerim</a>
+                            <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>
                             <div class="user-dropdown-divider"></div>
                             <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
                         </div>
