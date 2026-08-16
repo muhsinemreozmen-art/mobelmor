@@ -976,6 +976,21 @@ const renderProductDetail = () => {
         breadTitle.innerHTML = `<span class="mb-live-dot"></span> <span>${product.title}</span>`;
     }
 
+    // Highlight active category in Vivense nav bar on detail page
+    document.querySelectorAll(".vivense-nav-item").forEach(item => item.classList.remove("active"));
+    if (product.category) {
+        const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[product.category] || product.category) : product.category;
+        document.querySelectorAll(".vivense-nav-item").forEach(item => {
+            const link = item.querySelector(".vivense-nav-link");
+            if (link) {
+                const href = link.getAttribute("href") || "";
+                if (href.includes(`c=${catSlug}`) || href.includes(`c=${product.category}`)) {
+                    item.classList.add("active");
+                }
+            }
+        });
+    }
+
     currentModuleState.productBasePrice = product.price;
     currentModuleState.mainUnitPrice = product.price;
     currentModuleState.extraUnitPrice = Math.round(product.price * 0.18);

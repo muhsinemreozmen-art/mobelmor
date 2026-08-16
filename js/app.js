@@ -1236,6 +1236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateActiveCategoryUI = () => {
         document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
         document.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("active"));
+        document.querySelectorAll(".vivense-nav-item").forEach(item => item.classList.remove("active"));
 
         const targetPill = document.querySelector(`.cat-pill[data-category="${currentCategory}"]`);
         if (targetPill) targetPill.classList.add("active");
@@ -1243,6 +1244,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentSubcategory !== "all") {
             const targetSub = document.querySelector(`.dropdown-item[data-cat="${currentCategory}"][data-sub="${currentSubcategory}"]`);
             if (targetSub) targetSub.classList.add("active");
+        }
+
+        // Highlight active Vivense category navbar link
+        if (currentCategory && currentCategory !== "all") {
+            const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
+            document.querySelectorAll(".vivense-nav-item").forEach(item => {
+                const link = item.querySelector(".vivense-nav-link");
+                if (link) {
+                    const href = link.getAttribute("href") || "";
+                    if (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`)) {
+                        item.classList.add("active");
+                    }
+                }
+            });
         }
 
         renderCategoryHeaderAndSubchips();
