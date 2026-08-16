@@ -1157,9 +1157,9 @@ button:active,
 .campaign-brand {
     font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
     font-size: 0.74rem;
-    font-weight: 800;
-    color: #0f172a;
-    letter-spacing: 0.04em;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: 0.03em;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -1169,6 +1169,11 @@ button:active,
 .campaign-brand i {
     color: #6b21a8;
     font-size: 0.82rem;
+}
+
+.campaign-brand .brand-mor {
+    color: #6b21a8 !important;
+    font-weight: 800;
 }
 
 .campaign-sep {
@@ -1522,70 +1527,6 @@ button:active,
     background: #fff7ed;
     color: #ea580c;
     font-weight: 800;
-}
-
-/* =========================================================================
-   Vivense-Style Top Campaign Strip & Hero Slider
-   ========================================================================= */
-.vivense-campaign-strip {
-    background: #ffffff;
-    border-bottom: 1px solid #f1f1f4;
-    padding: 10px 0;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #3f3f46;
-    letter-spacing: 0.02em;
-}
-
-.campaign-strip-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.campaign-brand {
-    font-weight: 800;
-    color: #18181b;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    letter-spacing: 0.03em;
-}
-
-.campaign-brand i {
-    color: #6b21a8;
-}
-
-.campaign-sep {
-    color: #d4d4d8;
-    font-weight: 300;
-}
-
-.campaign-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.campaign-item i {
-    color: #71717a;
-    font-size: 0.85rem;
-}
-
-@media (max-width: 768px) {
-    .vivense-campaign-strip {
-        padding: 8px 0;
-        font-size: 0.74rem;
-    }
-    .campaign-strip-inner {
-        gap: 10px;
-    }
-    .campaign-sep:nth-child(n+6),
-    .campaign-item:nth-child(n+6) {
-        display: none;
-    }
 }
 
 /* =========================================================================
