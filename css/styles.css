@@ -2971,27 +2971,30 @@ button:active,
 }
 
 .vbuy-original-price {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #ea580c;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-decoration: line-through;
     letter-spacing: -0.01em;
 }
 
 .vbuy-discount-tag {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 700;
-    color: #991b1b;
-    background: #fee2e2;
-    padding: 3px 10px;
-    border-radius: 3px;
+    color: #6b21a8;
+    background: #faf5ff;
+    border: 1px solid #ddd6fe;
+    padding: 3px 12px;
+    border-radius: 4px;
     align-self: center;
     margin: 4px 0;
+    letter-spacing: 0.02em;
 }
 
 .vbuy-sepet-price {
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: #991b1b;
+    font-size: 2.0rem;
+    font-weight: 900;
+    color: #4c1d95;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3000,9 +3003,14 @@ button:active,
 }
 
 .vbuy-info-icon {
-    font-size: 0.95rem;
-    color: #64748b;
+    font-size: 0.90rem;
+    color: #94a3b8;
     cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.vbuy-info-icon:hover {
+    color: #6b21a8;
 }
 
 /* Set Content Breakdown (Takım İçeriği) */
@@ -5213,7 +5221,7 @@ body.modal-open {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 2.0rem;
     font-weight: 800;
-    color: #991b1b !important;
+    color: #4c1d95 !important;
     margin-bottom: 14px;
     letter-spacing: -0.02em;
     transition: all 0.2s ease;
