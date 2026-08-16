@@ -705,6 +705,12 @@ window.createLightbox = () => {
     lb.id = 'mbl-lightbox';
     lb.className = 'mbl-lightbox-overlay';
     lb.innerHTML = `
+        <div class="lb-mobile-header">
+            <span class="lb-mobile-counter" id="lbMobileCounter">1 / 1</span>
+            <button type="button" class="lb-mobile-close-btn" onclick="closeLightbox()" title="Kapat (Esc)" aria-label="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
         <button type="button" class="lb-vivense-close" id="lbClose" onclick="closeLightbox()" title="Kapat (Esc)" aria-label="Kapat">
             <i class="fa-solid fa-xmark"></i>
         </button>
@@ -730,24 +736,23 @@ window.createLightbox = () => {
 
     // Close on clicking backdrop outside the card
     lb.addEventListener('click', (e) => {
-        if (!e.target.closest('#lbCard') && !e.target.closest('#lbPrev') && !e.target.closest('#lbNext')) {
+        if (!e.target.closest('#lbCard') && !e.target.closest('#lbPrev') && !e.target.closest('#lbNext') && !e.target.closest('.lb-mobile-header')) {
             closeLightbox();
         }
     });
 
-    // Touch swipe on card
-    const lbCard = document.getElementById('lbCard');
+    // Touch swipe on card or overlay on mobile
     let touchStartX = 0;
     let touchStartY = 0;
 
-    lbCard?.addEventListener('touchstart', (e) => {
+    lb.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         }
     }, { passive: true });
 
-    lbCard?.addEventListener('touchend', (e) => {
+    lb.addEventListener('touchend', (e) => {
         if (e.changedTouches.length > 0) {
             const diffX = e.changedTouches[0].clientX - touchStartX;
             const diffY = e.changedTouches[0].clientY - touchStartY;
@@ -805,6 +810,7 @@ window.navigateLightbox = (direction) => {
 window.updateLightboxView = () => {
     const lbImg = document.getElementById('lbImg');
     const lbCounter = document.getElementById('lbCounter');
+    const lbMobileCounter = document.getElementById('lbMobileCounter');
     if (!lightboxGallery || lightboxGallery.length === 0) return;
 
     const src = lightboxGallery[lightboxCurrentIndex] || '';
@@ -814,6 +820,9 @@ window.updateLightboxView = () => {
     }
     if (lbCounter) {
         lbCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
+    }
+    if (lbMobileCounter) {
+        lbMobileCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxGallery.length}`;
     }
 
     const prevBtn = document.getElementById('lbPrev');
@@ -925,6 +934,12 @@ const updateActiveSlide = (idx) => {
         } else {
             thumb.classList.remove('active');
         }
+    });
+
+    const dots = document.querySelectorAll('.gallery-dot');
+    dots.forEach((dot, i) => {
+        if (i === idx) dot.classList.add('active');
+        else dot.classList.remove('active');
     });
 };
 
@@ -1093,12 +1108,54 @@ const renderProductDetail = () => {
                     <div class="gallery-counter-pill">
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
+
+                    <!-- Bottom Dot Indicators (Mobile & Tablet) -->
+                    <div class="gallery-dots-strip" id="galleryDotsStrip">
+                        ${gallery.map((_, idx) => `
+                            <span class="gallery-dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></span>
+                        `).join('')}
+                    </div>
                 </div>
 
-                <!-- Left Column Below Gallery: Product Title & Option Cards -->
+                <!-- Left Column Below Gallery: Product Title, Badges & Quick Perks -->
                 <div class="vdetail-left-bottom">
                     <h1 class="vdetail-product-title">${product.title.toUpperCase()} <span class="vcode-text">(MBL-${String(product.id).padStart(3,'0')})</span></h1>
                     
+                    <!-- Meta Tags & Video Button Row (Matching Photo 2) -->
+                    <div class="vdetail-meta-row">
+                        <div class="vdetail-tags-group">
+                            <span class="vtag-collection">mobelmor collection</span>
+                            <span class="vtag-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>
+                            <span class="vtag-custom">Siparişe Özel Üretim</span>
+                        </div>
+                        <button type="button" class="vdetail-video-btn" onclick="openLightbox(0)" title="Görselleri ve Detayları İncele">
+                            <span class="vvideo-play-icon"><i class="fa-solid fa-play"></i></span>
+                            <span>VİDEO İZLE</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Perks & Action Rows (Matching Photo 2) -->
+                    <div class="vdetail-quick-actions-list">
+                        <div class="vquick-action-item">
+                            <i class="fa-regular fa-clock vqa-icon-time"></i>
+                            <span>Hızlı Teslimat: <strong>${formattedDeliveryDate} Günü Yolda</strong></span>
+                        </div>
+                        <a href="#modulePriceSection" class="vquick-action-item is-link" onclick="document.getElementById('modulePriceSection')?.scrollIntoView({behavior:'smooth'}); event.preventDefault();">
+                            <i class="fa-solid fa-couch vqa-icon-couch"></i>
+                            <span>Takım İçeriğini Değiştir</span>
+                            <i class="fa-solid fa-chevron-right vqa-arrow"></i>
+                        </a>
+                        <a href="kumas-kartelasi.html" class="vquick-action-item is-link">
+                            <i class="fa-solid fa-swatchbook vqa-icon-fabric"></i>
+                            <span>Kumaşını Değiştir</span>
+                            <i class="fa-solid fa-chevron-right vqa-arrow"></i>
+                        </a>
+                        <div class="vquick-action-item">
+                            <i class="fa-solid fa-check vqa-icon-check"></i>
+                            <span>Ücretsiz Teslimat ve Kurulum</span>
+                        </div>
+                    </div>
+
                     <div class="vdetail-options-card">
                         <h4 class="voptions-heading">${isDining ? 'Masa Fonksiyonu Seçenekleri' : isLiving ? 'Ölçü & Modül Seçenekleri' : 'Koleksiyon Seçenekleri'}</h4>
                         <div class="voptions-grid">

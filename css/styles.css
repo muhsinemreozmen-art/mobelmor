@@ -2634,16 +2634,28 @@ button:active,
     box-sizing: border-box;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .product-gallery-box.vgallery-modern-container {
         grid-template-columns: 1fr;
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 10px;
+        display: block !important;
+    }
+    .vgallery-side-thumbs {
+        display: none !important;
+    }
+    .vgallery-arrow-btn {
+        display: none !important;
+    }
+    .gallery-dots-strip {
+        display: flex !important;
+    }
+    .gallery-carousel-wrapper.vgallery-main-view {
+        min-height: 280px !important;
+        max-height: 380px !important;
+        aspect-ratio: 4 / 3 !important;
     }
 }
 
-/* Vertical Thumbnail Strip */
+/* Vertical Thumbnail Strip (Desktop) */
 .vgallery-side-thumbs {
     display: flex;
     flex-direction: column;
@@ -2665,20 +2677,6 @@ button:active,
 
 .vthumb-list-track::-webkit-scrollbar {
     display: none;
-}
-
-@media (max-width: 640px) {
-    .vgallery-side-thumbs {
-        flex-direction: row;
-        max-height: none;
-    }
-    .vthumb-list-track {
-        flex-direction: row;
-        overflow-x: auto;
-        overflow-y: hidden;
-        max-height: none;
-        width: 100%;
-    }
 }
 
 .vthumb-item {
@@ -2851,7 +2849,46 @@ button:active,
     pointer-events: none;
 }
 
-/* Left Column Below Gallery: Product Title & Variant Options */
+/* Horizontal Gallery Dots Strip (Mobile & Tablet) */
+.gallery-dots-strip {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: 20px;
+    z-index: 5;
+    max-width: 80%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.gallery-dots-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.gallery-dot.active {
+    background: #ffffff;
+    width: 14px;
+    border-radius: 4px;
+}
+
+/* Left Column Below Gallery: Product Title, Badges & Quick Perks */
 .vdetail-left-bottom {
     grid-column: 1 / -1;
     margin-top: 16px;
@@ -2862,16 +2899,165 @@ button:active,
 .vdetail-product-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: clamp(1.05rem, 1.4vw, 1.35rem);
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-weight: 800;
+    letter-spacing: 0.02em;
     color: #1e293b;
-    margin: 0 0 16px 0;
+    margin: 0 0 10px 0;
+    line-height: 1.35;
 }
 
 .vdetail-product-title .vcode-text {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 500;
     color: #64748b;
+}
+
+/* Meta Tags & Video Play Button Row */
+.vdetail-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.vdetail-tags-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.vtag-collection {
+    background: #334155;
+    color: #ffffff;
+    font-size: 0.70rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+}
+
+.vtag-rating {
+    background: #fef08a;
+    color: #854d0e;
+    font-size: 0.70rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.vtag-custom {
+    background: #dbeafe;
+    color: #1e40af;
+    font-size: 0.70rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.vdetail-video-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: #1e293b;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 2px 4px;
+    transition: color 0.15s ease;
+}
+
+.vdetail-video-btn:hover {
+    color: #6b21a8;
+}
+
+.vvideo-play-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #1e293b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.60rem;
+    padding-left: 2px;
+    transition: all 0.15s ease;
+}
+
+.vdetail-video-btn:hover .vvideo-play-icon {
+    border-color: #6b21a8;
+    background: #6b21a8;
+    color: #ffffff;
+}
+
+/* Quick Perks & Action Rows (Vivense Style Photo 2) */
+.vdetail-quick-actions-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.vquick-action-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.80rem;
+    color: #334155;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.vquick-action-item:last-child {
+    border-bottom: none;
+}
+
+.vquick-action-item.is-link {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.vquick-action-item.is-link:hover {
+    background: #faf5ff;
+    color: #6b21a8;
+}
+
+.vqa-icon-time {
+    color: #0284c7;
+    font-size: 0.90rem;
+}
+
+.vqa-icon-couch {
+    color: #6b21a8;
+    font-size: 0.85rem;
+}
+
+.vqa-icon-fabric {
+    color: #d97706;
+    font-size: 0.85rem;
+}
+
+.vqa-icon-check {
+    color: #16a34a;
+    font-size: 0.85rem;
+}
+
+.vqa-arrow {
+    margin-left: auto;
+    font-size: 0.65rem;
+    color: #94a3b8;
 }
 
 .vdetail-options-card {
@@ -3452,37 +3638,86 @@ button:active,
     }
 }
 
-@media (max-width: 640px) {
+/* Mobile Pure Immersive Black Lightbox (Matching Photo 1) */
+.lb-mobile-header {
+    display: none;
+}
+
+@media (max-width: 768px) {
     .mbl-lightbox-overlay {
-        padding: 10px;
+        background: #000000 !important;
+        padding: 0 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    .lb-mobile-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 20px;
+        z-index: 2147483647;
+        background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    }
+    .lb-mobile-counter {
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .lb-mobile-close-btn {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-size: 1.6rem;
+        cursor: pointer !important;
+        padding: 4px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .lb-vivense-card {
-        width: 95vw;
-        max-height: 90vh;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
-    .lb-vivense-close {
-        top: 12px;
-        right: 14px;
-        font-size: 1.8rem;
-    }
-    .lb-vivense-header {
-        padding: 10px 14px 8px 14px;
-    }
-    .lb-vivense-title {
-        font-size: 0.78rem;
+    .lb-vivense-header,
+    .lb-vivense-footer,
+    .lb-vivense-close,
+    .lb-vivense-prev,
+    .lb-vivense-next {
+        display: none !important;
     }
     .lb-vivense-body {
-        padding: 8px;
-        min-height: 200px;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        padding: 0 !important;
+        background: transparent !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: auto !important;
     }
     .lb-vivense-img {
-        max-height: calc(85vh - 90px);
-    }
-    .lb-vivense-footer {
-        padding: 6px 12px 10px 12px;
-    }
-    .lb-vivense-counter {
-        font-size: 0.78rem;
+        max-width: 100vw !important;
+        max-height: 85vh !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        background: transparent !important;
     }
 }
 
