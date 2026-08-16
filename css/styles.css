@@ -1172,31 +1172,31 @@ button:active,
 }
 
 .campaign-strip-inner {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr) !important;
+    display: flex !important;
     align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 1240px;
     margin: 0 auto;
     padding: 0 16px;
     box-sizing: border-box;
-    gap: 0;
+    gap: clamp(12px, 2.2vw, 28px);
 }
 
 .campaign-trust-col {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     position: relative;
-    width: 100%;
-    padding: 0 4px;
-    box-sizing: border-box;
-    min-width: 0;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .campaign-trust-col:not(:last-child)::after {
     content: '';
     position: absolute;
-    right: 0;
+    right: calc(clamp(12px, 2.2vw, 28px) / -2);
     top: 50%;
     transform: translateY(-50%);
     width: 1px;
@@ -1204,28 +1204,12 @@ button:active,
     background-color: #e2e8f0;
 }
 
-.campaign-trust-col.col-1 {
-    justify-content: flex-start;
-    padding-left: 0;
-}
-
-.campaign-trust-col.col-2,
-.campaign-trust-col.col-3,
-.campaign-trust-col.col-4 {
-    justify-content: center;
-}
-
-.campaign-trust-col.col-5 {
-    justify-content: flex-end;
-    padding-right: 0;
-}
-
 .campaign-trust-item {
     display: inline-flex;
     align-items: center;
-    gap: clamp(4px, 0.5vw, 6px);
+    gap: 6px;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: clamp(0.60rem, 0.85vw, 0.73rem);
+    font-size: clamp(0.66rem, 0.8vw, 0.74rem);
     font-weight: 500;
     color: #475569;
     letter-spacing: -0.01em;
@@ -1236,20 +1220,20 @@ button:active,
 
 .campaign-trust-item i {
     color: #64748b;
-    font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+    font-size: clamp(0.72rem, 0.9vw, 0.82rem);
     flex-shrink: 0;
 }
 
 .campaign-trust-item.brand-item {
-    font-size: clamp(0.60rem, 0.85vw, 0.73rem);
+    font-size: clamp(0.66rem, 0.8vw, 0.74rem);
     font-weight: 700;
     color: #1e293b;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
 }
 
 .campaign-trust-item.brand-item i {
     color: #6b21a8;
-    font-size: clamp(0.72rem, 1vw, 0.86rem);
+    font-size: clamp(0.76rem, 0.95vw, 0.86rem);
 }
 
 .campaign-trust-item .brand-mor {
@@ -1268,15 +1252,10 @@ button:active,
         display: none;
     }
     .campaign-strip-inner {
-        display: flex !important;
         width: max-content;
         gap: 20px;
         justify-content: flex-start;
         padding: 0 16px;
-    }
-    .campaign-trust-col {
-        width: auto !important;
-        justify-content: flex-start !important;
     }
     .campaign-trust-col:not(:last-child)::after {
         right: -10px;
