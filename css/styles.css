@@ -3143,7 +3143,133 @@ button:active,
     flex-direction: column;
     gap: 14px;
     position: sticky;
-    top: 20px;
+    top: 90px;
+    align-self: start;
+    z-index: 10;
+}
+
+/* =========================================================================
+   Mobile & Continuous Scroll Sticky Floating Buy Bar
+   ========================================================================= */
+.mobile-sticky-buy-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid #e2e8f0;
+    padding: 10px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 2147483600;
+    box-shadow: 0 -6px 22px rgba(0, 0, 0, 0.10);
+    animation: slideUpSticky 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpSticky {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.sticky-buy-price-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.sticky-buy-sub {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #6b21a8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sticky-buy-price {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #4c1d95;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.sticky-buy-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.sticky-buy-wa-btn {
+    width: 44px;
+    height: 44px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #16a34a;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+}
+
+.sticky-buy-wa-btn:hover {
+    background: #dcfce7;
+}
+
+.sticky-buy-btn {
+    flex: 1;
+    max-width: 240px;
+    height: 44px;
+    background: #6b21a8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.90rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(107, 33, 168, 0.35);
+    transition: all 0.15s ease;
+}
+
+.sticky-buy-btn:hover {
+    background: #581c87;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.45);
+}
+
+.sticky-buy-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 992px) {
+    .mobile-sticky-buy-bar {
+        display: flex !important;
+    }
+    body {
+        padding-bottom: 74px !important;
+    }
+    .whatsapp-float-btn {
+        bottom: 84px !important;
+    }
 }
 
 /* Pricing Section */

@@ -1282,7 +1282,34 @@ const renderProductDetail = () => {
     renderSpecsAndGeneralInfo(product);
     renderRelatedProducts(product);
 
+    // Create & Inject Floating Sticky Buy Bar (for Mobile & Continuous Scroll Access)
+    let stickyBar = document.getElementById('mobileStickyBuyBar');
+    if (!stickyBar) {
+        stickyBar = document.createElement('div');
+        stickyBar.id = 'mobileStickyBuyBar';
+        stickyBar.className = 'mobile-sticky-buy-bar';
+        document.body.appendChild(stickyBar);
+    }
+    stickyBar.innerHTML = `
+        <div class="sticky-buy-price-wrap">
+            <span class="sticky-buy-sub">Sepette İndirimli</span>
+            <strong class="sticky-buy-price" id="stickyBottomPrice">${formatPrice(product.price)}</strong>
+        </div>
+        <div class="sticky-buy-actions">
+            <a href="https://wa.me/905300000000?text=${encodeURIComponent(product.title + ' hakkında detaylı bilgi almak istiyorum.')}" target="_blank" class="sticky-buy-wa-btn" title="Satış Danışmanı ile Görüş">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <button class="sticky-buy-btn interactive-btn" id="stickyAddToCartBtn">
+                <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
+            </button>
+        </div>
+    `;
+
     document.getElementById("topDetailAddToCartBtn")?.addEventListener("click", () => {
+        addToCart(product.id, 1);
+    });
+
+    document.getElementById("stickyAddToCartBtn")?.addEventListener("click", () => {
         addToCart(product.id, 1);
     });
 };
@@ -1378,7 +1405,9 @@ window.updateModuleQty = (id, delta) => {
     const topEl = document.getElementById('topMainPriceDisplay');
     const vsetTotalEl = document.getElementById('vsetTotalPrice');
     const vsetListEl = document.getElementById('vsetItemsList');
+    const stickyBottomEl = document.getElementById('stickyBottomPrice');
     if (grandEl) grandEl.textContent = fmt;
+    if (stickyBottomEl) stickyBottomEl.textContent = fmt;
     if (topEl) {
         topEl.innerHTML = `${fmt} <span class="vbuy-info-icon" title="KDV Dahil, Sepette İndirimli Fiyattır"><i class="fa-regular fa-circle-question"></i></span>`;
     }
