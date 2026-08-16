@@ -1250,6 +1250,7 @@ const openCheckoutModal = () => {
     const overlay = document.getElementById("checkoutOverlay");
     if (!overlay) return;
     overlay.classList.add("active");
+    document.body.classList.add("modal-open");
 };
 
 const renderCart = () => {
@@ -1287,6 +1288,23 @@ const renderCart = () => {
         </div>
         <button class="btn btn-primary btn-block interactive-btn" id="openCheckoutBtn">Güvenli Ödemeye Geç</button>
     `;
+
+    document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
+        document.getElementById("cartDrawer")?.classList.remove("active");
+        document.getElementById("cartOverlay")?.classList.remove("active");
+        const totalEl = document.getElementById("checkoutTotal");
+        if (totalEl) totalEl.textContent = formatPrice(subtotal);
+        openCheckoutModal();
+    });
+};
+
+window.buyNow = (productId) => {
+    addToCart(productId, 1);
+    const item = PRODUCTS.find(p => p.id === productId);
+    const subtotal = item ? item.price : 0;
+    const totalEl = document.getElementById("checkoutTotal");
+    if (totalEl) totalEl.textContent = formatPrice(subtotal);
+    openCheckoutModal();
 };
 
 window.changeQty = (id, delta) => {
@@ -1340,6 +1358,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
+    });
+    document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "checkoutOverlay") {
+            document.getElementById("checkoutOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
+        }
     });
 
     // ── Contract & KVKK Tab Switcher in Checkout Modal ──

@@ -893,10 +893,12 @@ const renderCart = () => {
     `;
 
     document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
-        document.getElementById("cartDrawer").classList.remove("active");
-        document.getElementById("cartOverlay").classList.remove("active");
-        document.getElementById("checkoutTotal").textContent = formatPrice(subtotal);
-        document.getElementById("checkoutOverlay").classList.add("active");
+        document.getElementById("cartDrawer")?.classList.remove("active");
+        document.getElementById("cartOverlay")?.classList.remove("active");
+        const totalEl = document.getElementById("checkoutTotal");
+        if (totalEl) totalEl.textContent = formatPrice(subtotal);
+        document.getElementById("checkoutOverlay")?.classList.add("active");
+        document.body.classList.add("modal-open");
     });
 };
 
@@ -1397,10 +1399,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("closeQuickViewBtn")?.addEventListener("click", () => {
         document.getElementById("quickViewOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
+    });
+    document.getElementById("quickViewOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "quickViewOverlay") {
+            document.getElementById("quickViewOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
+        }
     });
 
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
+    });
+    document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
+        if (e.target.id === "checkoutOverlay") {
+            document.getElementById("checkoutOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
+        }
     });
 
     // ── Contract & KVKK Tab Switcher in Checkout Modal ──
@@ -1503,6 +1519,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dropdown.classList.toggle("active");
         } else {
             document.getElementById("authModalOverlay")?.classList.add("active");
+            document.body.classList.add("modal-open");
         }
     });
 
@@ -1558,10 +1575,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
         document.getElementById("authModalOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
     });
     document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
         if (e.target.id === "authModalOverlay") {
             document.getElementById("authModalOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
         }
     });
 
