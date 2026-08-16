@@ -1138,7 +1138,7 @@ button:active,
 .vivense-campaign-strip {
     background-color: #ffffff !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    padding: 10px 0;
+    padding: 8px 0;
     width: 100%;
     box-sizing: border-box;
 }
@@ -1154,50 +1154,48 @@ button:active,
     box-sizing: border-box;
 }
 
-.campaign-brand {
-    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: #1e293b;
-    letter-spacing: 0.03em;
+.campaign-trust-item {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: #475569;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    user-select: none;
+    line-height: 1;
+}
+
+.campaign-trust-item i {
+    color: #64748b;
+    font-size: 0.82rem;
     flex-shrink: 0;
 }
 
-.campaign-brand i {
-    color: #6b21a8;
-    font-size: 0.82rem;
+.campaign-trust-item.brand-item {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.01em;
 }
 
-.campaign-brand .brand-mor {
+.campaign-trust-item.brand-item i {
+    color: #6b21a8;
+    font-size: 0.86rem;
+}
+
+.campaign-trust-item .brand-mor {
     color: #6b21a8 !important;
     font-weight: 800;
 }
 
-.campaign-sep {
-    color: #cbd5e1;
-    font-size: 0.75rem;
-    user-select: none;
-}
-
-.campaign-item {
-    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-    font-size: 0.73rem;
-    font-weight: 600;
-    color: #475569;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
+.campaign-trust-sep {
+    width: 1px;
+    height: 13px;
+    background-color: #e2e8f0;
     flex-shrink: 0;
-}
-
-.campaign-item i {
-    color: #64748b;
-    font-size: 0.8rem;
 }
 
 @media (max-width: 991px) {
@@ -1205,7 +1203,7 @@ button:active,
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        padding: 8px 0;
+        padding: 7px 0;
     }
     .vivense-campaign-strip::-webkit-scrollbar {
         display: none;
@@ -1215,6 +1213,9 @@ button:active,
         gap: 16px;
         justify-content: flex-start;
         padding: 0 14px;
+    }
+    .campaign-trust-sep {
+        height: 12px;
     }
 }
 
