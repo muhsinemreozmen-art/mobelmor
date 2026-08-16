@@ -97,7 +97,7 @@ button:active,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 12px 16px;
     gap: 32px;
     min-height: 62px;
     background-color: #ffffff !important;
@@ -831,9 +831,9 @@ button:active,
 .vivense-nav-container {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 0;
-    padding: 0 4px;
+    padding: 0 16px;
     position: static !important;
     overflow: visible !important;
     white-space: nowrap;
@@ -1129,6 +1129,87 @@ button:active,
 .mega-circle-card:hover .mega-circle-title {
     color: #6b21a8 !important;
     font-weight: 700;
+}
+
+/* =========================================================================
+   Vivense-Style Campaign Strip Bar (Guarantees Row)
+   ========================================================================= */
+.vivense-campaign-strip {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.campaign-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.campaign-brand {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.campaign-brand i {
+    color: #6b21a8;
+    font-size: 0.82rem;
+}
+
+.campaign-sep {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    user-select: none;
+}
+
+.campaign-item {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.campaign-item i {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 991px) {
+    .vivense-campaign-strip {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 8px 0;
+    }
+    .vivense-campaign-strip::-webkit-scrollbar {
+        display: none;
+    }
+    .campaign-strip-inner {
+        width: max-content;
+        gap: 16px;
+        justify-content: flex-start;
+        padding: 0 14px;
+    }
 }
 
 /* =========================================================================
