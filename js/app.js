@@ -1498,6 +1498,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const userGreetingOnPage = document.getElementById("userGreeting");
 
         if (user) {
+            authBtn?.classList.add("logged-in");
             if (authText) authText.textContent = user.name.split(" ")[0];
             if (dropdown) {
                 dropdown.innerHTML = `
@@ -1532,6 +1533,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
             if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
         } else {
+            authBtn?.classList.remove("logged-in");
             if (authText) authText.textContent = "Giriş";
             if (dropdown) {
                 dropdown.innerHTML = `
