@@ -12,7 +12,26 @@
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
+    <!-- Primary Meta Tags -->
     <title>Ürün Detayı | Mobelmor.com</title>
+    <meta name="title" content="Ürün Detayı | Mobelmor.com">
+    <meta name="description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ahşap ve organik kumaş mobilya tasarımları.">
+    <link rel="canonical" href="https://mobelmor.com/urun-detay">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://mobelmor.com/urun-detay">
+    <meta property="og:title" content="Mobelmor Mobilya Ürün Detayı">
+    <meta property="og:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ahşap ve organik kumaş mobilya tasarımları.">
+    <meta property="og:image" content="https://mobelmor.com/assets/minegolden_p1_1.webp">
+    <meta property="og:site_name" content="Mobelmor">
+    <meta property="og:locale" content="tr_TR">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Mobelmor Mobilya Ürün Detayı">
+    <meta property="twitter:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ahşap ve organik kumaş mobilya tasarımları.">
+    <meta property="twitter:image" content="https://mobelmor.com/assets/minegolden_p1_1.webp">
 
     <!-- Extensionless Clean URL Router Script -->
     <script src="js/url-cleaner.js?v=11000" defer></script>
@@ -757,8 +776,9 @@
                     <ul class="footer-links">
                         <li><a href="garanti-iade.html"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
                         <li><a href="kumas-kartelasi.html"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
-                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> Sıkça Sorulan Sorular</a></li>
+                        <li><a href="mesafeli-satis-sozlesmesi.html"><i class="fa-solid fa-chevron-right"></i> Mesafeli Satış Sözleşmesi</a></li>
                         <li><a href="gizlilik-guvenlik.html"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> SSS</a></li>
                     </ul>
                 </div>
 
@@ -831,21 +851,27 @@
     <div class="modal-overlay" id="checkoutOverlay">
         <div class="modal-card">
             <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Ödeme</h3>
+            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Sipariş &amp; Ödeme Talebi</h3>
             <p style="color:#71717a; font-size:0.88rem;">256-Bit SSL korumalı hızlı sipariş tamamlama ekranı.</p>
 
             <form id="checkoutForm" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-                <input type="text" placeholder="Ad Soyad" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <input type="tel" placeholder="Telefon Numarası (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <textarea placeholder="Teslimat Adresi" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutName" placeholder="Adınız ve Soyadınız" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="tel" id="checkoutPhone" placeholder="Telefon Numaranız (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <textarea id="checkoutAddress" placeholder="Teslimat Adresi (İl, İlçe, Mahalle, Cadde/Sokak, Bina No)" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutNote" placeholder="Varsa Özel Sipariş/Kumaş Notunuz (Opsiyonel)" style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
 
                 <div style="background:#faf5ff; padding:12px 16px; border-radius:10px; border:1px solid #e9d5ff; display:flex; justify-content:space-between; font-weight:800;">
                     <span>Toplam Ödenecek:</span>
                     <span id="checkoutTotal" style="color:#6b21a8;">₺0</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:6px;">
-                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; Bitir
+                <label class="checkout-terms-label">
+                    <input type="checkbox" id="checkoutTerms" required checked>
+                    <span><a href="mesafeli-satis-sozlesmesi.html" target="_blank">Mesafeli Satış Sözleşmesi</a> ve <a href="gizlilik-guvenlik.html" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum, onaylıyorum.</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:2px;">
+                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; WhatsApp ile İlet
                 </button>
             </form>
         </div>

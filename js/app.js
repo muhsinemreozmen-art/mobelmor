@@ -1403,19 +1403,115 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
     });
 
-    // Checkout Form Submit Handling
+    // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent)
     const checkoutForm = document.getElementById("checkoutForm");
     if (checkoutForm) {
         checkoutForm.addEventListener("submit", (e) => {
             e.preventDefault();
+            const name = document.getElementById("checkoutName")?.value.trim() || "";
+            const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
+            const address = document.getElementById("checkoutAddress")?.value.trim() || "";
+            const note = document.getElementById("checkoutNote")?.value.trim() || "";
+            const termsChecked = document.getElementById("checkoutTerms")?.checked;
+
+            if (!termsChecked) {
+                showToast("Lütfen Mesafeli Satış Sözleşmesini onaylayınız.", "fa-triangle-exclamation");
+                return;
+            }
+
+            if (cart.length === 0) {
+                showToast("Sepetiniz boş!", "fa-basket-shopping");
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+            // Store order locally
+            const orderData = {
+                id: "MBL-" + Date.now().toString().slice(-6),
+                date: orderDate,
+                customer: { name, phone, address, note },
+                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty })),
+                total: subtotal
+            };
+
+            try {
+                const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+                prevOrders.unshift(orderData);
+                localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
+            } catch (err) {
+                console.error("Order save error:", err);
+            }
+
+            // Build formatted WhatsApp message
+            let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
+            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+            waMsg += `👤 *Müşteri:* ${name}\n`;
+            waMsg += `📞 *Telefon:* ${phone}\n`;
+            waMsg += `📍 *Adres:* ${address}\n`;
+            if (note) waMsg += `📝 *Not:* ${note}\n`;
+            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+            waMsg += `📦 *Sipariş Edilen Ürünler:*\n`;
+            cart.forEach((item, idx) => {
+                waMsg += `${idx + 1}. ${item.qty}x ${item.title} - ${formatPrice(item.price * item.qty)}\n`;
+            });
+            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+            waMsg += `💰 *Toplam Tutar:* ${formatPrice(subtotal)}\n`;
+            waMsg += `📅 *Tarih:* ${orderDate}\n\n`;
+            waMsg += `Siparişimin teyit edilmesini ve teslimat planlamasının başlatılmasını rica ederim.`;
+
+            const waUrl = `https://wa.me/905300000000?text=${encodeURIComponent(waMsg)}`;
+
+            // Clear cart & close modal
             cart = [];
             updateBadges();
             renderCart();
             document.getElementById("checkoutOverlay")?.classList.remove("active");
-            showToast("Siparişiniz başarıyla alındı! Müşteri temsilcimiz sizinle iletişime geçecektir.", "fa-circle-check");
+            showToast("Siparişiniz alındı! WhatsApp ile iletiliyor...", "fa-circle-check");
             checkoutForm.reset();
+
+            // Open WhatsApp with prefilled order
+            setTimeout(() => {
+                window.open(waUrl, "_blank");
+            }, 600);
         });
     }
+
+    // Initialize Cookie Consent Banner
+    const initCookieConsent = () => {
+        if (localStorage.getItem("mobelmor_cookie_accepted") === "true") return;
+
+        const banner = document.createElement("div");
+        banner.className = "cookie-consent-banner";
+        banner.id = "cookieConsentBanner";
+        banner.innerHTML = `
+            <div class="cookie-content">
+                <i class="fa-solid fa-cookie-bite cookie-icon"></i>
+                <div class="cookie-text">
+                    Sitemizde size en iyi alışveriş deneyimini sunabilmek için çerezler kullanılmaktadır. Detaylar için <a href="gizlilik-guvenlik.html" target="_blank">Çerez ve Gizlilik Politikamızı</a> inceleyebilirsiniz.
+                </div>
+            </div>
+            <div class="cookie-actions">
+                <button class="cookie-btn-accept" id="acceptCookiesBtn">Kabul Et</button>
+                <button class="cookie-btn-close" id="closeCookiesBtn" title="Kapat" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        `;
+        document.body.appendChild(banner);
+
+        setTimeout(() => banner.classList.add("show"), 800);
+
+        const closeBanner = () => {
+            localStorage.setItem("mobelmor_cookie_accepted", "true");
+            banner.classList.remove("show");
+            setTimeout(() => banner.remove(), 400);
+        };
+
+        banner.querySelector("#acceptCookiesBtn")?.addEventListener("click", closeBanner);
+        banner.querySelector("#closeCookiesBtn")?.addEventListener("click", closeBanner);
+    };
+
+    initCookieConsent();
 
     // Info Modals (Garanti, Kumaş, SSS, Gizlilik)
     const INFO_MODALS = {

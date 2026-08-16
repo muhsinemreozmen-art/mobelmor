@@ -16,6 +16,43 @@
     <title>Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya</title>
     <meta name="title" content="Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya">
     <meta name="description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları. Koltuk takımları, yemek odaları ve yatak odası koleksiyonları.">
+    <link rel="canonical" href="https://mobelmor.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mobelmor.com/">
+    <meta property="og:title" content="Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya">
+    <meta property="og:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları. Koltuk takımları, yemek odaları ve yatak odası koleksiyonları.">
+    <meta property="og:image" content="https://mobelmor.com/assets/hero_milo_sofa.webp">
+    <meta property="og:site_name" content="Mobelmor">
+    <meta property="og:locale" content="tr_TR">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mobelmor.com/">
+    <meta property="twitter:title" content="Mobelmor | Evinizin Ahengi - Masif & Organik Mobilya">
+    <meta property="twitter:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları.">
+    <meta property="twitter:image" content="https://mobelmor.com/assets/hero_milo_sofa.webp">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FurnitureStore",
+      "name": "Mobelmor",
+      "url": "https://mobelmor.com",
+      "logo": "https://mobelmor.com/assets/favicon.svg",
+      "image": "https://mobelmor.com/assets/hero_milo_sofa.webp",
+      "description": "İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "İnegöl",
+        "addressRegion": "Bursa",
+        "addressCountry": "TR"
+      },
+      "priceRange": "₺₺₺"
+    }
+    </script>
 
     <!-- Clean URL Router Engine -->
     <script src="js/url-cleaner.js?v=11000" defer></script>
@@ -1338,8 +1375,9 @@
                     <ul class="footer-links">
                         <li><a href="garanti-iade.html"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
                         <li><a href="kumas-kartelasi.html"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
-                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> Sıkça Sorulan Sorular</a></li>
+                        <li><a href="mesafeli-satis-sozlesmesi.html"><i class="fa-solid fa-chevron-right"></i> Mesafeli Satış Sözleşmesi</a></li>
                         <li><a href="gizlilik-guvenlik.html"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> SSS</a></li>
                     </ul>
                 </div>
 
@@ -1411,21 +1449,27 @@
     <div class="modal-overlay" id="checkoutOverlay">
         <div class="modal-card">
             <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn" aria-label="Ödeme Ekranını Kapat"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Ödeme</h3>
+            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Sipariş &amp; Ödeme Talebi</h3>
             <p style="color:#71717a; font-size:0.88rem;">256-Bit SSL korumalı hızlı sipariş tamamlama ekranı.</p>
 
             <form id="checkoutForm" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-                <input type="text" placeholder="Ad Soyad" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <input type="tel" placeholder="Telefon Numarası (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <textarea placeholder="Teslimat Adresi" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutName" placeholder="Adınız ve Soyadınız" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="tel" id="checkoutPhone" placeholder="Telefon Numaranız (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <textarea id="checkoutAddress" placeholder="Teslimat Adresi (İl, İlçe, Mahalle, Cadde/Sokak, Bina No)" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutNote" placeholder="Varsa Özel Sipariş/Kumaş Notunuz (Opsiyonel)" style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
 
                 <div style="background:#faf5ff; padding:12px 16px; border-radius:10px; border:1px solid #e9d5ff; display:flex; justify-content:space-between; font-weight:800;">
                     <span>Toplam Ödenecek:</span>
                     <span id="checkoutTotal" style="color:#6b21a8;">₺0</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:6px;">
-                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; Bitir
+                <label class="checkout-terms-label">
+                    <input type="checkbox" id="checkoutTerms" required checked>
+                    <span><a href="mesafeli-satis-sozlesmesi.html" target="_blank">Mesafeli Satış Sözleşmesi</a> ve <a href="gizlilik-guvenlik.html" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum, onaylıyorum.</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:2px;">
+                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; WhatsApp ile İlet
                 </button>
             </form>
         </div>

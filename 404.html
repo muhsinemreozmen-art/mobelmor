@@ -18,6 +18,21 @@
                 return;
             }
             
+            // Check if it's an informational / legal route
+            var legalMap = {
+                'garanti-iade': '/garanti-iade.html',
+                'kumas-kartelasi': '/kumas-kartelasi.html',
+                'gizlilik-guvenlik': '/gizlilik-guvenlik.html',
+                'mesafeli-satis-sozlesmesi': '/mesafeli-satis-sozlesmesi.html',
+                'sss': '/sss.html'
+            };
+            for (var key in legalMap) {
+                if (path.includes(key)) {
+                    window.location.replace(legalMap[key] + (search ? search : '') + hash);
+                    return;
+                }
+            }
+
             // Check if it's a category or campaign route
             var catSlugs = [
                 'oturma-odasi', 'yemek-odasi', 'yatak-odasi', 'bahce', 
