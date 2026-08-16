@@ -689,27 +689,45 @@ button:active,
     }
 }
 
-.footer-logo-badge {
-    background: #ffffff !important;
-    padding: 8px 16px !important;
-    border-radius: 12px !important;
+.footer-logo-badge,
+.footer-logo {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
     display: inline-flex !important;
     margin-bottom: 16px !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: none !important;
+    border: none !important;
     text-decoration: none !important;
+    transition: transform 0.2s ease;
 }
 
-.footer-logo-badge .logo-text-mobel {
-    color: #000000 !important;
+.footer-logo-badge:hover,
+.footer-logo:hover {
+    transform: translateY(-1px);
 }
 
-.footer-logo-badge .logo-text-mor {
-    color: #6b1480 !important;
-}
-
-.footer-logo-badge .logo-com-arrow {
-    background-color: #6b1480 !important;
+.footer-logo-badge .logo-text-mobel,
+.footer-logo .logo-text-mobel {
     color: #ffffff !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.03em !important;
+}
+
+.footer-logo-badge .logo-text-mor,
+.footer-logo .logo-text-mor {
+    color: #c084fc !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.03em !important;
+    text-shadow: 0 0 16px rgba(192, 132, 252, 0.35);
+}
+
+.footer-logo-badge .logo-com-arrow,
+.footer-logo .logo-com-arrow {
+    background: linear-gradient(135deg, #9333ea, #7c3aed) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(147, 51, 234, 0.4);
+    font-weight: 800;
 }
 
 /* Mobelmor Collection Nav Site Logo Icon */
@@ -6119,15 +6137,6 @@ body.modal-open {
         grid-template-columns: 1fr;
         gap: 28px;
     }
-}
-
-.footer-logo {
-    display: inline-flex;
-    margin-bottom: 14px;
-}
-
-.footer-logo .logo-text-mobel {
-    color: #ffffff !important;
 }
 
 .footer-desc {
