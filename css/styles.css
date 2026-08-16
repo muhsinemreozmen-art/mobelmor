@@ -2754,6 +2754,8 @@ button:active,
     scrollbar-width: none;
     width: 100%;
     height: 100%;
+    touch-action: pan-x pan-y pinch-zoom;
+    overscroll-behavior-x: contain;
 }
 
 .gallery-carousel-track::-webkit-scrollbar {
@@ -2764,7 +2766,8 @@ button:active,
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
     position: relative;
     display: flex;
     align-items: center;
@@ -2816,22 +2819,7 @@ button:active,
 .vgallery-arrow-btn.next { right: 10px; }
 
 .gallery-zoom-trigger-btn {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    background: rgba(15, 23, 42, 0.8) !important;
-    backdrop-filter: blur(8px);
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer !important;
-    z-index: 5;
+    display: none !important;
 }
 
 .gallery-counter-pill {

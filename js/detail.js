@@ -848,7 +848,6 @@ window.goToSlide = (idx) => {
     updateActiveSlide(idx);
 };
 
-let galleryScrollDebounce = null;
 const setupGalleryCarousel = () => {
     const track = document.getElementById('galleryCarouselTrack');
     const wrapper = document.querySelector('.gallery-carousel-wrapper');
@@ -859,7 +858,7 @@ const setupGalleryCarousel = () => {
     let touchStartTime = 0;
     let hasMoved = false;
 
-    // Direct touch gesture handler that reliably detects TAP vs SWIPE
+    // Detect tap to open lightbox while leaving swipe 100% native and fluid
     wrapper.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         touchStartX = e.touches[0].clientX;
@@ -872,13 +871,13 @@ const setupGalleryCarousel = () => {
         if (e.touches.length !== 1) return;
         const diffX = e.touches[0].clientX - touchStartX;
         const diffY = e.touches[0].clientY - touchStartY;
-        if (Math.abs(diffX) > 18 || Math.abs(diffY) > 18) {
+        if (Math.abs(diffX) > 10 || Math.abs(diffY) > 10) {
             hasMoved = true;
         }
     }, { passive: true });
 
     wrapper.addEventListener('touchend', (e) => {
-        if (e.target.closest('.gallery-zoom-trigger-btn') || e.target.closest('.gallery-badges')) return;
+        if (e.target.closest('.card-heart-btn') || e.target.closest('.vcard-circle-sticker') || e.target.closest('.gallery-dots-strip') || e.target.closest('.vgallery-arrow-btn')) return;
         
         const touchDuration = Date.now() - touchStartTime;
         const touchEndX = e.changedTouches[0].clientX;
@@ -886,31 +885,28 @@ const setupGalleryCarousel = () => {
         const diffX = touchEndX - touchStartX;
         const diffY = touchEndY - touchStartY;
 
-        // If it was a quick touch with minimal displacement -> TAP to open Lightbox!
-        if (!hasMoved && Math.abs(diffX) < 18 && Math.abs(diffY) < 18 && touchDuration < 380) {
+        // Clean quick tap on image -> Open Lightbox Zoom!
+        if (!hasMoved && Math.abs(diffX) < 10 && Math.abs(diffY) < 10 && touchDuration < 300) {
             openLightbox(currentActiveGalleryIndex);
-            return;
-        }
-
-        // If it was a deliberate swipe gesture
-        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
-            if (diffX < 0) {
-                goToSlide(currentActiveGalleryIndex + 1);
-            } else {
-                goToSlide(currentActiveGalleryIndex - 1);
-            }
         }
     }, { passive: true });
 
-    // Track native horizontal scroll update
+    // Ultra-smooth RAF scroll tracking for dots & counter
+    let ticking = false;
     track.addEventListener('scroll', () => {
-        if (galleryScrollDebounce) clearTimeout(galleryScrollDebounce);
-        galleryScrollDebounce = setTimeout(() => {
-            const slideWidth = track.clientWidth;
-            if (slideWidth <= 0) return;
-            const idx = Math.round(track.scrollLeft / slideWidth);
-            updateActiveSlide(idx);
-        }, 50);
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const slideWidth = track.clientWidth;
+                if (slideWidth > 0) {
+                    const idx = Math.round(track.scrollLeft / slideWidth);
+                    if (idx !== currentActiveGalleryIndex) {
+                        updateActiveSlide(idx);
+                    }
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
     }, { passive: true });
 };
 
@@ -1100,11 +1096,7 @@ const renderProductDetail = () => {
                     <button class="vgallery-arrow-btn prev" onclick="prevSlide()" aria-label="Önceki Görsel"><i class="fa-solid fa-chevron-left"></i></button>
                     <button class="vgallery-arrow-btn next" onclick="nextSlide()" aria-label="Sonraki Görsel"><i class="fa-solid fa-chevron-right"></i></button>
 
-                    <!-- Zoom / Counter pill -->
-                    <button type="button" class="gallery-zoom-trigger-btn" onclick="openLightbox(currentActiveGalleryIndex)" title="Fotoğrafı Büyüt">
-                        <i class="fa-solid fa-magnifying-glass-plus"></i>
-                        <span>Büyüt</span>
-                    </button>
+                    <!-- Counter pill -->
                     <div class="gallery-counter-pill">
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
