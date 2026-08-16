@@ -1138,20 +1138,52 @@ button:active,
 .vivense-campaign-strip {
     background-color: #ffffff !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    padding: 8px 0;
+    padding: 9px 0;
     width: 100%;
     box-sizing: border-box;
 }
 
 .campaign-strip-inner {
-    display: flex;
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
     max-width: 1240px;
     margin: 0 auto;
     padding: 0 16px;
     box-sizing: border-box;
+}
+
+.campaign-trust-col {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.campaign-trust-col:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 14px;
+    background-color: #e2e8f0;
+}
+
+.campaign-trust-col.col-1 {
+    justify-content: flex-start;
+}
+
+.campaign-trust-col.col-2,
+.campaign-trust-col.col-3,
+.campaign-trust-col.col-4 {
+    justify-content: center;
+}
+
+.campaign-trust-col.col-5 {
+    justify-content: flex-end;
 }
 
 .campaign-trust-item {
@@ -1191,13 +1223,6 @@ button:active,
     font-weight: 800;
 }
 
-.campaign-trust-sep {
-    width: 1px;
-    height: 13px;
-    background-color: #e2e8f0;
-    flex-shrink: 0;
-}
-
 @media (max-width: 991px) {
     .vivense-campaign-strip {
         overflow-x: auto;
@@ -1209,13 +1234,18 @@ button:active,
         display: none;
     }
     .campaign-strip-inner {
+        display: flex !important;
         width: max-content;
-        gap: 16px;
+        gap: 24px;
         justify-content: flex-start;
-        padding: 0 14px;
+        padding: 0 16px;
     }
-    .campaign-trust-sep {
-        height: 12px;
+    .campaign-trust-col {
+        width: auto !important;
+        justify-content: flex-start !important;
+    }
+    .campaign-trust-col:not(:last-child)::after {
+        right: -12px;
     }
 }
 
