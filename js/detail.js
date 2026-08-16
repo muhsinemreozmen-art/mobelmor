@@ -976,19 +976,30 @@ const renderProductDetail = () => {
         breadTitle.innerHTML = `<span class="mb-live-dot"></span> <span>${product.title}</span>`;
     }
 
-    // Highlight active category in Vivense nav bar on detail page
+    // Highlight single active category in Vivense nav bar on detail page
     document.querySelectorAll(".vivense-nav-item").forEach(item => item.classList.remove("active"));
     if (product.category) {
         const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[product.category] || product.category) : product.category;
-        document.querySelectorAll(".vivense-nav-item").forEach(item => {
-            const link = item.querySelector(".vivense-nav-link");
-            if (link) {
+        let matchedItem = null;
+        if (product.subcategory) {
+            matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+                const link = item.querySelector(".vivense-nav-link");
+                if (!link) return false;
                 const href = link.getAttribute("href") || "";
-                if (href.includes(`c=${catSlug}`) || href.includes(`c=${product.category}`)) {
-                    item.classList.add("active");
-                }
-            }
-        });
+                return href.includes(`sub=${product.subcategory}`) && (href.includes(`c=${catSlug}`) || href.includes(`c=${product.category}`));
+            });
+        }
+        if (!matchedItem) {
+            matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+                const link = item.querySelector(".vivense-nav-link");
+                if (!link) return false;
+                const href = link.getAttribute("href") || "";
+                return (href.includes(`c=${catSlug}`) || href.includes(`c=${product.category}`)) && !href.includes("sub=");
+            });
+        }
+        if (matchedItem) {
+            matchedItem.classList.add("active");
+        }
     }
 
     currentModuleState.productBasePrice = product.price;

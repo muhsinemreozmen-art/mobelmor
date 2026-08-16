@@ -1246,18 +1246,35 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetSub) targetSub.classList.add("active");
         }
 
-        // Highlight active Vivense category navbar link
-        if (currentCategory && currentCategory !== "all") {
+        // Highlight single active Vivense category navbar link only on category pages
+        const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
+        if (isCategoryPage && currentCategory && currentCategory !== "all") {
             const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
-            document.querySelectorAll(".vivense-nav-item").forEach(item => {
-                const link = item.querySelector(".vivense-nav-link");
-                if (link) {
+            
+            let matchedItem = null;
+            // 1. Try exact subcategory match first
+            if (currentSubcategory && currentSubcategory !== "all") {
+                matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+                    const link = item.querySelector(".vivense-nav-link");
+                    if (!link) return false;
                     const href = link.getAttribute("href") || "";
-                    if (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`)) {
-                        item.classList.add("active");
-                    }
-                }
-            });
+                    return href.includes(`sub=${currentSubcategory}`) && (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`));
+                });
+            }
+            
+            // 2. If no subcategory match, match exact primary category (no sub param)
+            if (!matchedItem) {
+                matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+                    const link = item.querySelector(".vivense-nav-link");
+                    if (!link) return false;
+                    const href = link.getAttribute("href") || "";
+                    return (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`)) && !href.includes("sub=");
+                });
+            }
+
+            if (matchedItem) {
+                matchedItem.classList.add("active");
+            }
         }
 
         renderCategoryHeaderAndSubchips();
