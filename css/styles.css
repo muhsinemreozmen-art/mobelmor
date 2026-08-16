@@ -219,6 +219,24 @@ button:active,
     align-items: center;
 }
 
+.mobile-hamburger-btn {
+    display: none !important;
+}
+
+@media (max-width: 991px) {
+    .mobile-hamburger-btn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        font-size: 1.25rem;
+        color: #18181b;
+        padding: 4px;
+        cursor: pointer;
+    }
+}
+
 /* Official Brand Logo Styling */
 .brand-logo {
     display: inline-flex;
