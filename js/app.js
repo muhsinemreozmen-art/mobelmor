@@ -1195,41 +1195,192 @@ document.addEventListener("DOMContentLoaded", () => {
         office: "fa-briefcase"
     };
 
+    const CATEGORY_CAMPAIGNS = {
+        living: {
+            badge: "OTURMA ODASINDA İNEGÖL İMZASI",
+            discount: "%20",
+            discountSub: "'ye varan",
+            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+            image: "assets/minegolden_p1_1.webp"
+        },
+        dining: {
+            badge: "MASİF VE DOĞAL YEMEK TAKIMLARI",
+            discount: "%25",
+            discountSub: "'e varan",
+            text: "SEZON İNDİRİMLERİNİ KEŞFET!",
+            image: "assets/minegolden_p3_1.webp"
+        },
+        bedroom: {
+            badge: "HUZURLU VE ŞIK YATAK ODALARI",
+            discount: "%20",
+            discountSub: "'ye varan",
+            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+            image: "assets/asya_main.webp"
+        },
+        garden: {
+            badge: "BAHÇENE YAKIŞAN TAKIMLARDA",
+            discount: "%20",
+            discountSub: "'ye varan",
+            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+            image: "assets/minegolden_p1_1.webp"
+        },
+        office: {
+            badge: "VERİMLİ ÇALIŞMA ALANLARI",
+            discount: "%15",
+            discountSub: "'e varan",
+            text: "ÖZEL KOLEKSİYON İNDİRİMİ!",
+            image: "assets/minegolden_p2_1.webp"
+        },
+        all: {
+            badge: "TÜM KOLEKSİYONDA SEZON FIRSATLARI",
+            discount: "%30",
+            discountSub: "'a varan",
+            text: "MOBELMOR GÜVENCESİYLE KEŞFET!",
+            image: "assets/hero_milo_sofa.webp"
+        }
+    };
+
+    const CATEGORY_STORY_CIRCLES = {
+        living: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "İnegöl Masif", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p1_1.webp" },
+            { title: "Koltuk Takımı", sub: "sofas", image: "assets/minegolden_p1_1.webp" },
+            { title: "Köşe Koltuk", sub: "sofas", image: "assets/hero_milo_sofa.webp" },
+            { title: "Berjer", sub: "armchairs", image: "assets/armchair.webp" },
+            { title: "Orta Sehpa", sub: "tables", image: "assets/minegolden_p2_1.webp" },
+            { title: "TV Ünitesi", sub: "tables", image: "assets/minegolden_p8_1.webp" },
+            { title: "Konsol & Dresuar", sub: "consoles", image: "assets/minegolden_p4_1.webp" },
+            { title: "Puf & Tamamlayıcı", sub: "armchairs", image: "assets/minegolden_p2_1.webp" }
+        ],
+        dining: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "Masif Yemek Serisi", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p3_1.webp" },
+            { title: "Yemek Odası Takımı", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+            { title: "Yemek Masası", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+            { title: "Sandalye", sub: "chairs", image: "assets/armchair.webp" },
+            { title: "Konsol & Ayna", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+            { title: "Vitrin & Gümüşlük", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+            { title: "Bench & Sandalye", sub: "chairs", image: "assets/minegolden_p3_1.webp" }
+        ],
+        bedroom: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "Luna Bedding", isSpecial: true, specialType: "series", badge: "Yeni", sub: "beds", image: "assets/bed.webp" },
+            { title: "Yatak Odası Takımı", sub: "all", image: "assets/asya_main.webp" },
+            { title: "Baza & Başlık", sub: "beds", image: "assets/minegolden_p6_1.webp" },
+            { title: "Karyola", sub: "beds", image: "assets/bed.webp" },
+            { title: "Ortopedik Yatak", sub: "beds", image: "assets/bed.webp" },
+            { title: "Gardırop", sub: "wardrobes", image: "assets/minegolden_p5_1.webp" },
+            { title: "Komodin & Şifonyer", sub: "nightstands", image: "assets/minegolden_p7_1.webp" }
+        ],
+        garden: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "Bahçe Mobilyası", sub: "all", image: "assets/armchair.webp" },
+            { title: "Balkon Oturma", sub: "all", image: "assets/hero_milo_sofa.webp" },
+            { title: "Masa & Sandalye", sub: "all", image: "assets/minegolden_p3_1.webp" },
+            { title: "Salıncak & Hamak", sub: "all", image: "assets/armchair.webp" }
+        ],
+        office: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "Çalışma Masası", sub: "desks", image: "assets/minegolden_p2_1.webp" },
+            { title: "Çalışma Koltuğu", sub: "all", image: "assets/armchair.webp" },
+            { title: "Kitaplık & Raf", sub: "bookcases", image: "assets/minegolden_p8_1.webp" },
+            { title: "Keson & Çekmece", sub: "all", image: "assets/minegolden_p7_1.webp" }
+        ],
+        all: [
+            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+            { title: "Oturma Odası", sub: "all", cat: "living", image: "assets/minegolden_p1_1.webp" },
+            { title: "Yemek Odası", sub: "all", cat: "dining", image: "assets/minegolden_p3_1.webp" },
+            { title: "Yatak Odası", sub: "all", cat: "bedroom", image: "assets/asya_main.webp" },
+            { title: "Koltuk Takımı", sub: "sofas", cat: "living", image: "assets/hero_milo_sofa.webp" },
+            { title: "Yemek Masası", sub: "dining-tables", cat: "dining", image: "assets/minegolden_p3_1.webp" },
+            { title: "Karyola & Baza", sub: "beds", cat: "bedroom", image: "assets/bed.webp" },
+            { title: "Sehpalar", sub: "tables", cat: "living", image: "assets/minegolden_p2_1.webp" }
+        ]
+    };
+
     const renderCategoryHeaderAndSubchips = () => {
         const heroTitle = document.getElementById("categoryHeroTitle");
-        const heroDesc = document.getElementById("categoryHeroDesc");
-        const breadcrumbTitle = document.getElementById("categoryBreadcrumbTitle");
-        const subcatBar = document.getElementById("subcatChipBar");
+        const circlesTrack = document.getElementById("catSubcirclesTrack");
+        const bannerTag = document.getElementById("catBannerTag");
+        const discountNum = document.getElementById("catDiscountNum");
+        const discountSub = document.getElementById("catDiscountSub");
+        const bannerText = document.getElementById("catBannerText");
+        const bannerImg = document.getElementById("catBannerImg");
 
         const catName = CATEGORY_NAMES[currentCategory] || "Tüm Koleksiyon";
-        const catIcon = CATEGORY_ICONS[currentCategory] || "fa-border-all";
-        const catDesc = CATEGORY_DESCS[currentCategory] || CATEGORY_DESCS.all;
-
+        
+        // 1. Update Clean Centered Category Title
         if (heroTitle) {
-            heroTitle.innerHTML = `<i class="fa-solid ${catIcon}"></i> ${catName}`;
-        }
-        if (heroDesc) {
-            heroDesc.textContent = catDesc;
-        }
-        if (breadcrumbTitle) {
-            breadcrumbTitle.textContent = (currentSubcategory !== "all" && SUBCATEGORY_NAMES[currentSubcategory]) 
-                ? `${catName} > ${SUBCATEGORY_NAMES[currentSubcategory]}` 
-                : catName;
+            heroTitle.textContent = catName.toUpperCase();
         }
 
-        if (subcatBar) {
-            const availableSubs = Object.entries(SUBCATEGORY_NAMES).filter(([subKey, subName]) => {
-                if (subKey === "all") return true;
-                if (currentCategory === "all") return true;
-                return PRODUCTS.some(p => p.category === currentCategory && p.subcategory === subKey);
+        // 2. Update Promo Campaign Banner
+        const promo = CATEGORY_CAMPAIGNS[currentCategory] || CATEGORY_CAMPAIGNS.all;
+        if (bannerTag) bannerTag.textContent = promo.badge;
+        if (discountNum) discountNum.textContent = promo.discount;
+        if (discountSub) discountSub.textContent = promo.discountSub;
+        if (bannerText) bannerText.textContent = promo.text;
+        if (bannerImg) {
+            bannerImg.src = promo.image;
+            bannerImg.alt = promo.badge;
+        }
+
+        // 3. Render Stories Subcategory Circles
+        if (circlesTrack) {
+            const circleItems = CATEGORY_STORY_CIRCLES[currentCategory] || CATEGORY_STORY_CIRCLES.all;
+
+            circlesTrack.innerHTML = circleItems.map(item => {
+                const targetCat = item.cat || currentCategory;
+                const targetSub = item.sub || "all";
+                const isItemActive = (currentCategory === targetCat && currentSubcategory === targetSub);
+
+                let specialClass = "";
+                let innerImgContent = `<img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.webp';">`;
+
+                if (item.specialType === "brand") {
+                    specialClass = "special-brand";
+                    innerImgContent = `
+                        <div class="brand-circle-content">
+                            <span class="brand-logo-text">mobelmor</span>
+                            <span class="brand-logo-text" style="font-size:0.55rem; opacity:0.8;">COLLECTION</span>
+                        </div>
+                    `;
+                } else if (item.specialType === "series") {
+                    specialClass = "special-series";
+                    const firstWord = item.title.split(' ')[0];
+                    const restWords = item.title.split(' ').slice(1).join(' ');
+                    innerImgContent = `
+                        <div class="brand-circle-content">
+                            <span class="brand-logo-text" style="font-size:0.75rem; color:#facc15;">${firstWord}</span>
+                            <span class="brand-logo-text" style="font-size:0.52rem; opacity:0.9;">${restWords}</span>
+                        </div>
+                    `;
+                }
+
+                const badgeHtml = item.badge ? `<span class="cat-circle-badge-yeni">${item.badge}</span>` : "";
+
+                return `
+                    <div class="cat-circle-card ${specialClass} ${isItemActive ? 'active' : ''}" data-cat="${targetCat}" data-sub="${targetSub}">
+                        <div class="cat-circle-img-wrap">
+                            ${innerImgContent}
+                            ${badgeHtml}
+                        </div>
+                        <span class="cat-circle-label">${item.title}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click listeners to circles
+            circlesTrack.querySelectorAll(".cat-circle-card").forEach(card => {
+                card.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const cat = card.getAttribute("data-cat");
+                    const sub = card.getAttribute("data-sub");
+                    if (cat) {
+                        selectCategory(cat, sub || "all", true);
+                    }
+                });
             });
-
-            const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
-            subcatBar.innerHTML = availableSubs.map(([subKey, subName]) => `
-                <a href="kategori.html?c=${catSlug}&sub=${subKey}" class="subcat-chip ${currentSubcategory === subKey ? 'active' : ''}">
-                    ${subName}
-                </a>
-            `).join('');
         }
     };
 
@@ -2364,6 +2515,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         startAutoplay();
     }
+
+    // Category Subcircles Carousel Scroll Controls
+    const catCirclePrev = document.getElementById("catCirclePrev");
+    const catCircleNext = document.getElementById("catCircleNext");
+    const catSubcirclesTrack = document.getElementById("catSubcirclesTrack");
+
+    catCirclePrev?.addEventListener("click", () => {
+        catSubcirclesTrack?.scrollBy({ left: -260, behavior: "smooth" });
+    });
+
+    catCircleNext?.addEventListener("click", () => {
+        catSubcirclesTrack?.scrollBy({ left: 260, behavior: "smooth" });
+    });
 });
 
 

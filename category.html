@@ -44,61 +44,8 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260815_0105">
-    <style>
-        .category-hero-banner {
-            background: linear-gradient(135deg, #6b21a8 0%, #4c1d95 100%);
-            color: #ffffff;
-            padding: 36px 0;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(107, 33, 168, 0.2);
-        }
-        .category-hero-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 10px 0 6px 0;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .category-hero-desc {
-            font-size: 1rem;
-            opacity: 0.92;
-            max-width: 750px;
-            margin: 0;
-            line-height: 1.6;
-        }
-        .subcat-filter-wrapper {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0 20px 0;
-            scrollbar-width: thin;
-        }
-        .subcat-chip {
-            padding: 8px 16px;
-            border-radius: 99px;
-            background: #ffffff;
-            border: 1px solid #e4e4e7;
-            color: #3f3f46;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-decoration: none !important;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-        }
-        .subcat-chip:hover, .subcat-chip.active {
-            background: #6b21a8 !important;
-            color: #ffffff !important;
-            border-color: #6b21a8 !important;
-            box-shadow: 0 4px 12px rgba(107, 33, 168, 0.2);
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0610">
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
@@ -680,26 +627,49 @@
         </div>
     </div>
 
-    <!-- Category Hero Header Banner -->
-    <div class="category-hero-banner" id="categoryBanner">
+    <!-- Vivense-Style Modern Category Header & Story Circles Section -->
+    <div class="vivense-cat-header-wrapper" id="categoryHeaderWrapper">
         <div class="container">
-            <div class="breadcrumb-nav" style="display:none !important;" aria-hidden="true">
-                <div class="breadcrumb-container">
-                    <a href="./" class="mb-crumb-pill"><i class="fa-solid fa-house-chimney"></i> <span>Ana Sayfa</span></a>
-                    <i class="fa-solid fa-chevron-right mb-sep"></i>
-                    <span class="mb-crumb-pill active" id="categoryBreadcrumbTitle">Tüm Koleksiyon</span>
+            <!-- 1. Top Promo Campaign Banner -->
+            <div class="cat-campaign-banner" id="catCampaignBanner">
+                <button type="button" class="cat-banner-nav-btn prev" id="catBannerPrev" aria-label="Önceki"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="cat-banner-content">
+                    <div class="cat-banner-left">
+                        <span class="cat-banner-tag" id="catBannerTag">OTURMA ODASINDA İNEGÖL İMZASI</span>
+                        <a href="javascript:void(0)" class="cat-banner-cta">Alışverişe Başla &gt;</a>
+                    </div>
+                    <div class="cat-banner-center">
+                        <div class="cat-discount-box">
+                            <span class="cat-discount-num" id="catDiscountNum">%20</span>
+                            <span class="cat-discount-sub" id="catDiscountSub">'ye varan</span>
+                        </div>
+                        <span class="cat-banner-text" id="catBannerText">İNDİRİM FIRSATLARINI KAÇIRMA!</span>
+                    </div>
+                    <div class="cat-banner-right">
+                        <img src="assets/minegolden_p1_1.webp" alt="Kampanya Ürünü" class="cat-banner-img" id="catBannerImg">
+                    </div>
                 </div>
+                <button type="button" class="cat-banner-nav-btn next" id="catBannerNext" aria-label="Sonraki"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <h1 class="category-hero-title" id="categoryHeroTitle"><i class="fa-solid fa-border-all"></i> Tüm Koleksiyon</h1>
-            <p class="category-hero-desc" id="categoryHeroDesc">İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımlarımız.</p>
+
+            <!-- 2. Clean Centered Category Title -->
+            <div class="vivense-cat-title-row">
+                <h1 class="vivense-cat-heading" id="categoryHeroTitle">OTURMA ODASI</h1>
+            </div>
+
+            <!-- 3. Subcategory Visual Circles Carousel (Stories Row) -->
+            <div class="cat-subcircles-wrapper">
+                <button type="button" class="cat-circle-nav-btn prev" id="catCirclePrev" aria-label="Geri"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="cat-subcircles-track" id="catSubcirclesTrack">
+                    <!-- Dynamic Subcategory Circles Injected via JS -->
+                </div>
+                <button type="button" class="cat-circle-nav-btn next" id="catCircleNext" aria-label="İleri"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
         </div>
     </div>
 
     <!-- Main Layout -->
     <main class="main-layout container" id="catalog">
-        <div id="subcatChipBar" class="subcat-filter-wrapper">
-            <!-- Dynamic subcategory pills injected via JS -->
-        </div>
 
         <div class="sort-card-box">
             <div class="filter-count-badge" id="productCountBadge">Tüm Koleksiyon Listeleniyor</div>
@@ -858,6 +828,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/app.js?v=20260814_2048" defer></script>
+    <script src="js/app.js?v=20260816_0610" defer></script>
 </body>
 </html>
