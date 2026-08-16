@@ -2698,8 +2698,8 @@ button:active,
 }
 
 .vthumb-item.active {
-    border-color: #0f172a;
-    box-shadow: 0 0 0 1px #0f172a;
+    border-color: #6b21a8;
+    box-shadow: 0 0 0 1px #6b21a8;
 }
 
 .vthumb-item img {
@@ -2910,8 +2910,9 @@ button:active,
 }
 
 .voption-card.active {
-    border-color: #0f172a;
-    box-shadow: 0 0 0 1px #0f172a;
+    border-color: #6b21a8;
+    box-shadow: 0 0 0 1px #6b21a8;
+    background: #faf5ff;
 }
 
 .vopt-img-wrap {
@@ -2949,7 +2950,7 @@ button:active,
 }
 
 /* =========================================================================
-   Right Column: Modern Sticky Smart Buy Box (Inspired by Vivense & Mobelmor)
+   Right Column: Modern Sticky Smart Buy Box (Signature Mobelmor Palette)
    ========================================================================= */
 .vsmart-buy-box {
     display: flex;
@@ -3030,8 +3031,13 @@ button:active,
 .vset-change-link {
     font-size: 0.78rem;
     font-weight: 700;
-    color: #0d9488;
+    color: #6b21a8;
     text-decoration: underline;
+    transition: color 0.15s ease;
+}
+
+.vset-change-link:hover {
+    color: #581c87;
 }
 
 .vset-items-list {
@@ -3070,12 +3076,12 @@ button:active,
 }
 
 .vset-tooltip-callout {
-    background: #f8fafc;
-    border-left: 3px solid #0d9488;
+    background: #faf5ff;
+    border-left: 3px solid #6b21a8;
     padding: 6px 10px;
     border-radius: 0 4px 4px 0;
     font-size: 0.72rem;
-    color: #64748b;
+    color: #581c87;
     margin-top: 10px;
     display: flex;
     align-items: center;
@@ -3088,18 +3094,20 @@ button:active,
     align-items: center;
     justify-content: space-between;
     padding: 12px 14px;
-    background: #ffffff;
-    border: 1.5px solid #e2e8f0;
+    background: #faf5ff;
+    border: 1.5px solid #e9d5ff;
     border-radius: 6px;
-    color: #0d9488;
+    color: #581c87;
     text-decoration: none;
     font-size: 0.82rem;
+    font-weight: 700;
     transition: all 0.15s ease;
 }
 
 .vfabric-select-btn:hover {
-    border-color: #0d9488;
-    background: #f0fdfa;
+    border-color: #6b21a8;
+    background: #f3e8ff;
+    color: #4c1d95;
 }
 
 .vfabric-btn-left {
@@ -3127,11 +3135,11 @@ button:active,
     margin-top: -8px;
 }
 
-/* Primary Buy Button */
+/* Primary Buy Button - Mobelmor Royal Purple */
 .vbuy-primary-btn {
     width: 100%;
     padding: 15px;
-    background: #0f766e !important;
+    background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%) !important;
     color: #ffffff !important;
     border: none;
     border-radius: 4px;
@@ -3143,13 +3151,14 @@ button:active,
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: background 0.15s ease, transform 0.15s ease;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 14px rgba(107, 33, 168, 0.28);
 }
 
 .vbuy-primary-btn:hover {
-    background: #0d9488 !important;
+    background: linear-gradient(135deg, #581c87 0%, #4c1d95 100%) !important;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.38);
 }
 
 /* Financing & Credit Box */
@@ -3188,8 +3197,13 @@ button:active,
 .vcredit-link {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #0d9488;
+    color: #6b21a8;
     text-decoration: underline;
+    transition: color 0.15s ease;
+}
+
+.vcredit-link:hover {
+    color: #581c87;
 }
 
 /* Trust Perks */
@@ -3207,9 +3221,9 @@ button:active,
     gap: 8px;
 }
 
-.vtrust-check { color: #0d9488; font-size: 0.85rem; }
-.vtrust-bolt { color: #0d9488; font-size: 0.85rem; }
-.vtrust-shield { color: #0d9488; font-size: 0.85rem; }
+.vtrust-check { color: #7c3aed; font-size: 0.85rem; }
+.vtrust-bolt { color: #d97706; font-size: 0.85rem; }
+.vtrust-shield { color: #6b21a8; font-size: 0.85rem; }
 
 /* Showroom / Consultant */
 .vshowroom-inquiry-row {
@@ -4988,13 +5002,13 @@ body.modal-open {
 }
 
 .module-live-tag {
-    background: #ecfdf5 !important;
-    color: #065f46 !important;
+    background: #faf5ff !important;
+    color: #6b21a8 !important;
     font-size: 0.72rem;
     font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
-    border: 1px solid #a7f3d0 !important;
+    border: 1px solid #ddd6fe !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -5118,9 +5132,9 @@ body.modal-open {
 }
 
 .qty-counter-btn:hover {
-    background-color: #0f766e !important;
+    background-color: #6b21a8 !important;
     color: #ffffff !important;
-    border-color: #0f766e !important;
+    border-color: #6b21a8 !important;
 }
 
 .qty-counter-val {
@@ -5207,7 +5221,7 @@ body.modal-open {
 
 .mobelmor-cart-btn {
     width: 100%;
-    background-color: #0f766e !important;
+    background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%) !important;
     color: #ffffff !important;
     padding: 14px 20px;
     border-radius: 4px;
@@ -5221,13 +5235,13 @@ body.modal-open {
     justify-content: center;
     gap: 8px;
     transition: all 0.15s ease;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    box-shadow: 0 4px 14px rgba(107, 33, 168, 0.28);
 }
 
 .mobelmor-cart-btn:hover {
-    background-color: #0d9488 !important;
+    background: linear-gradient(135deg, #581c87 0%, #4c1d95 100%) !important;
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(15, 118, 110, 0.35);
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.38);
 }
 
 /* Mobelmor Purple Theme Cards */
