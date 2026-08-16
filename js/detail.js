@@ -859,17 +859,17 @@ const updateActiveSlide = (idx) => {
     const numEl = document.getElementById('currentSlideNum');
     if (numEl) numEl.textContent = idx + 1;
     
-    const thumbs = document.querySelectorAll('#galleryThumbStrip .thumb-img');
+    const thumbs = document.querySelectorAll('.vthumb-item');
     const strip = document.getElementById('galleryThumbStrip');
     
     thumbs.forEach((thumb, i) => {
         if (i === idx) {
             thumb.classList.add('active');
             if (strip) {
-                const thumbLeft = thumb.offsetLeft;
-                const thumbWidth = thumb.offsetWidth;
-                const stripWidth = strip.offsetWidth;
-                strip.scrollTo({ left: thumbLeft - (stripWidth / 2) + (thumbWidth / 2), behavior: 'smooth' });
+                const thumbTop = thumb.offsetTop;
+                const thumbHeight = thumb.offsetHeight;
+                const stripHeight = strip.offsetHeight;
+                strip.scrollTo({ top: thumbTop - (stripHeight / 2) + (thumbHeight / 2), behavior: 'smooth' });
             }
         } else {
             thumb.classList.remove('active');
@@ -877,73 +877,39 @@ const updateActiveSlide = (idx) => {
     });
 };
 
-window.swapMainImg = (src, thumb, idx) => {
-    if (typeof idx === 'number') {
-        goToSlide(idx);
-    }
+window.prevSlide = () => {
+    goToSlide(currentActiveGalleryIndex - 1);
 };
 
-window.openLightbox = (startIndex = 0) => {
-    const lb = createLightbox();
-    const pid = getProductIdFromUrl();
-    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
-    lightboxGallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+window.nextSlide = () => {
+    goToSlide(currentActiveGalleryIndex + 1);
+};
 
-    if (typeof startIndex === 'string') {
-        const foundIdx = lightboxGallery.indexOf(startIndex);
-        lightboxCurrentIndex = foundIdx !== -1 ? foundIdx : currentActiveGalleryIndex;
-    } else if (typeof startIndex === 'number') {
-        lightboxCurrentIndex = Math.max(0, Math.min(startIndex, lightboxGallery.length - 1));
+window.scrollThumbs = (dir) => {
+    const strip = document.getElementById('galleryThumbStrip');
+    if (strip) strip.scrollBy({ top: dir * 100, behavior: 'smooth' });
+};
+
+window.toggleDetailWishlist = (id) => {
+    if (wishlist.has(id)) {
+        wishlist.delete(id);
+        showToast("Favorilerden çıkarıldı", "fa-heart");
     } else {
-        lightboxCurrentIndex = currentActiveGalleryIndex;
+        wishlist.add(id);
+        showToast("Favorilere eklendi!", "fa-heart");
     }
-
-    const titleEl = document.getElementById('lbTitle');
-    if (titleEl) titleEl.textContent = (product.title || 'ÜRÜN GÖRSELİ').toUpperCase();
-
-    updateLightboxView();
-
-    lb.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+    updateWishlistBadges();
+    const btn = document.querySelector('.vgallery-main-view .card-heart-btn');
+    if (btn) {
+        btn.classList.toggle('active', wishlist.has(id));
+        btn.innerHTML = `<i class="fa-${wishlist.has(id) ? 'solid' : 'regular'} fa-heart"></i>`;
+    }
 };
 
-window.closeLightbox = () => {
-    const lb = document.getElementById('mbl-lightbox');
-    if (lb) lb.classList.remove('active');
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-};
-
-window.navigateLightbox = (direction) => {
-    if (!lightboxGallery || lightboxGallery.length === 0) return;
-
-    if (typeof direction === 'number' && (direction === 1 || direction === -1)) {
-        lightboxCurrentIndex = (lightboxCurrentIndex + direction + lightboxGallery.length) % lightboxGallery.length;
-    } else if (typeof direction === 'number') {
-        lightboxCurrentIndex = Math.max(0, Math.min(direction, lightboxGallery.length - 1));
-    }
-
-    updateLightboxView();
-};
-
-const updateLightboxView = () => {
-    const lbImg = document.getElementById('lbImg');
-    const lbCounter = document.getElementById('lbCounter');
-    if (!lbImg) return;
-
-    lbImg.style.opacity = '0.3';
-
-    setTimeout(() => {
-        lbImg.src = lightboxGallery[lightboxCurrentIndex];
-        lbImg.style.opacity = '1';
-    }, 60);
-
-    if (lbCounter) {
-        lbCounter.textContent = `${lightboxCurrentIndex + 1}/${lightboxGallery.length}`;
-    }
-
-    goToSlide(lightboxCurrentIndex);
+window.selectOption = (el, optIdx) => {
+    document.querySelectorAll('.voption-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    goToSlide(optIdx);
 };
 
 let currentModuleState = {
@@ -951,7 +917,8 @@ let currentModuleState = {
     extraQty: 0,
     mainUnitPrice: 0,
     extraUnitPrice: 0,
-    productBasePrice: 0
+    productBasePrice: 0,
+    modules: []
 };
 
 const renderProductDetail = () => {
@@ -1008,11 +975,41 @@ const renderProductDetail = () => {
     currentModuleState.mainQty = 1;
     currentModuleState.extraQty = 0;
 
+    const isFav = wishlist.has(product.id);
+    const discountRate = (product.id % 4 === 0) ? 20 : (product.id % 3 === 0) ? 15 : (product.id % 2 === 0) ? 10 : 15;
+    const discountClass = discountRate === 15 ? 'purple' : discountRate === 10 ? 'orange' : discountRate === 20 ? 'red' : 'green';
+    const originalPrice = Math.round(product.price * (1 + discountRate / 100));
+    const isLiving = product.category === 'living' || (product.subcategory && product.subcategory.includes('sofa'));
+    const isDining = product.category === 'dining' || (product.subcategory && product.subcategory.includes('table'));
+    const modules = getCategoryModuleConfig(product);
+    currentModuleState.modules = modules.map(m => ({ ...m }));
+
+    // Delivery calculation (15-20 days forward)
+    const delDate = new Date();
+    delDate.setDate(delDate.getDate() + 14);
+    const monthsTr = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const formattedDeliveryDate = `${delDate.getDate()} ${monthsTr[delDate.getMonth()]}`;
+
     const detailGrid = document.getElementById("detailGrid");
     if (detailGrid) {
         detailGrid.innerHTML = `
-            <div class="product-gallery-box">
-                <div class="gallery-carousel-wrapper">
+            <!-- Left Column: Gallery & Options -->
+            <div class="product-gallery-box vgallery-modern-container">
+                <!-- Vertical Thumbnail Column on Left -->
+                <div class="vgallery-side-thumbs" id="gallerySideThumbs">
+                    <button class="vthumb-scroll-btn up" onclick="scrollThumbs(-1)" aria-label="Yukarı"><i class="fa-solid fa-chevron-up"></i></button>
+                    <div class="vthumb-list-track" id="galleryThumbStrip">
+                        ${gallery.map((gImg, idx) => `
+                            <div class="vthumb-item ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})">
+                                <img src="${gImg}" alt="Thumbnail ${idx + 1}" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="vthumb-scroll-btn down" onclick="scrollThumbs(1)" aria-label="Aşağı"><i class="fa-solid fa-chevron-down"></i></button>
+                </div>
+
+                <!-- Main Viewport Carousel -->
+                <div class="gallery-carousel-wrapper vgallery-main-view">
                     <div class="gallery-carousel-track" id="galleryCarouselTrack">
                         ${gallery.map((gImg, idx) => `
                             <div class="gallery-slide" data-index="${idx}" onclick="handleSlideClick(event, ${idx})" title="Fotoğrafı Büyüt">
@@ -1020,10 +1017,24 @@ const renderProductDetail = () => {
                             </div>
                         `).join('')}
                     </div>
-                    <div class="gallery-badges">
-                        <span class="badge-tag"><i class="fa-solid fa-gem"></i> ${product.badges?.[0] || 'İNEGÖL KOLEKSİYONU'}</span>
-                        <span class="badge-tag badge-dark-glass"><i class="fa-solid fa-shield-check"></i> %100 ORİJİNAL</span>
+
+                    <!-- Top-Left Circle Sticker Badge -->
+                    <div class="vcard-circle-sticker ${discountClass}">
+                        <span class="vcs-sub">SEPETTE</span>
+                        <strong class="vcs-pct">%${discountRate}</strong>
+                        <span class="vcs-sub">İNDİRİM</span>
                     </div>
+
+                    <!-- Top-Right Wishlist Heart Button -->
+                    <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${product.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle" onclick="toggleDetailWishlist(${product.id})">
+                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                    </button>
+
+                    <!-- Carousel Side Nav Arrows -->
+                    <button class="vgallery-arrow-btn prev" onclick="prevSlide()" aria-label="Önceki Görsel"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="vgallery-arrow-btn next" onclick="nextSlide()" aria-label="Sonraki Görsel"><i class="fa-solid fa-chevron-right"></i></button>
+
+                    <!-- Zoom / Counter pill -->
                     <button type="button" class="gallery-zoom-trigger-btn" onclick="openLightbox(currentActiveGalleryIndex)" title="Fotoğrafı Büyüt">
                         <i class="fa-solid fa-magnifying-glass-plus"></i>
                         <span>Büyüt</span>
@@ -1032,53 +1043,127 @@ const renderProductDetail = () => {
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
                 </div>
-                <div class="thumbnail-strip" id="galleryThumbStrip">
-                    ${gallery.map((gImg, idx) => `
-                        <img src="${gImg}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})" title="Görsel ${idx + 1}" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
-                    `).join('')}
+
+                <!-- Left Column Below Gallery: Product Title & Option Cards -->
+                <div class="vdetail-left-bottom">
+                    <h1 class="vdetail-product-title">${product.title.toUpperCase()} <span class="vcode-text">(MBL-${String(product.id).padStart(3,'0')})</span></h1>
+                    
+                    <div class="vdetail-options-card">
+                        <h4 class="voptions-heading">${isDining ? 'Masa Fonksiyonu Seçenekleri' : isLiving ? 'Ölçü & Modül Seçenekleri' : 'Koleksiyon Seçenekleri'}</h4>
+                        <div class="voptions-grid">
+                            <div class="voption-card active" onclick="selectOption(this, 0)">
+                                <div class="vopt-img-wrap">
+                                    <img src="${gallery[0]}" alt="Standart">
+                                </div>
+                                <div class="vopt-info">
+                                    <span class="vopt-name">${isDining ? 'Sabit Masa' : isLiving ? "3'lü + Berjer" : 'Standart Takım'}</span>
+                                    <span class="vopt-price">${formatPrice(product.price)}</span>
+                                </div>
+                            </div>
+                            <div class="voption-card" onclick="selectOption(this, 1)">
+                                <div class="vopt-img-wrap">
+                                    <img src="${gallery[1] || gallery[0]}" alt="Genişletilmiş">
+                                </div>
+                                <div class="vopt-info">
+                                    <span class="vopt-name">${isDining ? 'Açılır Fonksiyonel Masa' : isLiving ? "3'lü + 3'lü + Berjer" : 'Genişletilmiş Takım'}</span>
+                                    <span class="vopt-price">${formatPrice(Math.round(product.price * 1.08))}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="product-info-box">
-                <span class="detail-product-code">Ürün Kodu: MBL-${String(product.id).padStart(3,'0')}</span>
-                <h1 class="detail-title">${product.title}</h1>
-                <div class="detail-stock-badge"><i class="fa-solid fa-circle-check"></i> Stokta Var &nbsp;·&nbsp; Ücretsiz Kurulum</div>
-
-                <div class="detail-price-main" id="topMainPriceDisplay">
-                    ${formatPrice(product.price)}
-                </div>
-
-                <div class="detail-features-card">
-                    <div class="feature-card-item">
-                        <i class="fa-solid fa-euro-sign feature-icon"></i>
-                        <span>Euro fiyatı için tıklayın</span>
-                    </div>
-                    <div class="feature-card-item feature-bordered-top">
-                        <span class="feature-label-wrap"><i class="fa-solid fa-percent feature-icon"></i> 6 Ay Vade Farksız Taksit</span>
-                        <strong id="installmentPriceVal" class="feature-highlight-purple">${formatPrice(Math.round(product.price / 6))}/ay</strong>
-                    </div>
-                    <div class="feature-card-item feature-bordered-top">
-                        <span class="feature-label-wrap"><i class="fa-solid fa-tag feature-icon"></i> %10 Ön Ödeme İndirimi</span>
-                        <strong id="prepaymentPriceVal" class="feature-highlight-green">${formatPrice(Math.round(product.price * 0.9))}</strong>
-                    </div>
-                    <div class="feature-card-item feature-bordered-top">
-                        <i class="fa-solid fa-truck-fast feature-icon"></i>
-                        <span>Tahmini Teslimat: <strong>05.09.2026</strong></span>
+            <!-- Right Column: Sticky Smart Buy Box -->
+            <div class="product-info-box vsmart-buy-box">
+                <!-- Top Price Block -->
+                <div class="vbuy-pricing-section">
+                    <div class="vbuy-original-price">${formatPrice(originalPrice)}</div>
+                    <div class="vbuy-discount-tag">Sepette %${discountRate} İndirim!</div>
+                    <div class="vbuy-sepet-price" id="topMainPriceDisplay">
+                        ${formatPrice(product.price)} <span class="vbuy-info-icon" title="KDV Dahil, Sepette İndirimli Fiyattır"><i class="fa-regular fa-circle-question"></i></span>
                     </div>
                 </div>
 
-                <div class="product-action-buttons-group">
-                    <button class="mobelmor-cart-btn interactive-btn" id="topDetailAddToCartBtn">
-                        <i class="fa-solid fa-cart-shopping"></i> Sepete Ekle
-                    </button>
-                    <div class="secondary-actions-grid">
-                        <a href="https://wa.me/905320000000?text=${encodeURIComponent(product.title + ' hakkında bilgi almak istiyorum')}" target="_blank" class="action-btn-whatsapp interactive-btn">
-                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Sipariş
-                        </a>
-                        <a href="kumas-kartelasi.html" class="action-btn-fabric interactive-btn">
-                            <i class="fa-solid fa-palette"></i> Kumaş Seçenekleri
-                        </a>
+                <!-- Set Content Breakdown (Takım İçeriği) -->
+                <div class="vset-breakdown-card">
+                    <div class="vset-header">
+                        <span class="vset-title">Takım İçeriği</span>
+                        <a href="#modulePriceSection" class="vset-change-link" onclick="document.getElementById('modulePriceSection')?.scrollIntoView({behavior:'smooth'}); event.preventDefault();">Değiştir / Özelleştir</a>
                     </div>
+                    <div class="vset-items-list" id="vsetItemsList">
+                        ${modules.map(m => `
+                            <div class="vset-item-row">
+                                <span class="vset-item-name">${m.label}</span>
+                                <span class="vset-item-calc">${m.qty} x ${formatPrice(m.price)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="vset-total-row">
+                        <span>Toplam</span>
+                        <strong id="vsetTotalPrice">${formatPrice(product.price)}</strong>
+                    </div>
+                    <div class="vset-tooltip-callout">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Bu takımın içeriğini dilediğiniz gibi değiştirebilirsiniz.</span>
+                    </div>
+                </div>
+
+                <!-- Fabric Customizer Button -->
+                <a href="kumas-kartelasi.html" class="vfabric-select-btn interactive-btn">
+                    <span class="vfabric-btn-left">
+                        <span class="vfabric-swatches-mini">
+                            <span style="background:#d97706;"></span>
+                            <span style="background:#0f766e;"></span>
+                            <span style="background:#3b82f6;"></span>
+                            <span style="background:#e11d48;"></span>
+                        </span>
+                        <strong>KUMAŞINI & RENGİNİ SEÇ &gt;</strong>
+                    </span>
+                    <i class="fa-solid fa-palette"></i>
+                </a>
+                <div class="vfabric-hint-bubble">
+                    <span>Bu ürünün kumaşını ve rengini ücretsiz değiştirebilirsiniz.</span>
+                </div>
+
+                <!-- Primary Buy Button -->
+                <button class="vbuy-primary-btn interactive-btn" id="topDetailAddToCartBtn">
+                    <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
+                </button>
+
+                <!-- Financing & Credit Card Info Box -->
+                <div class="vcredit-info-box">
+                    <div class="vcredit-row">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <div>
+                            <strong>${formatPrice(Math.round(product.price / 6))}/ay x 6 Ay Taksit</strong>
+                            <p>Tüm kredi kartlarına peşin fiyatına vade farksız taksit imkanı.</p>
+                            <a href="javascript:void(0)" onclick="document.querySelector('[data-tab=inegolInstallmentTab]')?.click(); document.getElementById('inegolInstallmentTab')?.scrollIntoView({behavior:'smooth'});" class="vcredit-link">Taksit Seçenekleri &gt;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery & Service Guarantees -->
+                <div class="vtrust-perks-box">
+                    <div class="vtrust-item">
+                        <i class="fa-solid fa-check vtrust-check"></i>
+                        <span>✓ Ücretsiz Teslimat ve Profesyonel Kurulum</span>
+                    </div>
+                    <div class="vtrust-item">
+                        <i class="fa-solid fa-bolt vtrust-bolt"></i>
+                        <span>⚡ Hızlı Teslimat: <strong>${formattedDeliveryDate}</strong> Günü Yolda</span>
+                    </div>
+                    <div class="vtrust-item">
+                        <i class="fa-solid fa-shield-halved vtrust-shield"></i>
+                        <span>🛡️ 2 Yıl Resmi İnegöl Üretici Garantisi</span>
+                    </div>
+                </div>
+
+                <!-- Showroom & WhatsApp Inquiry -->
+                <div class="vshowroom-inquiry-row">
+                    <a href="https://wa.me/905300000000?text=${encodeURIComponent(product.title + ' hakkında detaylı bilgi almak istiyorum.')}" target="_blank" class="vconsultant-btn whatsapp interactive-btn">
+                        <i class="fa-brands fa-whatsapp"></i> Satış Danışmanı ile WhatsApp'ta Görüş
+                    </a>
                 </div>
             </div>
         `;
@@ -1183,12 +1268,21 @@ window.updateModuleQty = (id, delta) => {
     const fmt = formatPrice(grandTotal);
     const grandEl = document.getElementById('moduleGrandTotal');
     const topEl = document.getElementById('topMainPriceDisplay');
-    const instEl = document.getElementById('installmentPriceVal');
-    const preEl = document.getElementById('prepaymentPriceVal');
+    const vsetTotalEl = document.getElementById('vsetTotalPrice');
+    const vsetListEl = document.getElementById('vsetItemsList');
     if (grandEl) grandEl.textContent = fmt;
-    if (topEl) topEl.textContent = fmt;
-    if (instEl) instEl.textContent = formatPrice(Math.round(grandTotal / 6));
-    if (preEl) preEl.textContent = formatPrice(Math.round(grandTotal * 0.1));
+    if (topEl) {
+        topEl.innerHTML = `${fmt} <span class="vbuy-info-icon" title="KDV Dahil, Sepette İndirimli Fiyattır"><i class="fa-regular fa-circle-question"></i></span>`;
+    }
+    if (vsetTotalEl) vsetTotalEl.textContent = fmt;
+    if (vsetListEl) {
+        vsetListEl.innerHTML = (currentModuleState.modules || []).filter(m => m.qty > 0).map(m => `
+            <div class="vset-item-row">
+                <span class="vset-item-name">${m.label}</span>
+                <span class="vset-item-calc">${m.qty} x ${formatPrice(m.price)}</span>
+            </div>
+        `).join('');
+    }
 };
 
 const renderSpecsAndGeneralInfo = (product) => {
