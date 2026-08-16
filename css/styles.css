@@ -2151,34 +2151,30 @@ button:active,
 
 .product-card {
     background-color: #ffffff !important;
-    border-radius: var(--radius-lg);
-    border: 1px solid #e4e4e7 !important;
+    border-radius: 4px;
+    border: 1px solid #f1f5f9 !important;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     contain: layout style;
+    text-decoration: none;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    border-color: #d8b4fe !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+    border-color: #e2e8f0 !important;
 }
 
 .card-image-box {
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
-    background-color: #f4f4f6 !important;
+    background-color: #f8fafc !important;
     overflow: hidden;
     cursor: pointer !important;
-}
-
-@media (max-width: 480px) {
-    .card-image-box {
-        aspect-ratio: 4 / 3;
-    }
 }
 
 .card-img {
@@ -2186,56 +2182,106 @@ button:active,
     height: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    display: block;
     image-rendering: auto;
-    transition: transform 0.4s ease;
+    transition: transform 0.35s ease;
 }
 
 .product-card:hover .card-img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
-.badge-pills-stack {
+/* Top-Left Circular Sticker Badge */
+.vcard-circle-sticker {
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 8px;
+    left: 8px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 3;
 }
 
-.pill-dark {
-    background-color: #18181b !important;
-    color: #ffffff !important;
-    font-size: 0.6rem;
+.vcard-circle-sticker.purple { background: #e0e7ff; color: #3730a3; }
+.vcard-circle-sticker.orange { background: #ffedd5; color: #c2410c; }
+.vcard-circle-sticker.green { background: #ccfbf1; color: #0f766e; }
+.vcard-circle-sticker.red { background: #fee2e2; color: #b91c1c; }
+
+.vcard-circle-sticker .vcs-sub {
+    font-size: 0.48rem;
+    font-weight: 700;
+}
+
+.vcard-circle-sticker .vcs-pct {
+    font-size: 0.82rem;
     font-weight: 800;
-    padding: 3px 6px;
-    border-radius: var(--radius-sm);
+    margin: 1px 0;
 }
 
-.pill-purple {
-    background-color: #6b21a8 !important;
-    color: #ffffff !important;
-    font-size: 0.6rem;
+/* Top-Right Discount Tag */
+.vcard-top-tag {
+    position: absolute;
+    top: 8px;
+    right: 44px;
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    z-index: 3;
+}
+
+/* Bottom-Left 3D Viewer Badge */
+.vcard-3d-circle {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fef08a;
+    color: #854d0e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.50rem;
     font-weight: 800;
-    padding: 3px 6px;
-    border-radius: var(--radius-sm);
+    line-height: 1;
+    z-index: 3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
+.vcard-3d-circle i {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+}
+
+/* Wishlist Heart Button */
 .card-heart-btn {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 8px;
+    right: 8px;
     width: 30px;
     height: 30px;
-    border-radius: var(--radius-full);
-    background-color: #ffffff !important;
-    color: #52525b !important;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    color: #64748b !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 10;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    z-index: 4;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
 .card-heart-btn:hover {
@@ -2245,45 +2291,79 @@ button:active,
 }
 
 .card-heart-btn.active {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
+    background-color: #fee2e2 !important;
+    color: #ef4444 !important;
+    border-color: #fca5a5;
 }
 
 .card-details {
-    padding: 10px;
+    padding: 12px 10px 14px 10px;
     background-color: #ffffff !important;
     display: flex;
     flex-direction: column;
     flex: 1;
-    justify-content: space-between;
 }
 
-.card-material-tag {
-    font-size: 0.68rem;
-    font-weight: 800;
-    color: #6b21a8 !important;
+/* Badges Row */
+.vcard-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.vbadge-pill {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    line-height: 1.1;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 2px;
-    line-height: 1.25;
-    min-height: 2.5em;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+}
+
+.vbadge-pill.pill-collection {
+    background: #1e293b;
+    color: #ffffff;
+}
+
+.vbadge-pill.pill-best-price {
+    background: #ea580c;
+    color: #ffffff;
+}
+
+.vbadge-pill.pill-campaign {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.vbadge-pill.pill-rating {
+    background: #fef9c3;
+    color: #854d0e;
+    border: 1px solid #fef08a;
+}
+
+.vbadge-pill.pill-3d {
+    background: #0f766e;
+    color: #ffffff;
 }
 
 .card-product-title {
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #0f172a !important;
-    line-height: 1.3;
-    min-height: 2.6em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155 !important;
+    line-height: 1.35;
+    min-height: 2.4em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 6px;
+    margin: 0 0 8px 0;
     cursor: pointer !important;
     letter-spacing: -0.01em;
 }
@@ -2292,77 +2372,80 @@ button:active,
     color: #6b21a8 !important;
 }
 
-.rating-line {
+/* Pricing Block */
+.vcard-pricing-block {
     display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-    color: #f59e0b !important;
-    margin-bottom: 4px;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 8px;
 }
 
-.rating-count-text {
-    color: #64748b !important;
-    font-weight: 600;
+.vcard-old-price {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    text-decoration: line-through;
 }
 
-.card-price-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-    padding-top: 8px;
-    border-top: 1px solid #f1f5f9 !important;
+.vcard-main-price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #d97706;
+    line-height: 1.2;
 }
 
-@media (max-width: 480px) {
-    .card-material-tag {
-        font-size: 0.64rem;
-        min-height: 2.5em;
-    }
-    .card-product-title {
-        font-size: 0.88rem;
-        min-height: 2.6em;
-    }
+.vcard-sepette-price {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #991b1b;
+    line-height: 1.2;
 }
 
-.card-price-text {
-    font-size: 1.25rem;
-    font-weight: 900;
-    color: #6b21a8 !important;
-    letter-spacing: -0.02em;
-    line-height: 1;
-}
-
-.card-actions-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.circle-view-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: var(--radius-full);
-    background-color: #f4f4f5 !important;
-    color: #18181b !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-}
-
-.pill-add-btn {
-    background-color: #6b21a8 !important;
-    color: #ffffff !important;
-    padding: 6px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.78rem;
+.vcard-sepette-price strong {
     font-weight: 800;
+}
+
+.vcard-lowest-price {
+    font-size: 0.65rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 2px;
+}
+
+/* Feature Delivery & Variant Pills */
+.vcard-features-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    padding-top: 6px;
+    border-top: 1px solid #f8fafc;
+}
+
+.vfeat-pill {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    border: none;
+    gap: 3px;
+    line-height: 1.15;
+}
+
+.vfeat-pill.teal {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.vfeat-pill.interactive {
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
 }
 
 /* Specific Mobile Responsive Fixes (< 640px) */
@@ -2370,59 +2453,17 @@ button:active,
     .product-grid {
         gap: 10px !important;
     }
-    .product-card {
-        border-radius: 14px !important;
-    }
     .card-details {
-        padding: 8px 10px 10px 10px !important;
+        padding: 8px 8px 10px 8px !important;
     }
     .card-product-title {
-        font-size: 0.82rem !important;
-        margin-bottom: 2px !important;
+        font-size: 0.78rem !important;
     }
-    .card-material-tag {
-        font-size: 0.6rem !important;
-    }
-    .rating-line {
-        font-size: 0.7rem !important;
-    }
-    .card-price-row {
-        padding-top: 6px !important;
-        margin-top: auto !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-        gap: 2px !important;
-        overflow: hidden !important;
-    }
-    .card-price-text {
+    .vcard-main-price {
         font-size: 0.88rem !important;
-        font-weight: 800 !important;
-        white-space: nowrap !important;
-        flex-shrink: 1 !important;
-        min-width: 0 !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
     }
-    .card-actions-group {
-        display: flex !important;
-        align-items: center !important;
-        gap: 3px !important;
-        flex-shrink: 0 !important;
-    }
-    .circle-view-btn {
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 0.72rem !important;
-        flex-shrink: 0 !important;
-    }
-    .pill-add-btn {
-        padding: 5px 8px !important;
-        font-size: 0.72rem !important;
-        gap: 3px !important;
-        flex-shrink: 0 !important;
-        white-space: nowrap !important;
+    .vcard-sepette-price {
+        font-size: 0.78rem !important;
     }
     .sort-card-box {
         flex-direction: column;

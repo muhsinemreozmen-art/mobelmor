@@ -741,35 +741,74 @@ const renderProducts = () => {
             ? 'loading="eager" fetchpriority="high" decoding="sync"' 
             : 'loading="lazy" decoding="async"';
         const webpImage = item.image ? item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/zumrut_main.webp';
+        
+        // Vivense pricing & badge calculation
+        const discountRate = (item.id % 4 === 0) ? 20 : (item.id % 3 === 0) ? 15 : (item.id % 2 === 0) ? 10 : 5;
+        const discountClass = discountRate === 15 ? 'purple' : discountRate === 10 ? 'orange' : discountRate === 20 ? 'red' : 'green';
+        const sepetPrice = Math.round(item.price * (1 - discountRate / 100));
+        const oldPrice = (item.id % 3 === 0) ? Math.round(item.price * 1.15) : null;
+        const has3d = (item.id % 4 === 0);
+        const isBestPrice = (item.id % 3 === 1);
+        const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
+        const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
+
         return `
             <article class="product-card" data-id="${item.id}">
                 <div class="card-image-box">
                     <img src="${webpImage}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='${item.image}';">
-                    <div class="badge-pills-stack">
-                        ${item.badges.map(b => `<span class="${b.includes('MASİF') || b.includes('YENİ') ? 'pill-purple' : 'pill-dark'}">${b}</span>`).join('')}
+                    
+                    <!-- Top-Left Circle Sticker Badge -->
+                    <div class="vcard-circle-sticker ${discountClass}">
+                        <span class="vcs-sub">SEPETTE</span>
+                        <strong class="vcs-pct">%${discountRate}</strong>
+                        <span class="vcs-sub">İNDİRİM</span>
                     </div>
+
+                    ${(item.id % 5 === 0) ? `<span class="vcard-top-tag">%${discountRate}</span>` : ''}
+
+                    <!-- 3D Sticker -->
+                    ${has3d ? `
+                        <div class="vcard-3d-circle">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>3D GÖRÜNTÜLE</span>
+                        </div>
+                    ` : ''}
+
+                    <!-- Heart Wishlist Button -->
                     <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${item.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle">
                         <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
                     </button>
                 </div>
+
                 <div class="card-details">
-                    <span class="card-material-tag">${item.material}</span>
-                    <h3 class="card-product-title">${item.title}</h3>
-                    <div class="rating-line">
-                        <i class="fa-solid fa-star"></i>
-                        <span style="font-weight: 800; color: #18181b;">${item.rating}</span>
-                        <span class="rating-count-text">(${item.reviewsCount})</span>
+                    <!-- Badges Row -->
+                    <div class="vcard-badges-row">
+                        ${isBestPrice 
+                            ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>` 
+                            : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
+                        }
+                        <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
+                        ${item.rating >= 4.8 ? `<span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>` : ''}
+                        ${has3d ? `<span class="vbadge-pill pill-3d"><i class="fa-solid fa-cube"></i> 3D GÖRÜNTÜLE</span>` : ''}
                     </div>
-                    <div class="card-price-row">
-                        <span class="card-price-text">${formatPrice(item.price)}</span>
-                        <div class="card-actions-group">
-                            <button class="circle-view-btn quick-view-btn" data-id="${item.id}" title="Hızlı İncele" aria-label="Hızlı İncele">
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
-                            <button class="pill-add-btn add-to-cart-btn" data-id="${item.id}" aria-label="Sepete Ekle">
-                                <i class="fa-solid fa-cart-plus"></i> Ekle
-                            </button>
-                        </div>
+
+                    <!-- Title -->
+                    <h3 class="card-product-title">${item.title}</h3>
+
+                    <!-- Pricing Block -->
+                    <div class="vcard-pricing-block">
+                        ${oldPrice ? `<span class="vcard-old-price">${formatPrice(oldPrice)}</span>` : ''}
+                        <div class="vcard-main-price">${formatPrice(item.price)}</div>
+                        <div class="vcard-sepette-price">Sepette: <strong>${formatPrice(sepetPrice)}</strong></div>
+                        ${(item.id % 2 === 0) ? `<div class="vcard-lowest-price"><i class="fa-solid fa-arrow-trend-down"></i> Son 30 günün en düşük fiyatı</div>` : ''}
+                    </div>
+
+                    <!-- Feature Delivery & Variant Pills -->
+                    <div class="vcard-features-pills">
+                        <span class="vfeat-pill"><i class="fa-solid fa-truck"></i> Ücretsiz Teslimat</span>
+                        <span class="vfeat-pill teal"><i class="fa-solid fa-bolt"></i> Hızlı Teslimat</span>
+                        ${isLiving ? `<span class="vfeat-pill"><i class="fa-solid fa-couch"></i> Kumaşı değiştirilebilir</span>` : ''}
+                        ${isDining ? `<span class="vfeat-pill interactive"><i class="fa-solid fa-plus"></i> Masa Ölçüsü Seçenekleri</span>` : ''}
                     </div>
                 </div>
             </article>

@@ -1240,17 +1240,52 @@ const renderRelatedProducts = (currentProduct) => {
 
     grid.innerHTML = related.map(item => {
         const itemUrl = window.getCleanProductUrl ? window.getCleanProductUrl(item.id, item.title) : `urun-detay.html?id=${item.id}`;
+        const discountRate = (item.id % 4 === 0) ? 20 : (item.id % 3 === 0) ? 15 : (item.id % 2 === 0) ? 10 : 5;
+        const discountClass = discountRate === 15 ? 'purple' : discountRate === 10 ? 'orange' : discountRate === 20 ? 'red' : 'green';
+        const sepetPrice = Math.round(item.price * (1 - discountRate / 100));
+        const oldPrice = (item.id % 3 === 0) ? Math.round(item.price * 1.15) : null;
+        const isBestPrice = (item.id % 3 === 1);
+        const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
+        const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
+
         return `
         <article class="product-card" onclick="window.location.href='${itemUrl}'" style="cursor: pointer;">
             <div class="card-image-box">
-                <img src="${item.image}" alt="${item.title}" class="card-img">
+                <img src="${item.image}" alt="${item.title}" class="card-img" loading="lazy">
+                
+                <!-- Top-Left Circle Sticker Badge -->
+                <div class="vcard-circle-sticker ${discountClass}">
+                    <span class="vcs-sub">SEPETTE</span>
+                    <strong class="vcs-pct">%${discountRate}</strong>
+                    <span class="vcs-sub">İNDİRİM</span>
+                </div>
             </div>
             <div class="card-details">
-                <span class="card-material-tag">${item.material}</span>
+                <!-- Badges Row -->
+                <div class="vcard-badges-row">
+                    ${isBestPrice 
+                        ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>` 
+                        : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
+                    }
+                    <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
+                </div>
+
+                <!-- Title -->
                 <h3 class="card-product-title">${item.title}</h3>
-                <div class="card-price-row">
-                    <span class="card-price-text">${formatPrice(item.price)}</span>
-                    <button class="pill-add-btn" onclick="event.stopPropagation(); window.location.href='${itemUrl}'">İncele</button>
+
+                <!-- Pricing Block -->
+                <div class="vcard-pricing-block">
+                    ${oldPrice ? `<span class="vcard-old-price">${formatPrice(oldPrice)}</span>` : ''}
+                    <div class="vcard-main-price">${formatPrice(item.price)}</div>
+                    <div class="vcard-sepette-price">Sepette: <strong>${formatPrice(sepetPrice)}</strong></div>
+                </div>
+
+                <!-- Feature Delivery & Variant Pills -->
+                <div class="vcard-features-pills">
+                    <span class="vfeat-pill"><i class="fa-solid fa-truck"></i> Ücretsiz Teslimat</span>
+                    <span class="vfeat-pill teal"><i class="fa-solid fa-bolt"></i> Hızlı Teslimat</span>
+                    ${isLiving ? `<span class="vfeat-pill"><i class="fa-solid fa-couch"></i> Kumaşı değiştirilebilir</span>` : ''}
+                    ${isDining ? `<span class="vfeat-pill interactive"><i class="fa-solid fa-plus"></i> Masa Ölçüsü</span>` : ''}
                 </div>
             </div>
         </article>
