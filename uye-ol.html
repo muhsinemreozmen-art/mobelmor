@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0728">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0735">
     <style>
         .auth-page-wrapper {
             min-height: 80vh;
@@ -139,16 +139,21 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=20260826_0728"></script>
-    <script src="js/store-service.js?v=20260826_0728"></script>
+    <script src="js/app.js?v=20260826_0735"></script>
+    <script src="js/store-service.js?v=20260826_0735"></script>
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function (e) {
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const alertBox = document.getElementById('registerAlert');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const origText = submitBtn.innerHTML;
             alertBox.style.display = 'none';
 
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt Yapılıyor...';
+
             try {
-                const user = window.StoreService.registerCustomer({
+                const res = await window.StoreService.registerCustomer({
                     fullName: document.getElementById('fullName').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
@@ -158,18 +163,24 @@
                 alertBox.style.background = 'rgba(34, 197, 94, 0.2)';
                 alertBox.style.borderColor = 'rgba(34, 197, 94, 0.4)';
                 alertBox.style.color = '#86efac';
-                alertBox.textContent = 'Hesabınız başarıyla oluşturuldu! Yönlendiriliyorsunuz...';
-                alertBox.style.display = 'block';
-
-                setTimeout(() => {
-                    location.href = 'hesabim.html';
-                }, 1000);
+                
+                if (res.confirmationSent) {
+                    alertBox.innerHTML = '<strong><i class="fa-solid fa-envelope-circle-check"></i> Doğrulama Bağlantısı Gönderildi!</strong><br>Lütfen <strong>' + document.getElementById('email').value.trim() + '</strong> adresine gelen onay e-postasına tıklayınız.';
+                    alertBox.style.display = 'block';
+                    submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Onay Maili Gönderildi';
+                } else {
+                    alertBox.textContent = 'Hesabınız başarıyla oluşturuldu! Yönlendiriliyorsunuz...';
+                    alertBox.style.display = 'block';
+                    setTimeout(() => { location.href = 'hesabim.html'; }, 1000);
+                }
             } catch (err) {
                 alertBox.style.background = 'rgba(239, 68, 68, 0.2)';
                 alertBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
                 alertBox.style.color = '#fca5a5';
                 alertBox.textContent = err.message;
                 alertBox.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
             }
         });
     </script>

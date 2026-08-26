@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0728">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0735">
     <style>
         .auth-page-wrapper {
             min-height: 80vh;
@@ -123,16 +123,21 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=20260826_0728"></script>
-    <script src="js/store-service.js?v=20260826_0728"></script>
+    <script src="js/app.js?v=20260826_0735"></script>
+    <script src="js/store-service.js?v=20260826_0735"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const alertBox = document.getElementById('loginAlert');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const origText = submitBtn.innerHTML;
             alertBox.style.display = 'none';
 
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Giriş Yapılıyor...';
+
             try {
-                const user = window.StoreService.loginCustomer(
+                const user = await window.StoreService.loginCustomer(
                     document.getElementById('loginEmail').value.trim(),
                     document.getElementById('loginPassword').value
                 );
@@ -150,8 +155,10 @@
                 alertBox.style.background = 'rgba(239, 68, 68, 0.2)';
                 alertBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
                 alertBox.style.color = '#fca5a5';
-                alertBox.textContent = err.message;
+                alertBox.innerHTML = err.message;
                 alertBox.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
             }
         });
     </script>

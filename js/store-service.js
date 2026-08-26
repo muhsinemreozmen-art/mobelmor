@@ -163,54 +163,98 @@
             }
         },
 
-        registerCustomer: function (userData) {
-            let users = [];
-            try {
-                users = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
-            } catch (e) {
-                users = [];
+        registerCustomer: async function (userData) {
+            const cleanEmail = (userData.email || '').trim().toLowerCase();
+            const cleanPass = (userData.password || '').trim();
+            const cleanName = (userData.fullName || userData.name || '').trim();
+            const cleanPhone = (userData.phone || '').trim();
+
+            if (!cleanEmail || !cleanPass || !cleanName) {
+                throw new Error("Lütfen tüm zorunlu alanları (Ad Soyad, E-Posta, Şifre) doldurunuz.");
             }
 
-            // E-posta kontrolü
-            const exists = users.find(u => u.email.toLowerCase() === userData.email.toLowerCase());
-            if (exists) {
-                throw new Error("Bu e-posta adresi ile kayıtlı bir hesap zaten var.");
+            if (cleanPass.length < 6) {
+                throw new Error("Şifreniz en az 6 karakter olmalıdır.");
             }
 
+            // 1. Supabase Auth Signup
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/signup`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: cleanEmail,
+                            password: cleanPass,
+                            data: {
+                                full_name: cleanName,
+                                phone: cleanPhone
+                            }
+                        })
+                    });
+
+                    const resData = await res.json();
+                    if (!res.ok) {
+                        if (resData.msg && resData.msg.includes("already registered")) {
+                            throw new Error("Bu e-posta adresi ile kayıtlı bir hesap zaten var.");
+                        } else if (resData.msg && resData.msg.includes("invalid")) {
+                            throw new Error("Lütfen geçerli ve çalışan gerçek bir e-posta adresi giriniz.");
+                        } else {
+                            throw new Error(resData.msg || resData.error_description || "Kayıt işlemi gerçekleştirilemedi.");
+                        }
+                    }
+
+                    const newUser = {
+                        id: resData.id || ('cust_' + Date.now()),
+                        fullName: cleanName,
+                        name: cleanName,
+                        email: cleanEmail,
+                        phone: cleanPhone,
+                        address: userData.address || '',
+                        city: userData.city || '',
+                        district: userData.district || '',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    let users = this.getAllCustomers();
+                    const existingIdx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+                    if (existingIdx === -1) {
+                        users.push(newUser);
+                    } else {
+                        users[existingIdx] = { ...users[existingIdx], ...newUser };
+                    }
+                    localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+                    localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+                    return { user: newUser, confirmationSent: true };
+                } catch (err) {
+                    throw err;
+                }
+            }
+
+            // Local fallback
+            let users = this.getAllCustomers();
+            const exists = users.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+            if (exists) throw new Error("Bu e-posta adresi ile kayıtlı bir hesap zaten var.");
             const newUser = {
                 id: 'cust_' + Date.now(),
-                fullName: userData.fullName,
-                name: userData.fullName,
-                email: userData.email.toLowerCase(),
-                phone: userData.phone || '',
-                password: userData.password,
-                address: userData.address || '',
-                city: userData.city || '',
-                district: userData.district || '',
+                fullName: cleanName,
+                name: cleanName,
+                email: cleanEmail,
+                phone: cleanPhone,
+                password: cleanPass,
                 createdAt: new Date().toISOString()
             };
-
             users.push(newUser);
             localStorage.setItem('mobelmor_customers', JSON.stringify(users));
-            localStorage.setItem('mobelmor_users', JSON.stringify(users));
-
-            // Oturumu Aç
-            const sessionUser = { ...newUser };
-            delete sessionUser.password;
-            localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
-            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
-
-            return sessionUser;
+            return { user: newUser, confirmationSent: false };
         },
 
-        loginCustomer: function (email, password) {
-            let users = [];
-            try {
-                users = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
-            } catch (e) {
-                users = [];
-            }
-
+        loginCustomer: async function (email, password) {
             const cleanEmail = (email || '').trim().toLowerCase();
             const cleanPass = (password || '').trim();
 
@@ -218,11 +262,64 @@
                 throw new Error("Lütfen e-posta adresi ve şifrenizi giriniz.");
             }
 
-            const user = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
-            if (!user) {
-                throw new Error("E-posta adresi veya şifre hatalı.");
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/token?grant_type=password`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: cleanEmail,
+                            password: cleanPass
+                        })
+                    });
+
+                    const resData = await res.json();
+                    if (!res.ok) {
+                        if (resData.error_description && resData.error_description.includes("Email not confirmed")) {
+                            throw new Error("⚠️ E-posta adresiniz henüz doğrulanmamış. Lütfen gelen kutunuzdaki (veya spam klasörünüzdeki) onay bağlantısına tıklayarak hesabınızı aktif ediniz.");
+                        } else if (resData.error_description?.includes("Invalid login credentials") || resData.msg?.includes("Invalid login credentials")) {
+                            throw new Error("E-posta adresi veya şifre hatalı.");
+                        } else {
+                            throw new Error(resData.error_description || resData.msg || "Giriş yapılamadı.");
+                        }
+                    }
+
+                    const suUser = resData.user || {};
+                    const sessionUser = {
+                        id: suUser.id,
+                        email: suUser.email,
+                        fullName: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
+                        name: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
+                        phone: suUser.user_metadata?.phone || '',
+                        token: resData.access_token
+                    };
+
+                    localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                    localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                    let users = this.getAllCustomers();
+                    const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+                    if (idx === -1) {
+                        users.push(sessionUser);
+                    } else {
+                        users[idx] = { ...users[idx], ...sessionUser };
+                    }
+                    localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+
+                    return sessionUser;
+                } catch (err) {
+                    throw err;
+                }
             }
 
+            // Local fallback
+            let users = this.getAllCustomers();
+            const user = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
+            if (!user) throw new Error("E-posta adresi veya şifre hatalı.");
             const sessionUser = { ...user };
             delete sessionUser.password;
             localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));

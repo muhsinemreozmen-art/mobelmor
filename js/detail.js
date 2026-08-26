@@ -3042,72 +3042,81 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Real Login Submit Handler
-    loginForm?.addEventListener("submit", (e) => {
+    loginForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
         const pass = (document.getElementById("loginPassword")?.value || "").trim();
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const origText = submitBtn ? submitBtn.innerHTML : "Giriş Yap";
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kontrol Ediliyor...';
+        }
 
-        const customers = getCustomersList();
-        const existing = customers.find(u => u.email && u.email.toLowerCase() === email && u.password === pass);
-
-        if (existing) {
-            const sessionUser = { ...existing };
-            delete sessionUser.password;
-            localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
-            localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
+        try {
+            const sessionUser = await window.StoreService.loginCustomer(email, pass);
             updateAuthUI();
             document.getElementById("authModalOverlay")?.classList.remove("active");
             document.body.classList.remove("modal-open");
-            showToast(`Hoş geldiniz, ${existing.fullName || existing.name}!`, "fa-circle-check");
+            showToast(`Hoş geldiniz, ${sessionUser.fullName || sessionUser.name}!`, "fa-circle-check");
             loginForm.reset();
-        } else {
-            showToast("E-posta veya şifre hatalı. Kaydınız yoksa lütfen Kayıt Ol sekmesini kullanın.", "fa-triangle-exclamation");
+        } catch (err) {
+            showToast(err.message, "fa-triangle-exclamation");
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
+            }
         }
     });
 
     // Real Register Submit Handler
-    registerForm?.addEventListener("submit", (e) => {
+    registerForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const name = (document.getElementById("regName")?.value || "").trim();
         const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
         const phone = (document.getElementById("regPhone")?.value || "").trim();
         const password = (document.getElementById("regPassword")?.value || "").trim();
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+        const origText = submitBtn ? submitBtn.innerHTML : "Ücretsiz Üye Ol";
 
         if (!name || !email || !password) {
             showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
             return;
         }
 
-        const customers = getCustomersList();
-        const exists = customers.find(u => u.email && u.email.toLowerCase() === email);
-        if (exists) {
-            showToast("Bu e-posta adresi ile zaten kayıtlı bir hesap var.", "fa-triangle-exclamation");
-            return;
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt Yapılıyor...';
         }
 
-        const newCustomer = {
-            id: "cust_" + Date.now(),
-            fullName: name,
-            name: name,
-            email: email,
-            phone: phone || "",
-            password: password,
-            createdAt: new Date().toISOString()
-        };
+        try {
+            const res = await window.StoreService.registerCustomer({
+                fullName: name,
+                email: email,
+                phone: phone,
+                password: password
+            });
 
-        customers.push(newCustomer);
-        saveCustomersList(customers);
-
-        const sessionUser = { ...newCustomer };
-        delete sessionUser.password;
-        localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
-        localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
-
-        updateAuthUI();
-        document.getElementById("authModalOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
-        registerForm.reset();
+            if (res.confirmationSent) {
+                showToast(`Doğrulama bağlantısı ${email} adresinize gönderildi! Lütfen e-postanızı onaylayınız.`, "fa-envelope-circle-check");
+                registerForm.reset();
+                window.openAuthModal("login");
+            } else {
+                updateAuthUI();
+                document.getElementById("authModalOverlay")?.classList.remove("active");
+                document.body.classList.remove("modal-open");
+                showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+                registerForm.reset();
+            }
+        } catch (err) {
+            showToast(err.message, "fa-triangle-exclamation");
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
+            }
+        }
     });
 
     // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent with Order ID & Tracking)
