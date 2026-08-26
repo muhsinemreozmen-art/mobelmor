@@ -287,6 +287,7 @@
                                 full_name: cleanName,
                                 email: cleanEmail,
                                 phone: cleanPhone,
+                                password: cleanPass,
                                 address: newUser.address,
                                 city: newUser.city,
                                 district: newUser.district,
@@ -391,7 +392,7 @@
                     }
                 }
 
-                // 2. Cloud Customers table check (Cross-device sync & fallback)
+                // 2. Cloud Customers table check (Cross-device sync & fallback with strict password matching)
                 try {
                     const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(cleanEmail)}&select=*`, {
                         headers: {
@@ -403,7 +404,7 @@
                         const cloudUsers = await res.json();
                         if (Array.isArray(cloudUsers) && cloudUsers.length > 0) {
                             const matched = cloudUsers[0];
-                            if (!matched.password || matched.password === cleanPass) {
+                            if (matched.password && matched.password === cleanPass) {
                                 const sessionUser = {
                                     id: matched.id,
                                     email: matched.email,
@@ -435,9 +436,9 @@
                 }
             }
 
-            // 3. Local fallback check
+            // 3. Local fallback check with strict password matching
             let users = this.getAllCustomers();
-            const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && (!u.password || u.password === cleanPass));
+            const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
             if (localUser) {
                 const sessionUser = { ...localUser };
                 delete sessionUser.password;
