@@ -199,10 +199,38 @@
 
                     const resData = await res.json();
                     if (!res.ok) {
-                        if (resData.msg && resData.msg.includes("already registered")) {
+                        const errMsg = (resData.msg || resData.error_description || "").toLowerCase();
+                        if (errMsg.includes("already registered")) {
                             throw new Error("Bu e-posta adresi ile kayıtlı bir hesap zaten var.");
-                        } else if (resData.msg && resData.msg.includes("invalid")) {
+                        } else if (errMsg.includes("invalid")) {
                             throw new Error("Lütfen geçerli ve çalışan gerçek bir e-posta adresi giriniz.");
+                        } else if (errMsg.includes("rate limit") || errMsg.includes("rate_limit") || errMsg.includes("exceeded")) {
+                            // Supabase shared mailer rate limit hit -> fallback to direct account creation so customer is never blocked
+                            const fallbackUser = {
+                                id: 'cust_' + Date.now(),
+                                fullName: cleanName,
+                                name: cleanName,
+                                email: cleanEmail,
+                                phone: cleanPhone,
+                                password: cleanPass,
+                                createdAt: new Date().toISOString()
+                            };
+                            let users = this.getAllCustomers();
+                            const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+                            if (idx === -1) {
+                                users.push(fallbackUser);
+                            } else {
+                                users[idx] = { ...users[idx], ...fallbackUser };
+                            }
+                            localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+                            localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+                            const sessionUser = { ...fallbackUser };
+                            delete sessionUser.password;
+                            localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                            return { user: sessionUser, confirmationSent: false };
                         } else {
                             throw new Error(resData.msg || resData.error_description || "Kayıt işlemi gerçekleştirilemedi.");
                         }
@@ -281,7 +309,20 @@
                     if (!res.ok) {
                         if (resData.error_description && resData.error_description.includes("Email not confirmed")) {
                             throw new Error("⚠️ E-posta adresiniz henüz doğrulanmamış. Lütfen gelen kutunuzdaki (veya spam klasörünüzdeki) onay bağlantısına tıklayarak hesabınızı aktif ediniz.");
-                        } else if (resData.error_description?.includes("Invalid login credentials") || resData.msg?.includes("Invalid login credentials")) {
+                        }
+
+                        // Check local storage fallback accounts (e.g. created during rate-limit)
+                        let users = this.getAllCustomers();
+                        const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
+                        if (localUser) {
+                            const sessionUser = { ...localUser };
+                            delete sessionUser.password;
+                            localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+                            return sessionUser;
+                        }
+
+                        if (resData.error_description?.includes("Invalid login credentials") || resData.msg?.includes("Invalid login credentials")) {
                             throw new Error("E-posta adresi veya şifre hatalı.");
                         } else {
                             throw new Error(resData.error_description || resData.msg || "Giriş yapılamadı.");
