@@ -3086,38 +3086,38 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const customers = getCustomersList();
-    const exists = customers.find(u => u.email && u.email.toLowerCase() === email);
-    if (exists) {
-      showToast("Bu e-posta adresi ile zaten kayıtlı bir hesap var.", "fa-triangle-exclamation");
-      return;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt Yapılıyor...';
     }
 
-    const newCustomer = {
-      id: "cust_" + Date.now(),
-      fullName: name,
-      name: name,
-      email: email,
-      phone: phone || "",
-      password: password,
-      createdAt: new Date().toISOString()
-    };
+    try {
+      const res = await window.StoreService.registerCustomer({
+        fullName: name,
+        name: name,
+        email: email,
+        phone: phone,
+        password: password
+      });
 
-    customers.push(newCustomer);
-    saveCustomersList(customers);
-
-    const sessionUser = { ...newCustomer };
-    delete sessionUser.password;
-    localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
-    localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
-
-    updateAuthUI();
-    document.getElementById("authModalOverlay")?.classList.remove("active");
-    document.body.classList.remove("modal-open");
-    showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
-    registerForm.reset();
-    if (window.location.pathname.includes("siparislerim") && typeof renderOrdersPage === "function") {
-      renderOrdersPage();
+      if (res && res.confirmationSent) {
+        showToast(`Doğrulama bağlantısı ${email} adresinize gönderildi! Lütfen e-postanızı onaylayınız.`, "fa-envelope-circle-check");
+        registerForm.reset();
+        window.openAuthModal("login");
+      } else {
+        updateAuthUI();
+        document.getElementById("authModalOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
+        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+        registerForm.reset();
+      }
+    } catch (err) {
+      showToast(err.message, "fa-triangle-exclamation");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origText;
+      }
     }
   });
 
