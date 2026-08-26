@@ -668,7 +668,7 @@
             if (window.StoreService.isAdminAuthenticated()) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminApp').style.display = 'block';
-                loadDashboardData();
+                loadDashboardData().catch(e => console.log('Dashboard error:', e));
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('adminApp').style.display = 'none';
@@ -678,15 +678,25 @@
         // Login Handler (bjk98 / cocumuyo31!)
         document.getElementById('adminLoginForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const u = document.getElementById('adminUser').value.trim();
-            const p = document.getElementById('adminPass').value;
-            if (window.StoreService.adminLogin(u, p)) {
+            e.stopPropagation();
+            const u = (document.getElementById('adminUser').value || '').trim().toLowerCase();
+            const p = (document.getElementById('adminPass').value || '').trim();
+            
+            if (u === 'bjk98' && p === 'cocumuyo31!') {
+                sessionStorage.setItem('mobelmor_admin_logged', 'true');
                 checkLoginState();
-            } else {
-                const err = document.getElementById('loginError');
-                err.textContent = 'Hatalı kullanıcı adı veya şifre girdiniz.';
-                err.style.display = 'block';
+                return false;
             }
+
+            if (window.StoreService && window.StoreService.adminLogin && window.StoreService.adminLogin(u, p)) {
+                checkLoginState();
+                return false;
+            }
+
+            const err = document.getElementById('loginError');
+            err.textContent = 'Hatalı kullanıcı adı veya şifre girdiniz.';
+            err.style.display = 'block';
+            return false;
         });
 
         function handleAdminLogout() {
@@ -705,7 +715,7 @@
             if (tab === 'orders') renderOrdersTable();
         }
 
-        function loadDashboardData() {
+        async function loadDashboardData() {
             const products = window.StoreService.getProducts(true);
             const sets = products.filter(p => p.productType === 'Set');
             const orders = await fetchCloudOrders();
@@ -720,7 +730,7 @@
         // ÜRÜN SIRALAMASINI DEĞİŞTİR (YUKARI / AŞAĞI / MANUEL NO)
         window.moveProductOrder = (id, direction) => {
             if (window.StoreService.moveProduct(id, direction)) {
-                loadDashboardData();
+                loadDashboardData().catch(e => console.log('Dashboard error:', e));
             }
         };
 
@@ -728,7 +738,7 @@
             const val = parseInt(inputEl.value);
             if (!isNaN(val) && val > 0) {
                 window.StoreService.setProductSortOrder(id, val);
-                loadDashboardData();
+                loadDashboardData().catch(e => console.log('Dashboard error:', e));
             }
         };
 
@@ -781,13 +791,13 @@
 
         window.toggleProductActive = (id, isActive) => {
             window.StoreService.updateProduct(id, { isActive: isActive });
-            loadDashboardData();
+            loadDashboardData().catch(e => console.log('Dashboard error:', e));
         };
 
         window.deleteProduct = (id) => {
             if (confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
                 window.StoreService.deleteProduct(id);
-                loadDashboardData();
+                loadDashboardData().catch(e => console.log('Dashboard error:', e));
             }
         };
 
@@ -939,7 +949,7 @@
             }
 
             closeProductModal();
-            loadDashboardData();
+            loadDashboardData().catch(e => console.log('Dashboard error:', e));
         });
 
         // Render Orders Table
