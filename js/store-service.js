@@ -92,6 +92,23 @@
             return list.find(p => p.id === parseInt(id)) || null;
         },
 
+        
+        addProduct: function (productData) {
+            return this.saveProduct(productData);
+        },
+
+        updateProduct: function (id, data) {
+            let list = this.getProducts(true);
+            const idx = list.findIndex(p => p.id === parseInt(id));
+            if (idx !== -1) {
+                list[idx] = { ...list[idx], ...data, id: parseInt(id) };
+                localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
+                this._pushProductToCloud(list[idx]);
+                return list[idx];
+            }
+            return this.saveProduct({ ...data, id: parseInt(id) });
+        },
+
         saveProduct: function (productData) {
             let list = this.getProducts(true);
             const isNew = !productData.id || productData.id === 0;

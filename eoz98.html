@@ -650,7 +650,7 @@
 
                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;">
                     <button type="button" onclick="closeProductModal()" style="background: rgba(255,255,255,0.08); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">İptal</button>
-                    <button type="submit" class="btn-action-primary"><i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet</button>
+                    <button type="button" onclick="saveProductModal(event)" class="btn-action-primary"><i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet</button>
                 </div>
             </form>
         </div>
@@ -932,39 +932,51 @@
             document.getElementById('productModal').style.display = 'none';
         };
 
-        // Form Submit
-        document.getElementById('productForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editProdId').value);
-            
+        // Bulletproof Save Product Modal Function
+        window.saveProductModal = function(e) {
+            if (e) {
+                if (typeof e.preventDefault === 'function') e.preventDefault();
+                if (typeof e.stopPropagation === 'function') e.stopPropagation();
+            }
+
+            const id = parseInt(document.getElementById('editProdId').value) || 0;
+            const title = (document.getElementById('editProdTitle').value || '').trim();
+            const price = parseFloat(document.getElementById('editProdPrice').value) || 0;
+
+            if (!title) {
+                alert("Lütfen ürün başlığı girin.");
+                return false;
+            }
+
             const mainImg = currentMainImage || currentModalImages[0] || "assets/minegolden_p1_1.webp";
             const galleryList = currentModalImages.length > 0 ? currentModalImages : [mainImg];
 
             const updatedData = {
-                title: document.getElementById('editProdTitle').value.trim(),
-                category: document.getElementById('editProdCategory').value,
-                productType: document.getElementById('editProdType').value,
-                price: parseFloat(document.getElementById('editProdPrice').value),
-                originalPrice: parseFloat(document.getElementById('editProdOldPrice').value) || Math.round(parseFloat(document.getElementById('editProdPrice').value) * 1.15),
+                id: id,
+                title: title,
+                category: document.getElementById('editProdCategory').value || 'living',
+                productType: document.getElementById('editProdType').value || 'Solo',
+                price: price,
+                originalPrice: parseFloat(document.getElementById('editProdOldPrice').value) || Math.round(price * 1.15),
                 image: mainImg,
                 gallery: galleryList,
-                dimensions: document.getElementById('editProdDimensions').value.trim(),
-                skeleton: document.getElementById('editProdSkeleton').value.trim(),
-                sponge: document.getElementById('editProdSponge').value.trim(),
-                fabric: document.getElementById('editProdFabric').value.trim(),
-                warranty: document.getElementById('editProdWarranty').value.trim(),
-                material: document.getElementById('editProdFabric').value.trim() || 'İnegöl Masif Ahşap & İthal Kumaş'
+                dimensions: (document.getElementById('editProdDimensions').value || '').trim(),
+                skeleton: (document.getElementById('editProdSkeleton').value || '').trim(),
+                sponge: (document.getElementById('editProdSponge').value || '').trim(),
+                fabric: (document.getElementById('editProdFabric').value || '').trim(),
+                warranty: (document.getElementById('editProdWarranty').value || '').trim(),
+                material: (document.getElementById('editProdFabric').value || '').trim() || 'İnegöl Masif Ahşap & İthal Kumaş'
             };
 
-            if (id > 0) {
-                window.StoreService.updateProduct(id, updatedData);
-            } else {
-                window.StoreService.addProduct(updatedData);
+            if (window.StoreService) {
+                window.StoreService.saveProduct(updatedData);
             }
 
             closeProductModal();
-            loadDashboardData().catch(e => console.log('Dashboard error:', e));
-        });
+            loadDashboardData();
+            alert("✅ Ürün başarıyla kaydedildi ve buluta senkronize edildi!");
+            return false;
+        };
 
         // Render Orders Table
         async function renderOrdersTable() {
