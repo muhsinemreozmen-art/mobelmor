@@ -2813,7 +2813,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const getCurrentUser = () => {
         try {
             const userJson = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
-            return userJson ? JSON.parse(userJson) : null;
+            if (!userJson) return null;
+            const user = JSON.parse(userJson);
+            if (!user || !user.email || !user.email.includes("@") || (user.id && String(user.id).startsWith("USR-"))) {
+                localStorage.removeItem("mobelmor_active_customer");
+                localStorage.removeItem("mobelmor_current_user");
+                return null;
+            }
+            return user;
         } catch {
             return null;
         }
@@ -2821,21 +2828,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.openAuthModal = (tab = "login") => {
         const overlay = document.getElementById("authModalOverlay");
+        const loginFormEl = document.getElementById("loginForm");
+        const registerFormEl = document.getElementById("registerForm");
+        const tabLoginBtnEl = document.getElementById("tabLoginBtn");
+        const tabRegisterBtnEl = document.getElementById("tabRegisterBtn");
+
+        document.getElementById("userMenuDropdown")?.classList.remove("active");
+        document.getElementById("orderTrackDropdown")?.classList.remove("active");
+
         if (overlay) {
             overlay.classList.add("active");
             document.body.classList.add("modal-open");
         }
+
         if (tab === "register") {
-            tabRegisterBtn?.click();
+            if (tabRegisterBtnEl) {
+                tabRegisterBtnEl.classList.add("active");
+                tabRegisterBtnEl.style.color = "#6b21a8";
+                tabRegisterBtnEl.style.borderBottom = "2px solid #6b21a8";
+                tabRegisterBtnEl.style.fontWeight = "800";
+            }
+            if (tabLoginBtnEl) {
+                tabLoginBtnEl.classList.remove("active");
+                tabLoginBtnEl.style.color = "#71717a";
+                tabLoginBtnEl.style.borderBottom = "none";
+                tabLoginBtnEl.style.fontWeight = "700";
+            }
+            if (registerFormEl) registerFormEl.style.display = "flex";
+            if (loginFormEl) loginFormEl.style.display = "none";
+            setTimeout(() => document.getElementById("regName")?.focus(), 100);
         } else {
-            tabLoginBtn?.click();
+            if (tabLoginBtnEl) {
+                tabLoginBtnEl.classList.add("active");
+                tabLoginBtnEl.style.color = "#6b21a8";
+                tabLoginBtnEl.style.borderBottom = "2px solid #6b21a8";
+                tabLoginBtnEl.style.fontWeight = "800";
+            }
+            if (tabRegisterBtnEl) {
+                tabRegisterBtnEl.classList.remove("active");
+                tabRegisterBtnEl.style.color = "#71717a";
+                tabRegisterBtnEl.style.borderBottom = "none";
+                tabRegisterBtnEl.style.fontWeight = "700";
+            }
+            if (loginFormEl) loginFormEl.style.display = "flex";
+            if (registerFormEl) registerFormEl.style.display = "none";
+            setTimeout(() => document.getElementById("loginEmail")?.focus(), 100);
         }
     };
 
     const formatDisplayName = (name) => {
-        if (!name) return "Giriş";
+        if (!name) return "Hesabım";
         const firstWord = name.trim().split(/\s+/)[0];
-        if (!firstWord) return "Giriş";
+        if (!firstWord) return "Hesabım";
         return firstWord.charAt(0).toLocaleUpperCase('tr-TR') + firstWord.slice(1).toLocaleLowerCase('tr-TR');
     };
 
@@ -2921,13 +2965,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         document.getElementById("userMenuDropdown")?.classList.remove("active");
         if (orderTrackDropdown) {
-            const isCurrentlyActive = orderTrackDropdown.classList.contains("active");
-            if (isCurrentlyActive) {
-                orderTrackDropdown.classList.remove("active");
-                orderTrackBtn.blur();
-            } else {
-                orderTrackDropdown.classList.add("active");
-            }
+            orderTrackDropdown.classList.toggle("active");
         }
     });
 
@@ -2939,13 +2977,12 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         e.stopPropagation();
         orderTrackDropdown?.classList.remove("active");
-        if (userMenuDropdown) {
-            const isCurrentlyActive = userMenuDropdown.classList.contains("active");
-            if (isCurrentlyActive) {
-                userMenuDropdown.classList.remove("active");
-                headerAuthBtn.blur();
-            } else {
-                userMenuDropdown.classList.add("active");
+        const user = getCurrentUser();
+        if (!user) {
+            window.openAuthModal("login");
+        } else {
+            if (userMenuDropdown) {
+                userMenuDropdown.classList.toggle("active");
             }
         }
     });

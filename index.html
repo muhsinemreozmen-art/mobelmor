@@ -85,7 +85,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0506">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0510">
     <style id="header-alignment-guarantee">
         .app-header .header-container,
         .vivense-nav-wrapper .vivense-nav-container,
@@ -322,11 +322,13 @@
                             <span class="action-btn-text" id="headerAuthText">Giriş</span>
                         </button>
                         <div class="user-menu-dropdown" id="userMenuDropdown">
-                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;" id="userMenuGreeting">Hoş geldiniz</div>
-                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim</a>
-                            <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>
+                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
+                                <i class="fa-regular fa-user" style="color:#6b21a8;"></i> Mobelmor Üyelik
+                            </div>
+                            <a href="javascript:void(0)" onclick="openAuthModal('login')" class="user-dropdown-item"><i class="fa-solid fa-arrow-right-to-bracket" style="color:#6b21a8;"></i> Giriş Yap</a>
+                            <a href="javascript:void(0)" onclick="openAuthModal('register')" class="user-dropdown-item"><i class="fa-solid fa-user-plus" style="color:#6b21a8;"></i> Ücretsiz Kayıt Ol</a>
                             <div class="user-dropdown-divider"></div>
-                            <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-truck-fast" style="color:#6b21a8;"></i> Sipariş Takip</a>
                         </div>
                     </div>
                 </div>
@@ -1694,7 +1696,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/store-service.js?v=20260826_0506"></script>
-    <script src="js/app.js?v=20260826_0506" defer></script>
+    <script src="js/store-service.js?v=20260826_0510"></script>
+    <script src="js/app.js?v=20260826_0510" defer></script>
 </body>
 </html>
