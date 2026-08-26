@@ -231,6 +231,7 @@
                                         full_name: cleanName,
                                         email: cleanEmail,
                                         phone: cleanPhone,
+                                        password: cleanPass,
                                         created_at: fallbackUser.createdAt
                                     })
                                 });
@@ -339,6 +340,7 @@
             }
 
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                // 1. Try Supabase Auth Token
                 try {
                     const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/token?grant_type=password`, {
                         method: 'POST',
@@ -354,66 +356,97 @@
                     });
 
                     const resData = await res.json();
-                    if (!res.ok) {
-                        if (resData.error_description && resData.error_description.includes("Email not confirmed")) {
-                            throw new Error("⚠️ E-posta adresiniz henüz doğrulanmamış. Lütfen gelen kutunuzdaki (veya spam klasörünüzdeki) onay bağlantısına tıklayarak hesabınızı aktif ediniz.");
-                        }
+                    if (res.ok) {
+                        const suUser = resData.user || {};
+                        const sessionUser = {
+                            id: suUser.id,
+                            email: suUser.email,
+                            fullName: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
+                            name: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
+                            phone: suUser.user_metadata?.phone || '',
+                            token: resData.access_token
+                        };
 
-                        // Check local storage fallback accounts (e.g. created during rate-limit)
+                        localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                        localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
                         let users = this.getAllCustomers();
-                        const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
-                        if (localUser) {
-                            const sessionUser = { ...localUser };
-                            delete sessionUser.password;
-                            localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
-                            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
-                            return sessionUser;
-                        }
-
-                        if (resData.error_description?.includes("Invalid login credentials") || resData.msg?.includes("Invalid login credentials")) {
-                            throw new Error("E-posta adresi veya şifre hatalı.");
+                        const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+                        if (idx === -1) {
+                            users.push(sessionUser);
                         } else {
-                            throw new Error(resData.error_description || resData.msg || "Giriş yapılamadı.");
+                            users[idx] = { ...users[idx], ...sessionUser };
+                        }
+                        localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+
+                        return sessionUser;
+                    }
+
+                    if (resData.error_description && resData.error_description.includes("Email not confirmed")) {
+                        throw new Error("⚠️ E-posta adresiniz henüz doğrulanmamış. Lütfen gelen kutunuzdaki onay bağlantısına tıklayarak hesabınızı aktif ediniz.");
+                    }
+                } catch (err) {
+                    if (err.message && err.message.includes("doğrulanmamış")) {
+                        throw err;
+                    }
+                }
+
+                // 2. Cloud Customers table check (Cross-device sync & fallback)
+                try {
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(cleanEmail)}&select=*`, {
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                        }
+                    });
+                    if (res.ok) {
+                        const cloudUsers = await res.json();
+                        if (Array.isArray(cloudUsers) && cloudUsers.length > 0) {
+                            const matched = cloudUsers[0];
+                            if (!matched.password || matched.password === cleanPass) {
+                                const sessionUser = {
+                                    id: matched.id,
+                                    email: matched.email,
+                                    fullName: matched.full_name || matched.fullName || matched.name || 'Müşteri',
+                                    name: matched.full_name || matched.fullName || matched.name || 'Müşteri',
+                                    phone: matched.phone || '',
+                                    address: matched.address || '',
+                                    city: matched.city || '',
+                                    district: matched.district || ''
+                                };
+                                localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                                localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                                let users = this.getAllCustomers();
+                                const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+                                if (idx === -1) {
+                                    users.push(sessionUser);
+                                } else {
+                                    users[idx] = { ...users[idx], ...sessionUser };
+                                }
+                                localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+
+                                return sessionUser;
+                            }
                         }
                     }
-
-                    const suUser = resData.user || {};
-                    const sessionUser = {
-                        id: suUser.id,
-                        email: suUser.email,
-                        fullName: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
-                        name: suUser.user_metadata?.full_name || suUser.user_metadata?.name || 'Müşteri',
-                        phone: suUser.user_metadata?.phone || '',
-                        token: resData.access_token
-                    };
-
-                    localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
-                    localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
-
-                    let users = this.getAllCustomers();
-                    const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
-                    if (idx === -1) {
-                        users.push(sessionUser);
-                    } else {
-                        users[idx] = { ...users[idx], ...sessionUser };
-                    }
-                    localStorage.setItem('mobelmor_customers', JSON.stringify(users));
-
-                    return sessionUser;
-                } catch (err) {
-                    throw err;
+                } catch (e) {
+                    console.warn("Cloud customer login check:", e);
                 }
             }
 
-            // Local fallback
+            // 3. Local fallback check
             let users = this.getAllCustomers();
-            const user = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
-            if (!user) throw new Error("E-posta adresi veya şifre hatalı.");
-            const sessionUser = { ...user };
-            delete sessionUser.password;
-            localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
-            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
-            return sessionUser;
+            const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && (!u.password || u.password === cleanPass));
+            if (localUser) {
+                const sessionUser = { ...localUser };
+                delete sessionUser.password;
+                localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+                return sessionUser;
+            }
+
+            throw new Error("E-posta adresi veya şifre hatalı.");
         },
 
         logoutCustomer: function () {
