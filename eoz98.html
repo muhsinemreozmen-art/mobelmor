@@ -719,8 +719,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260826_0803"></script>
-    <script src="js/store-service.js?v=20260826_0803"></script>
+    <script src="js/app.js?v=20260826_0805"></script>
+    <script src="js/store-service.js?v=20260826_0805"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -728,10 +728,10 @@
         // Safe fetch orders helper
         async function fetchCloudOrders() {
             try {
-                if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
-                    return window.StoreService.getAllOrders();
+                if (window.StoreService && typeof window.StoreService.fetchCloudOrders === 'function') {
+                    return await window.StoreService.fetchCloudOrders();
                 }
-                const orders = JSON.parse(localStorage.getItem('mobelmor_all_orders') || localStorage.getItem('mobelmor_orders') || '[]');
+                const orders = JSON.parse(localStorage.getItem('mobelmor_all_orders') || '[]');
                 return Array.isArray(orders) ? orders : [];
             } catch (e) {
                 return [];
@@ -1257,6 +1257,13 @@
         window.closeCustomerModal = () => {
             const modal = document.getElementById('customerDetailModal');
             if (modal) modal.style.display = 'none';
+        };
+
+        window.updateOrderStatus = async function (orderNumber, newStatus) {
+            if (window.StoreService) {
+                await window.StoreService.updateOrderStatus(orderNumber, newStatus);
+                loadDashboardData();
+            }
         };
 
         window.deleteCustomerAdmin = async (id, email) => {

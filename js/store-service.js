@@ -716,25 +716,28 @@
                     headers: {
                         'apikey': DEFAULT_CONFIG.supabaseKey,
                         'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
                     },
                     body: JSON.stringify({
-                        order_number: order.orderNumber,
-                        customer_id: order.customerId,
-                        customer_name: order.customerName,
-                        customer_email: order.customerEmail,
-                        customer_phone: order.customerPhone,
-                        city: order.city,
-                        district: order.district,
-                        address: order.address,
-                        notes: order.notes,
-                        items: order.items,
-                        total_amount: order.totalAmount,
-                        payment_method: order.paymentMethod,
-                        payment_status: order.paymentStatus,
-                        status: newStatus
+                        order_number: newOrder.orderNumber,
+                        customer_id: newOrder.customerId,
+                        customer_name: newOrder.customerName,
+                        customer_email: newOrder.customerEmail,
+                        customer_phone: newOrder.customerPhone,
+                        city: newOrder.city,
+                        district: newOrder.district,
+                        address: newOrder.address,
+                        notes: newOrder.notes,
+                        items: typeof newOrder.items === 'string' ? newOrder.items : JSON.stringify(newOrder.items || []),
+                        total_amount: newOrder.totalAmount,
+                        payment_method: newOrder.paymentMethod,
+                        payment_status: newOrder.paymentStatus,
+                        status: newOrder.status,
+                        created_at: newOrder.createdAt
                     })
-                }).catch(e => console.log('Supabase Order Sync:', e));
+                }).then(r => console.log('Supabase Order Synced:', newOrder.orderNumber))
+                .catch(e => console.log('Supabase Order Sync Error:', e));
             }
 
 
@@ -755,6 +758,51 @@
             }
         },
 
+        fetchCloudOrders: async function () {
+            let localOrders = this.getAllOrders();
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?select=*&order=created_at.desc`, {
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                        }
+                    });
+                    if (res.ok) {
+                        const cloudOrders = await res.json();
+                        if (Array.isArray(cloudOrders)) {
+                            cloudOrders.forEach(co => {
+                                const onum = co.order_number;
+                                if (onum && !localOrders.some(lo => lo.orderNumber === onum)) {
+                                    localOrders.push({
+                                        orderNumber: onum,
+                                        customerId: co.customer_id || 'guest',
+                                        customerName: co.customer_name || 'Misafir Müşteri',
+                                        customerEmail: co.customer_email || '',
+                                        customerPhone: co.customer_phone || '',
+                                        city: co.city || '',
+                                        district: co.district || '',
+                                        address: co.address || '',
+                                        notes: co.notes || '',
+                                        items: typeof co.items === 'string' ? JSON.parse(co.items || '[]') : (co.items || []),
+                                        totalAmount: parseFloat(co.total_amount) || 0,
+                                        paymentMethod: co.payment_method || 'Kredi Kartı / Havale',
+                                        paymentStatus: co.payment_status || 'Tamamlandı',
+                                        status: co.status || 'Yeni',
+                                        createdAt: co.created_at || new Date().toISOString()
+                                    });
+                                }
+                            });
+                            localStorage.setItem('mobelmor_all_orders', JSON.stringify(localOrders));
+                        }
+                    }
+                } catch (e) {
+                    console.log('Cloud orders fetch error:', e);
+                }
+            }
+            return localOrders;
+        },
+
         getAllOrders: function () {
             try {
                 return JSON.parse(localStorage.getItem('mobelmor_all_orders') || '[]');
@@ -763,44 +811,56 @@
             }
         },
 
-        updateOrderStatus: function (orderNumber, newStatus) {
+        updateOrderStatus: async function (orderNumber, newStatus) {
             let orders = this.getAllOrders();
             const order = orders.find(o => o.orderNumber === orderNumber);
             if (order) {
                 order.status = newStatus;
                 localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
 
-                // Push order to Supabase Cloud
+                // Push status update to Supabase Cloud
                 if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
-                    fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders`, {
-                        method: 'POST',
-                        headers: {
-                            'apikey': DEFAULT_CONFIG.supabaseKey,
-                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            order_number: order.orderNumber,
-                            customer_id: order.customerId,
-                            customer_name: order.customerName,
-                            customer_email: order.customerEmail,
-                            customer_phone: order.customerPhone,
-                            city: order.city,
-                            district: order.district,
-                            address: order.address,
-                            notes: order.notes,
-                            items: order.items,
-                            total_amount: order.totalAmount,
-                            payment_method: order.paymentMethod,
-                            payment_status: order.paymentStatus,
-                            status: newStatus
-                        })
-                    }).catch(e => console.log('Supabase Order Sync:', e));
+                    try {
+                        await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'apikey': DEFAULT_CONFIG.supabaseKey,
+                                'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                status: newStatus
+                            })
+                        });
+                    } catch (e) {
+                        console.log('Supabase Order Status Sync Error:', e);
+                    }
                 }
 
                 return true;
             }
             return false;
+        },
+
+        deleteOrder: async function (orderNumber) {
+            let orders = this.getAllOrders();
+            orders = orders.filter(o => o.orderNumber !== orderNumber && o.id !== orderNumber);
+            localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                        }
+                    });
+                } catch (e) {
+                    console.log('Supabase Order Delete Error:', e);
+                }
+            }
+            return true;
         },
 
         // --- ADMİN YETKİ KONTROLÜ ---
