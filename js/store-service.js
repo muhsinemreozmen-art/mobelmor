@@ -34,6 +34,50 @@
 
     // 3. StoreService Ana Motoru
     window.StoreService = {
+
+        _pushProductToCloud: function (productData) {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
+            const payload = {
+                id: parseInt(productData.id),
+                title: productData.title,
+                category: productData.category,
+                price: parseFloat(productData.price),
+                original_price: parseFloat(productData.originalPrice || productData.price),
+                main_image: productData.image,
+                gallery: Array.isArray(productData.gallery) ? productData.gallery : [productData.image],
+                dimensions: productData.dimensions || '',
+                material: productData.material || '',
+                skeleton: productData.skeleton || '',
+                sponge: productData.sponge || '',
+                fabric: productData.fabric || '',
+                is_active: productData.isActive !== false
+            };
+
+            fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products`, {
+                method: 'POST',
+                headers: {
+                    'apikey': DEFAULT_CONFIG.supabaseKey,
+                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'resolution=merge-duplicates'
+                },
+                body: JSON.stringify(payload)
+            }).then(r => console.log('Supabase Product Synced:', productData.title))
+              .catch(e => console.log('Supabase Product Sync Error:', e));
+        },
+
+        _deleteProductFromCloud: function (id) {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
+            fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?id=eq.${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'apikey': DEFAULT_CONFIG.supabaseKey,
+                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                }
+            }).then(r => console.log('Supabase Product Deleted:', id))
+              .catch(e => console.log('Supabase Product Delete Error:', e));
+        },
+
         // --- ÜRÜN İŞLEMLERİ (CRUD) ---
         getProducts: function (includeInactive = false) {
             let list = initProducts();
@@ -69,6 +113,7 @@
             }
 
             localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
+            this._pushProductToCloud(productData);
             return productData;
         },
 
@@ -87,6 +132,7 @@
             let list = this.getProducts(true);
             list = list.filter(p => p.id !== parseInt(id));
             localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
+            this._deleteProductFromCloud(id);
             return true;
         },
 
