@@ -20,7 +20,7 @@
     { "source": "/sepette-indirimler", "destination": "/kategori" },
     { "source": "/cok-satanlar", "destination": "/kategori" },
     { "source": "/2026-yaz-trendleri", "destination": "/kategori" },
-    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/eoz98", "destination": "/eoz98.html" },
     { "source": "/hesabim", "destination": "/hesabim.html" },
     { "source": "/giris-yap", "destination": "/giris-yap.html" },
     { "source": "/uye-ol", "destination": "/uye-ol.html" },

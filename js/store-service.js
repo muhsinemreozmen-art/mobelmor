@@ -251,8 +251,8 @@
             return sessionStorage.getItem('mobelmor_admin_logged') === 'true';
         },
 
-        adminLogin: function (username, password) {
-            if (username === 'admin' && (password === 'admin123' || password === 'mobelmor2026')) {
+                adminLogin: function (username, password) {
+            if (username === 'bjk98' && password === 'cocumuyo31!') {
                 sessionStorage.setItem('mobelmor_admin_logged', 'true');
                 return true;
             }
