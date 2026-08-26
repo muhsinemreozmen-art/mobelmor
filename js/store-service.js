@@ -626,12 +626,51 @@
             return localCusts;
         },
 
-        deleteCustomer: function (id) {
+        deleteCustomer: async function (id, email) {
             try {
+                // 1. Delete from Supabase Cloud Table
+                if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                    try {
+                        if (id) {
+                            await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?id=eq.${encodeURIComponent(id)}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'apikey': DEFAULT_CONFIG.supabaseKey,
+                                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                                }
+                            });
+                        }
+                        if (email) {
+                            await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(email)}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'apikey': DEFAULT_CONFIG.supabaseKey,
+                                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.warn("Cloud customer delete error:", e);
+                    }
+                }
+
+                // 2. Delete from Local Storage
                 let custs = this.getAllCustomers();
-                custs = custs.filter(c => c.id !== id && c.email !== id);
+                custs = custs.filter(c => c.id !== id && c.email !== id && (!email || c.email !== email));
                 localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
                 localStorage.setItem('mobelmor_users', JSON.stringify(custs));
+
+                const active = localStorage.getItem('mobelmor_active_customer');
+                if (active) {
+                    try {
+                        const actObj = JSON.parse(active);
+                        if (actObj.id === id || actObj.email === id || (email && actObj.email === email)) {
+                            localStorage.removeItem('mobelmor_active_customer');
+                            localStorage.removeItem('mobelmor_current_user');
+                        }
+                    } catch (e) { }
+                }
+
                 return true;
             } catch (e) {
                 return false;

@@ -719,8 +719,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260826_0759"></script>
-    <script src="js/store-service.js?v=20260826_0759"></script>
+    <script src="js/app.js?v=20260826_0803"></script>
+    <script src="js/store-service.js?v=20260826_0803"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -1165,9 +1165,8 @@
                                 ${custOrders.length} Sipariş
                             </span>
                         </td>
-                        <td style="text-align: right;">
                             <button onclick="openCustomerDetail('${c.id}')" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 6px;" title="Müşteri Detayı ve Siparişleri"><i class="fa-solid fa-eye"></i> Detay</button>
-                            <button onclick="deleteCustomerAdmin('${c.id}')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Müşteriyi Sil"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deleteCustomerAdmin('${c.id}', '${c.email || ''}')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Müşteriyi Sil"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
@@ -1260,11 +1259,12 @@
             if (modal) modal.style.display = 'none';
         };
 
-        window.deleteCustomerAdmin = (id) => {
+        window.deleteCustomerAdmin = async (id, email) => {
             if (confirm("Bu müşteriyi sistemden silmek istediğinize emin misiniz?")) {
-                if (window.StoreService && window.StoreService.deleteCustomer(id)) {
-                    loadDashboardData();
-                    alert("Müşteri kaydı silindi.");
+                if (window.StoreService) {
+                    await window.StoreService.deleteCustomer(id, email);
+                    await loadDashboardData();
+                    alert("Müşteri kaydı sistemden ve buluttan kalıcı olarak silindi.");
                 }
             }
         };
