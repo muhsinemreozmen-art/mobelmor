@@ -330,8 +330,8 @@
                     }
                 } catch (e) {}
 
-                // Clean out any invalid records
-                custs = custs.filter(c => c && c.email && c.email.includes('@') && !String(c.id || '').startsWith('USR-'));
+                // Clean out any invalid records and demo placeholder data
+                custs = custs.filter(c => c && c.email && c.email.includes('@') && !c.email.endsWith('@example.com') && !String(c.id || '').startsWith('USR-'));
                 localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
                 return custs;
             } catch (e) {

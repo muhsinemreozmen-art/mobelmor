@@ -3239,34 +3239,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBadges();
     renderCart();
 
-    // ── Seed Demo Orders if not exists ──
-    const initOrdersStorage = () => {
-        const stored = localStorage.getItem("mobelmor_orders");
-        if (!stored) {
-            const demoOrders = [
-                {
-                    id: "MBL-782190",
-                    date: "15.08.2026 14:30",
-                    status: "shipping", // preparing, quality, shipping, delivered
-                    statusText: "Sevkiyatta / Özel Mobilya Lojistiğinde",
-                    customer: {
-                        name: "Ahmet Yılmaz",
-                        email: "ahmet@example.com",
-                        phone: "0532 111 22 33",
-                        address: "Nilüfer, Bursa",
-                        note: "Krem kadife kumaş döşemesi uygulandı."
-                    },
-                    items: [
-                        { id: 1, title: "Gold Koltuk Takımı", price: 45000, qty: 1 }
-                    ],
-                    total: 45000
-                }
-            ];
-            localStorage.setItem("mobelmor_orders", JSON.stringify(demoOrders));
-        }
-    };
-    initOrdersStorage();
-
     // ── Orders & Tracking Page Logic (siparislerim.html) ──
     const renderOrdersPage = () => {
         const listContainer = document.getElementById("ordersListContainer");
