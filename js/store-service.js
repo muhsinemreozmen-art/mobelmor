@@ -215,6 +215,29 @@
                                 password: cleanPass,
                                 createdAt: new Date().toISOString()
                             };
+
+                            // Sync fallback user directly to Supabase cloud table
+                            try {
+                                await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                                        'Content-Type': 'application/json',
+                                        'Prefer': 'resolution=merge-duplicates'
+                                    },
+                                    body: JSON.stringify({
+                                        id: fallbackUser.id,
+                                        full_name: cleanName,
+                                        email: cleanEmail,
+                                        phone: cleanPhone,
+                                        created_at: fallbackUser.createdAt
+                                    })
+                                });
+                            } catch (e) {
+                                console.warn("Cloud fallback sync error:", e);
+                            }
+
                             let users = this.getAllCustomers();
                             const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
                             if (idx === -1) {
@@ -398,12 +421,12 @@
             localStorage.removeItem('mobelmor_current_user');
         },
 
-        updateCustomerProfile: function (profileData) {
+        updateCustomerProfile: async function (profileData) {
             const current = this.getCurrentUser();
             if (!current) throw new Error("Giriş yapılmamış.");
 
             let users = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
-            const idx = users.findIndex(u => u.id === current.id);
+            const idx = users.findIndex(u => u.id === current.id || (u.email && u.email.toLowerCase() === current.email?.toLowerCase()));
             if (idx !== -1) {
                 users[idx] = { ...users[idx], ...profileData };
                 localStorage.setItem('mobelmor_customers', JSON.stringify(users));
@@ -412,6 +435,33 @@
                 delete sessionUser.password;
                 localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
                 localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                // Push updated profile to Supabase
+                if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                    try {
+                        await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers`, {
+                            method: 'POST',
+                            headers: {
+                                'apikey': DEFAULT_CONFIG.supabaseKey,
+                                'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'resolution=merge-duplicates'
+                            },
+                            body: JSON.stringify({
+                                id: users[idx].id,
+                                full_name: users[idx].fullName || users[idx].name,
+                                email: users[idx].email,
+                                phone: users[idx].phone,
+                                address: users[idx].address,
+                                city: users[idx].city,
+                                district: users[idx].district
+                            })
+                        });
+                    } catch (e) {
+                        console.warn("Cloud profile update error:", e);
+                    }
+                }
+
                 return sessionUser;
             }
             return current;
