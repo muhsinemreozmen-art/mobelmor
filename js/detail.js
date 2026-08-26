@@ -5,631 +5,1636 @@
 const PRODUCTS = [
   {
     "id": 1,
-    "title": "Gold Koltuk Takımı",
+    "title": "Gold Lüks Koltuk Takımı",
     "category": "living",
     "subcategory": "sofas",
+    "productType": "Set",
     "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 38,
-    "image": "assets/minegolden_p1_1.jpg",
+    "originalPrice": 52000,
+    "image": "assets/minegolden_p1_5.webp",
     "gallery": [
-      "assets/minegolden_p1_1.jpg",
-      "assets/minegolden_p1_2.jpg",
-      "assets/minegolden_p1_3.jpg",
-      "assets/minegolden_p1_4.jpg",
-      "assets/minegolden_p1_5.jpg",
-      "assets/minegolden_p1_6.jpg"
+      "assets/minegolden_p1_5.webp",
+      "assets/minegolden_p1_1.webp",
+      "assets/minegolden_p1_3.webp",
+      "assets/minegolden_p1_4.webp",
+      "assets/minegolden_p1_2.webp",
+      "assets/minegolden_p1_6.webp"
     ],
     "badges": [
       "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "LÜKS DİZAYN"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "3'lü (G: 225 cm, D: 92 cm, Y: 77 cm) | Berjer (G: 70 cm, D: 70 cm, Y: 90 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/gold-koltuk-takimi"
+    "material": "Gürgen Ağacı & Gold Metal Detaylar",
+    "desc": "Antrasit ve pudra kadife kumaşı, fırınlanmış gürgen iskeleti ve gold metal ayak detaylarıyla komple salon takımı."
   },
   {
     "id": 2,
-    "title": "Zümrüt Koltuk Takımı",
+    "title": "Gold 3'lü Koltuk",
     "category": "living",
     "subcategory": "sofas",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 41,
-    "image": "assets/minegolden_p2_1.jpg",
+    "productType": "Solo",
+    "price": 23500,
+    "originalPrice": 27000,
+    "image": "assets/minegolden_p1_1.webp",
     "gallery": [
-      "assets/minegolden_p2_1.jpg",
-      "assets/minegolden_p2_2.jpg",
-      "assets/minegolden_p2_3.jpg",
-      "assets/minegolden_p2_4.jpg",
-      "assets/minegolden_p2_5.jpg",
-      "assets/minegolden_p2_6.jpg"
+      "assets/minegolden_p1_1.webp",
+      "assets/minegolden_p1_5.webp",
+      "assets/minegolden_p1_2.webp",
+      "assets/minegolden_p1_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "TEKİL PARÇA"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "3'lü (G: 220 cm, D: 90 cm, Y: 80 cm) | Berjer (G: 88 cm, D: 70 cm, Y: 65 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zumrut-koltuk-takimi-2-3130"
+    "material": "Gürgen İskelet & 32 DNS Sünger",
+    "desc": "Geniş oturum alanı ve konforlu sırt minderi ile 3'lü koltuk."
   },
   {
     "id": 3,
-    "title": "Bohem Koltuk Takımı Natural",
+    "title": "Gold 2'li Koltuk",
     "category": "living",
     "subcategory": "sofas",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 44,
-    "image": "assets/minegolden_p3_1.jpg",
+    "productType": "Solo",
+    "price": 18500,
+    "originalPrice": 21000,
+    "image": "assets/minegolden_p1_3.webp",
     "gallery": [
-      "assets/minegolden_p3_1.jpg",
-      "assets/minegolden_p3_2.jpg",
-      "assets/minegolden_p3_3.jpg",
-      "assets/minegolden_p3_4.jpg",
-      "assets/minegolden_p3_5.jpg",
-      "assets/minegolden_p3_6.jpg"
+      "assets/minegolden_p1_3.webp",
+      "assets/minegolden_p1_5.webp",
+      "assets/minegolden_p1_2.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "TEKİL PARÇA"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "3'lü (G: 215 cm, D: 100 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/bohem-koltuk-takimi-natural"
+    "material": "Gürgen İskelet & Kadife Kumaş",
+    "desc": "Kompakt ölçüleri ve şık gold detaylarıyla modern 2'li koltuk."
   },
   {
     "id": 4,
-    "title": "Mono Koltuk Takımı",
+    "title": "Gold Tekli Berjer",
     "category": "living",
-    "subcategory": "sofas",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 47,
-    "image": "assets/minegolden_p4_1.jpg",
+    "subcategory": "armchairs",
+    "productType": "Solo",
+    "price": 11500,
+    "originalPrice": 13500,
+    "image": "assets/minegolden_p1_4.webp",
     "gallery": [
-      "assets/minegolden_p4_1.jpg",
-      "assets/minegolden_p4_2.jpg",
-      "assets/minegolden_p4_3.jpg",
-      "assets/minegolden_p4_4.jpg",
-      "assets/minegolden_p4_5.jpg",
-      "assets/minegolden_p4_6.jpg"
+      "assets/minegolden_p1_4.webp",
+      "assets/minegolden_p1_5.webp",
+      "assets/minegolden_p1_1.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "ÖZEL BERJER"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "3'lü (G: 210 cm, D: 96 cm, Y: 87 cm) | Berjer (G: 75 cm, D: 90 cm, Y: 80 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/mono-koltuk-takimi-2-3126"
+    "material": "Masif Ahşap & Gold Metal Ayak",
+    "desc": "Pembe kadife kumaşı ve zarif altın metal ayaklarıyla tekli berjer koltuk."
   },
   {
     "id": 5,
-    "title": "Leon Koltuk Takımı Ahşap",
+    "title": "Zümrüt Avangarde Koltuk Takımı",
     "category": "living",
     "subcategory": "sofas",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 50,
-    "image": "assets/minegolden_p5_1.jpg",
+    "productType": "Set",
+    "price": 48000,
+    "originalPrice": 56000,
+    "image": "assets/minegolden_p2_1.webp",
     "gallery": [
-      "assets/minegolden_p5_1.jpg",
-      "assets/minegolden_p5_2.jpg",
-      "assets/minegolden_p5_3.jpg",
-      "assets/minegolden_p5_4.jpg",
-      "assets/minegolden_p5_5.jpg",
-      "assets/minegolden_p5_6.jpg"
+      "assets/minegolden_p2_1.webp",
+      "assets/minegolden_p2_2.webp",
+      "assets/minegolden_p2_3.webp",
+      "assets/pieces/zumrut_berjer.webp",
+      "assets/minegolden_p2_5.webp",
+      "assets/minegolden_p2_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "KAPİTONE İŞÇİLİK",
+      "LÜKS KADİFE"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "3'lü Koltuk (G: 240 cm, D: 95 cm, Y: 70 cm) | Berjer (G: 75 cm, D: 70 cm, Y: 95 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/leon-koltuk-takimi-ahsap"
+    "material": "El İşçiliği Kapitone & Fırınlanmış Kayın Ağacı",
+    "desc": "Kapitone detayları ve yumuşak kadife kumaşıyla salonunuza zarafet getiren koltuk takımı."
   },
   {
     "id": 6,
-    "title": "İcon Yuvarlak Masa Sandalye",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 53,
-    "image": "assets/minegolden_p6_1.jpg",
+    "title": "Zümrüt 3'lü Kapitone Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 24500,
+    "originalPrice": 28500,
+    "image": "assets/minegolden_p2_2.webp",
     "gallery": [
-      "assets/minegolden_p6_1.jpg",
-      "assets/minegolden_p6_2.jpg",
-      "assets/minegolden_p6_3.jpg",
-      "assets/minegolden_p6_4.jpg"
+      "assets/minegolden_p2_2.webp",
+      "assets/minegolden_p2_1.webp",
+      "assets/minegolden_p2_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "KAPİTONE İŞÇİLİK"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 100 cm, D: 100 cm, Y: 77 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/icon-yuvarlak-masa-sandalye"
+    "material": "Gürgen Ağacı & 35 DNS Sünger",
+    "desc": "El işçiliği sırt kapitone detaylarıyla 3'lü koltuk."
   },
   {
     "id": 7,
-    "title": "İcon Meşe Masa Sandalye",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 56,
-    "image": "assets/minegolden_p7_1.jpg",
+    "title": "Zümrüt 2'li Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 19500,
+    "originalPrice": 22500,
+    "image": "assets/minegolden_p2_3.webp",
     "gallery": [
-      "assets/minegolden_p7_1.jpg",
-      "assets/minegolden_p7_2.jpg",
-      "assets/minegolden_p7_3.jpg",
-      "assets/minegolden_p7_4.jpg",
-      "assets/minegolden_p7_5.jpg"
+      "assets/minegolden_p2_3.webp",
+      "assets/minegolden_p2_1.webp",
+      "assets/minegolden_p2_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "TEKİL PARÇA"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 120 cm, D: 120 cm, Y: 80 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/icon-mese-masa-sandalye"
+    "material": "Gürgen İskelet & İthal Kadife Kumaş",
+    "desc": "Konforlu oturum ve şık kapitone sırt tasarımıyla 2'li koltuk."
   },
   {
     "id": 8,
-    "title": "Forte Meşe Masa Sandalye",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 59,
-    "image": "assets/minegolden_p8_1.jpg",
+    "title": "Zümrüt Tekli Berjer",
+    "category": "living",
+    "subcategory": "armchairs",
+    "productType": "Solo",
+    "price": 11500,
+    "originalPrice": 13500,
+    "image": "assets/pieces/zumrut_berjer.webp",
     "gallery": [
-      "assets/minegolden_p8_1.jpg",
-      "assets/minegolden_p8_2.jpg",
-      "assets/minegolden_p8_3.jpg",
-      "assets/minegolden_p8_4.jpg",
-      "assets/minegolden_p8_5.jpg"
+      "assets/pieces/zumrut_berjer.webp",
+      "assets/minegolden_p2_1.webp",
+      "assets/minegolden_p2_4.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "ÖZEL BERJER"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 100 cm, D: 100 cm, Y: 77 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/forte-mese-masa-sandalye"
+    "material": "Masif Kayın Ayak & Ergonomik Döşeme",
+    "desc": "Ergonomik oturum minderi ve şık kol yapısıyla tekli berjer."
   },
   {
     "id": 9,
-    "title": "Seramik Mutfak Masası 81",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 62,
-    "image": "assets/minegolden_p9_1.jpg",
+    "title": "Bohem Natural Keten Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Set",
+    "price": 42000,
+    "originalPrice": 49000,
+    "image": "assets/minegolden_p3_2.webp",
     "gallery": [
-      "assets/minegolden_p9_1.jpg",
-      "assets/minegolden_p9_2.jpg",
-      "assets/minegolden_p9_3.jpg",
-      "assets/minegolden_p9_4.jpg",
-      "assets/minegolden_p9_5.jpg",
-      "assets/minegolden_p9_6.jpg"
+      "assets/minegolden_p3_2.webp",
+      "assets/minegolden_p3_1.webp",
+      "assets/minegolden_p3_3.webp",
+      "assets/minegolden_p3_4.webp",
+      "assets/pieces/bohem_berjer.webp",
+      "assets/minegolden_p3_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "DOĞAL KETEN",
+      "%100 ORGANİK"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 140 cm, D: 80 cm, Y: 75 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/seramik-mutfak-masasi-81"
+    "material": "Doğal Dokuma Keten & Masif Meşe İskelet",
+    "desc": "Nefes alabilen doğal keten kumaşı ve ahşap ayak detaylarıyla komple salon takımı."
   },
   {
     "id": 10,
-    "title": "İpek Yemek Odası Takımı",
-    "category": "dining",
-    "subcategory": "dining-tables",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 65,
-    "image": "assets/minegolden_p10_1.jpg",
+    "title": "Bohem 3'lü Natural Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 22000,
+    "originalPrice": 25000,
+    "image": "assets/minegolden_p3_1.webp",
     "gallery": [
-      "assets/minegolden_p10_1.jpg",
-      "assets/minegolden_p10_2.jpg",
-      "assets/minegolden_p10_3.jpg",
-      "assets/minegolden_p10_4.jpg",
-      "assets/minegolden_p10_5.jpg",
-      "assets/minegolden_p10_6.jpg"
+      "assets/minegolden_p3_1.webp",
+      "assets/minegolden_p3_2.webp",
+      "assets/minegolden_p3_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "ORGANİK DOKU"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Masa (G: 150 cm, D: 90 cm, Y: 78 cm) | Aynalı Konsol (G: 190 cm, D: 41 cm, Y: 78 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/ipek-yemek-odasi-2"
+    "material": "Masif Meşe İskelet & Doğal Keten Kumaş",
+    "desc": "Ferah ve minimalist tasarımıyla geniş 3'lü keten koltuk."
   },
   {
     "id": 11,
-    "title": "Zen Yatak Odası Takımı",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 68,
-    "image": "assets/minegolden_p11_1.jpg",
+    "title": "Bohem 2'li Koltuk / Daybed",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 18000,
+    "originalPrice": 21000,
+    "image": "assets/minegolden_p3_3.webp",
     "gallery": [
-      "assets/minegolden_p11_1.jpg",
-      "assets/minegolden_p11_2.jpg",
-      "assets/minegolden_p11_3.jpg",
-      "assets/minegolden_p11_4.jpg",
-      "assets/minegolden_p11_5.jpg",
-      "assets/minegolden_p11_6.jpg"
+      "assets/minegolden_p3_3.webp",
+      "assets/minegolden_p3_2.webp",
+      "assets/minegolden_p3_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "KOMPAKT ÖLÇÜ"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/zen-yatak-odasi-takimi-2-3262"
+    "material": "Doğal Keten & Masif Ahşap Ayak",
+    "desc": "Doğal ahşap ayakları ve keten kumaşıyla şık 2'li koltuk."
   },
   {
     "id": 12,
-    "title": "Dora Yatak Odası Takımı",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 71,
-    "image": "assets/minegolden_p12_1.jpg",
+    "title": "Bohem Yuvarlak Ahşap Orta Sehpa",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 7500,
+    "originalPrice": 9000,
+    "image": "assets/minegolden_p3_4.webp",
     "gallery": [
-      "assets/minegolden_p12_1.jpg",
-      "assets/minegolden_p12_2.jpg",
-      "assets/minegolden_p12_3.jpg",
-      "assets/minegolden_p12_4.jpg",
-      "assets/minegolden_p12_5.jpg",
-      "assets/minegolden_p12_6.jpg"
+      "assets/minegolden_p3_4.webp",
+      "assets/minegolden_p3_2.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "METAL AYAK"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/dora-yatak-odasi-takimi"
+    "material": "Doğal Ahşap Tabla & Siyah Metal Ayak",
+    "desc": "Zarif siyah metal ayaklı yuvarlak ahşap orta sehpa."
   },
   {
     "id": 13,
-    "title": "Elegance Yatak Odası Takımı",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 74,
-    "image": "assets/minegolden_p13_1.jpg",
+    "title": "Mono Modern Bukle Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Set",
+    "price": 44000,
+    "originalPrice": 51000,
+    "image": "assets/minegolden_p4_1.webp",
     "gallery": [
-      "assets/minegolden_p13_1.jpg",
-      "assets/minegolden_p13_2.jpg",
-      "assets/minegolden_p13_3.jpg",
-      "assets/minegolden_p13_4.jpg",
-      "assets/minegolden_p13_5.jpg",
-      "assets/minegolden_p13_6.jpg"
+      "assets/minegolden_p4_1.webp",
+      "assets/minegolden_p4_2.webp",
+      "assets/minegolden_p4_4.webp",
+      "assets/minegolden_p4_3.webp",
+      "assets/minegolden_p4_5.webp",
+      "assets/minegolden_p4_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "BUKLE KUMAŞ",
+      "MODERN TREND"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Gardırop (G: 241 cm, D: 210 cm, Y: 52 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 107 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/elegance-yatak-odasi-takimi"
+    "material": "Teddy Bukle Kumaş & Gürgen Ağacı",
+    "desc": "Dokulu bukle kumaşı ve yuvarlak hatlarıyla modern salon takımı."
   },
   {
     "id": 14,
-    "title": "Luna Yatak Odası Takımı",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 37,
-    "image": "assets/minegolden_p14_1.jpg",
+    "title": "Mono 3'lü Bukle Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 22000,
+    "originalPrice": 25500,
+    "image": "assets/minegolden_p4_2.webp",
     "gallery": [
-      "assets/minegolden_p14_1.jpg",
-      "assets/minegolden_p14_2.jpg",
-      "assets/minegolden_p14_3.jpg",
-      "assets/minegolden_p14_4.jpg",
-      "assets/minegolden_p14_5.jpg",
-      "assets/minegolden_p14_6.jpg"
+      "assets/minegolden_p4_2.webp",
+      "assets/minegolden_p4_1.webp",
+      "assets/minegolden_p4_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "BUKLE DOKU"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "6 Kapılı Dolap (G: 241 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 104 cm, D: 41 cm, Y: 78 cm) | Komodin (G: 52 cm, D: 41 cm, Y: 47 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/luna-yatak-odasi-takimi"
+    "material": "Bukle Kumaş & 35 DNS Sünger",
+    "desc": "Trend bukle dokusu ve geniş oturumu ile 3'lü modern koltuk."
   },
   {
     "id": 15,
-    "title": "Masal Yatak Odası Takımı Krem",
-    "category": "bedroom",
-    "subcategory": "beds",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 40,
-    "image": "assets/minegolden_p15_1.jpg",
+    "title": "Mono 2'li Bukle Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 17000,
+    "originalPrice": 19500,
+    "image": "assets/pieces/mono_2li.webp",
     "gallery": [
-      "assets/minegolden_p15_1.jpg",
-      "assets/minegolden_p15_3.jpg",
-      "assets/minegolden_p15_4.jpg",
-      "assets/minegolden_p15_5.jpg",
-      "assets/minegolden_p15_6.jpg"
+      "assets/pieces/mono_2li.webp",
+      "assets/minegolden_p4_1.webp",
+      "assets/minegolden_p4_4.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "KOMPAKT ÖLÇÜ"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Gardırop (G: 242 cm, D: 52 cm, Y: 210 cm) | Karyola (G: 205 cm, D: 200 cm, Y: 125 cm) | Aynalı Şifonyer (G: 92 cm, D: 42 cm, Y: 165 cm) | Komodin (G: 52 cm, D: 42 cm, Y: 47 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/masal-yatak-odasi-krem"
+    "material": "Gürgen İskelet & Yumuşak Bukle Kumaş",
+    "desc": "Kompakt salonlar için konfor sunan 2'li bukle koltuk."
   },
   {
     "id": 16,
-    "title": "Respiro Tv Ünitesi",
-    "category": "office",
-    "subcategory": "tv-units",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 43,
-    "image": "assets/minegolden_p16_1.jpg",
+    "title": "Mono Tekli Berjer",
+    "category": "living",
+    "subcategory": "armchairs",
+    "productType": "Solo",
+    "price": 11500,
+    "originalPrice": 13500,
+    "image": "assets/minegolden_p4_3.webp",
     "gallery": [
-      "assets/minegolden_p16_1.jpg",
-      "assets/minegolden_p16_2.jpg",
-      "assets/minegolden_p16_3.jpg",
-      "assets/minegolden_p16_4.jpg",
-      "assets/minegolden_p16_5.jpg",
-      "assets/minegolden_p16_6.jpg"
+      "assets/minegolden_p4_3.webp",
+      "assets/minegolden_p4_1.webp",
+      "assets/minegolden_p4_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "DİZAYN BERJER"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "TV Ünitesi (G: 180 cm, D: 46 cm, Y: 64 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/respiro-tv-unitesi"
+    "material": "Bukle Kumaş & Masif Ayaklar",
+    "desc": "Kavisli arkalığı ve yumuşak minderiyle tekli dinlenme berjeridir."
   },
   {
     "id": 17,
-    "title": "Lisa Tv Ünitesi",
-    "category": "office",
-    "subcategory": "tv-units",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 46,
-    "image": "assets/minegolden_p17_1.jpg",
+    "title": "Leon Ahşap Ayaklı Koltuk Takımı",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Set",
+    "price": 46000,
+    "originalPrice": 53000,
+    "image": "assets/minegolden_p5_1.webp",
     "gallery": [
-      "assets/minegolden_p17_1.jpg",
-      "assets/minegolden_p17_2.jpg",
-      "assets/minegolden_p17_3.jpg"
+      "assets/minegolden_p5_1.webp",
+      "assets/minegolden_p5_2.webp",
+      "assets/minegolden_p5_3.webp",
+      "assets/minegolden_p5_4.webp",
+      "assets/minegolden_p5_5.webp",
+      "assets/minegolden_p5_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "MASİF AHŞAP",
+      "İNEGÖL İMZASI"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/lisa-tv-unitesi"
+    "material": "Fırınlanmış Masif Ceviz Ayaklar & İthal Kumaş",
+    "desc": "Masif ceviz ayak yapısı ve ergonomik oturum desteğiyle salon takımı."
   },
   {
     "id": 18,
-    "title": "Marian Tv Ünitesi",
-    "category": "office",
-    "subcategory": "tv-units",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 49,
-    "image": "assets/minegolden_p18_1.jpg",
+    "title": "Leon Ahşap 3'lü Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 23000,
+    "originalPrice": 26500,
+    "image": "assets/minegolden_p5_2.webp",
     "gallery": [
-      "assets/minegolden_p18_1.jpg",
-      "assets/minegolden_p18_2.jpg",
-      "assets/minegolden_p18_3.jpg"
+      "assets/minegolden_p5_2.webp",
+      "assets/minegolden_p5_1.webp",
+      "assets/minegolden_p5_5.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "MASİF DETAY"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Alt Blok (G: 200 cm, D: 43 cm, Y: 57 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/marian-tv-unitesi"
+    "material": "Masif Gürgen Gövde & Ceviz Ahşap Ayak",
+    "desc": "Sağlam ahşap iskeleti ve kaliteli dokuma kumaşıyla 3'lü koltuk."
   },
   {
     "id": 19,
-    "title": "Sahra Tv Ünitesi",
-    "category": "office",
-    "subcategory": "tv-units",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 52,
-    "image": "assets/minegolden_p19_1.jpg",
+    "title": "Leon Ahşap 2'li Koltuk",
+    "category": "living",
+    "subcategory": "sofas",
+    "productType": "Solo",
+    "price": 18000,
+    "originalPrice": 20500,
+    "image": "assets/minegolden_p5_3.webp",
     "gallery": [
-      "assets/minegolden_p19_1.jpg",
-      "assets/minegolden_p19_2.jpg",
-      "assets/minegolden_p19_3.jpg",
-      "assets/minegolden_p19_4.jpg",
-      "assets/minegolden_p19_5.jpg",
-      "assets/minegolden_p19_6.jpg"
+      "assets/minegolden_p5_3.webp",
+      "assets/minegolden_p5_1.webp",
+      "assets/minegolden_p5_6.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "TEKİL PARÇA"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Tv Ünite (G: 180 cm, D: 42 cm, Y: 43 cm) | Orta Sehpa (İsteğe Bağlı) (G: 105 cm, D: 70 cm, Y: 45 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/sahra-tv-unitesi-2-3195"
+    "material": "Fırınlanmış Ahşap & İthal Kumaş",
+    "desc": "Şık ceviz ayakları ve konforlu minder yapısıyla 2'li koltuk."
   },
   {
     "id": 20,
-    "title": "Salvador Tv Üntesi",
-    "category": "office",
-    "subcategory": "tv-units",
-    "price": 45000,
-    "rating": 4.9,
-    "reviewsCount": 55,
-    "image": "assets/minegolden_p20_1.jpg",
+    "title": "Leon Tekli Ahşap Berjer",
+    "category": "living",
+    "subcategory": "armchairs",
+    "productType": "Solo",
+    "price": 11500,
+    "originalPrice": 13500,
+    "image": "assets/pieces/leon_berjer.webp",
     "gallery": [
-      "assets/minegolden_p20_1.jpg",
-      "assets/minegolden_p20_2.jpg",
-      "assets/minegolden_p20_3.jpg",
-      "assets/minegolden_p20_4.jpg",
-      "assets/minegolden_p20_5.jpg",
-      "assets/minegolden_p20_6.jpg"
+      "assets/pieces/leon_berjer.webp",
+      "assets/minegolden_p5_1.webp",
+      "assets/minegolden_p5_4.webp"
     ],
     "badges": [
-      "İNEGÖL KOLEKSİYONU",
-      "%100 ORİJİNAL"
+      "MASİF BERJER"
     ],
-    "material": "İNEGÖL ÜRETİMİ MASİF AĞAÇ & İTHAL LÜKS KAPLAMA",
-    "desc": "İnegöl usta zanaatkarlarının el işçiliği tasarımı, kaliteli sünger ve leke tutmaz özel kumaş kaplamasıyla evinize konfor ve zarafet katar.",
-    "specs": {
-      "Üretim": "İnegöl / Bursa",
-      "İskelet": "Fırınlanmış Gürgen Masif Ağaç",
-      "Garanti": "2 Yıl Üretici Garantisi",
-      "Kargo": "Tüm Türkiye Ücretsiz Teslimat",
-      "Takım Ölçüleri": "Alt Blok (G: 210 cm, D: 53 cm, Y: 43 cm)"
-    },
-    "sourceUrl": "https://www.mobilyaminegolden.com/salvador-tv-untesi"
+    "material": "Masif Ceviz Ayak & Ortopedik Oturum",
+    "desc": "Ahşap kavisli ayakları ve rahat oturumu ile tekli dinlenme koltuğu."
+  },
+  {
+    "id": 21,
+    "title": "Respiro Country Beyaz TV & Duvar Ünitesi",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Set",
+    "price": 27500,
+    "originalPrice": 32000,
+    "image": "assets/minegolden_p16_1.webp",
+    "gallery": [
+      "assets/minegolden_p16_1.webp",
+      "assets/minegolden_p16_2.webp",
+      "assets/minegolden_p16_3.webp",
+      "assets/minegolden_p16_4.webp",
+      "assets/minegolden_p16_5.webp",
+      "assets/minegolden_p16_6.webp"
+    ],
+    "badges": [
+      "COUNTRY DİZAYN",
+      "TV ÜNİTESİ"
+    ],
+    "material": "MDF Lake Gövde & Masif Ahşap Üst Tabla",
+    "desc": "Beyaz country kapakları, ahşap üst tablası ve geniş depolama dolaplarıyla komple TV yaşam ünitesi."
+  },
+  {
+    "id": 22,
+    "title": "Respiro TV Alt Konsol",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 16000,
+    "originalPrice": 19000,
+    "image": "assets/minegolden_p16_2.webp",
+    "gallery": [
+      "assets/minegolden_p16_2.webp",
+      "assets/minegolden_p16_1.webp",
+      "assets/minegolden_p16_3.webp"
+    ],
+    "badges": [
+      "KAPAKLI KONSOL"
+    ],
+    "material": "MDF & Masif Ayak",
+    "desc": "Geniş dolaplı ve orta raflı TV alt sehpası."
+  },
+  {
+    "id": 23,
+    "title": "Respiro Ahşap Orta Sehpa",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 8500,
+    "originalPrice": 10500,
+    "image": "assets/minegolden_p16_4.webp",
+    "gallery": [
+      "assets/minegolden_p16_4.webp",
+      "assets/minegolden_p16_1.webp",
+      "assets/minegolden_p16_5.webp"
+    ],
+    "badges": [
+      "ORTA SEHPA"
+    ],
+    "material": "Doğal Ahşap & Lake Gövde",
+    "desc": "TV ünitesiyle tam uyumlu country orta sehpa."
+  },
+  {
+    "id": 24,
+    "title": "Asya Lake Krem Gold TV & Duvar Ünitesi",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Set",
+    "price": 28500,
+    "originalPrice": 33500,
+    "image": "assets/minegolden_p17_1.webp",
+    "gallery": [
+      "assets/minegolden_p17_1.webp",
+      "assets/minegolden_p17_2.webp",
+      "assets/minegolden_p17_3.webp",
+      "assets/minegolden_p17_4.webp",
+      "assets/minegolden_p17_5.webp",
+      "assets/minegolden_p17_6.webp"
+    ],
+    "badges": [
+      "GOLD DETAYLI",
+      "LAKE YÜZEY"
+    ],
+    "material": "İpek Mat Krem Lake & Gold Metal Kulplar",
+    "desc": "Krem lake yüzeyi, altın halka kulpları ve zarif ayaklarıyla modern TV yaşam ünitesi."
+  },
+  {
+    "id": 25,
+    "title": "Asya TV Alt Konsol",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 17000,
+    "originalPrice": 20000,
+    "image": "assets/minegolden_p17_2.webp",
+    "gallery": [
+      "assets/minegolden_p17_2.webp",
+      "assets/minegolden_p17_1.webp",
+      "assets/minegolden_p17_4.webp"
+    ],
+    "badges": [
+      "ÇEKMECELİ KONSOL"
+    ],
+    "material": "MDF Lake & Gold Kulplar",
+    "desc": "Geniş çekmeceli krem lake TV alt sehpası."
+  },
+  {
+    "id": 26,
+    "title": "Asya Krem Orta Sehpa",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 8900,
+    "originalPrice": 11000,
+    "image": "assets/minegolden_p17_4.webp",
+    "gallery": [
+      "assets/minegolden_p17_4.webp",
+      "assets/minegolden_p17_1.webp",
+      "assets/minegolden_p17_5.webp"
+    ],
+    "badges": [
+      "ORTA SEHPA"
+    ],
+    "material": "MDF Lake & Gold Ayak",
+    "desc": "Krem lake ve gold ayaklı şık salon orta sehpası."
+  },
+  {
+    "id": 27,
+    "title": "Akdeniz Antrasit Modern TV & Yaşam Ünitesi",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Set",
+    "price": 29000,
+    "originalPrice": 34000,
+    "image": "assets/minegolden_p18_1.webp",
+    "gallery": [
+      "assets/minegolden_p18_1.webp",
+      "assets/minegolden_p18_2.webp",
+      "assets/minegolden_p18_3.webp"
+    ],
+    "badges": [
+      "ANTRASİT & GÜMÜŞ",
+      "MODERN ÇİZGİ"
+    ],
+    "material": "Antrasit MDF & Gümüş Halka Kulplar",
+    "desc": "Antrasit gri gövdesi, aynalı çerçeveli çekmeceleri ve şık ayaklarıyla TV yaşam ünitesi."
+  },
+  {
+    "id": 28,
+    "title": "Akdeniz TV Alt Konsol",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 17500,
+    "originalPrice": 20500,
+    "image": "assets/minegolden_p18_2.webp",
+    "gallery": [
+      "assets/minegolden_p18_2.webp",
+      "assets/minegolden_p18_1.webp"
+    ],
+    "badges": [
+      "AYNALI ÇEKMECE"
+    ],
+    "material": "MDF & Gümüş Kulplar",
+    "desc": "Geniş çekmeceli antrasit TV alt sehpası."
+  },
+  {
+    "id": 29,
+    "title": "Akdeniz Antrasit Orta Sehpa",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 9000,
+    "originalPrice": 11500,
+    "image": "assets/minegolden_p18_3.webp",
+    "gallery": [
+      "assets/minegolden_p18_3.webp",
+      "assets/minegolden_p18_1.webp"
+    ],
+    "badges": [
+      "ORTA SEHPA"
+    ],
+    "material": "Antrasit Gövde & Aynalı Detay",
+    "desc": "Antrasit renkli modern salon orta sehpası."
+  },
+  {
+    "id": 30,
+    "title": "Sahra Modern TV & Duvar Ünitesi",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Set",
+    "price": 28000,
+    "originalPrice": 33000,
+    "image": "assets/minegolden_p19_1.webp",
+    "gallery": [
+      "assets/minegolden_p19_1.webp",
+      "assets/minegolden_p19_2.webp",
+      "assets/minegolden_p19_3.webp",
+      "assets/minegolden_p19_4.webp",
+      "assets/minegolden_p19_5.webp"
+    ],
+    "badges": [
+      "LED AYDINLATMALI",
+      "FRENLİ SİSTEM"
+    ],
+    "material": "E1 Doğal Meşe Kaplama & MDF Gövde",
+    "desc": "Alt konsol, üst asma dolap ve LED aydınlatmalı duvar paneli ile komple TV ünitesi."
+  },
+  {
+    "id": 31,
+    "title": "Sahra TV Alt Blok Konsol",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 16500,
+    "originalPrice": 19500,
+    "image": "assets/minegolden_p19_2.webp",
+    "gallery": [
+      "assets/minegolden_p19_2.webp",
+      "assets/minegolden_p19_1.webp",
+      "assets/minegolden_p19_4.webp"
+    ],
+    "badges": [
+      "GİZLİ KABLO KANALI"
+    ],
+    "material": "Doğal Meşe MDF Gövde & Frenli Ray",
+    "desc": "Geniş çekmeceleri ve şık ahşap dokusuyla TV alt sehpası."
+  },
+  {
+    "id": 32,
+    "title": "Sahra Dikdörtgen Ahşap Orta Sehpa",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 12500,
+    "originalPrice": 14500,
+    "image": "assets/minegolden_p19_3.webp",
+    "gallery": [
+      "assets/minegolden_p19_3.webp",
+      "assets/minegolden_p19_1.webp",
+      "assets/minegolden_p19_5.webp"
+    ],
+    "badges": [
+      "MASİF SEHPA"
+    ],
+    "material": "MDF & Doğal Meşe Ayak",
+    "desc": "Geniş dikdörtgen üst tablası ve sağlam ayaklarıyla modern salon orta sehpası."
+  },
+  {
+    "id": 33,
+    "title": "Salvador Lüks TV & Yaşam Ünitesi",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Set",
+    "price": 29500,
+    "originalPrice": 35000,
+    "image": "assets/minegolden_p20_5.webp",
+    "gallery": [
+      "assets/minegolden_p20_5.webp",
+      "assets/minegolden_p20_1.webp",
+      "assets/minegolden_p20_3.webp",
+      "assets/minegolden_p20_2.webp",
+      "assets/minegolden_p20_4.webp"
+    ],
+    "badges": [
+      "LÜKS KAPLAMA",
+      "ÖZEL MEKANİZMA"
+    ],
+    "material": "Lüks Ahşap Kaplama & Metal Detaylar",
+    "desc": "Göz alıcı ahşap paneli ve geniş depolama alanıyla lüks TV yaşam ünitesi."
+  },
+  {
+    "id": 34,
+    "title": "Salvador TV Alt Konsol",
+    "category": "living",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 17500,
+    "originalPrice": 20500,
+    "image": "assets/minegolden_p20_1.webp",
+    "gallery": [
+      "assets/minegolden_p20_1.webp",
+      "assets/minegolden_p20_5.webp",
+      "assets/minegolden_p20_2.webp"
+    ],
+    "badges": [
+      "FRENLİ ÇEKMECE"
+    ],
+    "material": "MDF Gövde & Metal Ayaklar",
+    "desc": "Şık alt TV sehpası ve depolama modülü."
+  },
+  {
+    "id": 35,
+    "title": "Salvador Ahşap 3'lü Orta & Yan Sehpa Seti",
+    "category": "living",
+    "subcategory": "tables",
+    "productType": "Solo",
+    "price": 13000,
+    "originalPrice": 15500,
+    "image": "assets/minegolden_p20_3.webp",
+    "gallery": [
+      "assets/minegolden_p20_3.webp",
+      "assets/minegolden_p20_5.webp",
+      "assets/minegolden_p20_4.webp"
+    ],
+    "badges": [
+      "3'LÜ SEHPA SETİ"
+    ],
+    "material": "Doğal Ahşap Masif Kaplama",
+    "desc": "Farklı boylarda 3 adet yuvarlak masif ahşap orta ve yan sehpa seti."
+  },
+  {
+    "id": 36,
+    "title": "İcon Yuvarlak Masa Sandalye Takımı",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Set",
+    "price": 34000,
+    "originalPrice": 39500,
+    "image": "assets/minegolden_p7_1.webp",
+    "gallery": [
+      "assets/minegolden_p7_1.webp",
+      "assets/minegolden_p7_2.webp",
+      "assets/minegolden_p7_3.webp",
+      "assets/minegolden_p7_4.webp",
+      "assets/minegolden_p7_5.webp"
+    ],
+    "badges": [
+      "YUVARLAK MASA",
+      "MASİF AYAK"
+    ],
+    "material": "Masif Meşe Ayak & Doğal Kaplama",
+    "desc": "Samimi yemek sohbetleri için yuvarlak masa ve 4 adet ergonomik sandalye seti."
+  },
+  {
+    "id": 37,
+    "title": "İcon Yuvarlak Yemek Masası",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Solo",
+    "price": 18500,
+    "originalPrice": 21500,
+    "image": "assets/pieces/icon_yuvarlak_masa.webp",
+    "gallery": [
+      "assets/pieces/icon_yuvarlak_masa.webp",
+      "assets/minegolden_p7_2.webp",
+      "assets/minegolden_p7_1.webp",
+      "assets/minegolden_p7_5.webp"
+    ],
+    "badges": [
+      "DOĞAL MEŞE"
+    ],
+    "material": "Masif Ahşap Ayaklar & Dayanıklı Tabla",
+    "desc": "120 cm çapında doğal ahşap yuvarlak yemek masası."
+  },
+  {
+    "id": 38,
+    "title": "İcon Ergonomik Sandalye (4 Adet)",
+    "category": "dining",
+    "subcategory": "chairs",
+    "productType": "Solo",
+    "price": 16500,
+    "originalPrice": 19000,
+    "image": "assets/pieces/icon_yuvarlak_sandalye.webp",
+    "gallery": [
+      "assets/pieces/icon_yuvarlak_sandalye.webp",
+      "assets/minegolden_p7_3.webp",
+      "assets/minegolden_p7_1.webp"
+    ],
+    "badges": [
+      "4'LÜ SET"
+    ],
+    "material": "Masif Ahşap Ayak & Silinebilir Kumaş",
+    "desc": "Ergonomik sırt yapısı ve yumuşak oturumuyla 4 adet yemek sandalyesi."
+  },
+  {
+    "id": 39,
+    "title": "İcon Meşe Ahşap Yemek Odası Takımı",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Set",
+    "price": 49000,
+    "originalPrice": 58000,
+    "image": "assets/minegolden_p8_1.webp",
+    "gallery": [
+      "assets/minegolden_p8_1.webp",
+      "assets/minegolden_p8_2.webp",
+      "assets/minegolden_p8_3.webp",
+      "assets/minegolden_p8_4.webp",
+      "assets/minegolden_p8_5.webp"
+    ],
+    "badges": [
+      "AÇILIR MASA",
+      "KONSOL DAHİL"
+    ],
+    "material": "Masif Meşe Ağacı & Lüks Konsol Aynası",
+    "desc": "Açılır yemek masası, 6 adet sandalye ve aynalı konsoluyla yemek odası takımı."
+  },
+  {
+    "id": 40,
+    "title": "İcon Meşe Yemek Masası",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Solo",
+    "price": 21000,
+    "originalPrice": 24500,
+    "image": "assets/pieces/icon_mese_masa.webp",
+    "gallery": [
+      "assets/pieces/icon_mese_masa.webp",
+      "assets/minegolden_p8_2.webp",
+      "assets/minegolden_p8_1.webp",
+      "assets/minegolden_p8_5.webp"
+    ],
+    "badges": [
+      "AÇILIR FONKSİYON"
+    ],
+    "material": "Masif Meşe Gövde",
+    "desc": "Ortadan açılır mekanizmasıyla 6-8 kişilik geniş yemek masası."
+  },
+  {
+    "id": 41,
+    "title": "İcon Meşe Sandalye (6 Adet)",
+    "category": "dining",
+    "subcategory": "chairs",
+    "productType": "Solo",
+    "price": 18000,
+    "originalPrice": 21000,
+    "image": "assets/pieces/icon_mese_sandalye.webp",
+    "gallery": [
+      "assets/pieces/icon_mese_sandalye.webp",
+      "assets/pieces/icon_chairs.webp",
+      "assets/minegolden_p8_1.webp"
+    ],
+    "badges": [
+      "6'LI SET"
+    ],
+    "material": "Masif Ağaç & Leke Tutmaz Kumaş",
+    "desc": "Şık dikiş detayları ve konforlu oturumuyla 6 adet sandalye seti."
+  },
+  {
+    "id": 42,
+    "title": "İcon Aynalı Ahşap Konsol & Büfe",
+    "category": "dining",
+    "subcategory": "buffets",
+    "productType": "Solo",
+    "price": 19500,
+    "originalPrice": 23000,
+    "image": "assets/pieces/icon_mese_konsol.webp",
+    "gallery": [
+      "assets/pieces/icon_mese_konsol.webp",
+      "assets/minegolden_p8_4.webp",
+      "assets/minegolden_p8_1.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "Doğal Meşe MDF & Frenli Kapaklar",
+    "desc": "Geniş iç hacmi ve şık aynasıyla yemek odası konsolu."
+  },
+  {
+    "id": 43,
+    "title": "Forte Meşe Modern Yemek Odası Takımı",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Set",
+    "price": 52000,
+    "originalPrice": 61000,
+    "image": "assets/minegolden_p9_1.webp",
+    "gallery": [
+      "assets/minegolden_p9_1.webp",
+      "assets/minegolden_p9_2.webp",
+      "assets/minegolden_p9_3.webp",
+      "assets/minegolden_p9_4.webp",
+      "assets/minegolden_p9_5.webp",
+      "assets/minegolden_p9_6.webp"
+    ],
+    "badges": [
+      "ÇAPRAZ AYAK",
+      "MODERN TASARIM"
+    ],
+    "material": "Fırınlanmış Masif Ağaç & Çapraz Ayaklar",
+    "desc": "Çapraz metal ayaklı yemek masası, 6 adet tasarım sandalye ve konsol takımı."
+  },
+  {
+    "id": 44,
+    "title": "Forte Meşe Çapraz Ayak Masa",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Solo",
+    "price": 23500,
+    "originalPrice": 27500,
+    "image": "assets/pieces/forte_masa.webp",
+    "gallery": [
+      "assets/pieces/forte_masa.webp",
+      "assets/minegolden_p9_3.webp",
+      "assets/minegolden_p9_1.webp",
+      "assets/minegolden_p9_6.webp"
+    ],
+    "badges": [
+      "ÖZEL AYAK"
+    ],
+    "material": "Masif Meşe Tabla & Elektrostatik Metal Ayak",
+    "desc": "Endüstriyel ve modern dokuyu buluşturan şık yemek masası."
+  },
+  {
+    "id": 45,
+    "title": "Forte Kumaş Sandalye (6 Adet)",
+    "category": "dining",
+    "subcategory": "chairs",
+    "productType": "Solo",
+    "price": 19000,
+    "originalPrice": 22000,
+    "image": "assets/pieces/forte_sandalye.webp",
+    "gallery": [
+      "assets/pieces/forte_sandalye.webp",
+      "assets/minegolden_p9_4.webp",
+      "assets/minegolden_p9_1.webp",
+      "assets/minegolden_p9_5.webp"
+    ],
+    "badges": [
+      "6'LI SET"
+    ],
+    "material": "Metal İskelet & Nubuk Kumaş",
+    "desc": "Yüksek sırt konforu sunan 6 adet modern yemek sandalyesi."
+  },
+  {
+    "id": 46,
+    "title": "Forte Aynalı Konsol & Büfe",
+    "category": "dining",
+    "subcategory": "buffets",
+    "productType": "Solo",
+    "price": 21000,
+    "originalPrice": 24500,
+    "image": "assets/pieces/forte_konsol.webp",
+    "gallery": [
+      "assets/pieces/forte_konsol.webp",
+      "assets/minegolden_p9_2.webp",
+      "assets/minegolden_p9_1.webp"
+    ],
+    "badges": [
+      "LÜKS BÜFE"
+    ],
+    "material": "MDF Gövde & Aynalı Ön Kapaklar",
+    "desc": "Geniş iç rafları ve amortisörlü kapak sistemiyle şık büfe."
+  },
+  {
+    "id": 47,
+    "title": "Seramik Mutfak & Yemek Masası Takımı",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Set",
+    "price": 31000,
+    "originalPrice": 36000,
+    "image": "assets/minegolden_p6_1.webp",
+    "gallery": [
+      "assets/minegolden_p6_1.webp",
+      "assets/minegolden_p6_2.webp",
+      "assets/minegolden_p6_3.webp",
+      "assets/minegolden_p6_4.webp"
+    ],
+    "badges": [
+      "ÇİZİLMEZ SERAMİK",
+      "ISIYA DAYANIKLI"
+    ],
+    "material": "Porselen Seramik Üst Tabla & Metal Ayak",
+    "desc": "Çizilmez, leke tutmaz seramik masa ve 4 adet sandalye seti."
+  },
+  {
+    "id": 48,
+    "title": "Seramik Mutfak & Yemek Masası",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Solo",
+    "price": 17500,
+    "originalPrice": 20500,
+    "image": "assets/pieces/seramik_masa.webp",
+    "gallery": [
+      "assets/pieces/seramik_masa.webp",
+      "assets/minegolden_p6_2.webp",
+      "assets/minegolden_p6_1.webp",
+      "assets/minegolden_p6_4.webp"
+    ],
+    "badges": [
+      "PORSELEN YÜZEY"
+    ],
+    "material": "Porselen Seramik Tabla",
+    "desc": "Günlük mutfak ve salon kullanımı için dayanıklı seramik masa."
+  },
+  {
+    "id": 49,
+    "title": "Seramik Takım Sandalyesi (4 Adet)",
+    "category": "dining",
+    "subcategory": "chairs",
+    "productType": "Solo",
+    "price": 14500,
+    "originalPrice": 17000,
+    "image": "assets/pieces/seramik_sandalye.webp",
+    "gallery": [
+      "assets/pieces/seramik_sandalye.webp",
+      "assets/minegolden_p6_3.webp",
+      "assets/minegolden_p6_1.webp"
+    ],
+    "badges": [
+      "KOLAY TEMİZLENİR"
+    ],
+    "material": "Metal Ayak & Su İtici Kumaş",
+    "desc": "Leke tutmaz kumaşı ve dayanıklı metal ayaklarıyla 4 adet sandalye."
+  },
+  {
+    "id": 50,
+    "title": "İpek Lüks Yemek Odası Takımı",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Set",
+    "price": 56000,
+    "originalPrice": 65000,
+    "image": "assets/minegolden_p10_1.webp",
+    "gallery": [
+      "assets/minegolden_p10_1.webp",
+      "assets/minegolden_p10_2.webp",
+      "assets/minegolden_p10_3.webp",
+      "assets/minegolden_p10_4.webp",
+      "assets/minegolden_p10_5.webp",
+      "assets/minegolden_p10_6.webp"
+    ],
+    "badges": [
+      "LÜKS SERİ",
+      "GOLD DETAYLI"
+    ],
+    "material": "Aynalı Konsol & Açılır Masa",
+    "desc": "Açılır masa, 6 adet sandalye ve aynalı büfesiyle yemek odası takımı."
+  },
+  {
+    "id": 51,
+    "title": "İpek Aynalı Konsol & Büfe",
+    "category": "dining",
+    "subcategory": "buffets",
+    "productType": "Solo",
+    "price": 22500,
+    "originalPrice": 26500,
+    "image": "assets/pieces/ipek_konsol.webp",
+    "gallery": [
+      "assets/pieces/ipek_konsol.webp",
+      "assets/minegolden_p10_2.webp",
+      "assets/minegolden_p10_1.webp",
+      "assets/minegolden_p10_6.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "MDF & Füme Ayna Detaylar",
+    "desc": "Geniş iç çekmeceleri ve lüks kulplarıyla göz alıcı konsol."
+  },
+  {
+    "id": 52,
+    "title": "İpek Açılır Fonksiyonel Masa",
+    "category": "dining",
+    "subcategory": "dining-tables",
+    "productType": "Solo",
+    "price": 23000,
+    "originalPrice": 27000,
+    "image": "assets/pieces/ipek_masa.webp",
+    "gallery": [
+      "assets/pieces/ipek_masa.webp",
+      "assets/minegolden_p10_3.webp",
+      "assets/minegolden_p10_1.webp",
+      "assets/minegolden_p10_5.webp"
+    ],
+    "badges": [
+      "AÇILIR MASA"
+    ],
+    "material": "Doğal Kaplama & Gizli Mekanizma",
+    "desc": "Kolay açılan teleskopik mekanizmalı lüks yemek masası."
+  },
+  {
+    "id": 53,
+    "title": "İpek Lüks Sandalye (6 Adet)",
+    "category": "dining",
+    "subcategory": "chairs",
+    "productType": "Solo",
+    "price": 19500,
+    "originalPrice": 23000,
+    "image": "assets/pieces/ipek_sandalye.webp",
+    "gallery": [
+      "assets/pieces/ipek_sandalye.webp",
+      "assets/minegolden_p10_4.webp",
+      "assets/minegolden_p10_1.webp"
+    ],
+    "badges": [
+      "6'LI SET"
+    ],
+    "material": "Kadife Kumaş & Masif Ayaklar",
+    "desc": "Altın detaylı ayakları ve kapitone sırt dikişleriyle 6 adet sandalye."
+  },
+  {
+    "id": 54,
+    "title": "Zen Modern Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Set",
+    "price": 54000,
+    "originalPrice": 63000,
+    "image": "assets/minegolden_p11_5.webp",
+    "gallery": [
+      "assets/minegolden_p11_5.webp",
+      "assets/minegolden_p11_4.webp",
+      "assets/minegolden_p11_6.webp",
+      "assets/minegolden_p11_2.webp",
+      "assets/minegolden_p11_3.webp",
+      "assets/minegolden_p11_1.webp"
+    ],
+    "badges": [
+      "6 KAPAKLI GARDROP",
+      "BAZALI KARYOLA"
+    ],
+    "material": "MDF Gövde & Doğal Meşe Kaplama",
+    "desc": "6 kapaklı gardırop, LED aydınlatmalı karyola, şifonyer ve 2 adet komodin seti."
+  },
+  {
+    "id": 55,
+    "title": "Zen 6 Kapaklı Gardırop",
+    "category": "bedroom",
+    "subcategory": "wardrobes",
+    "productType": "Solo",
+    "price": 26000,
+    "originalPrice": 30500,
+    "image": "assets/minegolden_p11_4.webp",
+    "gallery": [
+      "assets/minegolden_p11_4.webp",
+      "assets/minegolden_p11_5.webp",
+      "assets/minegolden_p11_1.webp"
+    ],
+    "badges": [
+      "GENİŞ İÇ HACİM"
+    ],
+    "material": "MDF Gövde & Frenli Menteşeler",
+    "desc": "Askılıklar, pantolonluk ve çekmeceleriyle 6 kapaklı gardırop."
+  },
+  {
+    "id": 56,
+    "title": "Zen Karyola & Yatak Başlığı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Solo",
+    "price": 19500,
+    "originalPrice": 23000,
+    "image": "assets/minegolden_p11_6.webp",
+    "gallery": [
+      "assets/minegolden_p11_6.webp",
+      "assets/minegolden_p11_5.webp",
+      "assets/minegolden_p11_3.webp"
+    ],
+    "badges": [
+      "160x200 BAZALI"
+    ],
+    "material": "Kumaş Kaplı Başlık & Çelik Baza",
+    "desc": "Geniş sandıklı bazası ve LED ışıklı yatak başlığı."
+  },
+  {
+    "id": 57,
+    "title": "Zen Aynalı Şifonyer & Makyaj Masası",
+    "category": "bedroom",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 14500,
+    "originalPrice": 17000,
+    "image": "assets/minegolden_p11_2.webp",
+    "gallery": [
+      "assets/minegolden_p11_2.webp",
+      "assets/minegolden_p11_5.webp",
+      "assets/minegolden_p11_1.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "MDF Gövde & Özel Kesim Ayna",
+    "desc": "Mücevher çekmeceli ve geniş saklama alanlı aynalı şifonyer."
+  },
+  {
+    "id": 58,
+    "title": "Zen Komodin (2 Adet)",
+    "category": "bedroom",
+    "subcategory": "nightstands",
+    "productType": "Solo",
+    "price": 8500,
+    "originalPrice": 10000,
+    "image": "assets/minegolden_p11_3.webp",
+    "gallery": [
+      "assets/minegolden_p11_3.webp",
+      "assets/minegolden_p11_5.webp",
+      "assets/minegolden_p11_6.webp"
+    ],
+    "badges": [
+      "2'Lİ SET"
+    ],
+    "material": "MDF & Frenli Çekmece",
+    "desc": "Yatak başı için 2 adet şık ahşap komodin."
+  },
+  {
+    "id": 59,
+    "title": "Dora Ahşap Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Set",
+    "price": 52000,
+    "originalPrice": 61000,
+    "image": "assets/minegolden_p12_1.webp",
+    "gallery": [
+      "assets/minegolden_p12_1.webp",
+      "assets/minegolden_p12_2.webp",
+      "assets/minegolden_p12_4.webp",
+      "assets/minegolden_p12_3.webp",
+      "assets/minegolden_p12_5.webp",
+      "assets/minegolden_p12_6.webp"
+    ],
+    "badges": [
+      "DOĞAL AHŞAP"
+    ],
+    "material": "Masif Meşe Kaplama & MDF Gövde",
+    "desc": "Gardırop, başlıklı karyola, aynalı şifonyer ve 2 adet komodin seti."
+  },
+  {
+    "id": 60,
+    "title": "Dora 6 Kapaklı Ahşap Gardırop",
+    "category": "bedroom",
+    "subcategory": "wardrobes",
+    "productType": "Solo",
+    "price": 25000,
+    "originalPrice": 29000,
+    "image": "assets/minegolden_p12_2.webp",
+    "gallery": [
+      "assets/minegolden_p12_2.webp",
+      "assets/minegolden_p12_1.webp",
+      "assets/minegolden_p12_6.webp"
+    ],
+    "badges": [
+      "FRENLİ KAPAK"
+    ],
+    "material": "Doğal Meşe MDF Gövde",
+    "desc": "Geniş depolama rafları ve askılık alanlarıyla 6 kapaklı gardırop."
+  },
+  {
+    "id": 61,
+    "title": "Dora Karyola (Başlıklı)",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Solo",
+    "price": 18500,
+    "originalPrice": 22000,
+    "image": "assets/minegolden_p12_4.webp",
+    "gallery": [
+      "assets/minegolden_p12_4.webp",
+      "assets/minegolden_p12_1.webp",
+      "assets/minegolden_p12_5.webp"
+    ],
+    "badges": [
+      "160x200"
+    ],
+    "material": "Masif Ahşap Karyola İskeleti",
+    "desc": "Açılır sandıklı bazası ve konforlu ahşap başlığıyla karyola."
+  },
+  {
+    "id": 62,
+    "title": "Dora Şifonyer & Ayna",
+    "category": "bedroom",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 13500,
+    "originalPrice": 16000,
+    "image": "assets/minegolden_p12_3.webp",
+    "gallery": [
+      "assets/minegolden_p12_3.webp",
+      "assets/minegolden_p12_1.webp",
+      "assets/minegolden_p12_6.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "MDF & Masif Ahşap Ayak",
+    "desc": "Fonksiyonel çekmeceli şifonyer ve yuvarlak ahşap ayna."
+  },
+  {
+    "id": 63,
+    "title": "Dora Komodin (2 Adet)",
+    "category": "bedroom",
+    "subcategory": "nightstands",
+    "productType": "Solo",
+    "price": 8000,
+    "originalPrice": 9500,
+    "image": "assets/minegolden_p12_5.webp",
+    "gallery": [
+      "assets/minegolden_p12_5.webp",
+      "assets/minegolden_p12_1.webp",
+      "assets/minegolden_p12_4.webp"
+    ],
+    "badges": [
+      "2'Lİ SET"
+    ],
+    "material": "MDF & Frenli Ray",
+    "desc": "2 adet ahşap yatak başı komodini."
+  },
+  {
+    "id": 64,
+    "title": "Elegance Lüks Cam Kapaklı Yatak Odası",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Set",
+    "price": 59000,
+    "originalPrice": 69000,
+    "image": "assets/minegolden_p13_1.webp",
+    "gallery": [
+      "assets/minegolden_p13_1.webp",
+      "assets/minegolden_p13_2.webp",
+      "assets/minegolden_p13_4.webp",
+      "assets/minegolden_p13_6.webp",
+      "assets/minegolden_p13_5.webp",
+      "assets/minegolden_p13_3.webp"
+    ],
+    "badges": [
+      "FÜME CAMLI",
+      "İÇ AYDINLATMA"
+    ],
+    "material": "Füme Temperli Cam & Alüminyum Profil",
+    "desc": "LED aydınlatmalı cam kapaklı gardırop, lüks karyola, makyaj masası ve komodin takımı."
+  },
+  {
+    "id": 65,
+    "title": "Elegance Füme Cam Kapaklı Gardırop",
+    "category": "bedroom",
+    "subcategory": "wardrobes",
+    "productType": "Solo",
+    "price": 29000,
+    "originalPrice": 34000,
+    "image": "assets/minegolden_p13_2.webp",
+    "gallery": [
+      "assets/minegolden_p13_2.webp",
+      "assets/minegolden_p13_1.webp",
+      "assets/minegolden_p13_3.webp"
+    ],
+    "badges": [
+      "LED AYDINLATMALI"
+    ],
+    "material": "Temperli Füme Cam & Siyah Profil",
+    "desc": "Giyinme odası konseptini evinize getiren lüks cam kapaklı gardırop."
+  },
+  {
+    "id": 66,
+    "title": "Elegance Karyola & Lüks Başlık",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Solo",
+    "price": 21000,
+    "originalPrice": 24500,
+    "image": "assets/minegolden_p13_4.webp",
+    "gallery": [
+      "assets/minegolden_p13_4.webp",
+      "assets/minegolden_p13_1.webp",
+      "assets/minegolden_p13_5.webp"
+    ],
+    "badges": [
+      "LÜKS DÖŞEME"
+    ],
+    "material": "Kadife Döşeme Başlık & Baza",
+    "desc": "Özel dikişli yüksek yatak başlığı ve sandıklı baza."
+  },
+  {
+    "id": 67,
+    "title": "Elegance Şifonyer & Makyaj Aynası",
+    "category": "bedroom",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 15500,
+    "originalPrice": 18000,
+    "image": "assets/minegolden_p13_6.webp",
+    "gallery": [
+      "assets/minegolden_p13_6.webp",
+      "assets/minegolden_p13_1.webp",
+      "assets/minegolden_p13_3.webp"
+    ],
+    "badges": [
+      "LEDLİ AYNA"
+    ],
+    "material": "MDF & LED Makyaj Aynası",
+    "desc": "Dokunmatik LED ışıklı aynasıyla şık makyaj masası."
+  },
+  {
+    "id": 68,
+    "title": "Elegance Komodin (2 Adet)",
+    "category": "bedroom",
+    "subcategory": "nightstands",
+    "productType": "Solo",
+    "price": 9000,
+    "originalPrice": 10500,
+    "image": "assets/minegolden_p13_5.webp",
+    "gallery": [
+      "assets/minegolden_p13_5.webp",
+      "assets/minegolden_p13_1.webp",
+      "assets/minegolden_p13_4.webp"
+    ],
+    "badges": [
+      "2'Lİ SET"
+    ],
+    "material": "Cam Üst Yüzey & MDF",
+    "desc": "Cam üst tablalı 2 adet modern komodin."
+  },
+  {
+    "id": 69,
+    "title": "Luna Akrilik Modern Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Set",
+    "price": 51000,
+    "originalPrice": 60000,
+    "image": "assets/minegolden_p14_1.webp",
+    "gallery": [
+      "assets/minegolden_p14_1.webp",
+      "assets/minegolden_p14_2.webp",
+      "assets/minegolden_p14_4.webp",
+      "assets/minegolden_p14_6.webp",
+      "assets/minegolden_p14_3.webp",
+      "assets/minegolden_p14_5.webp"
+    ],
+    "badges": [
+      "PARLAK BEYAZ"
+    ],
+    "material": "Parlak Beyaz Akrilik & MDF Gövde",
+    "desc": "Ferah beyaz tasarımıyla 6 kapaklı gardırop, karyola, şifonyer ve komodin takımı."
+  },
+  {
+    "id": 70,
+    "title": "Luna 6 Kapaklı Beyaz Gardırop",
+    "category": "bedroom",
+    "subcategory": "wardrobes",
+    "productType": "Solo",
+    "price": 24500,
+    "originalPrice": 28500,
+    "image": "assets/minegolden_p14_2.webp",
+    "gallery": [
+      "assets/minegolden_p14_2.webp",
+      "assets/minegolden_p14_1.webp",
+      "assets/minegolden_p14_5.webp"
+    ],
+    "badges": [
+      "ÇİZİLMEZ AKRİLİK"
+    ],
+    "material": "Parlak Akrilik Kapak",
+    "desc": "Aydınlık yatak odaları için 6 kapaklı gardırop."
+  },
+  {
+    "id": 71,
+    "title": "Luna Karyola (Başlıklı)",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Solo",
+    "price": 18000,
+    "originalPrice": 21000,
+    "image": "assets/minegolden_p14_4.webp",
+    "gallery": [
+      "assets/minegolden_p14_4.webp",
+      "assets/minegolden_p14_1.webp",
+      "assets/minegolden_p14_3.webp"
+    ],
+    "badges": [
+      "BAZALI"
+    ],
+    "material": "Beyaz Gövde & Kumaş Başlık",
+    "desc": "Modern beyaz karyola ve baza."
+  },
+  {
+    "id": 72,
+    "title": "Luna Şifonyer",
+    "category": "bedroom",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 13000,
+    "originalPrice": 15500,
+    "image": "assets/minegolden_p14_6.webp",
+    "gallery": [
+      "assets/minegolden_p14_6.webp",
+      "assets/minegolden_p14_1.webp",
+      "assets/minegolden_p14_5.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "Akrilik Yüzey & MDF",
+    "desc": "Geniş çekmeceli beyaz şifonyer."
+  },
+  {
+    "id": 73,
+    "title": "Luna Komodin (2 Adet)",
+    "category": "bedroom",
+    "subcategory": "nightstands",
+    "productType": "Solo",
+    "price": 7800,
+    "originalPrice": 9200,
+    "image": "assets/minegolden_p14_3.webp",
+    "gallery": [
+      "assets/minegolden_p14_3.webp",
+      "assets/minegolden_p14_1.webp",
+      "assets/minegolden_p14_4.webp"
+    ],
+    "badges": [
+      "2'Lİ SET"
+    ],
+    "material": "Beyaz Akrilik & Raylı",
+    "desc": "2 adet beyaz yatak başı komodini."
+  },
+  {
+    "id": 74,
+    "title": "Masal Krem & Gold Yatak Odası Takımı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Set",
+    "price": 55000,
+    "originalPrice": 64000,
+    "image": "assets/minegolden_p15_1.webp",
+    "gallery": [
+      "assets/minegolden_p15_1.webp",
+      "assets/minegolden_p15_3.webp",
+      "assets/minegolden_p15_4.webp",
+      "assets/minegolden_p15_5.webp",
+      "assets/minegolden_p15_6.webp",
+      "assets/minegolden_p15_2.webp"
+    ],
+    "badges": [
+      "KREM & GOLD"
+    ],
+    "material": "Mat Krem MDF & Gold Metal Kulplar",
+    "desc": "Zarif krem lake yüzeyi ve altın detaylarıyla komple yatak odası takımı."
+  },
+  {
+    "id": 75,
+    "title": "Masal 6 Kapaklı Krem Gardırop",
+    "category": "bedroom",
+    "subcategory": "wardrobes",
+    "productType": "Solo",
+    "price": 26500,
+    "originalPrice": 31000,
+    "image": "assets/minegolden_p15_3.webp",
+    "gallery": [
+      "assets/minegolden_p15_3.webp",
+      "assets/minegolden_p15_1.webp",
+      "assets/minegolden_p15_2.webp"
+    ],
+    "badges": [
+      "GOLD KULPLAR"
+    ],
+    "material": "MDF Gövde & Lake Kapaklar",
+    "desc": "Özel desenli kapakları ve geniş iç hacmiyle gardırop."
+  },
+  {
+    "id": 76,
+    "title": "Masal Karyola & Yatak Başlığı",
+    "category": "bedroom",
+    "subcategory": "beds",
+    "productType": "Solo",
+    "price": 19500,
+    "originalPrice": 23000,
+    "image": "assets/minegolden_p15_4.webp",
+    "gallery": [
+      "assets/minegolden_p15_4.webp",
+      "assets/minegolden_p15_1.webp",
+      "assets/minegolden_p15_6.webp"
+    ],
+    "badges": [
+      "KAPİTONE BAŞLIK"
+    ],
+    "material": "Krem Kumaş & Baza",
+    "desc": "Altın çerçeveli kapitone yatak başlığı ve baza."
+  },
+  {
+    "id": 77,
+    "title": "Masal Şifonyer & Aynası",
+    "category": "bedroom",
+    "subcategory": "consoles",
+    "productType": "Solo",
+    "price": 14000,
+    "originalPrice": 16500,
+    "image": "assets/minegolden_p15_5.webp",
+    "gallery": [
+      "assets/minegolden_p15_5.webp",
+      "assets/minegolden_p15_1.webp",
+      "assets/minegolden_p15_2.webp"
+    ],
+    "badges": [
+      "AYNA DAHİL"
+    ],
+    "material": "MDF Lake & Gold Ayna",
+    "desc": "Gold çerçeveli aynasıyla lüks krem şifonyer."
+  },
+  {
+    "id": 78,
+    "title": "Masal Komodin (2 Adet)",
+    "category": "bedroom",
+    "subcategory": "nightstands",
+    "productType": "Solo",
+    "price": 8200,
+    "originalPrice": 9800,
+    "image": "assets/minegolden_p15_6.webp",
+    "gallery": [
+      "assets/minegolden_p15_6.webp",
+      "assets/minegolden_p15_1.webp",
+      "assets/minegolden_p15_4.webp"
+    ],
+    "badges": [
+      "2'Lİ SET"
+    ],
+    "material": "Lake Yüzey & Gold Kulp",
+    "desc": "2 adet lüks krem komodin."
   }
 ];
 
@@ -653,11 +1658,14 @@ const showToast = (message, icon = "fa-circle-check") => {
     if (!container) return;
     const toast = document.createElement("div");
     toast.className = "toast";
-    toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+    toast.innerHTML = `
+        <div class="toast-icon-badge"><i class="fa-solid ${icon}"></i></div>
+        <div class="toast-text">${message}</div>
+    `;
     container.appendChild(toast);
     setTimeout(() => {
-        toast.style.opacity = "0";
-        setTimeout(() => toast.remove(), 300);
+        toast.classList.add("toast-fade-out");
+        setTimeout(() => toast.remove(), 320);
     }, 2800);
 };
 
@@ -778,7 +1786,7 @@ window.createLightbox = () => {
 
 window.openLightbox = (startIndex = 0) => {
     const pid = getProductIdFromUrl();
-    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    const product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
     lightboxGallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
     lightboxCurrentIndex = typeof startIndex === 'number' && startIndex >= 0 && startIndex < lightboxGallery.length ? startIndex : 0;
 
@@ -834,8 +1842,11 @@ window.updateLightboxView = () => {
 window.goToSlide = (idx) => {
     const track = document.getElementById('galleryCarouselTrack');
     const pid = getProductIdFromUrl();
-    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
-    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+    const product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    let gallery = product.gallery && product.gallery.length > 0 ? [...product.gallery] : [product.image];
+    if (product.image && gallery[0] !== product.image) {
+        gallery = [product.image, ...gallery.filter(g => g !== product.image)];
+    }
 
     if (idx < 0) idx = 0;
     if (idx >= gallery.length) idx = gallery.length - 1;
@@ -985,8 +1996,11 @@ let currentModuleState = {
 
 const renderProductDetail = () => {
     const pid = getProductIdFromUrl();
-    const product = PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
-    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+    const product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    let gallery = product.gallery && product.gallery.length > 0 ? [...product.gallery] : [product.image];
+    if (product.image && gallery[0] !== product.image) {
+        gallery = [product.image, ...gallery.filter(g => g !== product.image)];
+    }
 
     document.title = `${product.title} | Mobelmor.com`;
 
@@ -1307,11 +2321,21 @@ const renderProductDetail = () => {
 };
 
 const getCategoryModuleConfig = (product) => {
+    if (product.productType === 'Set' && product.components && product.components.length > 0) {
+        return product.components.map((compName, idx) => {
+            const soloMatch = PRODUCTS.find(p => p.title === compName || p.title.toLowerCase() === compName.toLowerCase() || (p.parentSet === product.title && p.title.includes(compName)));
+            const price = soloMatch ? soloMatch.price : Math.round(product.price * (idx === 0 ? 0.45 : idx === 1 ? 0.30 : 0.25));
+            return {
+                id: 'comp_' + idx,
+                label: compName,
+                price: price,
+                qty: 1
+            };
+        });
+    }
+
     const cat = product.category;
     const sub = product.subcategory || '';
-    const specs = product.specs || {};
-    const specEntries = Object.entries(specs).filter(([k,v]) => k && v && k !== 'Modül' && k !== 'Genişlik');
-
     if (cat === 'living' && sub === 'sofas') {
         return [
             { id: 'main',  label: "3'lü Koltuk",          price: Math.round(product.price * 0.55), qty: 1 },
@@ -1458,10 +2482,9 @@ const renderRelatedProducts = (currentProduct) => {
 
     grid.innerHTML = related.map(item => {
         const itemUrl = window.getCleanProductUrl ? window.getCleanProductUrl(item.id, item.title) : `urun-detay.html?id=${item.id}`;
-        const discountRate = (item.id % 4 === 0) ? 20 : (item.id % 3 === 0) ? 15 : (item.id % 2 === 0) ? 10 : 5;
-        const discountClass = discountRate === 15 ? 'purple' : discountRate === 10 ? 'orange' : discountRate === 20 ? 'red' : 'green';
-        const sepetPrice = Math.round(item.price * (1 - discountRate / 100));
-        const oldPrice = (item.id % 3 === 0) ? Math.round(item.price * 1.15) : null;
+        const originalPrice = item.originalPrice || Math.round(item.price * 1.15);
+        const discountRate = item.originalPrice ? Math.round((1 - item.price / item.originalPrice) * 100) : 15;
+        const discountClass = discountRate >= 20 ? 'red' : discountRate >= 15 ? 'purple' : discountRate >= 10 ? 'orange' : 'green';
         const isBestPrice = (item.id % 3 === 1);
         const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
         const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
@@ -1493,9 +2516,9 @@ const renderRelatedProducts = (currentProduct) => {
 
                 <!-- Pricing Block -->
                 <div class="vcard-pricing-block">
-                    ${oldPrice ? `<span class="vcard-old-price">${formatPrice(oldPrice)}</span>` : ''}
+                    <span class="vcard-old-price">${formatPrice(originalPrice)}</span>
                     <div class="vcard-main-price">${formatPrice(item.price)}</div>
-                    <div class="vcard-sepette-price">Sepette: <strong>${formatPrice(sepetPrice)}</strong></div>
+                    <div class="vcard-sepette-price"><i class="fa-solid fa-bolt"></i> Sepette: <strong>${formatPrice(item.price)}</strong></div>
                 </div>
 
                 <!-- Feature Delivery & Variant Pills -->
@@ -1517,7 +2540,7 @@ const addToCart = (productId, qty = 1) => {
     if (existing) existing.qty += qty;
     else cart.push({ ...item, qty });
     updateBadges();
-    showToast(`"${item.title}" (${qty} Adet) sepete eklendi!`, "fa-bag-shopping");
+    showToast(`<strong>${item.title}</strong>${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
 };
 
 const updateBadges = () => {

@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -13,10 +14,28 @@
     
     <!-- Primary Meta Tags -->
     <title>Kategori Koleksiyonu | Mobelmor.com</title>
+    <meta name="title" content="Kategori Koleksiyonu | Mobelmor.com">
     <meta name="description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları. Özel kategori koleksiyonları.">
+    <link rel="canonical" href="https://mobelmor.com/kategori">
 
-    <!-- Clean URL Engine -->
-    <script src="js/url-cleaner.js?v=10000" defer></script>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mobelmor.com/kategori">
+    <meta property="og:title" content="Kategori Koleksiyonu | Mobelmor.com">
+    <meta property="og:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları.">
+    <meta property="og:image" content="https://mobelmor.com/assets/minegolden_p1_1.webp">
+    <meta property="og:site_name" content="Mobelmor">
+    <meta property="og:locale" content="tr_TR">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mobelmor.com/kategori">
+    <meta property="twitter:title" content="Kategori Koleksiyonu | Mobelmor.com">
+    <meta property="twitter:description" content="İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımları.">
+    <meta property="twitter:image" content="https://mobelmor.com/assets/minegolden_p1_1.webp">
+
+    <!-- Extensionless Clean URL Router Script -->
+    <script src="js/url-cleaner.js?v=11000" defer></script>
 
     <!-- SVG Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -44,8 +63,9 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260816_0720">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0115">
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
@@ -54,7 +74,7 @@
         <div class="container header-container">
             <!-- Left: Brand Logo (+ Mobile Hamburger) -->
             <div class="header-left-col">
-                <button class="mobile-hamburger-btn interactive-btn" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
+                <button class="mobile-hamburger-btn interactive-btn hide-on-desktop" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
@@ -82,20 +102,49 @@
             <!-- Right: User Action Buttons -->
             <div class="header-right-col">
                 <div class="header-action-buttons">
-                    <a href="javascript:void(0)" onclick="alert('Üyelik ve Giriş Sistemi yakında aktif olacaktır.')" class="header-action-btn interactive-btn mobile-user-btn" title="Hesabım" aria-label="Hesabım">
-                        <i class="fa-regular fa-user"></i>
-                        <span class="action-btn-text">Giriş</span>
-                    </a>
+                    <!-- Sipariş Takip with Dropdown -->
+                    <div class="header-dropdown-wrapper" id="orderTrackContainer">
+                        <button type="button" class="header-action-btn interactive-btn" id="orderTrackBtn" title="Sipariş Takibi" aria-label="Sipariş Takibi">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <span class="action-btn-text">Sipariş Takip</span>
+                        </button>
+                        <div class="header-hover-dropdown" id="orderTrackDropdown">
+                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
+                                <i class="fa-solid fa-truck-fast" style="color:#6b21a8;"></i> Sipariş Takip Merkezi
+                            </div>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-magnifying-glass" style="color:#6b21a8;"></i> Sipariş No ile Sorgula</a>
+                            <a href="siparislerim.html#timeline" class="user-dropdown-item"><i class="fa-solid fa-clock-rotate-left" style="color:#6b21a8;"></i> Üretim &amp; Sevkiyat Takibi</a>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="https://wa.me/905300000000?text=Merhaba,%20siparişim%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="user-dropdown-item" style="color:#16a34a;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Canlı Destek</a>
+                        </div>
+                    </div>
+
                     <button class="header-action-btn interactive-btn" id="wishlistBtn" title="Favorilerim">
                         <i class="fa-regular fa-heart"></i>
                         <span class="action-btn-text">Favorilerim</span>
                         <span class="badge-count" id="wishlistBadge">0</span>
                     </button>
+
                     <button class="header-action-btn interactive-btn" id="cartBtn" title="Sepetim">
                         <i class="fa-solid fa-basket-shopping"></i>
                         <span class="action-btn-text">Sepetim</span>
                         <span class="badge-count" id="cartBadge">0</span>
                     </button>
+                    
+                    <!-- User / Auth with Hover Sub-menu (Rightmost) -->
+                    <div class="user-menu-wrapper" id="headerAuthContainer">
+                        <button class="header-action-btn interactive-btn" id="headerAuthBtn" title="Hesabım / Giriş Yap" aria-label="Hesabım">
+                            <i class="fa-regular fa-user"></i>
+                            <span class="action-btn-text" id="headerAuthText">Giriş</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="userMenuDropdown">
+                            <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;" id="userMenuGreeting">Hoş geldiniz</div>
+                            <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim</a>
+                            <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,11 +172,12 @@
                 </a>
 
                 <!-- 1. OTURMA ODASI -->
-                <div class="vivense-nav-item has-mega active">
+                <div class="vivense-nav-item has-mega">
                     <a href="kategori.html?c=oturma-odasi" class="vivense-nav-link">OTURMA ODASI</a>
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">OTURMA ODASI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Köşe Koltuk</a></li>
                                     <li><a href="kategori.html?c=oturma-odasi&sub=sofas">Koltuk Takımı</a></li>
@@ -138,6 +188,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">SEHPA &amp; TAMAMLAYICI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=oturma-odasi&sub=tables">Orta Sehpa</a></li>
                                     <li><a href="kategori.html?c=oturma-odasi&sub=tables">Yan Sehpa</a></li>
@@ -178,6 +229,7 @@
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">YEMEK ODASI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Yemek Odası Takımı</a></li>
                                     <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Yemek Masası</a></li>
@@ -187,6 +239,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">MUTFAK</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yemek-odasi&sub=dining-tables">Mutfak Masası Takımı</a></li>
                                     <li><a href="kategori.html?c=yemek-odasi&sub=chairs">Bar Masası &amp; Sandalyesi</a></li>
@@ -224,6 +277,7 @@
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">YATAK ODASI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yatak-odasi">Yatak Odası Takımı</a></li>
                                     <li><a href="kategori.html?c=yatak-odasi&sub=beds">Karyola &amp; Yatak</a></li>
@@ -233,6 +287,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">TAMAMLAYICI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yatak-odasi&sub=beds">Baza &amp; Başlık</a></li>
                                     <li><a href="kategori.html?c=yatak-odasi">Makyaj Masası</a></li>
@@ -270,6 +325,7 @@
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">YATAK &amp; BAZA</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yatak-odasi&sub=beds">Ortopedik Yataklar</a></li>
                                     <li><a href="kategori.html?c=yatak-odasi&sub=beds">Visco &amp; Latex Yatak</a></li>
@@ -277,6 +333,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">EV TEKSTİLİ</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yatak-odasi">Yastık &amp; Yorgan</a></li>
                                     <li><a href="kategori.html?c=yatak-odasi">Alez &amp; Koruyucu</a></li>
@@ -312,6 +369,7 @@
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">DOLAP &amp; ANTRE</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Sürgülü Gardırop</a></li>
                                     <li><a href="kategori.html?c=yatak-odasi&sub=wardrobes">Kapaklı Gardırop</a></li>
@@ -319,6 +377,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">TAMAMLAYICI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=tv-uniteleri">Portmanto &amp; Vestiyer</a></li>
                                     <li><a href="kategori.html?c=tv-uniteleri">Ayakkabılık</a></li>
@@ -349,6 +408,7 @@
                     <div class="vivense-mega-dropdown">
                         <div class="mega-content-grid">
                             <div class="mega-col">
+                                <h4 class="mega-col-heading">ÇALIŞMA ODASI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=tv-uniteleri&sub=desks">Çalışma Masası</a></li>
                                     <li><a href="kategori.html?c=tv-uniteleri&sub=bookcases">Kitaplık</a></li>
@@ -356,6 +416,7 @@
                                 </ul>
                             </div>
                             <div class="mega-col border-left">
+                                <h4 class="mega-col-heading">TAMAMLAYICI</h4>
                                 <ul class="mega-link-list">
                                     <li><a href="kategori.html?c=tv-uniteleri&sub=desks">Çalışma Koltuğu</a></li>
                                     <li><a href="kategori.html?c=tv-uniteleri&sub=bookcases">Duvar Rafları</a></li>
@@ -431,7 +492,7 @@
 
         <!-- Search Box inside Mobile Drawer -->
         <div class="mobile-drawer-search">
-            <form onsubmit="event.preventDefault(); const val=document.getElementById('mobileDrawerSearchInput').value; if(val){ window.location.href='category.html?c=tum-koleksiyon&q='+encodeURIComponent(val); }">
+            <form onsubmit="event.preventDefault(); const val=document.getElementById('mobileDrawerSearchInput').value; if(val){ window.location.href='kategori.html?c=tum-koleksiyon&q='+encodeURIComponent(val); }">
                 <div class="search-box-mobile">
                     <input type="text" placeholder="Evin için ne arıyorsun?" class="mobile-search-input" id="mobileDrawerSearchInput">
                     <button type="submit" class="mobile-search-btn" aria-label="Ara"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -448,20 +509,20 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=oturma-odasi" class="mobile-subcat-link bold-all">Tüm Oturma Odası Ürünleri</a>
-                    <a href="category.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Köşe Koltuk</a>
-                    <a href="category.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Koltuk Takımı</a>
-                    <a href="category.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Kanepe + Koltuk</a>
-                    <a href="category.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Berjer</a>
-                    <a href="category.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Sallanan Sandalye + Koltuk</a>
-                    <a href="category.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Katlanır Yataklı Koltuk</a>
-                    <a href="category.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Orta Sehpa</a>
-                    <a href="category.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Yan Sehpa</a>
-                    <a href="category.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Zigon Sehpa</a>
-                    <a href="category.html?c=tv-uniteleri" class="mobile-subcat-link">Tv Ünitesi</a>
-                    <a href="category.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
-                    <a href="category.html?c=oturma-odasi&sub=consoles" class="mobile-subcat-link">Dresuar</a>
-                    <a href="category.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Puf</a>
+                    <a href="kategori.html?c=oturma-odasi" class="mobile-subcat-link bold-all">Tüm Oturma Odası Ürünleri</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Köşe Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Koltuk Takımı</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Kanepe + Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Berjer</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Sallanan Sandalye + Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=sofas" class="mobile-subcat-link">Katlanır Yataklı Koltuk</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Orta Sehpa</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Yan Sehpa</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=tables" class="mobile-subcat-link">Zigon Sehpa</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Tv Ünitesi</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=consoles" class="mobile-subcat-link">Dresuar</a>
+                    <a href="kategori.html?c=oturma-odasi&sub=armchairs" class="mobile-subcat-link">Puf</a>
                 </div>
             </div>
 
@@ -472,14 +533,14 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yemek-odasi" class="mobile-subcat-link bold-all">Tüm Yemek Odası Ürünleri</a>
-                    <a href="category.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Odası Takımı</a>
-                    <a href="category.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Masası</a>
-                    <a href="category.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Sandalye</a>
-                    <a href="category.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Konsol &amp; Aynası</a>
-                    <a href="category.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Vitrin &amp; Gümüşlük</a>
-                    <a href="category.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Mutfak Masası Takımı</a>
-                    <a href="category.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Bar Masası &amp; Sandalyesi</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link bold-all">Tüm Yemek Odası Ürünleri</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Odası Takımı</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Yemek Masası</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Sandalye</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Konsol &amp; Aynası</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=buffets" class="mobile-subcat-link">Vitrin &amp; Gümüşlük</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=dining-tables" class="mobile-subcat-link">Mutfak Masası Takımı</a>
+                    <a href="kategori.html?c=yemek-odasi&sub=chairs" class="mobile-subcat-link">Bar Masası &amp; Sandalyesi</a>
                 </div>
             </div>
 
@@ -490,14 +551,14 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Yatak Odası Ürünleri</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Yatak Odası Takımı</a>
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Karyola &amp; Yatak</a>
-                    <a href="category.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Gardırop</a>
-                    <a href="category.html?c=yatak-odasi&sub=nightstands" class="mobile-subcat-link">Komodin</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Şifonyer</a>
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Baza &amp; Başlık</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Makyaj Masası</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Yatak Odası Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Yatak Odası Takımı</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Karyola &amp; Yatak</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Gardırop</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=nightstands" class="mobile-subcat-link">Komodin</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Şifonyer</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Baza &amp; Başlık</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Makyaj Masası</a>
                 </div>
             </div>
 
@@ -508,11 +569,11 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link bold-all">Tüm Uyku Grubu Ürünleri</a>
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Ortopedik Yataklar</a>
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Visco &amp; Latex Yatak</a>
-                    <a href="category.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Sandıklı Bazalar</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Yastık &amp; Yorgan</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link bold-all">Tüm Uyku Grubu Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Ortopedik Yataklar</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Visco &amp; Latex Yatak</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=beds" class="mobile-subcat-link">Sandıklı Bazalar</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Yastık &amp; Yorgan</a>
                 </div>
             </div>
 
@@ -523,9 +584,9 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yemek-odasi" class="mobile-subcat-link">Yemek Takımları</a>
-                    <a href="category.html?c=yemek-odasi" class="mobile-subcat-link">Çatal Kaşık Bıçak</a>
-                    <a href="category.html?c=yemek-odasi" class="mobile-subcat-link">Tencere &amp; Tava Setleri</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Yemek Takımları</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Çatal Kaşık Bıçak</a>
+                    <a href="kategori.html?c=yemek-odasi" class="mobile-subcat-link">Tencere &amp; Tava Setleri</a>
                 </div>
             </div>
 
@@ -536,10 +597,10 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link bold-all">Tüm Bahçe Mobilyaları</a>
-                    <a href="category.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Bahçe Oturma Grubu</a>
-                    <a href="category.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Balkon Masası &amp; Sandalye</a>
-                    <a href="category.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Salıncak &amp; Şezlong</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link bold-all">Tüm Bahçe Mobilyaları</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Bahçe Oturma Grubu</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Balkon Masası &amp; Sandalye</a>
+                    <a href="kategori.html?c=tum-koleksiyon&sub=garden" class="mobile-subcat-link">Salıncak &amp; Şezlong</a>
                 </div>
             </div>
 
@@ -550,12 +611,12 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link bold-all">Tüm Dolap &amp; Antre Ürünleri</a>
-                    <a href="category.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Sürgülü Gardırop</a>
-                    <a href="category.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Kapaklı Gardırop</a>
-                    <a href="category.html?c=tv-uniteleri" class="mobile-subcat-link">Portmanto &amp; Vestiyer</a>
-                    <a href="category.html?c=tv-uniteleri" class="mobile-subcat-link">Ayakkabılık</a>
-                    <a href="category.html?c=tv-uniteleri" class="mobile-subcat-link">Dresuar &amp; Ayna</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link bold-all">Tüm Dolap &amp; Antre Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Sürgülü Gardırop</a>
+                    <a href="kategori.html?c=yatak-odasi&sub=wardrobes" class="mobile-subcat-link">Kapaklı Gardırop</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Portmanto &amp; Vestiyer</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Ayakkabılık</a>
+                    <a href="kategori.html?c=tv-uniteleri" class="mobile-subcat-link">Dresuar &amp; Ayna</a>
                 </div>
             </div>
 
@@ -566,11 +627,11 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link bold-all">Tüm Çalışma Odası Ürünleri</a>
-                    <a href="category.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Masası</a>
-                    <a href="category.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
-                    <a href="category.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Koltuğu</a>
-                    <a href="category.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Duvar Rafları</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link bold-all">Tüm Çalışma Odası Ürünleri</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Masası</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Kitaplık</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=desks" class="mobile-subcat-link">Çalışma Koltuğu</a>
+                    <a href="kategori.html?c=tv-uniteleri&sub=bookcases" class="mobile-subcat-link">Duvar Rafları</a>
                 </div>
             </div>
 
@@ -581,10 +642,10 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Bebek &amp; Genç Ürünleri</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Genç Odası Takımı</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Ranza &amp; Karyola</a>
-                    <a href="category.html?c=yatak-odasi" class="mobile-subcat-link">Bebek Beşikleri</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link bold-all">Tüm Bebek &amp; Genç Ürünleri</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Genç Odası Takımı</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Ranza &amp; Karyola</a>
+                    <a href="kategori.html?c=yatak-odasi" class="mobile-subcat-link">Bebek Beşikleri</a>
                 </div>
             </div>
 
@@ -595,10 +656,10 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Dekorasyon Ürünleri</a>
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link">Aynalar</a>
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link">Tablo &amp; Duvar Dekoru</a>
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link">Aydınlatma &amp; Lambader</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Dekorasyon Ürünleri</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Aynalar</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Tablo &amp; Duvar Dekoru</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Aydınlatma &amp; Lambader</a>
                 </div>
             </div>
 
@@ -609,19 +670,19 @@
                     <i class="fa-solid fa-chevron-down acc-arrow"></i>
                 </button>
                 <div class="mobile-cat-body">
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Halı Ürünleri</a>
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link">Modern Halılar</a>
-                    <a href="category.html?c=tum-koleksiyon" class="mobile-subcat-link">Yolluk &amp; Kilim</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link bold-all">Tüm Halı Ürünleri</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Modern Halılar</a>
+                    <a href="kategori.html?c=tum-koleksiyon" class="mobile-subcat-link">Yolluk &amp; Kilim</a>
                 </div>
             </div>
         </div>
 
         <!-- Footer / Special Badges inside Mobile Menu -->
         <div class="mobile-drawer-footer">
-            <a href="category.html?c=tum-koleksiyon" class="mobile-drawer-badge collection">
+            <a href="kategori.html?c=tum-koleksiyon" class="mobile-drawer-badge collection">
                 <img src="assets/favicon.svg" alt="Mobelmor" class="nav-site-logo-icon" style="display:inline-block; vertical-align:middle; width:18px; height:18px; margin-right:6px;"> Mobelmor Collection
             </a>
-            <a href="category.html?c=tum-koleksiyon&filter=best-price" class="mobile-drawer-badge best-price">
+            <a href="kategori.html?c=tum-koleksiyon&filter=best-price" class="mobile-drawer-badge best-price">
                 <i class="fa-solid fa-tag"></i> EN İYİ FİYAT
             </a>
         </div>
@@ -684,9 +745,41 @@
             </div>
         </div>
 
-        <div class="product-grid" id="productGrid">
-            <!-- Product Cards rendered dynamically via JS -->
-        </div>
+        <!-- Product Grid -->
+        <section class="product-grid" id="productGrid">
+            <article class="product-card" data-id="1">
+                <div class="card-image-box">
+                    <img src="assets/minegolden_p1_1.webp" alt="Gold Koltuk Takımı" class="card-img" width="400" height="300" loading="eager" fetchpriority="high" decoding="sync" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.jpg';">
+                    
+                    <div class="vcard-circle-sticker purple">
+                        <span class="vcs-sub">SEPETTE</span>
+                        <strong class="vcs-pct">%15</strong>
+                        <span class="vcs-sub">İNDİRİM</span>
+                    </div>
+
+                    <button class="card-heart-btn interactive-btn" data-id="1" aria-label="Favorilere Ekle"><i class="fa-regular fa-heart"></i></button>
+                </div>
+                <div class="card-details">
+                    <div class="vcard-badges-row">
+                        <span class="vbadge-pill pill-collection">mobelmor collection</span>
+                        <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
+                        <span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>
+                    </div>
+                    <h3 class="card-product-title" data-id="1">Gold Koltuk Takımı</h3>
+                    
+                    <div class="vcard-pricing-block">
+                        <div class="vcard-main-price">45.000 TL</div>
+                        <div class="vcard-sepette-price">Sepette: <strong>38.250 TL</strong></div>
+                    </div>
+
+                    <div class="vcard-features-pills">
+                        <span class="vfeat-pill"><i class="fa-solid fa-truck"></i> Ücretsiz Teslimat</span>
+                        <span class="vfeat-pill teal"><i class="fa-solid fa-bolt"></i> Hızlı Teslimat</span>
+                        <span class="vfeat-pill"><i class="fa-solid fa-couch"></i> Kumaşı değiştirilebilir</span>
+                    </div>
+                </div>
+            </article>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -726,8 +819,9 @@
                     <ul class="footer-links">
                         <li><a href="garanti-iade.html"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
                         <li><a href="kumas-kartelasi.html"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
-                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> Sıkça Sorulan Sorular</a></li>
+                        <li><a href="mesafeli-satis-sozlesmesi.html"><i class="fa-solid fa-chevron-right"></i> Mesafeli Satış Sözleşmesi</a></li>
                         <li><a href="gizlilik-guvenlik.html"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> SSS</a></li>
                     </ul>
                 </div>
 
@@ -799,21 +893,91 @@
     <div class="modal-overlay" id="checkoutOverlay">
         <div class="modal-card">
             <button class="close-btn modal-close interactive-btn" id="closeCheckoutBtn" aria-label="Ödeme Ekranını Kapat"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Ödeme</h3>
+            <h3 style="margin-top:0; color:#6b21a8;"><i class="fa-solid fa-shield-halved"></i> Güvenli Sipariş &amp; Ödeme Talebi</h3>
             <p style="color:#71717a; font-size:0.88rem;">256-Bit SSL korumalı hızlı sipariş tamamlama ekranı.</p>
 
             <form id="checkoutForm" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-                <input type="text" placeholder="Ad Soyad" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <input type="tel" placeholder="Telefon Numarası (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                <textarea placeholder="Teslimat Adresi" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutName" placeholder="Adınız ve Soyadınız" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="email" id="checkoutEmail" placeholder="E-Posta Adresiniz (Sipariş Takibi İçin)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <input type="tel" id="checkoutPhone" placeholder="Telefon Numaranız (05XX...)" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                <textarea id="checkoutAddress" placeholder="Teslimat Adresi (İl, İlçe, Mahalle, Cadde/Sokak, Bina No)" rows="3" required style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;"></textarea>
+                <input type="text" id="checkoutNote" placeholder="Varsa Özel Sipariş/Kumaş Notunuz (Opsiyonel)" style="padding:10px 14px; border:1px solid #e4e4e7; border-radius:8px;">
 
                 <div style="background:#faf5ff; padding:12px 16px; border-radius:10px; border:1px solid #e9d5ff; display:flex; justify-content:space-between; font-weight:800;">
                     <span>Toplam Ödenecek:</span>
                     <span id="checkoutTotal" style="color:#6b21a8;">₺0</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:6px;">
-                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; Bitir
+                <!-- Inline Scrollable Contract & KVKK Reader -->
+                <div class="checkout-contract-container">
+                    <div class="contract-tabs-row">
+                        <div class="contract-tab-buttons">
+                            <button type="button" class="contract-tab-btn active" id="btnContractMss">Mesafeli Satış Sözleşmesi</button>
+                            <button type="button" class="contract-tab-btn" id="btnContractKvkk">KVKK Metni</button>
+                        </div>
+                        <span class="contract-scroll-hint"><i class="fa-solid fa-arrows-up-down"></i> Kaydırılabilir</span>
+                    </div>
+                    <div class="contract-content-box" id="contractContentBox">
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 1 - TARAFLAR:</strong><br>
+                        <strong>SATICI:</strong> Mobelmor İnegöl Mobilya San. ve Tic. Ltd. Şti.<br>
+                        <strong>ALICI:</strong> Mobelmor.com üzerinden sipariş veren nihai tüketici.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 2 - KONU &amp; KAPSAM:</strong><br>
+                        İşbu sözleşmenin konusu, ALICI'nın SATICI'ya ait www.mobelmor.com internet sitesinden siparişini verdiği mobilya ve ev dekorasyon ürünlerinin 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği hükümleri gereğince satışı ve teslimidir.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 3 - TESLİMAT &amp; MONTAJ:</strong><br>
+                        Mobilya ürünleri, özel korumalı ambalajında sigortalı mobilya lojistik araçlarımızla ALICI'nın belirttiği teslimat adresine kata teslim ve ücretsiz profesyonel montaj hizmeti ile ulaştırılır.</p>
+                        
+                        <p style="margin:0 0 6px 0;"><strong>MADDE 4 - CAYMA HAKKI &amp; İADE:</strong><br>
+                        ALICI, standart ürünlerde 14 gün içinde cayma hakkına sahiptir. Tüketicinin özel istekleri doğrultusunda özel ölçü üretilen veya özel kumaş/renk döşemesi yapılan ürünler, 6502 Sayılı Kanun Madde 15/b uyarınca cayma hakkı istisnası kapsamındadır.</p>
+                        
+                        <p style="margin:0;"><strong>MADDE 5 - GARANTİ:</strong><br>
+                        Tüm ürünlerimiz 2 Yıl Mobelmor Üretici ve İskelet Garantisi altındadır.</p>
+                    </div>
+                </div>
+
+                <label class="checkout-terms-label" style="display:flex; align-items:flex-start; gap:8px; font-size:0.82rem; margin-top:2px; cursor:pointer;">
+                    <input type="checkbox" id="checkoutTerms" required checked style="margin-top:2px; accent-color:#6b21a8; width:16px; height:16px; cursor:pointer;">
+                    <span>Yukarıdaki <strong style="color:#6b21a8;">Mesafeli Satış Sözleşmesi</strong> ve <strong style="color:#6b21a8;">KVKK Metni</strong>'ni okudum, şartları onaylıyorum.</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:14px; margin-top:2px;">
+                    <i class="fa-solid fa-check"></i> Siparişi Onayla &amp; WhatsApp ile İlet
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Universal Auth Modal (Giriş Yap / Üye Ol) -->
+    <div class="modal-overlay" id="authModalOverlay">
+        <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+            <button class="close-btn modal-close interactive-btn" id="closeAuthModalBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
+                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+                <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Giriş Yap
+                </button>
+                <p style="text-align:center; font-size:0.82rem; color:#71717a; margin:4px 0 0 0;">
+                    Üye olmadan sipariş takip etmek için <a href="siparislerim.html" style="color:#6b21a8; font-weight:600;">tıklayınız</a>.
+                </p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display:none; flex-direction:column; gap:12px;">
+                <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                    Ücretsiz Üye Ol
                 </button>
             </form>
         </div>
@@ -828,6 +992,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/app.js?v=20260816_0720" defer></script>
+    <script src="js/store-service.js?v=20260826_0115"></script>
+    <script src="js/app.js?v=20260826_0115" defer></script>
 </body>
 </html>

@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+inspect_*.html
+verify_*.html
+preview_*.html
+*.log

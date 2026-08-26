@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Hesabım & Siparişlerim | Mobelmor</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0115">
+    <style>
+        .account-page-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .account-header-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .account-user-meta { display: flex; align-items: center; gap: 16px; }
+        .account-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .account-tabs-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+        .acc-tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .acc-tab-btn.active {
+            background: #0284c7;
+            color: #fff;
+            border-color: #0284c7;
+        }
+        .order-card {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .order-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        .order-status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .status-Yeni { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .status-Hazirlaniyor { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .status-Kargoda { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+        .status-TeslimEdildi { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .order-item-mini {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+        .order-item-mini img {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body style="background: #0f172a; color: #f8fafc;">
+    <!-- Top Announcement Bar -->
+    <div class="top-announcement-bar">
+        <div class="site-container announcement-inner">
+            <span class="announcement-badge"><i class="fa-solid fa-truck-fast"></i> ÜCRETSİZ TESLİMAT</span>
+            <p class="announcement-text">Tüm Türkiye'ye <strong>Ücretsiz Sigortalı Teslimat & Profesyonel Kurulum</strong></p>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="site-header" id="siteHeader">
+        <div class="site-container header-main-row">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-text">MOBEL<span>MOR</span></span>
+                <span class="logo-subtext">İNEGÖL DİZAYN</span>
+            </a>
+            <div class="header-actions">
+                <a href="index.html" class="btn-secondary-glass" style="padding: 8px 16px; font-size: 0.9rem;">
+                    <i class="fa-solid fa-house"></i> Ana Sayfaya Dön
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="account-page-container">
+        <!-- Customer Greeting -->
+        <div class="account-header-card">
+            <div class="account-user-meta">
+                <div class="account-avatar" id="accAvatar">A</div>
+                <div>
+                    <h2 id="accFullName" style="font-size: 1.3rem; font-weight: 700;">Değerli Müşterimiz</h2>
+                    <span id="accEmail" style="color: #94a3b8; font-size: 0.9rem;">musteri@mobelmor.com</span>
+                </div>
+            </div>
+            <button type="button" onclick="handleLogout()" class="btn-secondary-glass" style="color: #ef4444; border-color: rgba(239,68,68,0.3);">
+                <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
+            </button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="account-tabs-nav">
+            <button class="acc-tab-btn active" id="tabOrdersBtn" onclick="switchTab('orders')">
+                <i class="fa-solid fa-bag-shopping"></i> Sipariş Geçmişim (<span id="ordersCountBadge">0</span>)
+            </button>
+            <button class="acc-tab-btn" id="tabProfileBtn" onclick="switchTab('profile')">
+                <i class="fa-solid fa-user-gear"></i> Adres & İletişim Bilgilerim
+            </button>
+        </div>
+
+        <!-- Tab 1: Orders Content -->
+        <div id="ordersContent">
+            <div id="ordersList"></div>
+        </div>
+
+        <!-- Tab 2: Profile & Address Content -->
+        <div id="profileContent" style="display: none;">
+            <div class="account-header-card" style="display: block;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;">Teslimat & İletişim Bilgileri</h3>
+                <form id="profileForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Ad Soyad</label>
+                        <input type="text" id="profFullName" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Telefon</label>
+                        <input type="tel" id="profPhone" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Şehir</label>
+                        <input type="text" id="profCity" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">İlçe</label>
+                        <input type="text" id="profDistrict" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Açık Teslimat Adresi</label>
+                        <textarea id="profAddress" rows="3" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;"></textarea>
+                    </div>
+                    <div style="grid-column: span 2; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn-primary-glow" style="padding: 12px 28px;">
+                            <i class="fa-solid fa-floppy-disk"></i> Bilgileri Güncelle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js?v=20260826_0115"></script>
+    <script src="js/store-service.js?v=20260826_0115"></script>
+    <script>
+        const user = window.StoreService.getCurrentUser();
+        if (!user) {
+            location.href = 'giris-yap.html';
+        }
+
+        // Render User Info
+        document.getElementById('accFullName').textContent = user.fullName || 'Değerli Müşterimiz';
+        document.getElementById('accEmail').textContent = user.email || '';
+        document.getElementById('accAvatar').textContent = (user.fullName ? user.fullName[0] : 'M').toUpperCase();
+
+        document.getElementById('profFullName').value = user.fullName || '';
+        document.getElementById('profPhone').value = user.phone || '';
+        document.getElementById('profCity').value = user.city || '';
+        document.getElementById('profDistrict').value = user.district || '';
+        document.getElementById('profAddress').value = user.address || '';
+
+        // Switch Tabs
+        function switchTab(tab) {
+            document.getElementById('tabOrdersBtn').classList.toggle('active', tab === 'orders');
+            document.getElementById('tabProfileBtn').classList.toggle('active', tab === 'profile');
+            document.getElementById('ordersContent').style.display = tab === 'orders' ? 'block' : 'none';
+            document.getElementById('profileContent').style.display = tab === 'profile' ? 'block' : 'none';
+        }
+
+        // Render Orders List
+        const orders = window.StoreService.getCustomerOrders(user.id);
+        document.getElementById('ordersCountBadge').textContent = orders.length;
+
+        const container = document.getElementById('ordersList');
+        if (orders.length === 0) {
+            container.innerHTML = `
+                <div class="account-header-card" style="text-align: center; display: block; padding: 50px 20px;">
+                    <i class="fa-solid fa-bag-shopping" style="font-size: 2.5rem; color: #64748b; margin-bottom: 12px; display: block;"></i>
+                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Henüz bir siparişiniz bulunmuyor.</h3>
+                    <p style="color: #94a3b8; margin-bottom: 20px;">Koleksiyonlarımızı inceleyerek ilk siparişinizi hemen verebilirsiniz.</p>
+                    <a href="index.html" class="btn-primary-glow" style="display: inline-block;">Koleksiyonları Keşfet</a>
+                </div>
+            `;
+        } else {
+            container.innerHTML = orders.map(ord => `
+                <div class="order-card">
+                    <div class="order-header-row">
+                        <div>
+                            <strong style="font-size: 1rem; color: #38bdf8;">${ord.orderNumber}</strong>
+                            <span style="color: #94a3b8; font-size: 0.85rem; margin-left: 10px;">${new Date(ord.createdAt).toLocaleDateString('tr-TR')}</span>
+                        </div>
+                        <div>
+                            <span class="order-status-badge status-${ord.status}">${ord.status === 'Yeni' ? 'Sipariş Alındı' : ord.status}</span>
+                            <strong style="margin-left: 15px; font-size: 1.05rem;">₺${Number(ord.totalAmount).toLocaleString('tr-TR')}</strong>
+                        </div>
+                    </div>
+                    <div class="order-items-wrap">
+                        ${(ord.items || []).map(it => `
+                            <div class="order-item-mini">
+                                <img src="${it.image || 'assets/hero_milo_sofa.webp'}" alt="">
+                                <div>
+                                    <strong style="font-size: 0.9rem;">${it.title}</strong>
+                                    <span style="display: block; font-size: 0.8rem; color: #94a3b8;">Adet: ${it.quantity || 1} | ₺${Number(it.price).toLocaleString('tr-TR')}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Profile Form Submit
+        document.getElementById('profileForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            try {
+                window.StoreService.updateCustomerProfile({
+                    fullName: document.getElementById('profFullName').value.trim(),
+                    phone: document.getElementById('profPhone').value.trim(),
+                    city: document.getElementById('profCity').value.trim(),
+                    district: document.getElementById('profDistrict').value.trim(),
+                    address: document.getElementById('profAddress').value.trim()
+                });
+                alert("Bilgileriniz başarıyla güncellendi!");
+                location.reload();
+            } catch (err) {
+                alert("Hata: " + err.message);
+            }
+        });
+
+        function handleLogout() {
+            window.StoreService.logoutCustomer();
+            location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

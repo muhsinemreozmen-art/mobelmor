@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Giriş Yap | Mobelmor İnegöl Mobilyası</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260826_0115">
+    <style>
+        .auth-page-wrapper {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+        }
+        .auth-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .auth-header { text-align: center; margin-bottom: 28px; }
+        .auth-title { font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-bottom: 6px; }
+        .auth-subtitle { font-size: 0.9rem; color: #94a3b8; }
+        .auth-form-group { margin-bottom: 18px; }
+        .auth-form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: #cbd5e1; margin-bottom: 6px; }
+        .auth-input-wrap { position: relative; display: flex; align-items: center; }
+        .auth-input-wrap i { position: absolute; left: 14px; color: #64748b; font-size: 0.95rem; }
+        .auth-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 14px 12px 42px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .auth-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+        .btn-auth-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
+            margin-top: 10px;
+        }
+        .btn-auth-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 25px -5px rgba(2, 132, 199, 0.4); }
+        .auth-footer-link { text-align: center; margin-top: 24px; font-size: 0.9rem; color: #94a3b8; }
+        .auth-footer-link a { color: #38bdf8; font-weight: 600; text-decoration: none; }
+        .auth-footer-link a:hover { text-decoration: underline; }
+        .auth-alert {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-page-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="index.html" class="brand-logo" style="margin-bottom: 12px; display: inline-block;">
+                    <span class="logo-text">MOBEL<span>MOR</span></span>
+                </a>
+                <h1 class="auth-title">Müşteri Girişi</h1>
+                <p class="auth-subtitle">Hesabınıza giriş yaparak siparişlerinizi görüntüleyin</p>
+            </div>
+
+            <div class="auth-alert" id="loginAlert"></div>
+
+            <form id="loginForm">
+                <div class="auth-form-group">
+                    <label for="loginEmail">E-Posta Adresi *</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="loginEmail" class="auth-input" placeholder="ornek@mobelmor.com" required autofocus>
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="loginPassword">Şifre *</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="loginPassword" class="auth-input" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth-submit">
+                    <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+                </button>
+            </form>
+
+            <div class="auth-footer-link">
+                Hesabınız yok mu? <a href="uye-ol.html">Hemen Kayıt Ol</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js?v=20260826_0115"></script>
+    <script src="js/store-service.js?v=20260826_0115"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('loginAlert');
+            alertBox.style.display = 'none';
+
+            try {
+                const user = window.StoreService.loginCustomer(
+                    document.getElementById('loginEmail').value.trim(),
+                    document.getElementById('loginPassword').value
+                );
+
+                alertBox.style.background = 'rgba(34, 197, 94, 0.2)';
+                alertBox.style.borderColor = 'rgba(34, 197, 94, 0.4)';
+                alertBox.style.color = '#86efac';
+                alertBox.textContent = 'Giriş başarılı! Yönlendiriliyorsunuz...';
+                alertBox.style.display = 'block';
+
+                setTimeout(() => {
+                    location.href = 'hesabim.html';
+                }, 800);
+            } catch (err) {
+                alertBox.style.background = 'rgba(239, 68, 68, 0.2)';
+                alertBox.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                alertBox.style.color = '#fca5a5';
+                alertBox.textContent = err.message;
+                alertBox.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

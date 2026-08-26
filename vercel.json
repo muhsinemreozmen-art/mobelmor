@@ -20,6 +20,10 @@
     { "source": "/sepette-indirimler", "destination": "/kategori" },
     { "source": "/cok-satanlar", "destination": "/kategori" },
     { "source": "/2026-yaz-trendleri", "destination": "/kategori" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/hesabim", "destination": "/hesabim.html" },
+    { "source": "/giris-yap", "destination": "/giris-yap.html" },
+    { "source": "/uye-ol", "destination": "/uye-ol.html" },
     { "source": "/urun/:slug*", "destination": "/urun-detay" },
     { "source": "/urun-detay/:slug*", "destination": "/urun-detay" },
     { "source": "/kategori/:slug*", "destination": "/kategori" }

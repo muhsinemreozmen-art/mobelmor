@@ -1,0 +1,1206 @@
+[
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Lina 6 Kapaklı Vitrinli Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 65000.0,
+    "Price_Sale": 57900.0,
+    "Description": "Lina 6 Kapaklı Yatak Odası Takımı, aytaşı rengi, MDF ve suntalam malzemeleriyle dikkat çeker. Sağ ve sol dolap modülleri vitraylıdır. İnegöl mobilyasının modern tasarımlı özel üretimidir.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/lina-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Lina 6 Kapaklı Gardırop",
+      "Lina Karyola (Başlıklı)",
+      "Lina Şifonyer ve Aynası",
+      "Lina Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Lina 6 Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 32000.0,
+    "Price_Sale": 28500.0,
+    "Description": "Lina takımına ait 6 kapaklı vitrinli gardırop. Sağ ve sol modüller vitraylı cam tasarımlıdır. Aytaşı rengi MDF gövde.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/lina-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Lina 6 Kapaklı Vitrinli Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Lina Karyola (Başlıklı)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 18000.0,
+    "Price_Sale": 15900.0,
+    "Description": "Lina takımına ait döşemeli yatak başlığı ve sağlam gövdeli karyola modülü.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/lina-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Lina 6 Kapaklı Vitrinli Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Lina Şifonyer ve Aynası",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Şifonyerler",
+    "Price_Regular": 9500.0,
+    "Price_Sale": 8500.0,
+    "Description": "Lina takımına ait geniş çekmeceli şifonyer ve dekoratif ayna ünitesi.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/lina-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Lina 6 Kapaklı Vitrinli Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Lina Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5500.0,
+    "Price_Sale": 5000.0,
+    "Description": "Lina takımına ait 1 çekmeceli, aytaşı rengi şık komodin çifti.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/lina-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Lina 6 Kapaklı Vitrinli Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Bonje 6 Cam Kapaklı Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 72000.0,
+    "Price_Sale": 64500.0,
+    "Description": "Bonje 6 Cam Kapaklı Yatak Odası Takımı, modern tasarımı ve fonksiyonel yapısıyla evinize şıklık ve düzen getiriyor. Geniş depolama alanları sunan dolapları, zarif detayları ve estetik aydınlatmaları ile göz alıcı bir tasarım sunar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bonje-6-cam-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1)93714.webp"
+    ],
+    "Components": [
+      "Bonje 6 Cam Kapaklı Gardırop",
+      "Bonje Karyola (Başlıklı)",
+      "Bonje Şifonyer + Ayna",
+      "Bonje Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bonje 6 Cam Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 36000.0,
+    "Price_Sale": 32000.0,
+    "Description": "Bonje serisine ait LED aydınlatmalı, füme temperli cam kapaklı lüks gardırop modülü.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bonje-6-cam-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1)93714.webp"
+    ],
+    "Parent_Set": "Bonje 6 Cam Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bonje Karyola (Başlıklı)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 19500.0,
+    "Price_Sale": 17500.0,
+    "Description": "Bonje serisine ait kumaş döşemeli estetik yatak başlığı ve karyola iskeleti.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bonje-6-cam-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1)93714.webp"
+    ],
+    "Parent_Set": "Bonje 6 Cam Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bonje Şifonyer + Ayna",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Şifonyerler",
+    "Price_Regular": 10500.0,
+    "Price_Sale": 9500.0,
+    "Description": "Bonje serisi özel aydınlatma detaylı şifonyer ve modern ayna takımı.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bonje-6-cam-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1)93714.webp"
+    ],
+    "Parent_Set": "Bonje 6 Cam Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bonje Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 6000.0,
+    "Price_Sale": 5500.0,
+    "Description": "Bonje serisine ait aytaşı renkli 2 adet şık komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bonje-6-cam-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1)93714.webp"
+    ],
+    "Parent_Set": "Bonje 6 Cam Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Maldiv 6 Kapaklı Modern Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 58000.0,
+    "Price_Sale": 51900.0,
+    "Description": "Maldiv Modern Yatak Odası Takımı, sade çizgileri ve geniş depolama alanlarıyla modern yaşam alanlarına uygun bir tasarım sunar. İnegöl mobilyasının kalite standartlarıyla üretilmiştir.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/maldiv-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Maldiv 6 Kapaklı Gardırop",
+      "Maldiv Karyola",
+      "Maldiv Şifonyer",
+      "Maldiv Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Maldiv 6 Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 29000.0,
+    "Price_Sale": 26000.0,
+    "Description": "Maldiv serisine ait 6 kapaklı geniş iç hacimli gardırop modülü.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/maldiv-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Maldiv 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Maldiv Karyola",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 16000.0,
+    "Price_Sale": 14500.0,
+    "Description": "Maldiv serisine ait kumaş döşemeli şık karyola.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/maldiv-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Maldiv 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Maldiv Şifonyer",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Şifonyerler",
+    "Price_Regular": 8000.0,
+    "Price_Sale": 7200.0,
+    "Description": "Maldiv serisi çekmeceli şifonyer modülü.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/maldiv-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Maldiv 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Maldiv Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5000.0,
+    "Price_Sale": 4200.0,
+    "Description": "Maldiv serisine ait 2 adet komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/maldiv-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Maldiv 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Asos 6 Kapaklı Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 59000.0,
+    "Price_Sale": 52900.0,
+    "Description": "Asos 6 Kapaklı Yatak Odası Takımı, modern tasarımı ve geniş depolama alanlarıyla yatak odanıza hem şıklık hem de pratiklik katar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/asos-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Asos 6 Kapaklı Gardırop",
+      "Asos Karyola",
+      "Asos Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Asos 6 Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 31000.0,
+    "Price_Sale": 27500.0,
+    "Description": "Asos serisi 6 kapaklı gardırop modülü.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/asos-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Asos 6 Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Asos Karyola",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 17500.0,
+    "Price_Sale": 15500.0,
+    "Description": "Asos serisi karyola ve başlık.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/asos-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Asos 6 Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Asos Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5500.0,
+    "Price_Sale": 4900.0,
+    "Description": "Asos serisine ait 2 adet komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/asos-6-kapakli-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Asos 6 Kapaklı Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Defne 6 Kapaklı (Ahşap) Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Ahşap Yatak Odaları",
+    "Price_Regular": 68000.0,
+    "Price_Sale": 61000.0,
+    "Description": "Defne 6 Kapaklı Yatak Odası Takımını Farklı Modüller İle Giyinme Dolabı Olarak da Kullanabilirsiniz. Sağ, Sol, Köşe Modülleri ve 2 Kapaklı Modül de ekleyebilirsiniz.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/defne-6-kapakli-ahsap-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Defne 6 Kapaklı Ahşap Gardırop",
+      "Defne Karyola",
+      "Defne Şifonyer",
+      "Defne Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Defne 6 Kapaklı Ahşap Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 34000.0,
+    "Price_Sale": 30500.0,
+    "Description": "Defne serisine ait ahşap dokulu modüler giyinme dolabı ve gardırop.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/defne-6-kapakli-ahsap-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Defne 6 Kapaklı (Ahşap) Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Defne Karyola",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 18500.0,
+    "Price_Sale": 16500.0,
+    "Description": "Defne serisi doğal ahşap detaylı karyola ve başlık.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/defne-6-kapakli-ahsap-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Defne 6 Kapaklı (Ahşap) Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Defne Şifonyer",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Şifonyerler",
+    "Price_Regular": 9800.0,
+    "Price_Sale": 8800.0,
+    "Description": "Defne serisi ahşap şifonyer.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/defne-6-kapakli-ahsap-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Defne 6 Kapaklı (Ahşap) Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Defne Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5700.0,
+    "Price_Sale": 5200.0,
+    "Description": "Defne serisi 2 adet ahşap komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/defne-6-kapakli-ahsap-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Defne 6 Kapaklı (Ahşap) Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Datça Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 63000.0,
+    "Price_Sale": 55900.0,
+    "Description": "Datça Yatak Odası Takımı, modern stil ve 1. sınıf kalite malzemeden üretilmiştir. Yatak odanıza konfor ve estetik kazandıran bu takım, 6 kapaklı dolap, karyola, şifonyer ve ayna, komodin gibi parçalardan oluşur.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/datca-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Datça 6 Kapaklı Gardırop",
+      "Datça Karyola",
+      "Datça Şifonyer + Ayna",
+      "Datça Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Datça 6 Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 31500.0,
+    "Price_Sale": 28000.0,
+    "Description": "Datça serisine ait 6 kapaklı gardırop.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/datca-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Datça Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Datça Karyola",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 17000.0,
+    "Price_Sale": 15000.0,
+    "Description": "Datça serisine ait kumaş kaplamalı karyola.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/datca-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Datça Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Datça Şifonyer + Ayna",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Şifonyerler",
+    "Price_Regular": 9000.0,
+    "Price_Sale": 8000.0,
+    "Description": "Datça serisine ait şifonyer ve ayna.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/datca-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Datça Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Datça Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5500.0,
+    "Price_Sale": 4900.0,
+    "Description": "Datça serisine ait 2 adet komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/datca-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Datça Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Pier 6 Kapaklı Modern Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Modern Yatak Odaları",
+    "Price_Regular": 61000.0,
+    "Price_Sale": 54500.0,
+    "Description": "Pier 6 Kapaklı Modern Yatak Odası Takımı, sade ve şık tasarımıyla modern yaşam alanlarına uygun bir çözüm sunar. İnegöl mobilyasının özel üretimidir.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/pier-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Pier 6 Kapaklı Gardırop",
+      "Pier Karyola",
+      "Pier Komodin (2 Adet)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Pier 6 Kapaklı Gardırop",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Gardıroplar",
+    "Price_Regular": 32000.0,
+    "Price_Sale": 28500.0,
+    "Description": "Pier serisine ait mat lake boyalı 6 kapaklı gardırop.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/pier-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Pier 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Pier Karyola",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Karyolalar & Başlıklar",
+    "Price_Regular": 18000.0,
+    "Price_Sale": 16000.0,
+    "Description": "Pier serisine ait konforlu karyola ünitesi.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/pier-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Pier 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Pier Komodin (2 Adet)",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 5500.0,
+    "Price_Sale": 5000.0,
+    "Description": "Pier serisine ait 2 adet komodin.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/pier-6-kapakli-modern-yatak-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Pier 6 Kapaklı Modern Yatak Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Trend Ahşap Ayaklı Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Ahşap Yemek Odaları",
+    "Price_Regular": 48000.0,
+    "Price_Sale": 42900.0,
+    "Description": "Trend Ahşap Ayaklı Yemek Odası Takımı aytaşı ve ceviz rengi, modern tasarımı ve İnegöl Mobilyasının kaliteli ürünleriyle sıcak ve davetkar bir atmosfer oluşturur.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/trend-ahsap-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Trend Ahşap Ayaklı Yemek Masası",
+      "Trend Sandalye (6 Adet)",
+      "Trend Konsol / Büfe"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Trend Ahşap Ayaklı Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 21000.0,
+    "Price_Sale": 18900.0,
+    "Description": "Trend serisine ait masif ahşap ayaklı şık yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/trend-ahsap-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Trend Ahşap Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Trend Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 15000.0,
+    "Price_Sale": 13500.0,
+    "Description": "Trend serisine ait ergonomik döşemeli 6 adet sandalye seti.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/trend-ahsap-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Trend Ahşap Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Trend Konsol / Büfe",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 14000.0,
+    "Price_Sale": 12500.0,
+    "Description": "Trend serisine ait geniş depolama alanlı konsol / büfe ünitesi.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/trend-ahsap-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Trend Ahşap Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Bella Modern Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Modern Yemek Odaları",
+    "Price_Regular": 46000.0,
+    "Price_Sale": 40900.0,
+    "Description": "Bella Modern Yemek Odası Takımı, şık ve minimal çizgileriyle modern ev dekorasyonuna mükemmel uyum sağlar. İnegöl mobilyası işçiliği ile uzun yıllar kullanım sunar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bella-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Bella Yemek Masası",
+      "Bella Sandalye (6 Adet)",
+      "Bella Konsol / Büfe"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bella Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 19500.0,
+    "Price_Sale": 17500.0,
+    "Description": "Bella serisine ait modern çizgili yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bella-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Bella Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bella Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 14500.0,
+    "Price_Sale": 13000.0,
+    "Description": "Bella serisine ait konforlu oturumlu 6 adet sandalye takımı.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bella-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Bella Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Bella Konsol / Büfe",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 13500.0,
+    "Price_Sale": 12000.0,
+    "Description": "Bella serisi çok amaçlı konsol dolabı.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/bella-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Bella Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "İnci Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Modern Yemek Odaları",
+    "Price_Regular": 49000.0,
+    "Price_Sale": 43500.0,
+    "Description": "İnci Yemek Odası Takımı, modern yemek odası modelleri arasında öne çıkan bir seçimdir. MDF ve Suntalam malzemeden üretilen bu takım, konsol, sabit masa ve 6 adet sandalyeden oluşur.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/inci-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "İnci Sabit Yemek Masası",
+      "İnci Sandalye (6 Adet)",
+      "İnci Konsol"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "İnci Sabit Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 21000.0,
+    "Price_Sale": 18500.0,
+    "Description": "İnci serisine ait sabit ayaklı modern yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/inci-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "İnci Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "İnci Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 15500.0,
+    "Price_Sale": 14000.0,
+    "Description": "İnci serisine ait leke tutmaz kumaşlı 6 adet sandalye.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/inci-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "İnci Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "İnci Konsol",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 14500.0,
+    "Price_Sale": 13000.0,
+    "Description": "İnci serisi şık aynalı konsol.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/inci-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "İnci Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Orjin Modern Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Modern Yemek Odaları",
+    "Price_Regular": 51000.0,
+    "Price_Sale": 45900.0,
+    "Description": "İnegöl mobilyasının özel üretimi olan Orjin Modern Yemek Odası Takımı, aytaşı rengi ve modern tasarımı ile evinize şıklık katıyor.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/orjin-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Orjin Yemek Masası",
+      "Orjin Sandalye (6 Adet)",
+      "Orjin Konsol / Büfe"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Orjin Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 22500.0,
+    "Price_Sale": 20000.0,
+    "Description": "Orjin serisi geniş yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/orjin-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Orjin Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Orjin Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 16000.0,
+    "Price_Sale": 14500.0,
+    "Description": "Orjin serisi 6 adet kaliteli sandalye seti.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/orjin-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Orjin Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Orjin Konsol / Büfe",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 15000.0,
+    "Price_Sale": 13400.0,
+    "Description": "Orjin serisi aytaşı renkli konsol.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/orjin-modern-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Orjin Modern Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Prova Metal Ayaklı Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Metal Ayaklı Yemek Odaları",
+    "Price_Regular": 53000.0,
+    "Price_Sale": 47500.0,
+    "Description": "Prova Metal Ayaklı Yemek Odası Takımı, endüstriyel estetik ile modern tasarımı buluşturuyor. Sağlam metal ayaklar ve kaliteli yüzey malzemeleriyle güçlü bir görünüm sunar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/prova-metal-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Prova Metal Ayaklı Yemek Masası",
+      "Prova Sandalye (6 Adet)",
+      "Prova Konsol"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Prova Metal Ayaklı Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 23500.0,
+    "Price_Sale": 21000.0,
+    "Description": "Prova serisi statik fırın boyalı metal ayaklı dayanıklı yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/prova-metal-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Prova Metal Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Prova Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 16500.0,
+    "Price_Sale": 15000.0,
+    "Description": "Prova serisi metal ayaklı 6 adet modern sandalye.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/prova-metal-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Prova Metal Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Prova Konsol",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 15500.0,
+    "Price_Sale": 13800.0,
+    "Description": "Prova serisi endüstriyel metal ayaklı konsol dolabı.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/prova-metal-ayakli-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Prova Metal Ayaklı Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Vega Açılır Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Açılır Yemek Odaları",
+    "Price_Regular": 47500.0,
+    "Price_Sale": 41900.0,
+    "Description": "Vega Açılır Yemek Odası Takımı, pratik açılır masa mekanizmasıyla sınırlı alanlarda da geniş bir yemek alanı sunar. İnegöl mobilyasının fonksiyonel ve şık tasarım anlayışının en iyi örneğidir.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/vega-acilir-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Vega Açılır Yemek Masası",
+      "Vega Sandalye (6 Adet)",
+      "Vega Konsol"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Vega Açılır Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 20500.0,
+    "Price_Sale": 18000.0,
+    "Description": "Vega serisi gizli teleskopik raylı açılır fonksiyonel yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/vega-acilir-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Vega Açılır Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Vega Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 15000.0,
+    "Price_Sale": 13500.0,
+    "Description": "Vega serisi 6 adet şık sandalye.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/vega-acilir-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Vega Açılır Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Vega Konsol",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 14000.0,
+    "Price_Sale": 12400.0,
+    "Description": "Vega serisi çok amaçlı konsol.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/vega-acilir-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Vega Açılır Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Nova Luxury Yemek Odası Takımı",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Lüks / Avangarde Yemek Odaları",
+    "Price_Regular": 69000.0,
+    "Price_Sale": 61900.0,
+    "Description": "Nova Luxury Yemek Odası Takımı, gösterişli ve prestijli tasarımıyla evinize lüks bir dokunuş katar. Altın detaylar ve kaliteli malzeme kullanımıyla öne çıkar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/nova-luxury-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Nova Luxury Yemek Masası",
+      "Nova Luxury Sandalye (6 Adet)",
+      "Nova Luxury Konsol / Vitrin"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Nova Luxury Yemek Masası",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Yemek Masaları",
+    "Price_Regular": 31000.0,
+    "Price_Sale": 27500.0,
+    "Description": "Nova Luxury gold metal ayaklı gösterişli yemek masası.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/nova-luxury-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Nova Luxury Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Nova Luxury Sandalye (6 Adet)",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Sandalyeler",
+    "Price_Regular": 22000.0,
+    "Price_Sale": 19800.0,
+    "Description": "Nova Luxury kadife kumaşlı ve gold detaylı 6 adet sandalye seti.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/nova-luxury-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Nova Luxury Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Nova Luxury Konsol / Vitrin",
+    "Main_Category": "Yemek Odası",
+    "Sub_Category": "Konsollar & Büfeler",
+    "Price_Regular": 21000.0,
+    "Price_Sale": 18800.0,
+    "Description": "Nova Luxury cam detaylı ve gold kulp/ayaklı konsol.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/nova-luxury-yemek-odasi-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Nova Luxury Yemek Odası Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Royal Yataklı Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Yataklı Koltuk Takımları",
+    "Price_Regular": 54000.0,
+    "Price_Sale": 47900.0,
+    "Description": "Royal Yataklı Koltuk Takımı, fırınlanmış gürgen ağacından üretilmiştir ve modern metal ayaklara sahiptir. Yatak olma özelliğiyle pratik bir konfor sunar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/royal-yatakli-koltuk-takimi-inegol-mobilyasi (1)17379.webp"
+    ],
+    "Components": [
+      "Royal 3'lü Kanepe (Yataklı)",
+      "Royal 2'li Kanepe",
+      "Royal Tekli Koltuk (Berjer)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Royal 3'lü Kanepe (Yataklı)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 24000.0,
+    "Price_Sale": 21500.0,
+    "Description": "Royal serisi sırt devirmeli yatak mekanizmasına sahip 3'lü konforlu kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/royal-yatakli-koltuk-takimi-inegol-mobilyasi (1)17379.webp"
+    ],
+    "Parent_Set": "Royal Yataklı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Royal 2'li Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 19000.0,
+    "Price_Sale": 17000.0,
+    "Description": "Royal serisi 2'li kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/royal-yatakli-koltuk-takimi-inegol-mobilyasi (1)17379.webp"
+    ],
+    "Parent_Set": "Royal Yataklı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Royal Tekli Koltuk (Berjer)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Berjerler & Tekliler",
+    "Price_Regular": 13000.0,
+    "Price_Sale": 11400.0,
+    "Description": "Royal serisi yüksek sırt destekli ergonomik berjer.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/royal-yatakli-koltuk-takimi-inegol-mobilyasi (1)17379.webp"
+    ],
+    "Parent_Set": "Royal Yataklı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Ahuse Bronz Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Modern Koltuk Takımları",
+    "Price_Regular": 62000.0,
+    "Price_Sale": 54900.0,
+    "Description": "Ahuse Bronz Koltuk Takımı, lüks bronz metal detayları ve premium kumaşıyla salonunuza ayrıcalıklı bir görünüm kazandırır. Avangarde tasarım anlayışı ve İnegöl mobilyası işçiliğiyle üretilmiştir.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ahuse-bronz-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Ahuse 3'lü Kanepe",
+      "Ahuse 2'li Kanepe",
+      "Ahuse Tekli Koltuk"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Ahuse 3'lü Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 28000.0,
+    "Price_Sale": 25000.0,
+    "Description": "Ahuse serisi bronz metal ayaklı lüks 3'lü kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ahuse-bronz-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Ahuse Bronz Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Ahuse 2'li Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 22000.0,
+    "Price_Sale": 19500.0,
+    "Description": "Ahuse serisi bronz metal ayaklı 2'li kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ahuse-bronz-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Ahuse Bronz Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Ahuse Tekli Koltuk",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Berjerler & Tekliler",
+    "Price_Regular": 14500.0,
+    "Price_Sale": 12900.0,
+    "Description": "Ahuse serisi bronz ayaklı döner mekanizmalı tekli berjer.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ahuse-bronz-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Ahuse Bronz Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Premium Modern Köşe Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Köşe Koltuklar",
+    "Price_Regular": 52000.0,
+    "Price_Sale": 45900.0,
+    "Description": "Premium Modern Köşe Koltuk Takımı, geniş oturma alanı ve zarif tasarımıyla yaşam alanınıza şıklık katar. Metal ayak yapısı modern bir hava oluştururken konforlu minderleri uzun süreli rahatlık sağlar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/premium-modern-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Premium Köşe Koltuk (Ana Modül)",
+      "Premium Köşe Koltuk (Uzatmalı Chaise / Puf)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Premium Köşe Koltuk (Ana Modül)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Köşe Koltuklar",
+    "Price_Regular": 34000.0,
+    "Price_Sale": 30000.0,
+    "Description": "Premium serisi sol/sağ uyumlu modüler köşe koltuk ana gövdesi.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/premium-modern-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Premium Modern Köşe Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Premium Köşe Koltuk (Uzatmalı Chaise / Puf)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Puflar",
+    "Price_Regular": 20000.0,
+    "Price_Sale": 17900.0,
+    "Description": "Premium serisi uzanma modülü (chaise longue) / bağımsız puf.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/premium-modern-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Premium Modern Köşe Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Ravella Motorlu Relax Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Motorlu & Mekanizmalı Koltuklar",
+    "Price_Regular": 59000.0,
+    "Price_Sale": 52000.0,
+    "Description": "Ravella Motorlu Koltuk Takımı, açık krem tonlu yumuşak dokulu kumaşı ve dolgun minder yapısıyla ferah, modern bir görünüm kazandırır. Motorlu mekanizması sayesinde tek tuşla sırt ve ayak açısını ayarlar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ravella-motorlu-berjer-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Ravella 3'lü Motorlu Kanepe",
+      "Ravella Motorlu Döner Berjer"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Ravella 3'lü Motorlu Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 36000.0,
+    "Price_Sale": 32000.0,
+    "Description": "Ravella serisi çift motorlu yatar mekanizmalı 3'lü kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ravella-motorlu-berjer-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Ravella Motorlu Relax Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Ravella Motorlu Döner Berjer",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Berjerler & Tekliler",
+    "Price_Regular": 25000.0,
+    "Price_Sale": 22000.0,
+    "Description": "Ravella motorlu berjer, 360 derece döner taban, USB şarj portu ve tek tuşla uzanma fonksiyonu.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/ravella-motorlu-berjer-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Ravella Motorlu Relax Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Carius Yataklı Boucle Köşe Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Köşe Koltuklar",
+    "Price_Regular": 48500.0,
+    "Price_Sale": 42900.0,
+    "Description": "Carius, yumuşak hatlı modern tasarımı, boucle (teddy) dokulu döşemesi ve geniş oturumuyla salonunuza sıcak bir şıklık katar. Kolay açılır yatak mekanizması misafirler için konforlu bir uyku alanı sunar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/carius-yatakli-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Carius Yataklı Köşe Koltuk (Ana Modül)",
+      "Carius Boucle Puf"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Carius Yataklı Köşe Koltuk (Ana Modül)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Köşe Koltuklar",
+    "Price_Regular": 33500.0,
+    "Price_Sale": 29500.0,
+    "Description": "Carius boucle kumaşlı yataklı köşe koltuk ana gövdesi.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/carius-yatakli-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Carius Yataklı Boucle Köşe Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Carius Boucle Puf",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Puflar",
+    "Price_Regular": 16500.0,
+    "Price_Sale": 14500.0,
+    "Description": "Carius serisi yumuşak dokulu boucle puf.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/carius-yatakli-kose-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Carius Yataklı Boucle Köşe Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Luxor Akıllı Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Akıllı / Motorlu Koltuklar",
+    "Price_Regular": 68000.0,
+    "Price_Sale": 59900.0,
+    "Description": "Luxor Akıllı Koltuk Takımı, USB hızlı şarj portları, LED ambiyans aydınlatma ve motorlu mekanizmasıyla modern teknolojik konforu evinize taşıyor.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/luxor-akilli-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Luxor Akıllı 3'lü Kanepe",
+      "Luxor Akıllı 2'li Kanepe",
+      "Luxor Tekli Koltuk"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Luxor Akıllı 3'lü Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 32000.0,
+    "Price_Sale": 28500.0,
+    "Description": "Luxor akıllı 3'lü kanepe. Entegre şarj ve aydınlatma paneli.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/luxor-akilli-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Luxor Akıllı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Luxor Akıllı 2'li Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 24000.0,
+    "Price_Sale": 21000.0,
+    "Description": "Luxor serisi 2'li kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/luxor-akilli-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Luxor Akıllı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Luxor Tekli Koltuk",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Berjerler & Tekliler",
+    "Price_Regular": 15000.0,
+    "Price_Sale": 13000.0,
+    "Description": "Luxor serisi tekli berjer koltuk.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/luxor-akilli-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Luxor Akıllı Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Chester Klasik Koltuk Takımı",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Chester Koltuk Takımları",
+    "Price_Regular": 58000.0,
+    "Price_Sale": 51000.0,
+    "Description": "Chester Klasik Koltuk Takımı, geleneksel İngiliz Chester tasarımını İnegöl mobilyası işçiliğiyle buluşturuyor. El işçiliği kapitone dikişleri, masif ahşap ayakları ve premium kumaşıyla öne çıkar.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/chester-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Components": [
+      "Chester 3'lü Kanepe",
+      "Chester 2'li Kanepe",
+      "Chester Tekli Koltuk (Berjer)"
+    ]
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Chester 3'lü Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 27000.0,
+    "Price_Sale": 23900.0,
+    "Description": "Chester serisi kapitone detaylı masif ahşap ayaklı 3'lü kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/chester-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Chester Klasik Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Chester 2'li Kanepe",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Kanepeler & Koltuklar",
+    "Price_Regular": 21000.0,
+    "Price_Sale": 18500.0,
+    "Description": "Chester serisi 2'li kanepe.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/chester-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Chester Klasik Koltuk Takımı"
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Chester Tekli Koltuk (Berjer)",
+    "Main_Category": "Oturma Odası",
+    "Sub_Category": "Berjerler & Tekliler",
+    "Price_Regular": 14000.0,
+    "Price_Sale": 12200.0,
+    "Description": "Chester serisi klasik kapitoneli tekli berjer.",
+    "Images": [
+      "https://www.mobilyamevime.com/images/resize/yeni/chester-koltuk-takimi-inegol-mobilyasi (1).webp"
+    ],
+    "Parent_Set": "Chester Klasik Koltuk Takımı"
+  }
+]

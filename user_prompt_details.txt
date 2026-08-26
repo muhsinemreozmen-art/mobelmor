@@ -1,0 +1,102 @@
+<USER_REQUEST>
+Bu çok önemli bir detay! Sınır koymak, özellikle Claude gibi yapay zeka modelleriyle çalışırken bütçeyi (token kullanımını) ve süreyi optimize etmek, aynı zamanda tam olarak istediğiniz veriye odaklanmasını sağlamak için harika bir adımdır.
+
+Toplam 21 ürün (takım/ana ürün) çekileceği ve bunun 3 kategoriye (Yatak Odası, Yemek Odası, Oturma Odası) 7'şer adet olarak dağıtılacağı bilgisini prompta "Kapsam ve Sınırlar" maddesi olarak ekleyerek güncelledim.
+
+Ayrıca Claude'un kafasının karışmaması için ufak bir detay ekledim: 21 ürün limiti "Ana Takım" ürünleri için geçerli olacak. Yani 7 Yatak Odası takımından üretilecek olan alt "Solo" ürünler (komodin, şifonyer vb.) bu 21 limitinin dışında ekstradan üretilecek. (Aksi halde 1 yatak odası takımından 4 solo ürün çıkarsa limiti hemen doldurur ve diğer takımlara geçemez).
+
+İşte Antigravity üzerinden Claude'a vereceğiniz güncellenmiş ve son haliyle kusursuz prompt:
+
+Güncellenmiş Antigravity / Claude Promptu:
+Rol ve Görev Tanımı:
+Sen ileri düzey bir e-ticaret veri mühendisi ve web scraping uzmanısın. Görevin, [www.mobilyamevime.com](https://www.mobilyamevime.com) adresindeki ürün verilerini analiz ederek, eksiksiz ve hatasız bir şekilde benim e-ticaret sistemime aktarılacak yapılandırılmış verilere (JSON/CSV) dönüştürmektir. Aşağıdaki kesin kurallara harfiyen uymalısın.
+
+1. Kapsam, Kategori ve Ürün Limitleri (Kesin Kural):
+
+Tüm işlem boyunca sadece toplam 21 adet "Ana Ürün (Takım/Set)" çekeceksin.
+
+Bu 21 ana ürün şu 3 kategoriden çekilmelidir: Yatak Odası (7 adet), Yemek Odası (7 adet) ve Oturma Odası (7 adet).
+
+Her kategori için tam olarak 7 farklı ana ürüne ulaştığında, o kategori için veri çekme/analiz işlemini durdur ve diğerine geç.
+
+Önemli Not: Takımlardan parçalayarak üreteceğin "Solo Ürünler" (örn. komodin, sandalye vb.) bu 21 adetlik ana limitin dışındadır. Ana ürün limiti dolana kadar, alt parçaları solo ürün olarak üretmeye devam et.
+
+2. Görsel Çekim ve Eşleştirme Kuralları (Sıfır Hata Politikası):
+
+Kalite: Ürün sayfalarındaki görsellerin "thumbnail" (küçük resim) versiyonlarını değil, her zaman en yüksek çözünürlüklü (high-res/orijinal) URL'lerini tespit edip alacaksın.
+
+Hassasiyet: Sadece o anki ürüne ait görselleri çekeceksin. "Önerilen Ürünler", "Birlikte Alınanlar" veya site banner'larına ait görseller kesinlikle ürün görseli listesine karışmamalı. Görseller sırasıyla (Ana görsel 1, Ek görsel 2, 3...) array (dizi) halinde iletilmelidir.
+
+3. Kategori ve Alt Kategori Yerleşimi:
+
+Ürünlerin bulunduğu breadcrumb (kategori yolu) hiyerarşisini tam olarak koruyacaksın (Örn: Yatak Odası > Modern Yatak Odaları > X Modeli).
+
+Ana kategori ve alt kategori alanları veri tablosunda ayrı sütunlar/alanlar olarak tanımlanmalıdır.
+
+4. Set (Takım) Ürünlerini Ayrıştırma ve Solo Ürün Oluşturma (Kritik Görev):
+
+Eğer taradığın ürün bir "Takım" ise (Örn: Yatak Odası Takımı, Yemek Odası Takımı), ürün sayfasındaki açıklamaları, varyasyonları veya parça listesini analiz et.
+
+Takım içindeki her bir modülü (Örn: Komodin, Şifonyer, Karyola, Masa, Sandalye) ana takımın içinden ayıklayarak yepyeni ve bağımsız birer solo ürün (SKU) olarak da oluştur.
+
+Solo Ürün Kategorizasyonu: Ayıkladığın bu solo ürünleri kendi ilgili alt kategorilerine yerleştir. (Örn: Yatak odası takımından çıkan komodini "Yatak Odası > Komodinler" kategorisine, yemek odasından çıkan sandalyeyi "Yemek Odası > Sandalyeler" kategorisine ekle).
+
+Solo Ürün Görselleri: Sadece o parçayı gösteren görselleri bu yeni solo ürüne ata. Eğer parçaya özel görsel yoksa, ana takım görselini kullan ama ürün adında bunun tekil bir ürün olduğunu belirt (Örn: "[Model Adı] Komodin").
+
+5. Fiyatlandırma Kuralları:
+
+Fiyat verilerini çekerken sitedeki güncel satış fiyatı (indirimli fiyat varsa indirimli fiyat) ve liste fiyatı (üstü çizili fiyat) verilerini ayrı ayrı al.
+
+Fiyatlar hedef sitedeki değerlerle kuruşu kuruşuna, birebir aynı olmalıdır. Sayısal değerleri çekerken para birimi (₺) ve binlik/ondalık ayraçları doğru parse et (Örn: 15450.00 şeklinde nokta ondalık ayracı olan standart sayısal formata dönüştür).
+
+Solo Ürün Fiyatları: Takımdan ayırdığın tekil parçaların fiyatlarını ürün detayındaki "Opsiyonlar/Parça Fiyatları" bölümünden çek ve ilgili tekil ürüne ata.
+
+6. Çıktı Formatı:
+Tüm bu verileri benim siteme kolayca import edebilmem için aşağıdaki JSON şemasına uygun olarak üret:
+
+JSON
+[
+  {
+    "Product_Type": "Set",
+    "Product_Name": "Örnek Yatak Odası Takımı",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Ahşap Yatak Odaları",
+    "Price_Regular": 45000.00,
+    "Price_Sale": 39999.00,
+    "Description": "Ürün açıklaması burada yer alacak...",
+    "Images": [
+      "https://www.mobilyamevime.com/.../high-res-image1.jpg"
+    ],
+    "Components": ["Örnek Yatak Odası Takımı - Komodin", "Örnek Yatak Odası Takımı - Şifonyer"] 
+  },
+  {
+    "Product_Type": "Solo",
+    "Product_Name": "Örnek Yatak Odası Takımı - Komodin",
+    "Main_Category": "Yatak Odası",
+    "Sub_Category": "Komodinler",
+    "Price_Regular": 4500.00,
+    "Price_Sale": 4000.00,
+    "Description": "Bu ürün Örnek Yatak Odası Takımının tekil komodin modülüdür...",
+    "Images": [
+      "https://www.mobilyamevime.com/.../high-res-komodin.jpg"
+    ],
+    "Parent_Set": "Örnek Yatak Odası Takımı"
+  }
+]
+Şimdi sana vereceğim sayfa HTML/DOM yapılarını bu kurallara göre analiz et. Hedeflenen kategori başına 7, toplam 21 ana ürün limitine ulaştığında işlemi tamamla. Anlaşılmayan bir yer varsa, işleme başlamadan önce sor.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-08-16T08:01:33+03:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\cocum\.gemini\antigravity\scratch\mobelmor\index.html (LANGUAGE_HTML)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\cocum\.gemini\antigravity\scratch\mobelmor\css\styles.css (LANGUAGE_CSS)
+- c:\Users\cocum\.gemini\antigravity\scratch\mobelmor\urun-detay.html (LANGUAGE_HTML)
+- c:\Users\cocum\.gemini\antigravity\scratch\mobelmor\product-detail.html (LANGUAGE_HTML)
+- c:\Users\cocum\.gemini\antigravity\scratch\mobelmor\index.html (LANGUAGE_HTML)
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.7 Flash (Medium) to Claude Sonnet 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
