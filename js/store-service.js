@@ -259,6 +259,35 @@
             return false;
         },
 
+        
+        moveProduct: function (id, dir) {
+            const products = this.getProducts(true);
+            const idx = products.findIndex(p => p.id == id);
+            if (idx === -1) return false;
+            const targetIdx = idx + dir;
+            if (targetIdx < 0 || targetIdx >= products.length) return false;
+
+            const temp = products[idx];
+            products[idx] = products[targetIdx];
+            products[targetIdx] = temp;
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            return true;
+        },
+
+        setProductSortOrder: function (id, order) {
+            const products = this.getProducts(true);
+            const idx = products.findIndex(p => p.id == id);
+            if (idx === -1) return false;
+
+            const item = products.splice(idx, 1)[0];
+            const targetIdx = Math.max(0, Math.min(products.length, order - 1));
+            products.splice(targetIdx, 0, item);
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            return true;
+        },
+
         adminLogout: function () {
             sessionStorage.removeItem('mobelmor_admin_logged');
         }

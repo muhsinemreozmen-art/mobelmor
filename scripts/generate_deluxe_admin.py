@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+eoz_html = """<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -883,7 +883,7 @@
                 if (typeof prod.dimensions === 'string') {
                     dimsText = prod.dimensions;
                 } else if (prod.specs) {
-                    dimsText = Object.entries(prod.specs).map(([k, v]) => `${k}: ${v}`).join('\n');
+                    dimsText = Object.entries(prod.specs).map(([k, v]) => `${k}: ${v}`).join('\\n');
                 }
                 document.getElementById('editProdDimensions').value = dimsText;
 
@@ -969,7 +969,7 @@
                         </select>
                     </td>
                     <td>
-                        <button onclick="alert('Müşteri Adresi:\n${(o.address || '').replace(/'/g, '')}\nNot: ${(o.notes || '').replace(/'/g, '')}')" style="background:#0f172a; color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-eye"></i> Detay</button>
+                        <button onclick="alert('Müşteri Adresi:\\n${(o.address || '').replace(/'/g, '')}\\nNot: ${(o.notes || '').replace(/'/g, '')}')" style="background:#0f172a; color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-eye"></i> Detay</button>
                     </td>
                 </tr>
             `).join('');
@@ -1000,3 +1000,7 @@
     </script>
 </body>
 </html>
+"""
+
+open('eoz98.html', 'w', encoding='utf-8').write(eoz_html)
+print("Successfully generated deluxe eoz98.html")
