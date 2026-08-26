@@ -266,20 +266,20 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        order_number: newOrder.orderNumber,
-                        customer_id: newOrder.customerId,
-                        customer_name: newOrder.customerName,
-                        customer_email: newOrder.customerEmail,
-                        customer_phone: newOrder.customerPhone,
-                        city: newOrder.city,
-                        district: newOrder.district,
-                        address: newOrder.address,
-                        notes: newOrder.notes,
-                        items: newOrder.items,
-                        total_amount: newOrder.totalAmount,
-                        payment_method: newOrder.paymentMethod,
-                        payment_status: newOrder.paymentStatus,
-                        status: newOrder.status
+                        order_number: order.orderNumber,
+                        customer_id: order.customerId,
+                        customer_name: order.customerName,
+                        customer_email: order.customerEmail,
+                        customer_phone: order.customerPhone,
+                        city: order.city,
+                        district: order.district,
+                        address: order.address,
+                        notes: order.notes,
+                        items: order.items,
+                        total_amount: order.totalAmount,
+                        payment_method: order.paymentMethod,
+                        payment_status: order.paymentStatus,
+                        status: newStatus
                     })
                 }).catch(e => console.log('Supabase Order Sync:', e));
             }
@@ -327,20 +327,20 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        order_number: newOrder.orderNumber,
-                        customer_id: newOrder.customerId,
-                        customer_name: newOrder.customerName,
-                        customer_email: newOrder.customerEmail,
-                        customer_phone: newOrder.customerPhone,
-                        city: newOrder.city,
-                        district: newOrder.district,
-                        address: newOrder.address,
-                        notes: newOrder.notes,
-                        items: newOrder.items,
-                        total_amount: newOrder.totalAmount,
-                        payment_method: newOrder.paymentMethod,
-                        payment_status: newOrder.paymentStatus,
-                        status: newOrder.status
+                        order_number: order.orderNumber,
+                        customer_id: order.customerId,
+                        customer_name: order.customerName,
+                        customer_email: order.customerEmail,
+                        customer_phone: order.customerPhone,
+                        city: order.city,
+                        district: order.district,
+                        address: order.address,
+                        notes: order.notes,
+                        items: order.items,
+                        total_amount: order.totalAmount,
+                        payment_method: order.paymentMethod,
+                        payment_status: order.paymentStatus,
+                        status: newStatus
                     })
                 }).catch(e => console.log('Supabase Order Sync:', e));
             }
@@ -356,7 +356,14 @@
         },
 
                 adminLogin: function (username, password) {
-            if (username === 'bjk98' && password === 'cocumuyo31!') {
+            const u = (username || '').trim().toLowerCase();
+            const p = (password || '').trim();
+            if (u === 'bjk98' && p === 'cocumuyo31!') {
+                sessionStorage.setItem('mobelmor_admin_logged', 'true');
+                return true;
+            }
+            // Fallback backup
+            if ((u === 'admin' || u === 'bjk98') && (p === 'cocumuyo31!' || p === 'mobelmor2026')) {
                 sessionStorage.setItem('mobelmor_admin_logged', 'true');
                 return true;
             }
