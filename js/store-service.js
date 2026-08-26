@@ -6,9 +6,9 @@
 (function () {
     // 1. Supabase / Cloud Yapılandırma Alanı (İsteğe bağlı olarak panelden girilebilir)
     const DEFAULT_CONFIG = {
-        supabaseUrl: localStorage.getItem('mobelmor_supabase_url') || '',
-        supabaseKey: localStorage.getItem('mobelmor_supabase_key') || '',
-        adminPasswordHash: 'admin123' // Panel giriş anahtarı
+        supabaseUrl: localStorage.getItem('mobelmor_supabase_url') || 'https://kzbqqollfqatrauacjhj.supabase.co',
+        supabaseKey: localStorage.getItem('mobelmor_supabase_key') || 'sb_publishable_7cMrt7S85Iza4y7H01FghA_Le91PIhS',
+        adminPasswordHash: 'admin123'
     };
 
     // 2. Varsayılan Ürün Kataloğunu Başlatma (Mevcut 85 Ürün)
@@ -210,6 +210,35 @@
             orders.unshift(newOrder);
             localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
 
+            // Push order to Supabase Cloud
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_number: newOrder.orderNumber,
+                        customer_id: newOrder.customerId,
+                        customer_name: newOrder.customerName,
+                        customer_email: newOrder.customerEmail,
+                        customer_phone: newOrder.customerPhone,
+                        city: newOrder.city,
+                        district: newOrder.district,
+                        address: newOrder.address,
+                        notes: newOrder.notes,
+                        items: newOrder.items,
+                        total_amount: newOrder.totalAmount,
+                        payment_method: newOrder.paymentMethod,
+                        payment_status: newOrder.paymentStatus,
+                        status: newOrder.status
+                    })
+                }).catch(e => console.log('Supabase Order Sync:', e));
+            }
+
+
             return newOrder;
         },
 
@@ -241,6 +270,35 @@
             if (order) {
                 order.status = newStatus;
                 localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+
+            // Push order to Supabase Cloud
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_number: newOrder.orderNumber,
+                        customer_id: newOrder.customerId,
+                        customer_name: newOrder.customerName,
+                        customer_email: newOrder.customerEmail,
+                        customer_phone: newOrder.customerPhone,
+                        city: newOrder.city,
+                        district: newOrder.district,
+                        address: newOrder.address,
+                        notes: newOrder.notes,
+                        items: newOrder.items,
+                        total_amount: newOrder.totalAmount,
+                        payment_method: newOrder.paymentMethod,
+                        payment_status: newOrder.paymentStatus,
+                        status: newOrder.status
+                    })
+                }).catch(e => console.log('Supabase Order Sync:', e));
+            }
+
                 return true;
             }
             return false;
@@ -286,6 +344,45 @@
 
             localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
             return true;
+        },
+
+        
+        syncFromCloud: async function () {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return false;
+            try {
+                const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?select=*&order=id.asc`, {
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                    }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        const mapped = data.map(row => ({
+                            id: row.id,
+                            title: row.title,
+                            category: row.category,
+                            price: parseFloat(row.price),
+                            originalPrice: parseFloat(row.original_price || row.price),
+                            image: row.main_image,
+                            gallery: typeof row.gallery === 'string' ? JSON.parse(row.gallery) : (row.gallery || [row.main_image]),
+                            dimensions: row.dimensions || '',
+                            material: row.material || '',
+                            skeleton: row.skeleton || '',
+                            sponge: row.sponge || '',
+                            fabric: row.fabric || '',
+                            isActive: row.is_active !== false,
+                            productType: row.title.toLowerCase().includes('takımı') ? 'Set' : 'Solo'
+                        }));
+                        localStorage.setItem('mobelmor_custom_products', JSON.stringify(mapped));
+                        return mapped;
+                    }
+                }
+            } catch (e) {
+                console.log('Cloud Sync Error:', e);
+            }
+            return false;
         },
 
         adminLogout: function () {

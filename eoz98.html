@@ -708,7 +708,7 @@
         function loadDashboardData() {
             const products = window.StoreService.getProducts(true);
             const sets = products.filter(p => p.productType === 'Set');
-            const orders = window.StoreService.getAllOrders();
+            const orders = await fetchCloudOrders();
 
             document.getElementById('kpiTotalProducts').textContent = products.length;
             document.getElementById('kpiTotalSets').textContent = sets.length;
@@ -944,7 +944,7 @@
 
         // Render Orders Table
         function renderOrdersTable() {
-            const orders = window.StoreService.getAllOrders();
+            const orders = await fetchCloudOrders();
             const tbody = document.getElementById('ordersTableBody');
             
             if (orders.length === 0) {
