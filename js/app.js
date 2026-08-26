@@ -1639,27 +1639,27 @@ const PRODUCTS = [
 ];
 
 const CATEGORY_NAMES = {
-    all: "Tüm Koleksiyon",
-    living: "Oturma Odası",
-    dining: "Yemek Odası",
-    bedroom: "Yatak Odası",
-    office: "Çalışma Odası"
+  all: "Tüm Koleksiyon",
+  living: "Oturma Odası",
+  dining: "Yemek Odası",
+  bedroom: "Yatak Odası",
+  office: "Çalışma Odası"
 };
 
 const SUBCATEGORY_NAMES = {
-    all: "Tümü",
-    sofas: "Koltuk & Takımlar",
-    armchairs: "Berjerler",
-    tables: "Sehpalar",
-    consoles: "Konsollar",
-    "dining-tables": "Yemek Masaları",
-    chairs: "Sandalyeler",
-    buffets: "Büfeler & Konsollar",
-    beds: "Karyola & Yataklar",
-    nightstands: "Komodinler",
-    wardrobes: "Gardıroplar",
-    desks: "Çalışma Masaları",
-    bookcases: "Kitaplıklar"
+  all: "Tümü",
+  sofas: "Koltuk & Takımlar",
+  armchairs: "Berjerler",
+  tables: "Sehpalar",
+  consoles: "Konsollar",
+  "dining-tables": "Yemek Masaları",
+  chairs: "Sandalyeler",
+  buffets: "Büfeler & Konsollar",
+  beds: "Karyola & Yataklar",
+  nightstands: "Komodinler",
+  wardrobes: "Gardıroplar",
+  desks: "Çalışma Masaları",
+  bookcases: "Kitaplıklar"
 };
 
 let currentCategory = "all";
@@ -1670,133 +1670,133 @@ let currentSort = "featured";
 // Cart State with LocalStorage Persistence across reloads (Ctrl+F5)
 let cart = [];
 try {
-    const savedCart = localStorage.getItem("mobelmor_cart");
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-        if (!Array.isArray(cart)) cart = [];
-    }
+  const savedCart = localStorage.getItem("mobelmor_cart");
+  if (savedCart) {
+    cart = JSON.parse(savedCart);
+    if (!Array.isArray(cart)) cart = [];
+  }
 } catch (e) {
-    cart = [];
+  cart = [];
 }
 
 const saveCart = () => {
-    try {
-        localStorage.setItem("mobelmor_cart", JSON.stringify(cart));
-    } catch (e) {
-        console.error("Cart storage save error:", e);
-    }
+  try {
+    localStorage.setItem("mobelmor_cart", JSON.stringify(cart));
+  } catch (e) {
+    console.error("Cart storage save error:", e);
+  }
 };
 
 let wishlist = new Set();
 
 const formatPrice = (num) => {
-    return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
+  return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
 };
 
 const showToast = (message, icon = "fa-circle-check") => {
-    const container = document.getElementById("toastContainer");
-    if (!container) return;
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.innerHTML = `
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `
         <div class="toast-icon-badge"><i class="fa-solid ${icon}"></i></div>
         <div class="toast-text">${message}</div>
     `;
-    container.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add("toast-fade-out");
-        setTimeout(() => toast.remove(), 320);
-    }, 2800);
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add("toast-fade-out");
+    setTimeout(() => toast.remove(), 320);
+  }, 2800);
 };
 
 const getFilteredProducts = () => {
-    const query = (searchQuery || "").toLowerCase();
-    const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
-    let filtered = sourceList.filter(product => {
-        let matchesCat = true;
-        if (currentCategory !== "all") {
-            if (currentCategory === "tv-unit" || currentCategory === "tv-uniteleri" || currentCategory === "office") {
-                matchesCat = (product.category === "tv-unit" || product.subcategory === "consoles" || (product.title && product.title.toLowerCase().includes("tv")));
-            } else {
-                matchesCat = (product.category === currentCategory);
-            }
-        }
-
-        const matchesSubcat = (currentSubcategory === "all" || product.subcategory === currentSubcategory);
-        
-        const specsText = Object.values(product.specs || {}).join(" ").toLowerCase();
-        const matchesSearch = (!query || 
-            (product.title || "").toLowerCase().includes(query) || 
-            (product.material || "").toLowerCase().includes(query) ||
-            (product.desc || "").toLowerCase().includes(query) ||
-            specsText.includes(query)
-        );
-        return matchesCat && matchesSubcat && matchesSearch;
-    });
-
-    if (filtered.length === 0) {
-        filtered = PRODUCTS;
+  const query = (searchQuery || "").toLowerCase();
+  const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+  let filtered = sourceList.filter(product => {
+    let matchesCat = true;
+    if (currentCategory !== "all") {
+      if (currentCategory === "tv-unit" || currentCategory === "tv-uniteleri" || currentCategory === "office") {
+        matchesCat = (product.category === "tv-unit" || product.subcategory === "consoles" || (product.title && product.title.toLowerCase().includes("tv")));
+      } else {
+        matchesCat = (product.category === currentCategory);
+      }
     }
 
-    return filtered.sort((a, b) => {
-        // 1. Always prioritize complete Sets (Takımlar) first
-        const isSetA = a.productType === 'Set' ? 1 : 0;
-        const isSetB = b.productType === 'Set' ? 1 : 0;
-        if (isSetA !== isSetB) {
-            return isSetB - isSetA;
-        }
+    const matchesSubcat = (currentSubcategory === "all" || product.subcategory === currentSubcategory);
 
-        // 2. Sort within the same group (Sets together, Solos together)
-        if (currentSort === "price-low") return a.price - b.price;
-        if (currentSort === "price-high") return b.price - a.price;
-        if (currentSort === "rating") return b.rating - a.rating;
-        return a.id - b.id;
-    });
+    const specsText = Object.values(product.specs || {}).join(" ").toLowerCase();
+    const matchesSearch = (!query ||
+      (product.title || "").toLowerCase().includes(query) ||
+      (product.material || "").toLowerCase().includes(query) ||
+      (product.desc || "").toLowerCase().includes(query) ||
+      specsText.includes(query)
+    );
+    return matchesCat && matchesSubcat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    filtered = PRODUCTS;
+  }
+
+  return filtered.sort((a, b) => {
+    // 1. Always prioritize complete Sets (Takımlar) first
+    const isSetA = a.productType === 'Set' ? 1 : 0;
+    const isSetB = b.productType === 'Set' ? 1 : 0;
+    if (isSetA !== isSetB) {
+      return isSetB - isSetA;
+    }
+
+    // 2. Sort within the same group (Sets together, Solos together)
+    if (currentSort === "price-low") return a.price - b.price;
+    if (currentSort === "price-high") return b.price - a.price;
+    if (currentSort === "rating") return b.rating - a.rating;
+    return a.id - b.id;
+  });
 };
 
 const renderProducts = () => {
-    const grid = document.getElementById("productGrid");
-    const countBadge = document.getElementById("productCountBadge");
-    if (!grid) return;
+  const grid = document.getElementById("productGrid");
+  const countBadge = document.getElementById("productCountBadge");
+  if (!grid) return;
 
-    const filtered = getFilteredProducts();
+  const filtered = getFilteredProducts();
 
-    if (countBadge) {
-        let label = CATEGORY_NAMES[currentCategory] || "Tüm Koleksiyon";
-        if (currentSubcategory !== "all" && SUBCATEGORY_NAMES[currentSubcategory]) {
-            label += ` > ${SUBCATEGORY_NAMES[currentSubcategory]}`;
-        }
-        countBadge.textContent = `${label} (${filtered.length} Ürün Listeleniyor)`;
+  if (countBadge) {
+    let label = CATEGORY_NAMES[currentCategory] || "Tüm Koleksiyon";
+    if (currentSubcategory !== "all" && SUBCATEGORY_NAMES[currentSubcategory]) {
+      label += ` > ${SUBCATEGORY_NAMES[currentSubcategory]}`;
     }
+    countBadge.textContent = `${label} (${filtered.length} Ürün Listeleniyor)`;
+  }
 
-    if (filtered.length === 0) {
-        grid.innerHTML = `
+  if (filtered.length === 0) {
+    grid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: white; border-radius: 18px; border: 1px solid #e4e4e7;">
                 <i class="fa-solid fa-box-open" style="font-size: 3rem; color: #a1a1aa; margin-bottom: 12px;"></i>
                 <h3 style="margin: 0 0 8px 0; color: #18181b;">Aradığınız Kriterde Ürün Bulunamadı</h3>
             </div>
         `;
-        return;
-    }
+    return;
+  }
 
-    grid.innerHTML = filtered.map((item, idx) => {
-        const isFav = wishlist.has(item.id);
-        const isLCP = idx === 0;
-        const imgAttr = isLCP 
-            ? 'loading="eager" fetchpriority="high" decoding="sync"' 
-            : 'loading="lazy" decoding="async"';
-        const webpImage = item.image ? item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/zumrut_main.webp';
-        
-        // Authentic pricing and discount calculation
-        const originalPrice = item.originalPrice || Math.round(item.price * 1.15);
-        const discountRate = item.originalPrice ? Math.round((1 - item.price / item.originalPrice) * 100) : 15;
-        const discountClass = discountRate >= 20 ? 'red' : discountRate >= 15 ? 'purple' : discountRate >= 10 ? 'orange' : 'green';
-        const has3d = (item.id % 4 === 0);
-        const isBestPrice = (item.id % 3 === 1);
-        const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
-        const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
+  grid.innerHTML = filtered.map((item, idx) => {
+    const isFav = wishlist.has(item.id);
+    const isLCP = idx === 0;
+    const imgAttr = isLCP
+      ? 'loading="eager" fetchpriority="high" decoding="sync"'
+      : 'loading="lazy" decoding="async"';
+    const webpImage = item.image ? item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/zumrut_main.webp';
 
-        return `
+    // Authentic pricing and discount calculation
+    const originalPrice = item.originalPrice || Math.round(item.price * 1.15);
+    const discountRate = item.originalPrice ? Math.round((1 - item.price / item.originalPrice) * 100) : 15;
+    const discountClass = discountRate >= 20 ? 'red' : discountRate >= 15 ? 'purple' : discountRate >= 10 ? 'orange' : 'green';
+    const has3d = (item.id % 4 === 0);
+    const isBestPrice = (item.id % 3 === 1);
+    const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
+    const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
+
+    return `
             <article class="product-card" data-id="${item.id}">
                 <div class="card-image-box">
                     <img src="${webpImage}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='${item.image}';">
@@ -1827,10 +1827,10 @@ const renderProducts = () => {
                 <div class="card-details">
                     <!-- Badges Row -->
                     <div class="vcard-badges-row">
-                        ${isBestPrice 
-                            ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>` 
-                            : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
-                        }
+                        ${isBestPrice
+        ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>`
+        : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
+      }
                         <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
                         ${item.rating >= 4.8 ? `<span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>` : ''}
                         ${has3d ? `<span class="vbadge-pill pill-3d"><i class="fa-solid fa-cube"></i> 3D GÖRÜNTÜLE</span>` : ''}
@@ -1857,96 +1857,96 @@ const renderProducts = () => {
                 </div>
             </article>
         `;
-    }).join('');
+  }).join('');
 
-    attachCardEventListeners();
+  attachCardEventListeners();
 };
 
 const attachCardEventListeners = () => {
-    document.querySelectorAll(".product-card").forEach(card => {
-        const id = card.getAttribute("data-id");
-        card.style.cursor = "pointer";
+  document.querySelectorAll(".product-card").forEach(card => {
+    const id = card.getAttribute("data-id");
+    card.style.cursor = "pointer";
 
-        const goToDetail = (e) => {
-            if (e.target.closest(".card-heart-btn") || e.target.closest(".add-to-cart-btn") || e.target.closest(".quick-view-btn")) return;
-            const item = PRODUCTS.find(p => p.id === parseInt(id));
-            if (item && window.getCleanProductUrl) {
-                window.location.href = window.getCleanProductUrl(item.id, item.title);
-            } else {
-                window.location.href = `urun-detay.html?id=${id}`;
-            }
-        };
+    const goToDetail = (e) => {
+      if (e.target.closest(".card-heart-btn") || e.target.closest(".add-to-cart-btn") || e.target.closest(".quick-view-btn")) return;
+      const item = PRODUCTS.find(p => p.id === parseInt(id));
+      if (item && window.getCleanProductUrl) {
+        window.location.href = window.getCleanProductUrl(item.id, item.title);
+      } else {
+        window.location.href = `urun-detay.html?id=${id}`;
+      }
+    };
 
-        card.addEventListener("click", goToDetail);
+    card.addEventListener("click", goToDetail);
+  });
+
+  document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.getAttribute("data-id"));
+      addToCart(id);
     });
+  });
 
-    document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const id = parseInt(btn.getAttribute("data-id"));
-            addToCart(id);
-        });
+  document.querySelectorAll(".card-heart-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.getAttribute("data-id"));
+      if (wishlist.has(id)) {
+        wishlist.delete(id);
+        showToast("Ürün favorilerinizden çıkarıldı.", "fa-heart-crack");
+      } else {
+        wishlist.add(id);
+        showToast("Ürün favorilerinize eklendi!", "fa-heart");
+      }
+      updateBadges();
+      renderProducts();
     });
+  });
 
-    document.querySelectorAll(".card-heart-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const id = parseInt(btn.getAttribute("data-id"));
-            if (wishlist.has(id)) {
-                wishlist.delete(id);
-                showToast("Ürün favorilerinizden çıkarıldı.", "fa-heart-crack");
-            } else {
-                wishlist.add(id);
-                showToast("Ürün favorilerinize eklendi!", "fa-heart");
-            }
-            updateBadges();
-            renderProducts();
-        });
+  document.querySelectorAll(".quick-view-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.getAttribute("data-id"));
+      openQuickView(id);
     });
-
-    document.querySelectorAll(".quick-view-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const id = parseInt(btn.getAttribute("data-id"));
-            openQuickView(id);
-        });
-    });
+  });
 };
 
 const addToCart = (productId) => {
-    const item = PRODUCTS.find(p => p.id === productId);
-    if (!item) return;
-    const existing = cart.find(c => c.id === productId);
-    if (existing) {
-        existing.qty += 1;
-    } else {
-        cart.push({ ...item, qty: 1 });
-    }
-    saveCart();
-    updateBadges();
-    showToast(`<strong>${item.title}</strong> sepete eklendi!`, "fa-bag-shopping");
-    renderCart();
+  const item = PRODUCTS.find(p => p.id === productId);
+  if (!item) return;
+  const existing = cart.find(c => c.id === productId);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...item, qty: 1 });
+  }
+  saveCart();
+  updateBadges();
+  showToast(`<strong>${item.title}</strong> sepete eklendi!`, "fa-bag-shopping");
+  renderCart();
 };
 
 const updateBadges = () => {
-    const cartBadge = document.getElementById("cartBadge");
-    const wishBadge = document.getElementById("wishlistBadge");
-    if (cartBadge) cartBadge.textContent = cart.reduce((sum, c) => sum + c.qty, 0);
-    if (wishBadge) wishBadge.textContent = wishlist.size;
+  const cartBadge = document.getElementById("cartBadge");
+  const wishBadge = document.getElementById("wishlistBadge");
+  if (cartBadge) cartBadge.textContent = cart.reduce((sum, c) => sum + c.qty, 0);
+  if (wishBadge) wishBadge.textContent = wishlist.size;
 };
 
 const renderCart = () => {
-    const body = document.getElementById("cartBody");
-    const footer = document.getElementById("cartFooter");
-    if (!body || !footer) return;
+  const body = document.getElementById("cartBody");
+  const footer = document.getElementById("cartFooter");
+  if (!body || !footer) return;
 
-    if (cart.length === 0) {
-        body.innerHTML = `<p style="text-align:center; padding:30px; color:#71717a;">Sepetiniz boş.</p>`;
-        footer.innerHTML = "";
-        return;
-    }
+  if (cart.length === 0) {
+    body.innerHTML = `<p style="text-align:center; padding:30px; color:#71717a;">Sepetiniz boş.</p>`;
+    footer.innerHTML = "";
+    return;
+  }
 
-    body.innerHTML = cart.map(item => `
+  body.innerHTML = cart.map(item => `
         <div class="cart-item-row">
             <img src="${item.image}" alt="${item.title}" class="cart-item-img">
             <div class="cart-item-info">
@@ -1961,9 +1961,9 @@ const renderCart = () => {
         </div>
     `).join('');
 
-    const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
-    footer.innerHTML = `
+  footer.innerHTML = `
         <div class="cart-total-line">
             <span>Toplam:</span>
             <span style="color:#6b21a8;">${formatPrice(subtotal)}</span>
@@ -1971,24 +1971,24 @@ const renderCart = () => {
         <button class="btn btn-primary btn-block interactive-btn" id="openCheckoutBtn">Güvenli Ödemeye Geç</button>
     `;
 
-    document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
-        document.getElementById("cartDrawer")?.classList.remove("active");
-        document.getElementById("cartOverlay")?.classList.remove("active");
-        const totalEl = document.getElementById("checkoutTotal");
-        if (totalEl) totalEl.textContent = formatPrice(subtotal);
-        document.getElementById("checkoutOverlay")?.classList.add("active");
-        document.body.classList.add("modal-open");
-    });
+  document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
+    document.getElementById("cartDrawer")?.classList.remove("active");
+    document.getElementById("cartOverlay")?.classList.remove("active");
+    const totalEl = document.getElementById("checkoutTotal");
+    if (totalEl) totalEl.textContent = formatPrice(subtotal);
+    document.getElementById("checkoutOverlay")?.classList.add("active");
+    document.body.classList.add("modal-open");
+  });
 };
 
 window.changeQty = (id, delta) => {
-    const item = cart.find(c => c.id === id);
-    if (!item) return;
-    item.qty += delta;
-    if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
-    saveCart();
-    updateBadges();
-    renderCart();
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+  saveCart();
+  updateBadges();
+  renderCart();
 };
 
 // ── Lightbox Gallery System for app.js (Vivense Design) ────────────────
@@ -1996,13 +1996,13 @@ let lbGallery = [];
 let lbCurrentIndex = 0;
 
 const createGlobalLightbox = () => {
-    let lb = document.getElementById('mbl-lightbox');
-    if (lb) return lb;
+  let lb = document.getElementById('mbl-lightbox');
+  if (lb) return lb;
 
-    lb = document.createElement('div');
-    lb.id = 'mbl-lightbox';
-    lb.className = 'mbl-lightbox-overlay';
-    lb.innerHTML = `
+  lb = document.createElement('div');
+  lb.id = 'mbl-lightbox';
+  lb.className = 'mbl-lightbox-overlay';
+  lb.innerHTML = `
         <button type="button" class="lb-vivense-close" id="mbl-lb-close-btn" onclick="closeGlobalLightbox()" title="Kapat (Esc)" aria-label="Kapat">
             <i class="fa-solid fa-xmark"></i>
         </button>
@@ -2024,122 +2024,122 @@ const createGlobalLightbox = () => {
             </div>
         </div>
     `;
-    document.body.appendChild(lb);
+  document.body.appendChild(lb);
 
-    document.getElementById('mbl-lb-prev')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navigateGlobalLightbox(-1);
-    });
-    document.getElementById('mbl-lb-next')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navigateGlobalLightbox(1);
-    });
+  document.getElementById('mbl-lb-prev')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateGlobalLightbox(-1);
+  });
+  document.getElementById('mbl-lb-next')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateGlobalLightbox(1);
+  });
 
-    lb.addEventListener('click', (e) => {
-        if (!e.target.closest('#mbl-lb-card') && !e.target.closest('#mbl-lb-prev') && !e.target.closest('#mbl-lb-next')) {
-            closeGlobalLightbox();
-        }
-    });
+  lb.addEventListener('click', (e) => {
+    if (!e.target.closest('#mbl-lb-card') && !e.target.closest('#mbl-lb-prev') && !e.target.closest('#mbl-lb-next')) {
+      closeGlobalLightbox();
+    }
+  });
 
-    // Touch swipe support
-    const lbCard = document.getElementById('mbl-lb-card');
-    let touchStartX = 0;
-    let touchStartY = 0;
+  // Touch swipe support
+  const lbCard = document.getElementById('mbl-lb-card');
+  let touchStartX = 0;
+  let touchStartY = 0;
 
-    lbCard?.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }
-    }, { passive: true });
+  lbCard?.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
 
-    lbCard?.addEventListener('touchend', (e) => {
-        if (e.changedTouches.length > 0) {
-            const diffX = e.changedTouches[0].clientX - touchStartX;
-            const diffY = e.changedTouches[0].clientY - touchStartY;
-            if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
-                if (diffX < 0) navigateGlobalLightbox(1);
-                else navigateGlobalLightbox(-1);
-            }
-        }
-    }, { passive: true });
+  lbCard?.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length > 0) {
+      const diffX = e.changedTouches[0].clientX - touchStartX;
+      const diffY = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) navigateGlobalLightbox(1);
+        else navigateGlobalLightbox(-1);
+      }
+    }
+  }, { passive: true });
 
-    document.addEventListener('keydown', (e) => {
-        const activeLb = document.getElementById('mbl-lightbox');
-        if (!activeLb || !activeLb.classList.contains('active')) return;
+  document.addEventListener('keydown', (e) => {
+    const activeLb = document.getElementById('mbl-lightbox');
+    if (!activeLb || !activeLb.classList.contains('active')) return;
 
-        if (e.key === 'Escape') closeGlobalLightbox();
-        else if (e.key === 'ArrowLeft') navigateGlobalLightbox(-1);
-        else if (e.key === 'ArrowRight') navigateGlobalLightbox(1);
-    });
+    if (e.key === 'Escape') closeGlobalLightbox();
+    else if (e.key === 'ArrowLeft') navigateGlobalLightbox(-1);
+    else if (e.key === 'ArrowRight') navigateGlobalLightbox(1);
+  });
 
-    return lb;
+  return lb;
 };
 
 window.openGlobalLightbox = (gallery, startIndex = 0, title = '') => {
-    const lb = createGlobalLightbox();
-    lbGallery = Array.isArray(gallery) && gallery.length > 0 ? gallery : [];
-    if (lbGallery.length === 0) return;
+  const lb = createGlobalLightbox();
+  lbGallery = Array.isArray(gallery) && gallery.length > 0 ? gallery : [];
+  if (lbGallery.length === 0) return;
 
-    lbCurrentIndex = Math.max(0, Math.min(startIndex, lbGallery.length - 1));
+  lbCurrentIndex = Math.max(0, Math.min(startIndex, lbGallery.length - 1));
 
-    const titleEl = document.getElementById('mbl-lb-title');
-    if (titleEl) titleEl.textContent = (title || 'ÜRÜN GÖRSELİ').toUpperCase();
+  const titleEl = document.getElementById('mbl-lb-title');
+  if (titleEl) titleEl.textContent = (title || 'ÜRÜN GÖRSELİ').toUpperCase();
 
-    updateGlobalLightboxView();
+  updateGlobalLightboxView();
 
-    lb.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
 };
 
 window.closeGlobalLightbox = () => {
-    const lb = document.getElementById('mbl-lightbox');
-    if (lb) lb.classList.remove('active');
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+  const lb = document.getElementById('mbl-lightbox');
+  if (lb) lb.classList.remove('active');
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
 };
 
 window.navigateGlobalLightbox = (direction) => {
-    if (!lbGallery || lbGallery.length === 0) return;
+  if (!lbGallery || lbGallery.length === 0) return;
 
-    if (typeof direction === 'number' && (direction === 1 || direction === -1)) {
-        lbCurrentIndex = (lbCurrentIndex + direction + lbGallery.length) % lbGallery.length;
-    } else if (typeof direction === 'number') {
-        lbCurrentIndex = Math.max(0, Math.min(direction, lbGallery.length - 1));
-    }
+  if (typeof direction === 'number' && (direction === 1 || direction === -1)) {
+    lbCurrentIndex = (lbCurrentIndex + direction + lbGallery.length) % lbGallery.length;
+  } else if (typeof direction === 'number') {
+    lbCurrentIndex = Math.max(0, Math.min(direction, lbGallery.length - 1));
+  }
 
-    updateGlobalLightboxView();
+  updateGlobalLightboxView();
 };
 
 const updateGlobalLightboxView = () => {
-    const lbImg = document.getElementById('mbl-lightbox-img');
-    const lbCounter = document.getElementById('mbl-lb-counter');
-    if (!lbImg) return;
+  const lbImg = document.getElementById('mbl-lightbox-img');
+  const lbCounter = document.getElementById('mbl-lb-counter');
+  if (!lbImg) return;
 
-    lbImg.style.opacity = '0.3';
+  lbImg.style.opacity = '0.3';
 
-    setTimeout(() => {
-        lbImg.src = lbGallery[lbCurrentIndex];
-        lbImg.style.opacity = '1';
-    }, 80);
+  setTimeout(() => {
+    lbImg.src = lbGallery[lbCurrentIndex];
+    lbImg.style.opacity = '1';
+  }, 80);
 
-    if (lbCounter) {
-        lbCounter.textContent = `${lbCurrentIndex + 1}/${lbGallery.length}`;
-    }
+  if (lbCounter) {
+    lbCounter.textContent = `${lbCurrentIndex + 1}/${lbGallery.length}`;
+  }
 };
 
 const openQuickView = (productId) => {
-    const product = PRODUCTS.find(p => p.id === productId);
-    if (!product) return;
-    const overlay = document.getElementById("quickViewOverlay");
-    const content = document.getElementById("quickViewContent");
-    if (!overlay || !content) return;
+  const product = PRODUCTS.find(p => p.id === productId);
+  if (!product) return;
+  const overlay = document.getElementById("quickViewOverlay");
+  const content = document.getElementById("quickViewContent");
+  if (!overlay || !content) return;
 
-    const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
-    let activeQuickIdx = 0;
+  const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
+  let activeQuickIdx = 0;
 
-    content.innerHTML = `
+  content.innerHTML = `
         <div style="display:flex; gap:24px; flex-wrap:wrap;">
             <div style="flex:1; min-width:280px; display:flex; flex-direction:column; gap:10px;">
                 <div style="position:relative; width:100%; height:290px; border-radius:14px; overflow:hidden; background:#f4f4f6; cursor:zoom-in;" id="quickMainImgBox" title="Fotoğrafı Büyüt (Tıkla)">
@@ -2179,54 +2179,54 @@ const openQuickView = (productId) => {
         </div>
     `;
 
-    // Quick view thumbnail switching
-    content.querySelectorAll('#quickThumbStrip img').forEach(thumb => {
-        thumb.addEventListener('click', () => {
-            const idx = parseInt(thumb.getAttribute('data-idx'));
-            activeQuickIdx = idx;
-            const mainImg = document.getElementById('quickMainImg');
-            const pill = document.getElementById('quickCounterPill');
-            if (mainImg) mainImg.src = gallery[idx];
-            if (pill) pill.textContent = `${idx + 1} / ${gallery.length}`;
-            content.querySelectorAll('#quickThumbStrip img').forEach((t, i) => {
-                if (i === idx) t.classList.add('active');
-                else t.classList.remove('active');
-            });
-        });
+  // Quick view thumbnail switching
+  content.querySelectorAll('#quickThumbStrip img').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const idx = parseInt(thumb.getAttribute('data-idx'));
+      activeQuickIdx = idx;
+      const mainImg = document.getElementById('quickMainImg');
+      const pill = document.getElementById('quickCounterPill');
+      if (mainImg) mainImg.src = gallery[idx];
+      if (pill) pill.textContent = `${idx + 1} / ${gallery.length}`;
+      content.querySelectorAll('#quickThumbStrip img').forEach((t, i) => {
+        if (i === idx) t.classList.add('active');
+        else t.classList.remove('active');
+      });
     });
+  });
 
-    // Open lightbox on clicking quick view main image or zoom button
-    const openLB = () => {
-        openGlobalLightbox(gallery, activeQuickIdx, product.title);
-    };
+  // Open lightbox on clicking quick view main image or zoom button
+  const openLB = () => {
+    openGlobalLightbox(gallery, activeQuickIdx, product.title);
+  };
 
-    document.getElementById('quickMainImgBox')?.addEventListener('click', openLB);
-    document.getElementById('quickZoomBtn')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openLB();
-    });
+  document.getElementById('quickMainImgBox')?.addEventListener('click', openLB);
+  document.getElementById('quickZoomBtn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openLB();
+  });
 
-    overlay.classList.add("active");
-    document.getElementById("modalAddCart")?.addEventListener("click", () => {
-        addToCart(product.id);
-        overlay.classList.remove("active");
-    });
+  overlay.classList.add("active");
+  document.getElementById("modalAddCart")?.addEventListener("click", () => {
+    addToCart(product.id);
+    overlay.classList.remove("active");
+  });
 };
 
 const renderWishlist = () => {
-    const body = document.getElementById("wishlistBody");
-    const footer = document.getElementById("wishlistFooter");
-    if (!body || !footer) return;
+  const body = document.getElementById("wishlistBody");
+  const footer = document.getElementById("wishlistFooter");
+  if (!body || !footer) return;
 
-    const wishListItems = PRODUCTS.filter(p => wishlist.has(p.id));
+  const wishListItems = PRODUCTS.filter(p => wishlist.has(p.id));
 
-    if (wishListItems.length === 0) {
-        body.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#71717a;"><i class="fa-regular fa-heart" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:12px;"></i><p style="margin:0;">Henüz favorilere ürün eklemediniz.</p></div>`;
-        footer.innerHTML = "";
-        return;
-    }
+  if (wishListItems.length === 0) {
+    body.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#71717a;"><i class="fa-regular fa-heart" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:12px;"></i><p style="margin:0;">Henüz favorilere ürün eklemediniz.</p></div>`;
+    footer.innerHTML = "";
+    return;
+  }
 
-    body.innerHTML = wishListItems.map(item => `
+  body.innerHTML = wishListItems.map(item => `
         <div class="cart-item-row">
             <img src="${item.image}" alt="${item.title}" class="cart-item-img">
             <div class="cart-item-info">
@@ -2244,7 +2244,7 @@ const renderWishlist = () => {
         </div>
     `).join('');
 
-    footer.innerHTML = `
+  footer.innerHTML = `
         <button class="btn btn-primary btn-block interactive-btn" onclick="wishListItems.forEach(i => addToCart(i.id)); showToast('Tüm favoriler sepete eklendi!', 'fa-basket-shopping');">
             Tüm Favorileri Sepete Ekle
         </button>
@@ -2252,194 +2252,194 @@ const renderWishlist = () => {
 };
 
 window.toggleWishlist = (id) => {
-    if (wishlist.has(id)) wishlist.delete(id);
-    else wishlist.add(id);
-    updateBadges();
-    renderProducts();
+  if (wishlist.has(id)) wishlist.delete(id);
+  else wishlist.add(id);
+  updateBadges();
+  renderProducts();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    const CATEGORY_DESCS = {
-        all: "İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımlarımız.",
-        living: "İnegöl zanaatkarlarından %100 masif ahşap iskeletli koltuk takımları, berjerler, sehpalar ve TV üniteleri.",
-        dining: "Doğal ahşap dokusu ve zarafetiyle yemek masaları, ergonomik sandalyeler ve şık büfeler.",
-        bedroom: "Konforlu karyolalar, fonksiyonel komodinler ve geniş gardıroplar ile huzurlu uyku alanları.",
-        office: "Ergonomik çalışma masaları ve şık kitaplıklar ile verimli çalışma alanları."
-    };
+  const CATEGORY_DESCS = {
+    all: "İnegöl usta zanaatkarları tarafından üretilen %100 masif ve organik mobilya tasarımlarımız.",
+    living: "İnegöl zanaatkarlarından %100 masif ahşap iskeletli koltuk takımları, berjerler, sehpalar ve TV üniteleri.",
+    dining: "Doğal ahşap dokusu ve zarafetiyle yemek masaları, ergonomik sandalyeler ve şık büfeler.",
+    bedroom: "Konforlu karyolalar, fonksiyonel komodinler ve geniş gardıroplar ile huzurlu uyku alanları.",
+    office: "Ergonomik çalışma masaları ve şık kitaplıklar ile verimli çalışma alanları."
+  };
 
-    const CATEGORY_ICONS = {
-        all: "fa-border-all",
-        living: "fa-couch",
-        dining: "fa-utensils",
-        bedroom: "fa-bed",
-        office: "fa-briefcase"
-    };
+  const CATEGORY_ICONS = {
+    all: "fa-border-all",
+    living: "fa-couch",
+    dining: "fa-utensils",
+    bedroom: "fa-bed",
+    office: "fa-briefcase"
+  };
 
-    const CATEGORY_CAMPAIGNS = {
-        living: {
-            badge: "OTURMA ODASINDA İNEGÖL İMZASI",
-            discount: "%20",
-            discountSub: "'ye varan",
-            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
-            image: "assets/minegolden_p1_1.webp"
-        },
-        dining: {
-            badge: "MASİF VE DOĞAL YEMEK TAKIMLARI",
-            discount: "%25",
-            discountSub: "'e varan",
-            text: "SEZON İNDİRİMLERİNİ KEŞFET!",
-            image: "assets/minegolden_p3_1.webp"
-        },
-        bedroom: {
-            badge: "HUZURLU VE ŞIK YATAK ODALARI",
-            discount: "%20",
-            discountSub: "'ye varan",
-            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
-            image: "assets/asya_main.webp"
-        },
-        garden: {
-            badge: "BAHÇENE YAKIŞAN TAKIMLARDA",
-            discount: "%20",
-            discountSub: "'ye varan",
-            text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
-            image: "assets/minegolden_p1_1.webp"
-        },
-        office: {
-            badge: "VERİMLİ ÇALIŞMA ALANLARI",
-            discount: "%15",
-            discountSub: "'e varan",
-            text: "ÖZEL KOLEKSİYON İNDİRİMİ!",
-            image: "assets/minegolden_p2_1.webp"
-        },
-        all: {
-            badge: "TÜM KOLEKSİYONDA SEZON FIRSATLARI",
-            discount: "%30",
-            discountSub: "'a varan",
-            text: "MOBELMOR GÜVENCESİYLE KEŞFET!",
-            image: "assets/hero_milo_sofa.webp"
-        }
-    };
+  const CATEGORY_CAMPAIGNS = {
+    living: {
+      badge: "OTURMA ODASINDA İNEGÖL İMZASI",
+      discount: "%20",
+      discountSub: "'ye varan",
+      text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+      image: "assets/minegolden_p1_1.webp"
+    },
+    dining: {
+      badge: "MASİF VE DOĞAL YEMEK TAKIMLARI",
+      discount: "%25",
+      discountSub: "'e varan",
+      text: "SEZON İNDİRİMLERİNİ KEŞFET!",
+      image: "assets/minegolden_p3_1.webp"
+    },
+    bedroom: {
+      badge: "HUZURLU VE ŞIK YATAK ODALARI",
+      discount: "%20",
+      discountSub: "'ye varan",
+      text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+      image: "assets/asya_main.webp"
+    },
+    garden: {
+      badge: "BAHÇENE YAKIŞAN TAKIMLARDA",
+      discount: "%20",
+      discountSub: "'ye varan",
+      text: "İNDİRİM FIRSATLARINI KAÇIRMA!",
+      image: "assets/minegolden_p1_1.webp"
+    },
+    office: {
+      badge: "VERİMLİ ÇALIŞMA ALANLARI",
+      discount: "%15",
+      discountSub: "'e varan",
+      text: "ÖZEL KOLEKSİYON İNDİRİMİ!",
+      image: "assets/minegolden_p2_1.webp"
+    },
+    all: {
+      badge: "TÜM KOLEKSİYONDA SEZON FIRSATLARI",
+      discount: "%30",
+      discountSub: "'a varan",
+      text: "MOBELMOR GÜVENCESİYLE KEŞFET!",
+      image: "assets/hero_milo_sofa.webp"
+    }
+  };
 
-    const CATEGORY_STORY_CIRCLES = {
-        living: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "İnegöl Masif", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p1_1.webp" },
-            { title: "Koltuk Takımı", sub: "sofas", image: "assets/minegolden_p1_1.webp" },
-            { title: "Köşe Koltuk", sub: "sofas", image: "assets/hero_milo_sofa.webp" },
-            { title: "Berjer", sub: "armchairs", image: "assets/armchair.webp" },
-            { title: "Orta Sehpa", sub: "tables", image: "assets/minegolden_p2_1.webp" },
-            { title: "TV Ünitesi", sub: "tables", image: "assets/minegolden_p8_1.webp" },
-            { title: "Konsol & Dresuar", sub: "consoles", image: "assets/minegolden_p4_1.webp" },
-            { title: "Puf & Tamamlayıcı", sub: "armchairs", image: "assets/minegolden_p2_1.webp" }
-        ],
-        dining: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "Masif Yemek Serisi", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p3_1.webp" },
-            { title: "Yemek Odası Takımı", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
-            { title: "Yemek Masası", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
-            { title: "Sandalye", sub: "chairs", image: "assets/armchair.webp" },
-            { title: "Konsol & Ayna", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
-            { title: "Vitrin & Gümüşlük", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
-            { title: "Bench & Sandalye", sub: "chairs", image: "assets/minegolden_p3_1.webp" }
-        ],
-        bedroom: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "Luna Bedding", isSpecial: true, specialType: "series", badge: "Yeni", sub: "beds", image: "assets/bed.webp" },
-            { title: "Yatak Odası Takımı", sub: "all", image: "assets/asya_main.webp" },
-            { title: "Baza & Başlık", sub: "beds", image: "assets/minegolden_p6_1.webp" },
-            { title: "Karyola", sub: "beds", image: "assets/bed.webp" },
-            { title: "Ortopedik Yatak", sub: "beds", image: "assets/bed.webp" },
-            { title: "Gardırop", sub: "wardrobes", image: "assets/minegolden_p5_1.webp" },
-            { title: "Komodin & Şifonyer", sub: "nightstands", image: "assets/minegolden_p7_1.webp" }
-        ],
-        garden: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "Bahçe Mobilyası", sub: "all", image: "assets/armchair.webp" },
-            { title: "Balkon Oturma", sub: "all", image: "assets/hero_milo_sofa.webp" },
-            { title: "Masa & Sandalye", sub: "all", image: "assets/minegolden_p3_1.webp" },
-            { title: "Salıncak & Hamak", sub: "all", image: "assets/armchair.webp" }
-        ],
-        office: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "Çalışma Masası", sub: "desks", image: "assets/minegolden_p2_1.webp" },
-            { title: "Çalışma Koltuğu", sub: "all", image: "assets/armchair.webp" },
-            { title: "Kitaplık & Raf", sub: "bookcases", image: "assets/minegolden_p8_1.webp" },
-            { title: "Keson & Çekmece", sub: "all", image: "assets/minegolden_p7_1.webp" }
-        ],
-        all: [
-            { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-            { title: "Oturma Odası", sub: "all", cat: "living", image: "assets/minegolden_p1_1.webp" },
-            { title: "Yemek Odası", sub: "all", cat: "dining", image: "assets/minegolden_p3_1.webp" },
-            { title: "Yatak Odası", sub: "all", cat: "bedroom", image: "assets/asya_main.webp" },
-            { title: "Koltuk Takımı", sub: "sofas", cat: "living", image: "assets/hero_milo_sofa.webp" },
-            { title: "Yemek Masası", sub: "dining-tables", cat: "dining", image: "assets/minegolden_p3_1.webp" },
-            { title: "Karyola & Baza", sub: "beds", cat: "bedroom", image: "assets/bed.webp" },
-            { title: "Sehpalar", sub: "tables", cat: "living", image: "assets/minegolden_p2_1.webp" }
-        ]
-    };
+  const CATEGORY_STORY_CIRCLES = {
+    living: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "İnegöl Masif", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p1_1.webp" },
+      { title: "Koltuk Takımı", sub: "sofas", image: "assets/minegolden_p1_1.webp" },
+      { title: "Köşe Koltuk", sub: "sofas", image: "assets/hero_milo_sofa.webp" },
+      { title: "Berjer", sub: "armchairs", image: "assets/armchair.webp" },
+      { title: "Orta Sehpa", sub: "tables", image: "assets/minegolden_p2_1.webp" },
+      { title: "TV Ünitesi", sub: "tables", image: "assets/minegolden_p8_1.webp" },
+      { title: "Konsol & Dresuar", sub: "consoles", image: "assets/minegolden_p4_1.webp" },
+      { title: "Puf & Tamamlayıcı", sub: "armchairs", image: "assets/minegolden_p2_1.webp" }
+    ],
+    dining: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "Masif Yemek Serisi", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yemek Odası Takımı", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yemek Masası", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+      { title: "Sandalye", sub: "chairs", image: "assets/armchair.webp" },
+      { title: "Konsol & Ayna", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+      { title: "Vitrin & Gümüşlük", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+      { title: "Bench & Sandalye", sub: "chairs", image: "assets/minegolden_p3_1.webp" }
+    ],
+    bedroom: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "Luna Bedding", isSpecial: true, specialType: "series", badge: "Yeni", sub: "beds", image: "assets/bed.webp" },
+      { title: "Yatak Odası Takımı", sub: "all", image: "assets/asya_main.webp" },
+      { title: "Baza & Başlık", sub: "beds", image: "assets/minegolden_p6_1.webp" },
+      { title: "Karyola", sub: "beds", image: "assets/bed.webp" },
+      { title: "Ortopedik Yatak", sub: "beds", image: "assets/bed.webp" },
+      { title: "Gardırop", sub: "wardrobes", image: "assets/minegolden_p5_1.webp" },
+      { title: "Komodin & Şifonyer", sub: "nightstands", image: "assets/minegolden_p7_1.webp" }
+    ],
+    garden: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "Bahçe Mobilyası", sub: "all", image: "assets/armchair.webp" },
+      { title: "Balkon Oturma", sub: "all", image: "assets/hero_milo_sofa.webp" },
+      { title: "Masa & Sandalye", sub: "all", image: "assets/minegolden_p3_1.webp" },
+      { title: "Salıncak & Hamak", sub: "all", image: "assets/armchair.webp" }
+    ],
+    office: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "Çalışma Masası", sub: "desks", image: "assets/minegolden_p2_1.webp" },
+      { title: "Çalışma Koltuğu", sub: "all", image: "assets/armchair.webp" },
+      { title: "Kitaplık & Raf", sub: "bookcases", image: "assets/minegolden_p8_1.webp" },
+      { title: "Keson & Çekmece", sub: "all", image: "assets/minegolden_p7_1.webp" }
+    ],
+    all: [
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
+      { title: "Oturma Odası", sub: "all", cat: "living", image: "assets/minegolden_p1_1.webp" },
+      { title: "Yemek Odası", sub: "all", cat: "dining", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yatak Odası", sub: "all", cat: "bedroom", image: "assets/asya_main.webp" },
+      { title: "Koltuk Takımı", sub: "sofas", cat: "living", image: "assets/hero_milo_sofa.webp" },
+      { title: "Yemek Masası", sub: "dining-tables", cat: "dining", image: "assets/minegolden_p3_1.webp" },
+      { title: "Karyola & Baza", sub: "beds", cat: "bedroom", image: "assets/bed.webp" },
+      { title: "Sehpalar", sub: "tables", cat: "living", image: "assets/minegolden_p2_1.webp" }
+    ]
+  };
 
-    const renderCategoryHeaderAndSubchips = () => {
-        const heroTitle = document.getElementById("categoryHeroTitle");
-        const circlesTrack = document.getElementById("catSubcirclesTrack");
-        const bannerTag = document.getElementById("catBannerTag");
-        const discountNum = document.getElementById("catDiscountNum");
-        const discountSub = document.getElementById("catDiscountSub");
-        const bannerText = document.getElementById("catBannerText");
-        const bannerImg = document.getElementById("catBannerImg");
+  const renderCategoryHeaderAndSubchips = () => {
+    const heroTitle = document.getElementById("categoryHeroTitle");
+    const circlesTrack = document.getElementById("catSubcirclesTrack");
+    const bannerTag = document.getElementById("catBannerTag");
+    const discountNum = document.getElementById("catDiscountNum");
+    const discountSub = document.getElementById("catDiscountSub");
+    const bannerText = document.getElementById("catBannerText");
+    const bannerImg = document.getElementById("catBannerImg");
 
-        const catName = CATEGORY_NAMES[currentCategory] || "Tüm Koleksiyon";
-        
-        // 1. Update Clean Centered Category Title
-        if (heroTitle) {
-            heroTitle.textContent = catName.toUpperCase();
-        }
+    const catName = CATEGORY_NAMES[currentCategory] || "Tüm Koleksiyon";
 
-        // 2. Update Promo Campaign Banner
-        const promo = CATEGORY_CAMPAIGNS[currentCategory] || CATEGORY_CAMPAIGNS.all;
-        if (bannerTag) bannerTag.textContent = promo.badge;
-        if (discountNum) discountNum.textContent = promo.discount;
-        if (discountSub) discountSub.textContent = promo.discountSub;
-        if (bannerText) bannerText.textContent = promo.text;
-        if (bannerImg) {
-            bannerImg.src = promo.image;
-            bannerImg.alt = promo.badge;
-        }
+    // 1. Update Clean Centered Category Title
+    if (heroTitle) {
+      heroTitle.textContent = catName.toUpperCase();
+    }
 
-        // 3. Render Stories Subcategory Circles
-        if (circlesTrack) {
-            const circleItems = CATEGORY_STORY_CIRCLES[currentCategory] || CATEGORY_STORY_CIRCLES.all;
+    // 2. Update Promo Campaign Banner
+    const promo = CATEGORY_CAMPAIGNS[currentCategory] || CATEGORY_CAMPAIGNS.all;
+    if (bannerTag) bannerTag.textContent = promo.badge;
+    if (discountNum) discountNum.textContent = promo.discount;
+    if (discountSub) discountSub.textContent = promo.discountSub;
+    if (bannerText) bannerText.textContent = promo.text;
+    if (bannerImg) {
+      bannerImg.src = promo.image;
+      bannerImg.alt = promo.badge;
+    }
 
-            circlesTrack.innerHTML = circleItems.map(item => {
-                const targetCat = item.cat || currentCategory;
-                const targetSub = item.sub || "all";
-                const isItemActive = (currentCategory === targetCat && currentSubcategory === targetSub);
+    // 3. Render Stories Subcategory Circles
+    if (circlesTrack) {
+      const circleItems = CATEGORY_STORY_CIRCLES[currentCategory] || CATEGORY_STORY_CIRCLES.all;
 
-                let specialClass = "";
-                let innerImgContent = `<img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.webp';">`;
+      circlesTrack.innerHTML = circleItems.map(item => {
+        const targetCat = item.cat || currentCategory;
+        const targetSub = item.sub || "all";
+        const isItemActive = (currentCategory === targetCat && currentSubcategory === targetSub);
 
-                if (item.specialType === "brand") {
-                    specialClass = "special-brand";
-                    innerImgContent = `
+        let specialClass = "";
+        let innerImgContent = `<img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.webp';">`;
+
+        if (item.specialType === "brand") {
+          specialClass = "special-brand";
+          innerImgContent = `
                         <div class="brand-circle-content">
                             <span class="brand-logo-text">mobelmor</span>
                             <span class="brand-logo-text" style="font-size:0.55rem; opacity:0.8;">COLLECTION</span>
                         </div>
                     `;
-                } else if (item.specialType === "series") {
-                    specialClass = "special-series";
-                    const firstWord = item.title.split(' ')[0];
-                    const restWords = item.title.split(' ').slice(1).join(' ');
-                    innerImgContent = `
+        } else if (item.specialType === "series") {
+          specialClass = "special-series";
+          const firstWord = item.title.split(' ')[0];
+          const restWords = item.title.split(' ').slice(1).join(' ');
+          innerImgContent = `
                         <div class="brand-circle-content">
                             <span class="brand-logo-text" style="font-size:0.75rem; color:#facc15;">${firstWord}</span>
                             <span class="brand-logo-text" style="font-size:0.52rem; opacity:0.9;">${restWords}</span>
                         </div>
                     `;
-                }
+        }
 
-                const badgeHtml = item.badge ? `<span class="cat-circle-badge-yeni">${item.badge}</span>` : "";
+        const badgeHtml = item.badge ? `<span class="cat-circle-badge-yeni">${item.badge}</span>` : "";
 
-                return `
+        return `
                     <div class="cat-circle-card ${specialClass} ${isItemActive ? 'active' : ''}" data-cat="${targetCat}" data-sub="${targetSub}">
                         <div class="cat-circle-img-wrap">
                             ${innerImgContent}
@@ -2448,246 +2448,246 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="cat-circle-label">${item.title}</span>
                     </div>
                 `;
-            }).join('');
+      }).join('');
 
-            // Add click listeners to circles
-            circlesTrack.querySelectorAll(".cat-circle-card").forEach(card => {
-                card.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    const cat = card.getAttribute("data-cat");
-                    const sub = card.getAttribute("data-sub");
-                    if (cat) {
-                        selectCategory(cat, sub || "all", true);
-                    }
-                });
-            });
-        }
-    };
-
-    const updateActiveCategoryUI = () => {
-        document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
-        document.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("active"));
-        document.querySelectorAll(".vivense-nav-item").forEach(item => item.classList.remove("active"));
-
-        const targetPill = document.querySelector(`.cat-pill[data-category="${currentCategory}"]`);
-        if (targetPill) targetPill.classList.add("active");
-
-        if (currentSubcategory !== "all") {
-            const targetSub = document.querySelector(`.dropdown-item[data-cat="${currentCategory}"][data-sub="${currentSubcategory}"]`);
-            if (targetSub) targetSub.classList.add("active");
-        }
-
-        // Highlight single active Vivense category navbar link only on category pages
-        const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
-        if (isCategoryPage && currentCategory && currentCategory !== "all") {
-            const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
-            
-            let matchedItem = null;
-            // 1. Try exact subcategory match first
-            if (currentSubcategory && currentSubcategory !== "all") {
-                matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
-                    const link = item.querySelector(".vivense-nav-link");
-                    if (!link) return false;
-                    const href = link.getAttribute("href") || "";
-                    return href.includes(`sub=${currentSubcategory}`) && (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`));
-                });
-            }
-            
-            // 2. If no subcategory match, match exact primary category (no sub param)
-            if (!matchedItem) {
-                matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
-                    const link = item.querySelector(".vivense-nav-link");
-                    if (!link) return false;
-                    const href = link.getAttribute("href") || "";
-                    return (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`)) && !href.includes("sub=");
-                });
-            }
-
-            if (matchedItem) {
-                matchedItem.classList.add("active");
-            }
-        }
-
-        renderCategoryHeaderAndSubchips();
-    };
-
-    const selectCategory = (cat, sub = "all", updateHistory = true) => {
-        currentCategory = cat;
-        currentSubcategory = sub;
-
-        const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[cat] || cat) : cat;
-        const targetUrl = (sub && sub !== 'all') ? `/kategori.html?c=${catSlug}&sub=${sub}` : `/kategori.html?c=${catSlug}`;
-        const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
-
-        if (isCategoryPage) {
-            if (updateHistory && window.history && window.history.pushState) {
-                window.history.pushState({ cat, sub }, "", targetUrl);
-            }
-            document.querySelectorAll(".cat-dropdown-wrapper").forEach(w => w.classList.remove("open"));
-            updateActiveCategoryUI();
-            renderProducts();
-        } else {
-            window.location.href = targetUrl;
-        }
-    };
-
-    document.querySelectorAll(".cat-pill").forEach(pill => {
-        pill.addEventListener("click", (e) => {
-            const cat = pill.getAttribute("data-category");
-            if (cat) {
-                e.preventDefault();
-                selectCategory(cat, "all", true);
-                showToast(`Kategori Seçildi: ${CATEGORY_NAMES[cat] || cat}`, "fa-layer-group");
-            }
+      // Add click listeners to circles
+      circlesTrack.querySelectorAll(".cat-circle-card").forEach(card => {
+        card.addEventListener("click", (e) => {
+          e.preventDefault();
+          const cat = card.getAttribute("data-cat");
+          const sub = card.getAttribute("data-sub");
+          if (cat) {
+            selectCategory(cat, sub || "all", true);
+          }
         });
-    });
+      });
+    }
+  };
 
-    document.querySelectorAll(".dropdown-item").forEach(item => {
-        item.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const cat = item.getAttribute("data-cat");
-            const sub = item.getAttribute("data-sub");
-            if (cat) {
-                selectCategory(cat, sub || "all", true);
-                showToast(`Filtrelendi: ${CATEGORY_NAMES[cat] || cat} > ${SUBCATEGORY_NAMES[sub] || 'Tümü'}`, "fa-filter");
-            }
-        });
-    });
+  const updateActiveCategoryUI = () => {
+    document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("active"));
+    document.querySelectorAll(".vivense-nav-item").forEach(item => item.classList.remove("active"));
 
-    const handleUrlParams = () => {
-        let search = window.location.search;
-        if (!search && window.location.href.includes("?")) {
-            search = window.location.href.substring(window.location.href.indexOf("?"));
-        }
-        const urlParams = new URLSearchParams(search);
-        const cParam = urlParams.get("c");
-        const catParam = urlParams.get("cat");
-        const subParam = urlParams.get("sub");
-        const filterParam = urlParams.get("filter");
+    const targetPill = document.querySelector(`.cat-pill[data-category="${currentCategory}"]`);
+    if (targetPill) targetPill.classList.add("active");
 
-        let resolvedCat = "all";
-        let resolvedSub = "all";
-
-        if (cParam) {
-            resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
-        } else if (catParam) {
-            resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
-        } else {
-            // Check direct pathname: /oturma-odasi or /oturma-odasi/sofas
-            const pathParts = window.location.pathname.split('/').filter(Boolean);
-            if (pathParts.length > 0) {
-                const first = pathParts[0].replace(/\.html$/, '');
-                if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[first]) {
-                    resolvedCat = window.SLUG_TO_CATEGORY[first];
-                    if (pathParts[1]) {
-                        resolvedSub = pathParts[1];
-                    }
-                }
-            }
-        }
-
-        if (subParam) {
-            resolvedSub = subParam;
-        }
-
-        currentCategory = resolvedCat;
-        currentSubcategory = resolvedSub;
-        updateActiveCategoryUI();
-        renderProducts();
-    };
-
-    handleUrlParams();
-
-    const searchInput = document.getElementById("searchInput");
-    const clearSearchBtn = document.getElementById("clearSearchBtn");
-    if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-            searchQuery = e.target.value;
-            if (clearSearchBtn) clearSearchBtn.style.display = searchQuery ? "inline-flex" : "none";
-            renderProducts();
-        });
+    if (currentSubcategory !== "all") {
+      const targetSub = document.querySelector(`.dropdown-item[data-cat="${currentCategory}"][data-sub="${currentSubcategory}"]`);
+      if (targetSub) targetSub.classList.add("active");
     }
 
-    if (clearSearchBtn) {
-        clearSearchBtn.addEventListener("click", () => {
-            if (searchInput) searchInput.value = "";
-            searchQuery = "";
-            clearSearchBtn.style.display = "none";
-            renderProducts();
+    // Highlight single active Vivense category navbar link only on category pages
+    const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
+    if (isCategoryPage && currentCategory && currentCategory !== "all") {
+      const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[currentCategory] || currentCategory) : currentCategory;
+
+      let matchedItem = null;
+      // 1. Try exact subcategory match first
+      if (currentSubcategory && currentSubcategory !== "all") {
+        matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+          const link = item.querySelector(".vivense-nav-link");
+          if (!link) return false;
+          const href = link.getAttribute("href") || "";
+          return href.includes(`sub=${currentSubcategory}`) && (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`));
         });
+      }
+
+      // 2. If no subcategory match, match exact primary category (no sub param)
+      if (!matchedItem) {
+        matchedItem = Array.from(document.querySelectorAll(".vivense-nav-item")).find(item => {
+          const link = item.querySelector(".vivense-nav-link");
+          if (!link) return false;
+          const href = link.getAttribute("href") || "";
+          return (href.includes(`c=${catSlug}`) || href.includes(`c=${currentCategory}`)) && !href.includes("sub=");
+        });
+      }
+
+      if (matchedItem) {
+        matchedItem.classList.add("active");
+      }
     }
 
-    const sortSelect = document.getElementById("sortSelect");
-    if (sortSelect) {
-        sortSelect.addEventListener("change", (e) => {
-            currentSort = e.target.value;
-            renderProducts();
-        });
+    renderCategoryHeaderAndSubchips();
+  };
+
+  const selectCategory = (cat, sub = "all", updateHistory = true) => {
+    currentCategory = cat;
+    currentSubcategory = sub;
+
+    const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[cat] || cat) : cat;
+    const targetUrl = (sub && sub !== 'all') ? `/kategori.html?c=${catSlug}&sub=${sub}` : `/kategori.html?c=${catSlug}`;
+    const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
+
+    if (isCategoryPage) {
+      if (updateHistory && window.history && window.history.pushState) {
+        window.history.pushState({ cat, sub }, "", targetUrl);
+      }
+      document.querySelectorAll(".cat-dropdown-wrapper").forEach(w => w.classList.remove("open"));
+      updateActiveCategoryUI();
+      renderProducts();
+    } else {
+      window.location.href = targetUrl;
+    }
+  };
+
+  document.querySelectorAll(".cat-pill").forEach(pill => {
+    pill.addEventListener("click", (e) => {
+      const cat = pill.getAttribute("data-category");
+      if (cat) {
+        e.preventDefault();
+        selectCategory(cat, "all", true);
+        showToast(`Kategori Seçildi: ${CATEGORY_NAMES[cat] || cat}`, "fa-layer-group");
+      }
+    });
+  });
+
+  document.querySelectorAll(".dropdown-item").forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const cat = item.getAttribute("data-cat");
+      const sub = item.getAttribute("data-sub");
+      if (cat) {
+        selectCategory(cat, sub || "all", true);
+        showToast(`Filtrelendi: ${CATEGORY_NAMES[cat] || cat} > ${SUBCATEGORY_NAMES[sub] || 'Tümü'}`, "fa-filter");
+      }
+    });
+  });
+
+  const handleUrlParams = () => {
+    let search = window.location.search;
+    if (!search && window.location.href.includes("?")) {
+      search = window.location.href.substring(window.location.href.indexOf("?"));
+    }
+    const urlParams = new URLSearchParams(search);
+    const cParam = urlParams.get("c");
+    const catParam = urlParams.get("cat");
+    const subParam = urlParams.get("sub");
+    const filterParam = urlParams.get("filter");
+
+    let resolvedCat = "all";
+    let resolvedSub = "all";
+
+    if (cParam) {
+      resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
+    } else if (catParam) {
+      resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
+    } else {
+      // Check direct pathname: /oturma-odasi or /oturma-odasi/sofas
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      if (pathParts.length > 0) {
+        const first = pathParts[0].replace(/\.html$/, '');
+        if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[first]) {
+          resolvedCat = window.SLUG_TO_CATEGORY[first];
+          if (pathParts[1]) {
+            resolvedSub = pathParts[1];
+          }
+        }
+      }
     }
 
-    // Wishlist Drawer Trigger
-    document.getElementById("wishlistBtn")?.addEventListener("click", () => {
-        renderWishlist();
-        document.getElementById("wishlistDrawer")?.classList.add("active");
-        document.getElementById("wishlistOverlay")?.classList.add("active");
-    });
+    if (subParam) {
+      resolvedSub = subParam;
+    }
 
-    document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
-        document.getElementById("wishlistDrawer")?.classList.remove("active");
-        document.getElementById("wishlistOverlay")?.classList.remove("active");
-    });
+    currentCategory = resolvedCat;
+    currentSubcategory = resolvedSub;
+    updateActiveCategoryUI();
+    renderProducts();
+  };
 
-    document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
-        document.getElementById("wishlistDrawer")?.classList.remove("active");
-        document.getElementById("wishlistOverlay")?.classList.remove("active");
-    });
+  handleUrlParams();
 
-    // Cart Drawer Trigger
-    document.getElementById("cartBtn")?.addEventListener("click", () => {
-        renderCart();
-        document.getElementById("cartDrawer")?.classList.add("active");
-        document.getElementById("cartOverlay")?.classList.add("active");
+  const searchInput = document.getElementById("searchInput");
+  const clearSearchBtn = document.getElementById("clearSearchBtn");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      if (clearSearchBtn) clearSearchBtn.style.display = searchQuery ? "inline-flex" : "none";
+      renderProducts();
     });
+  }
 
-    document.getElementById("closeCartBtn")?.addEventListener("click", () => {
-        document.getElementById("cartDrawer")?.classList.remove("active");
-        document.getElementById("cartOverlay")?.classList.remove("active");
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      searchQuery = "";
+      clearSearchBtn.style.display = "none";
+      renderProducts();
     });
+  }
 
-    document.getElementById("cartOverlay")?.addEventListener("click", () => {
-        document.getElementById("cartDrawer")?.classList.remove("active");
-        document.getElementById("cartOverlay")?.classList.remove("active");
+  const sortSelect = document.getElementById("sortSelect");
+  if (sortSelect) {
+    sortSelect.addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      renderProducts();
     });
+  }
 
-    document.getElementById("closeQuickViewBtn")?.addEventListener("click", () => {
-        document.getElementById("quickViewOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-    });
-    document.getElementById("quickViewOverlay")?.addEventListener("click", (e) => {
-        if (e.target.id === "quickViewOverlay") {
-            document.getElementById("quickViewOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-        }
-    });
+  // Wishlist Drawer Trigger
+  document.getElementById("wishlistBtn")?.addEventListener("click", () => {
+    renderWishlist();
+    document.getElementById("wishlistDrawer")?.classList.add("active");
+    document.getElementById("wishlistOverlay")?.classList.add("active");
+  });
 
-    document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
-        document.getElementById("checkoutOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-    });
-    document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
-        if (e.target.id === "checkoutOverlay") {
-            document.getElementById("checkoutOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-        }
-    });
+  document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
+    document.getElementById("wishlistDrawer")?.classList.remove("active");
+    document.getElementById("wishlistOverlay")?.classList.remove("active");
+  });
 
-    // ── Contract & KVKK Tab Switcher in Checkout Modal ──
-    const btnContractMss = document.getElementById("btnContractMss");
-    const btnContractKvkk = document.getElementById("btnContractKvkk");
-    const contractContentBox = document.getElementById("contractContentBox");
+  document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
+    document.getElementById("wishlistDrawer")?.classList.remove("active");
+    document.getElementById("wishlistOverlay")?.classList.remove("active");
+  });
 
-    const mssHtml = `
+  // Cart Drawer Trigger
+  document.getElementById("cartBtn")?.addEventListener("click", () => {
+    renderCart();
+    document.getElementById("cartDrawer")?.classList.add("active");
+    document.getElementById("cartOverlay")?.classList.add("active");
+  });
+
+  document.getElementById("closeCartBtn")?.addEventListener("click", () => {
+    document.getElementById("cartDrawer")?.classList.remove("active");
+    document.getElementById("cartOverlay")?.classList.remove("active");
+  });
+
+  document.getElementById("cartOverlay")?.addEventListener("click", () => {
+    document.getElementById("cartDrawer")?.classList.remove("active");
+    document.getElementById("cartOverlay")?.classList.remove("active");
+  });
+
+  document.getElementById("closeQuickViewBtn")?.addEventListener("click", () => {
+    document.getElementById("quickViewOverlay")?.classList.remove("active");
+    document.body.classList.remove("modal-open");
+  });
+  document.getElementById("quickViewOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "quickViewOverlay") {
+      document.getElementById("quickViewOverlay")?.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
+  });
+
+  document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
+    document.getElementById("checkoutOverlay")?.classList.remove("active");
+    document.body.classList.remove("modal-open");
+  });
+  document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "checkoutOverlay") {
+      document.getElementById("checkoutOverlay")?.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
+  });
+
+  // ── Contract & KVKK Tab Switcher in Checkout Modal ──
+  const btnContractMss = document.getElementById("btnContractMss");
+  const btnContractKvkk = document.getElementById("btnContractKvkk");
+  const contractContentBox = document.getElementById("contractContentBox");
+
+  const mssHtml = `
         <div class="contract-clause">
             <div class="contract-clause-header">
                 <span class="clause-badge">MADDE 1</span>
@@ -2736,7 +2736,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     `;
 
-    const kvkkHtml = `
+  const kvkkHtml = `
         <div class="contract-clause">
             <div class="contract-clause-header">
                 <span class="clause-badge">KVKK 1</span>
@@ -2775,136 +2775,135 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     `;
 
-    btnContractMss?.addEventListener("click", () => {
-        btnContractMss.classList.add("active");
-        btnContractKvkk?.classList.remove("active");
-        if (contractContentBox) contractContentBox.innerHTML = mssHtml;
-    });
+  btnContractMss?.addEventListener("click", () => {
+    btnContractMss.classList.add("active");
+    btnContractKvkk?.classList.remove("active");
+    if (contractContentBox) contractContentBox.innerHTML = mssHtml;
+  });
 
-    btnContractKvkk?.addEventListener("click", () => {
-        btnContractKvkk.classList.add("active");
-        btnContractMss?.classList.remove("active");
-        if (contractContentBox) contractContentBox.innerHTML = kvkkHtml;
-    });
+  btnContractKvkk?.addEventListener("click", () => {
+    btnContractKvkk.classList.add("active");
+    btnContractMss?.classList.remove("active");
+    if (contractContentBox) contractContentBox.innerHTML = kvkkHtml;
+  });
 
-    // ── Unified Customer & Auth System ──
-    const getCustomersList = () => {
-        try {
-            let list = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
-            if (!Array.isArray(list)) list = [];
-            // Clean up any fake dummy simulation records created during previous testing
-            list = list.filter(c => c && c.email && c.email.includes("@") && !c.id?.startsWith("USR-"));
-            localStorage.setItem("mobelmor_customers", JSON.stringify(list));
-            return list;
-        } catch {
-            return [];
-        }
-    };
+  // ── Unified Customer & Auth System ──
+  const getCustomersList = () => {
+    try {
+      let list = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
+      if (!Array.isArray(list)) list = [];
+      list = list.filter(c => c && (c.email || c.fullName || c.name) && !c.id?.startsWith("USR-"));
+      localStorage.setItem("mobelmor_customers", JSON.stringify(list));
+      return list;
+    } catch {
+      return [];
+    }
+  };
 
-    const saveCustomersList = (list) => {
-        try {
-            localStorage.setItem("mobelmor_customers", JSON.stringify(list));
-            localStorage.setItem("mobelmor_users", JSON.stringify(list));
-        } catch (e) {
-            console.error("Customer storage save error:", e);
-        }
-    };
+  const saveCustomersList = (list) => {
+    try {
+      localStorage.setItem("mobelmor_customers", JSON.stringify(list));
+      localStorage.setItem("mobelmor_users", JSON.stringify(list));
+    } catch (e) {
+      console.error("Customer storage save error:", e);
+    }
+  };
 
-    const getCurrentUser = () => {
-        try {
-            const userJson = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
-            if (!userJson) return null;
-            const user = JSON.parse(userJson);
-            if (!user || !user.email || !user.email.includes("@") || (user.id && String(user.id).startsWith("USR-"))) {
-                localStorage.removeItem("mobelmor_active_customer");
-                localStorage.removeItem("mobelmor_current_user");
-                return null;
-            }
-            return user;
-        } catch {
-            return null;
-        }
-    };
+  const getCurrentUser = () => {
+    try {
+      const userJson = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
+      if (!userJson) return null;
+      const user = JSON.parse(userJson);
+      if (!user || (!user.email && !user.name && !user.fullName) || (user.id && String(user.id).startsWith("USR-"))) {
+        localStorage.removeItem("mobelmor_active_customer");
+        localStorage.removeItem("mobelmor_current_user");
+        return null;
+      }
+      return user;
+    } catch {
+      return null;
+    }
+  };
 
-    window.openAuthModal = (tab = "login") => {
-        const overlay = document.getElementById("authModalOverlay");
-        const loginFormEl = document.getElementById("loginForm");
-        const registerFormEl = document.getElementById("registerForm");
-        const tabLoginBtnEl = document.getElementById("tabLoginBtn");
-        const tabRegisterBtnEl = document.getElementById("tabRegisterBtn");
+  window.openAuthModal = (tab = "login") => {
+    const overlay = document.getElementById("authModalOverlay");
+    const loginFormEl = document.getElementById("loginForm");
+    const registerFormEl = document.getElementById("registerForm");
+    const tabLoginBtnEl = document.getElementById("tabLoginBtn");
+    const tabRegisterBtnEl = document.getElementById("tabRegisterBtn");
 
-        document.getElementById("userMenuDropdown")?.classList.remove("active");
-        document.getElementById("orderTrackDropdown")?.classList.remove("active");
+    document.getElementById("userMenuDropdown")?.classList.remove("active");
+    document.getElementById("orderTrackDropdown")?.classList.remove("active");
 
-        if (overlay) {
-            overlay.classList.add("active");
-            document.body.classList.add("modal-open");
-        }
+    if (overlay) {
+      overlay.classList.add("active");
+      document.body.classList.add("modal-open");
+    }
 
-        if (tab === "register") {
-            if (tabRegisterBtnEl) {
-                tabRegisterBtnEl.classList.add("active");
-                tabRegisterBtnEl.style.color = "#6b21a8";
-                tabRegisterBtnEl.style.borderBottom = "2px solid #6b21a8";
-                tabRegisterBtnEl.style.fontWeight = "800";
-            }
-            if (tabLoginBtnEl) {
-                tabLoginBtnEl.classList.remove("active");
-                tabLoginBtnEl.style.color = "#71717a";
-                tabLoginBtnEl.style.borderBottom = "none";
-                tabLoginBtnEl.style.fontWeight = "700";
-            }
-            if (registerFormEl) registerFormEl.style.display = "flex";
-            if (loginFormEl) loginFormEl.style.display = "none";
-            setTimeout(() => document.getElementById("regName")?.focus(), 100);
-        } else {
-            if (tabLoginBtnEl) {
-                tabLoginBtnEl.classList.add("active");
-                tabLoginBtnEl.style.color = "#6b21a8";
-                tabLoginBtnEl.style.borderBottom = "2px solid #6b21a8";
-                tabLoginBtnEl.style.fontWeight = "800";
-            }
-            if (tabRegisterBtnEl) {
-                tabRegisterBtnEl.classList.remove("active");
-                tabRegisterBtnEl.style.color = "#71717a";
-                tabRegisterBtnEl.style.borderBottom = "none";
-                tabRegisterBtnEl.style.fontWeight = "700";
-            }
-            if (loginFormEl) loginFormEl.style.display = "flex";
-            if (registerFormEl) registerFormEl.style.display = "none";
-            setTimeout(() => document.getElementById("loginEmail")?.focus(), 100);
-        }
-    };
+    if (tab === "register") {
+      if (tabRegisterBtnEl) {
+        tabRegisterBtnEl.classList.add("active");
+        tabRegisterBtnEl.style.color = "#6b21a8";
+        tabRegisterBtnEl.style.borderBottom = "2px solid #6b21a8";
+        tabRegisterBtnEl.style.fontWeight = "800";
+      }
+      if (tabLoginBtnEl) {
+        tabLoginBtnEl.classList.remove("active");
+        tabLoginBtnEl.style.color = "#71717a";
+        tabLoginBtnEl.style.borderBottom = "none";
+        tabLoginBtnEl.style.fontWeight = "700";
+      }
+      if (registerFormEl) registerFormEl.style.display = "flex";
+      if (loginFormEl) loginFormEl.style.display = "none";
+      setTimeout(() => document.getElementById("regName")?.focus(), 100);
+    } else {
+      if (tabLoginBtnEl) {
+        tabLoginBtnEl.classList.add("active");
+        tabLoginBtnEl.style.color = "#6b21a8";
+        tabLoginBtnEl.style.borderBottom = "2px solid #6b21a8";
+        tabLoginBtnEl.style.fontWeight = "800";
+      }
+      if (tabRegisterBtnEl) {
+        tabRegisterBtnEl.classList.remove("active");
+        tabRegisterBtnEl.style.color = "#71717a";
+        tabRegisterBtnEl.style.borderBottom = "none";
+        tabRegisterBtnEl.style.fontWeight = "700";
+      }
+      if (loginFormEl) loginFormEl.style.display = "flex";
+      if (registerFormEl) registerFormEl.style.display = "none";
+      setTimeout(() => document.getElementById("loginEmail")?.focus(), 100);
+    }
+  };
 
-    const formatDisplayName = (name) => {
-        if (!name) return "Hesabım";
-        const firstWord = name.trim().split(/\s+/)[0];
-        if (!firstWord) return "Hesabım";
-        return firstWord.charAt(0).toLocaleUpperCase('tr-TR') + firstWord.slice(1).toLocaleLowerCase('tr-TR');
-    };
+  const formatDisplayName = (name) => {
+    if (!name) return "Hesabım";
+    const firstWord = name.trim().split(/\s+/)[0];
+    if (!firstWord) return "Hesabım";
+    return firstWord.charAt(0).toLocaleUpperCase('tr-TR') + firstWord.slice(1).toLocaleLowerCase('tr-TR');
+  };
 
-    const formatFullName = (name) => {
-        if (!name) return "";
-        return name.trim().split(/\s+/).map(word => 
-            word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR')
-        ).join(' ');
-    };
+  const formatFullName = (name) => {
+    if (!name) return "";
+    return name.trim().split(/\s+/).map(word =>
+      word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR')
+    ).join(' ');
+  };
 
-    const updateAuthUI = () => {
-        const user = getCurrentUser();
-        const authBtn = document.getElementById("headerAuthBtn");
-        const authText = document.getElementById("headerAuthText");
-        const dropdown = document.getElementById("userMenuDropdown");
-        const userGreetingOnPage = document.getElementById("userGreeting");
+  const updateAuthUI = () => {
+    const user = getCurrentUser();
+    const authBtn = document.getElementById("headerAuthBtn");
+    const authText = document.getElementById("headerAuthText");
+    const dropdown = document.getElementById("userMenuDropdown");
+    const userGreetingOnPage = document.getElementById("userGreeting");
 
-        if (user) {
-            const rawName = user.fullName || user.name || "Müşteri";
-            const dispName = formatDisplayName(rawName);
-            const fullDispName = formatFullName(rawName);
-            authBtn?.classList.add("logged-in");
-            if (authText) authText.textContent = dispName;
-            if (dropdown) {
-                dropdown.innerHTML = `
+    if (user) {
+      const rawName = user.fullName || user.name || "Müşteri";
+      const dispName = formatDisplayName(rawName);
+      const fullDispName = formatFullName(rawName);
+      authBtn?.classList.add("logged-in");
+      if (authText) authText.textContent = dispName;
+      if (dropdown) {
+        dropdown.innerHTML = `
                     <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
                         <i class="fa-solid fa-circle-user" style="color:#6b21a8;"></i> Hoş geldiniz, ${dispName}
                     </div>
@@ -2913,34 +2912,34 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="user-dropdown-divider"></div>
                     <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
                 `;
-                document.getElementById("logoutBtn")?.addEventListener("click", () => {
-                    localStorage.removeItem("mobelmor_active_customer");
-                    localStorage.removeItem("mobelmor_current_user");
-                    updateAuthUI();
-                    showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
-                    if (window.location.pathname.includes("siparislerim") || window.location.pathname.includes("hesabim")) {
-                        setTimeout(() => window.location.reload(), 500);
-                    }
-                });
-            }
-            if (userGreetingOnPage) {
-                userGreetingOnPage.innerHTML = `<span style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Giriş Yapıldı:</span> ${fullDispName} (${user.email || ''})`;
-            }
+        document.getElementById("logoutBtn")?.addEventListener("click", () => {
+          localStorage.removeItem("mobelmor_active_customer");
+          localStorage.removeItem("mobelmor_current_user");
+          updateAuthUI();
+          showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
+          if (window.location.pathname.includes("siparislerim") || window.location.pathname.includes("hesabim")) {
+            setTimeout(() => window.location.reload(), 500);
+          }
+        });
+      }
+      if (userGreetingOnPage) {
+        userGreetingOnPage.innerHTML = `<span style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Giriş Yapıldı:</span> ${fullDispName} (${user.email || ''})`;
+      }
 
-            // Autofill checkout fields if empty
-            const cName = document.getElementById("checkoutName");
-            const cEmail = document.getElementById("checkoutEmail");
-            const cPhone = document.getElementById("checkoutPhone");
-            const cAddr = document.getElementById("checkoutAddress");
-            if (cName && !cName.value) cName.value = rawName;
-            if (cEmail && !cEmail.value) cEmail.value = user.email || "";
-            if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
-            if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
-        } else {
-            authBtn?.classList.remove("logged-in");
-            if (authText) authText.textContent = "Giriş";
-            if (dropdown) {
-                dropdown.innerHTML = `
+      // Autofill checkout fields if empty
+      const cName = document.getElementById("checkoutName");
+      const cEmail = document.getElementById("checkoutEmail");
+      const cPhone = document.getElementById("checkoutPhone");
+      const cAddr = document.getElementById("checkoutAddress");
+      if (cName && !cName.value) cName.value = rawName;
+      if (cEmail && !cEmail.value) cEmail.value = user.email || "";
+      if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
+      if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
+    } else {
+      authBtn?.classList.remove("logged-in");
+      if (authText) authText.textContent = "Giriş";
+      if (dropdown) {
+        dropdown.innerHTML = `
                     <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
                         <i class="fa-regular fa-user" style="color:#6b21a8;"></i> Mobelmor Üyelik
                     </div>
@@ -2949,322 +2948,350 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="user-dropdown-divider"></div>
                     <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-truck-fast" style="color:#6b21a8;"></i> Sipariş Takip</a>
                 `;
-            }
-            if (userGreetingOnPage) {
-                userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="openAuthModal('login')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
-            }
-        }
+      }
+      if (userGreetingOnPage) {
+        userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="openAuthModal('login')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
+      }
+    }
+  };
+
+  // Order Track Button Click / Tap Handling (Desktop & Mobile)
+  const orderTrackBtn = document.getElementById("orderTrackBtn");
+  const orderTrackDropdown = document.getElementById("orderTrackDropdown");
+
+  orderTrackBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById("userMenuDropdown")?.classList.remove("active");
+    if (orderTrackDropdown) {
+      orderTrackDropdown.classList.toggle("active");
+    }
+  });
+
+  // Auth Button Click Handling
+  const headerAuthBtn = document.getElementById("headerAuthBtn");
+  const userMenuDropdown = document.getElementById("userMenuDropdown");
+
+  headerAuthBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    orderTrackDropdown?.classList.remove("active");
+    const user = getCurrentUser();
+    if (!user) {
+      window.openAuthModal("login");
+    } else {
+      if (userMenuDropdown) {
+        userMenuDropdown.classList.toggle("active");
+      }
+    }
+  });
+
+  // Close header dropdowns on outside click
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#orderTrackContainer")) {
+      orderTrackDropdown?.classList.remove("active");
+    }
+    if (!e.target.closest("#headerAuthContainer")) {
+      userMenuDropdown?.classList.remove("active");
+    }
+  });
+
+  // Auth Modal Tabs
+  const tabLoginBtn = document.getElementById("tabLoginBtn");
+  const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+  const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
+
+  tabLoginBtn?.addEventListener("click", () => {
+    tabLoginBtn.classList.add("active");
+    tabLoginBtn.style.color = "#6b21a8";
+    tabLoginBtn.style.borderBottom = "2px solid #6b21a8";
+    tabLoginBtn.style.fontWeight = "800";
+    tabRegisterBtn.classList.remove("active");
+    tabRegisterBtn.style.color = "#71717a";
+    tabRegisterBtn.style.borderBottom = "none";
+    tabRegisterBtn.style.fontWeight = "700";
+    if (loginForm) loginForm.style.display = "flex";
+    if (registerForm) registerForm.style.display = "none";
+  });
+
+  tabRegisterBtn?.addEventListener("click", () => {
+    tabRegisterBtn.classList.add("active");
+    tabRegisterBtn.style.color = "#6b21a8";
+    tabRegisterBtn.style.borderBottom = "2px solid #6b21a8";
+    tabRegisterBtn.style.fontWeight = "800";
+    tabLoginBtn.classList.remove("active");
+    tabLoginBtn.style.color = "#71717a";
+    tabLoginBtn.style.borderBottom = "none";
+    tabLoginBtn.style.fontWeight = "700";
+    if (registerForm) registerForm.style.display = "flex";
+    if (loginForm) loginForm.style.display = "none";
+  });
+
+  document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
+    document.getElementById("authModalOverlay")?.classList.remove("active");
+    document.body.classList.remove("modal-open");
+  });
+  document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "authModalOverlay") {
+      document.getElementById("authModalOverlay")?.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
+  });
+
+  // Real Login Submit Handler
+  loginForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
+    const pass = (document.getElementById("loginPassword")?.value || "").trim();
+
+    const customers = getCustomersList();
+    const existing = customers.find(u => u.email && u.email.toLowerCase() === email && u.password === pass);
+
+    if (existing) {
+      const sessionUser = { ...existing };
+      delete sessionUser.password;
+      localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
+      localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
+      updateAuthUI();
+      document.getElementById("authModalOverlay")?.classList.remove("active");
+      document.body.classList.remove("modal-open");
+      showToast(`Hoş geldiniz, ${existing.fullName || existing.name}!`, "fa-circle-check");
+      loginForm.reset();
+      if (window.location.pathname.includes("siparislerim") && typeof renderOrdersPage === "function") {
+        renderOrdersPage();
+      }
+    } else {
+      showToast("E-posta veya şifre hatalı. Kaydınız yoksa lütfen Kayıt Ol sekmesini kullanın.", "fa-triangle-exclamation");
+    }
+  });
+
+  // Real Register Submit Handler
+  registerForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = (document.getElementById("regName")?.value || "").trim();
+    const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
+    const phone = (document.getElementById("regPhone")?.value || "").trim();
+    const password = (document.getElementById("regPassword")?.value || "").trim();
+
+    if (!name || !email || !password) {
+      showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
+      return;
+    }
+
+    const customers = getCustomersList();
+    const exists = customers.find(u => u.email && u.email.toLowerCase() === email);
+    if (exists) {
+      showToast("Bu e-posta adresi ile zaten kayıtlı bir hesap var.", "fa-triangle-exclamation");
+      return;
+    }
+
+    const newCustomer = {
+      id: "cust_" + Date.now(),
+      fullName: name,
+      name: name,
+      email: email,
+      phone: phone || "",
+      password: password,
+      createdAt: new Date().toISOString()
     };
 
-    // Order Track Button Click / Tap Handling (Desktop & Mobile)
-    const orderTrackBtn = document.getElementById("orderTrackBtn");
-    const orderTrackDropdown = document.getElementById("orderTrackDropdown");
+    customers.push(newCustomer);
+    saveCustomersList(customers);
 
-    orderTrackBtn?.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        document.getElementById("userMenuDropdown")?.classList.remove("active");
-        if (orderTrackDropdown) {
-            orderTrackDropdown.classList.toggle("active");
-        }
-    });
+    const sessionUser = { ...newCustomer };
+    delete sessionUser.password;
+    localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
+    localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
 
-    // Auth Button Click Handling
-    const headerAuthBtn = document.getElementById("headerAuthBtn");
-    const userMenuDropdown = document.getElementById("userMenuDropdown");
+    updateAuthUI();
+    document.getElementById("authModalOverlay")?.classList.remove("active");
+    document.body.classList.remove("modal-open");
+    showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+    registerForm.reset();
+    if (window.location.pathname.includes("siparislerim") && typeof renderOrdersPage === "function") {
+      renderOrdersPage();
+    }
+  });
 
-    headerAuthBtn?.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        orderTrackDropdown?.classList.remove("active");
-        const user = getCurrentUser();
-        if (!user) {
-            window.openAuthModal("login");
-        } else {
-            if (userMenuDropdown) {
-                userMenuDropdown.classList.toggle("active");
-            }
-        }
-    });
+  // Checkout Form Submit Handler (Saves Customer Data & Creates Order)
+  const checkoutForm = document.getElementById("checkoutForm");
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("checkoutName")?.value.trim() || "";
+      const email = document.getElementById("checkoutEmail")?.value.trim().toLowerCase() || "";
+      const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
+      const address = document.getElementById("checkoutAddress")?.value.trim() || "";
+      const note = document.getElementById("checkoutNote")?.value.trim() || "";
+      const termsChecked = document.getElementById("checkoutTerms")?.checked;
 
-    // Close header dropdowns on outside click
-    document.addEventListener("click", (e) => {
-        if (!e.target.closest("#orderTrackContainer")) {
-            orderTrackDropdown?.classList.remove("active");
-        }
-        if (!e.target.closest("#headerAuthContainer")) {
-            userMenuDropdown?.classList.remove("active");
-        }
-    });
+      if (!termsChecked) {
+        showToast("Lütfen Mesafeli Satış Sözleşmesini onaylayınız.", "fa-triangle-exclamation");
+        return;
+      }
 
-    // Auth Modal Tabs
-    const tabLoginBtn = document.getElementById("tabLoginBtn");
-    const tabRegisterBtn = document.getElementById("tabRegisterBtn");
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
+      if (cart.length === 0) {
+        showToast("Sepetiniz boş!", "fa-basket-shopping");
+        return;
+      }
 
-    tabLoginBtn?.addEventListener("click", () => {
-        tabLoginBtn.classList.add("active");
-        tabLoginBtn.style.color = "#6b21a8";
-        tabLoginBtn.style.borderBottom = "2px solid #6b21a8";
-        tabLoginBtn.style.fontWeight = "800";
-        tabRegisterBtn.classList.remove("active");
-        tabRegisterBtn.style.color = "#71717a";
-        tabRegisterBtn.style.borderBottom = "none";
-        tabRegisterBtn.style.fontWeight = "700";
-        if (loginForm) loginForm.style.display = "flex";
-        if (registerForm) registerForm.style.display = "none";
-    });
-
-    tabRegisterBtn?.addEventListener("click", () => {
-        tabRegisterBtn.classList.add("active");
-        tabRegisterBtn.style.color = "#6b21a8";
-        tabRegisterBtn.style.borderBottom = "2px solid #6b21a8";
-        tabRegisterBtn.style.fontWeight = "800";
-        tabLoginBtn.classList.remove("active");
-        tabLoginBtn.style.color = "#71717a";
-        tabLoginBtn.style.borderBottom = "none";
-        tabLoginBtn.style.fontWeight = "700";
-        if (registerForm) registerForm.style.display = "flex";
-        if (loginForm) loginForm.style.display = "none";
-    });
-
-    document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
-        document.getElementById("authModalOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-    });
-    document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
-        if (e.target.id === "authModalOverlay") {
-            document.getElementById("authModalOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-        }
-    });
-
-    // Real Login Submit Handler
-    loginForm?.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
-        const pass = (document.getElementById("loginPassword")?.value || "").trim();
-
+      // Record customer into mobelmor_customers so Admin panel has the customer data
+      if (email) {
         const customers = getCustomersList();
-        const existing = customers.find(u => u.email && u.email.toLowerCase() === email && u.password === pass);
-
-        if (existing) {
-            const sessionUser = { ...existing };
-            delete sessionUser.password;
-            localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
-            localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
-            updateAuthUI();
-            document.getElementById("authModalOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-            showToast(`Hoş geldiniz, ${existing.fullName || existing.name}!`, "fa-circle-check");
-            loginForm.reset();
-            if (window.location.pathname.includes("siparislerim") && typeof renderOrdersPage === "function") {
-                renderOrdersPage();
-            }
+        let existingCust = customers.find(c => c.email && c.email.toLowerCase() === email);
+        if (existingCust) {
+          if (name) { existingCust.fullName = name; existingCust.name = name; }
+          if (phone) existingCust.phone = phone;
+          if (address) existingCust.address = address;
+          existingCust.lastOrderDate = new Date().toISOString();
         } else {
-            showToast("E-posta veya şifre hatalı. Kaydınız yoksa lütfen Kayıt Ol sekmesini kullanın.", "fa-triangle-exclamation");
-        }
-    });
-
-    // Real Register Submit Handler
-    registerForm?.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const name = (document.getElementById("regName")?.value || "").trim();
-        const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
-        const phone = (document.getElementById("regPhone")?.value || "").trim();
-        const password = (document.getElementById("regPassword")?.value || "").trim();
-
-        if (!name || !email || !password) {
-            showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
-            return;
-        }
-
-        const customers = getCustomersList();
-        const exists = customers.find(u => u.email && u.email.toLowerCase() === email);
-        if (exists) {
-            showToast("Bu e-posta adresi ile zaten kayıtlı bir hesap var.", "fa-triangle-exclamation");
-            return;
-        }
-
-        const newCustomer = {
+          customers.push({
             id: "cust_" + Date.now(),
             fullName: name,
             name: name,
             email: email,
             phone: phone || "",
-            password: password,
-            createdAt: new Date().toISOString()
-        };
-
-        customers.push(newCustomer);
-        saveCustomersList(customers);
-
-        const sessionUser = { ...newCustomer };
-        delete sessionUser.password;
-        localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
-        localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
-
-        updateAuthUI();
-        document.getElementById("authModalOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
-        registerForm.reset();
-        if (window.location.pathname.includes("siparislerim") && typeof renderOrdersPage === "function") {
-            renderOrdersPage();
+            address: address || "",
+            city: address ? address.split(',')[0].trim() : "",
+            createdAt: new Date().toISOString(),
+            lastOrderDate: new Date().toISOString(),
+            isGuest: true
+          });
         }
+        saveCustomersList(customers);
+      }
+
+      const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      const newOrderId = "MBL-" + Math.floor(100000 + Math.random() * 900000);
+
+      const orderData = {
+        id: newOrderId,
+        orderNumber: newOrderId,
+        date: orderDate,
+        createdAt: new Date().toISOString(),
+        status: "preparing",
+        statusText: "İmalat & Hazırlık Aşamasında",
+        customer: { name, email, phone, address, note },
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        address: address,
+        notes: note,
+        items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image })),
+        total: subtotal,
+        totalAmount: subtotal
+      };
+
+      // Save order in both user orders and admin store orders
+      try {
+        const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+        prevOrders.unshift(orderData);
+        localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
+
+        const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+        allOrders.unshift(orderData);
+        localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
+      } catch (err) {
+        console.error("Order save error:", err);
+      }
+
+      // Build formatted WhatsApp message
+      let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
+      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+      waMsg += `👤 *Müşteri:* ${name}\n`;
+      waMsg += `📧 *E-Posta:* ${email}\n`;
+      waMsg += `📞 *Telefon:* ${phone}\n`;
+      waMsg += `📍 *Adres:* ${address}\n`;
+      if (note) waMsg += `📝 *Not:* ${note}\n`;
+      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+      waMsg += `📦 *Sipariş Edilen Ürünler:*\n`;
+      cart.forEach((item, idx) => {
+        waMsg += `${idx + 1}. ${item.qty}x ${item.title} - ${formatPrice(item.price * item.qty)}\n`;
+      });
+      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+      waMsg += `💰 *Toplam Tutar:* ${formatPrice(subtotal)}\n`;
+      waMsg += `📅 *Tarih:* ${orderDate}\n\n`;
+      waMsg += `Siparişimin teyit edilmesini ve teslimat planlamasının başlatılmasını rica ederim.`;
+
+      const waUrl = `https://wa.me/905300000000?text=${encodeURIComponent(waMsg)}`;
+
+      // Clear cart & persist empty cart
+      cart = [];
+      saveCart();
+      updateBadges();
+      renderCart();
+      document.getElementById("checkoutOverlay")?.classList.remove("active");
+      document.body.classList.remove("modal-open");
+      showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
+      checkoutForm.reset();
+
+      // Open WhatsApp with prefilled order
+      setTimeout(() => {
+        window.open(waUrl, "_blank");
+      }, 600);
     });
+  }
 
-    // Checkout Form Submit Handler (Saves Customer Data & Creates Order)
-    const checkoutForm = document.getElementById("checkoutForm");
-    if (checkoutForm) {
-        checkoutForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const name = document.getElementById("checkoutName")?.value.trim() || "";
-            const email = document.getElementById("checkoutEmail")?.value.trim().toLowerCase() || "";
-            const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
-            const address = document.getElementById("checkoutAddress")?.value.trim() || "";
-            const note = document.getElementById("checkoutNote")?.value.trim() || "";
-            const termsChecked = document.getElementById("checkoutTerms")?.checked;
+  updateAuthUI();
+  updateBadges();
+  renderCart();
 
-            if (!termsChecked) {
-                showToast("Lütfen Mesafeli Satış Sözleşmesini onaylayınız.", "fa-triangle-exclamation");
-                return;
-            }
+  // ── Seed Demo Orders if not exists ──
+  const initOrdersStorage = () => {
+    const stored = localStorage.getItem("mobelmor_orders");
+    if (!stored) {
+      const demoOrders = [
+        {
+          id: "MBL-782190",
+          date: "15.08.2026 14:30",
+          status: "shipping", // preparing, quality, shipping, delivered
+          statusText: "Sevkiyatta / Özel Mobilya Lojistiğinde",
+          customer: {
+            name: "Ahmet Yılmaz",
+            email: "ahmet@example.com",
+            phone: "0532 111 22 33",
+            address: "Nilüfer, Bursa",
+            note: "Krem kadife kumaş döşemesi uygulandı."
+          },
+          items: [
+            { id: 1, title: "Gold Koltuk Takımı", price: 45000, qty: 1 }
+          ],
+          total: 45000
+        }
+      ];
+      localStorage.setItem("mobelmor_orders", JSON.stringify(demoOrders));
+    }
+  };
+  initOrdersStorage();
 
-            if (cart.length === 0) {
-                showToast("Sepetiniz boş!", "fa-basket-shopping");
-                return;
-            }
+  // ── Orders & Tracking Page Logic (siparislerim.html) ──
+  const renderOrdersPage = () => {
+    const listContainer = document.getElementById("ordersListContainer");
+    if (!listContainer) return;
 
-            // Record customer into mobelmor_customers so Admin panel has the customer data
-            if (email) {
-                const customers = getCustomersList();
-                let existingCust = customers.find(c => c.email && c.email.toLowerCase() === email);
-                if (existingCust) {
-                    if (name) { existingCust.fullName = name; existingCust.name = name; }
-                    if (phone) existingCust.phone = phone;
-                    if (address) existingCust.address = address;
-                    existingCust.lastOrderDate = new Date().toISOString();
-                } else {
-                    customers.push({
-                        id: "cust_" + Date.now(),
-                        fullName: name,
-                        name: name,
-                        email: email,
-                        phone: phone || "",
-                        address: address || "",
-                        city: address ? address.split(',')[0].trim() : "",
-                        createdAt: new Date().toISOString(),
-                        lastOrderDate: new Date().toISOString(),
-                        isGuest: true
-                    });
-                }
-                saveCustomersList(customers);
-            }
+    const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+    const currentUser = getCurrentUser();
 
-            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-            const newOrderId = "MBL-" + Math.floor(100000 + Math.random() * 900000);
-
-            const orderData = {
-                id: newOrderId,
-                orderNumber: newOrderId,
-                date: orderDate,
-                createdAt: new Date().toISOString(),
-                status: "preparing",
-                statusText: "İmalat & Hazırlık Aşamasında",
-                customer: { name, email, phone, address, note },
-                customerName: name,
-                customerEmail: email,
-                customerPhone: phone,
-                address: address,
-                notes: note,
-                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image })),
-                total: subtotal,
-                totalAmount: subtotal
-            };
-
-            // Save order in both user orders and admin store orders
-            try {
-                const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
-                prevOrders.unshift(orderData);
-                localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
-
-                const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
-                allOrders.unshift(orderData);
-                localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
-            } catch (err) {
-                console.error("Order save error:", err);
-            }
-
-            // Build formatted WhatsApp message
-            let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
-            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-            waMsg += `👤 *Müşteri:* ${name}\n`;
-            waMsg += `📧 *E-Posta:* ${email}\n`;
-            waMsg += `📞 *Telefon:* ${phone}\n`;
-            waMsg += `📍 *Adres:* ${address}\n`;
-            if (note) waMsg += `📝 *Not:* ${note}\n`;
-            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-            waMsg += `📦 *Sipariş Edilen Ürünler:*\n`;
-            cart.forEach((item, idx) => {
-                waMsg += `${idx + 1}. ${item.qty}x ${item.title} - ${formatPrice(item.price * item.qty)}\n`;
-            });
-            waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-            waMsg += `💰 *Toplam Tutar:* ${formatPrice(subtotal)}\n`;
-            waMsg += `📅 *Tarih:* ${orderDate}\n\n`;
-            waMsg += `Siparişimin teyit edilmesini ve teslimat planlamasının başlatılmasını rica ederim.`;
-
-            const waUrl = `https://wa.me/905300000000?text=${encodeURIComponent(waMsg)}`;
-
-            // Clear cart & persist empty cart
-            cart = [];
-            saveCart();
-            updateBadges();
-            renderCart();
-            document.getElementById("checkoutOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-            showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
-            checkoutForm.reset();
-
-            // Open WhatsApp with prefilled order
-            setTimeout(() => {
-                window.open(waUrl, "_blank");
-            }, 600);
-        });
+    let displayOrders = allOrders;
+    if (currentUser) {
+      displayOrders = allOrders.filter(o =>
+        (o.customer?.email && o.customer.email.toLowerCase() === currentUser.email.toLowerCase()) ||
+        (o.customer?.phone && o.customer.phone === currentUser.phone)
+      );
+      if (displayOrders.length === 0) displayOrders = allOrders; // fallback to all for easy test
     }
 
-    updateAuthUI();
-    updateBadges();
-    renderCart();
+    renderOrdersList(displayOrders);
+  };
 
-    // ── Orders & Tracking Page Logic (siparislerim.html) ──
-    const renderOrdersPage = () => {
-        const listContainer = document.getElementById("ordersListContainer");
-        if (!listContainer) return;
+  const renderOrdersList = (orders) => {
+    const listContainer = document.getElementById("ordersListContainer");
+    if (!listContainer) return;
 
-        const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
-        const currentUser = getCurrentUser();
-
-        let displayOrders = allOrders;
-        if (currentUser) {
-            displayOrders = allOrders.filter(o => 
-                (o.customer?.email && o.customer.email.toLowerCase() === currentUser.email.toLowerCase()) ||
-                (o.customer?.phone && o.customer.phone === currentUser.phone)
-            );
-            if (displayOrders.length === 0) displayOrders = allOrders; // fallback to all for easy test
-        }
-
-        renderOrdersList(displayOrders);
-    };
-
-    const renderOrdersList = (orders) => {
-        const listContainer = document.getElementById("ordersListContainer");
-        if (!listContainer) return;
-
-        if (!orders || orders.length === 0) {
-            listContainer.innerHTML = `
+    if (!orders || orders.length === 0) {
+      listContainer.innerHTML = `
                 <div class="order-card" style="text-align:center; padding:48px 20px; color:#71717a;">
                     <i class="fa-solid fa-box-open" style="font-size:3rem; color:#cbd5e1; margin-bottom:16px;"></i>
                     <h3 style="color:#18181b; margin:0 0 8px 0;">Kayıtlı Sipariş Bulunamadı</h3>
@@ -3272,30 +3299,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     <a href="kategori.html?c=tum-koleksiyon" class="btn btn-primary interactive-btn" style="padding:10px 24px; text-decoration:none; display:inline-block;">Koleksiyonu İncele</a>
                 </div>
             `;
-            return;
-        }
+      return;
+    }
 
-        listContainer.innerHTML = orders.map(order => {
-            const statusKey = order.status || "preparing";
-            let pillClass = "status-preparing";
-            let statusLabel = "İmalat & Hazırlık Aşamasında";
-            let stepIndex = 1; // 1: Order received, 2: Crafting/Wood, 3: Quality Check, 4: Delivered
+    listContainer.innerHTML = orders.map(order => {
+      const statusKey = order.status || "preparing";
+      let pillClass = "status-preparing";
+      let statusLabel = "İmalat & Hazırlık Aşamasında";
+      let stepIndex = 1; // 1: Order received, 2: Crafting/Wood, 3: Quality Check, 4: Delivered
 
-            if (statusKey === "quality") {
-                pillClass = "status-preparing";
-                statusLabel = "Kalite Kontrol & Paketleme";
-                stepIndex = 2;
-            } else if (statusKey === "shipping") {
-                pillClass = "status-shipping";
-                statusLabel = "Lojistik Sevkiyatında";
-                stepIndex = 3;
-            } else if (statusKey === "delivered") {
-                pillClass = "status-delivered";
-                statusLabel = "Teslim Edildi & Kuruldu";
-                stepIndex = 4;
-            }
+      if (statusKey === "quality") {
+        pillClass = "status-preparing";
+        statusLabel = "Kalite Kontrol & Paketleme";
+        stepIndex = 2;
+      } else if (statusKey === "shipping") {
+        pillClass = "status-shipping";
+        statusLabel = "Lojistik Sevkiyatında";
+        stepIndex = 3;
+      } else if (statusKey === "delivered") {
+        pillClass = "status-delivered";
+        statusLabel = "Teslim Edildi & Kuruldu";
+        stepIndex = 4;
+      }
 
-            return `
+      return `
                 <div class="order-card">
                     <div class="order-card-header">
                         <div>
@@ -3363,48 +3390,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
             `;
-        }).join('');
-    };
+    }).join('');
+  };
 
-    // Lookup Form Submit
-    const lookupForm = document.getElementById("orderLookupForm");
-    if (lookupForm) {
-        lookupForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const orderIdInput = document.getElementById("lookupOrderId")?.value.trim().toUpperCase();
-            const emailInput = document.getElementById("lookupEmail")?.value.trim().toLowerCase();
+  // Lookup Form Submit
+  const lookupForm = document.getElementById("orderLookupForm");
+  if (lookupForm) {
+    lookupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const orderIdInput = document.getElementById("lookupOrderId")?.value.trim().toUpperCase();
+      const emailInput = document.getElementById("lookupEmail")?.value.trim().toLowerCase();
 
-            const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
-            const matched = allOrders.filter(o => {
-                const idMatch = o.id && o.id.toUpperCase().includes(orderIdInput);
-                const emailMatch = (o.customer?.email && o.customer.email.toLowerCase().includes(emailInput)) ||
-                                   (o.customer?.phone && o.customer.phone.includes(emailInput));
-                return idMatch || emailMatch;
-            });
+      const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+      const matched = allOrders.filter(o => {
+        const idMatch = o.id && o.id.toUpperCase().includes(orderIdInput);
+        const emailMatch = (o.customer?.email && o.customer.email.toLowerCase().includes(emailInput)) ||
+          (o.customer?.phone && o.customer.phone.includes(emailInput));
+        return idMatch || emailMatch;
+      });
 
-            if (matched.length > 0) {
-                renderOrdersList(matched);
-                showToast(`${matched.length} adet sipariş bulundu.`, "fa-circle-check");
-                document.getElementById("ordersListContainer")?.scrollIntoView({ behavior: "smooth" });
-            } else {
-                showToast("Girdiğiniz bilgilere ait sipariş bulunamadı.", "fa-triangle-exclamation");
-                renderOrdersList([]);
-            }
-        });
-    }
+      if (matched.length > 0) {
+        renderOrdersList(matched);
+        showToast(`${matched.length} adet sipariş bulundu.`, "fa-circle-check");
+        document.getElementById("ordersListContainer")?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        showToast("Girdiğiniz bilgilere ait sipariş bulunamadı.", "fa-triangle-exclamation");
+        renderOrdersList([]);
+      }
+    });
+  }
 
-    if (window.location.pathname.includes("siparislerim")) {
-        renderOrdersPage();
-    }
+  if (window.location.pathname.includes("siparislerim")) {
+    renderOrdersPage();
+  }
 
-    // Initialize Cookie Consent Banner
-    const initCookieConsent = () => {
-        if (localStorage.getItem("mobelmor_cookie_accepted") === "true") return;
+  // Initialize Cookie Consent Banner
+  const initCookieConsent = () => {
+    if (localStorage.getItem("mobelmor_cookie_accepted") === "true") return;
 
-        const banner = document.createElement("div");
-        banner.className = "cookie-consent-banner";
-        banner.id = "cookieConsentBanner";
-        banner.innerHTML = `
+    const banner = document.createElement("div");
+    banner.className = "cookie-consent-banner";
+    banner.id = "cookieConsentBanner";
+    banner.innerHTML = `
             <div class="cookie-content">
                 <i class="fa-solid fa-cookie-bite cookie-icon"></i>
                 <div class="cookie-text">
@@ -3416,27 +3443,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button class="cookie-btn-close" id="closeCookiesBtn" title="Kapat" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
             </div>
         `;
-        document.body.appendChild(banner);
+    document.body.appendChild(banner);
 
-        setTimeout(() => banner.classList.add("show"), 800);
+    setTimeout(() => banner.classList.add("show"), 800);
 
-        const closeBanner = () => {
-            localStorage.setItem("mobelmor_cookie_accepted", "true");
-            banner.classList.remove("show");
-            setTimeout(() => banner.remove(), 400);
-        };
-
-        banner.querySelector("#acceptCookiesBtn")?.addEventListener("click", closeBanner);
-        banner.querySelector("#closeCookiesBtn")?.addEventListener("click", closeBanner);
+    const closeBanner = () => {
+      localStorage.setItem("mobelmor_cookie_accepted", "true");
+      banner.classList.remove("show");
+      setTimeout(() => banner.remove(), 400);
     };
 
-    initCookieConsent();
+    banner.querySelector("#acceptCookiesBtn")?.addEventListener("click", closeBanner);
+    banner.querySelector("#closeCookiesBtn")?.addEventListener("click", closeBanner);
+  };
 
-    // Info Modals (Garanti, Kumaş, SSS, Gizlilik)
-    const INFO_MODALS = {
-        warranty: {
-            title: '<i class="fa-solid fa-shield-cat"></i> Garanti & İade Koşulları',
-            body: `
+  initCookieConsent();
+
+  // Info Modals (Garanti, Kumaş, SSS, Gizlilik)
+  const INFO_MODALS = {
+    warranty: {
+      title: '<i class="fa-solid fa-shield-cat"></i> Garanti & İade Koşulları',
+      body: `
                 <div style="display:flex; flex-direction:column; gap:12px;">
                     <div style="background:#f4f4f5; padding:12px; border-radius:8px; border-left:4px solid #6b21a8;">
                         <h4 style="margin:0 0 4px 0; color:#18181b;">2 Yıl Üretici Garantisi</h4>
@@ -3452,10 +3479,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
             `
-        },
-        fabric: {
-            title: '<i class="fa-solid fa-swatchbook"></i> Kumaş & Renk Kartelası',
-            body: `
+    },
+    fabric: {
+      title: '<i class="fa-solid fa-swatchbook"></i> Kumaş & Renk Kartelası',
+      body: `
                 <p>Mobelmor ürünlerinde kullanılan tüm kumaşlar leke tutmaz, silinebilir ve yüksek sürtünme dayanımlı 1. sınıf akıllı kumaş teknolojisine sahiptir.</p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin:16px 0;">
                     <div style="background:#fdf4ff; border:1px solid #f0abfc; padding:10px; text-align:center; border-radius:8px; font-weight:700; color:#86198f;">Krem Kadife</div>
@@ -3467,10 +3494,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <i class="fa-brands fa-whatsapp"></i> Ücretsiz Kumaş Numunesi İste
                 </a>
             `
-        },
-        faq: {
-            title: '<i class="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular',
-            body: `
+    },
+    faq: {
+      title: '<i class="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular',
+      body: `
                 <div style="display:flex; flex-direction:column; gap:10px;">
                     <div>
                         <strong style="color:#6b21a8;">S: Teslimat süresi ne kadar?</strong>
@@ -3488,10 +3515,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
             `
-        },
-        privacy: {
-            title: '<i class="fa-solid fa-lock"></i> Gizlilik & Güvenlik Politikası',
-            body: `
+    },
+    privacy: {
+      title: '<i class="fa-solid fa-lock"></i> Gizlilik & Güvenlik Politikası',
+      body: `
                 <p>Mobelmor.com müşteri güvenliğini en üst düzeyde tutmaktadır.</p>
                 <ul style="padding-left:20px; margin:10px 0; font-size:0.88rem;">
                     <li><strong>256-Bit SSL:</strong> Tüm kart işlemleri yüksek şifrelemeli SSL alt yapısı ile korunur.</li>
@@ -3499,248 +3526,248 @@ document.addEventListener("DOMContentLoaded", () => {
                     <li><strong>3D Secure:</strong> Tüm ödemeler bankanızın onay kodu ile gerçekleşir.</li>
                 </ul>
             `
+    }
+  };
+
+  document.querySelectorAll(".info-modal-trigger").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const type = btn.getAttribute("data-type");
+      const data = INFO_MODALS[type];
+      if (!data) return;
+      const overlay = document.getElementById("infoModalOverlay");
+      const title = document.getElementById("infoModalTitle");
+      const body = document.getElementById("infoModalBody");
+      if (overlay && title && body) {
+        title.innerHTML = data.title;
+        body.innerHTML = data.body;
+        overlay.classList.add("active");
+      }
+    });
+  });
+
+  document.getElementById("closeInfoModalBtn")?.addEventListener("click", () => {
+    document.getElementById("infoModalOverlay")?.classList.remove("active");
+  });
+  document.getElementById("infoModalOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "infoModalOverlay") {
+      document.getElementById("infoModalOverlay")?.classList.remove("active");
+    }
+  });
+
+  window.addEventListener("popstate", () => {
+    handleUrlParams();
+  });
+
+  // Vivense-Style Mega Menu Interaction (Desktop)
+  const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
+  megaNavItems.forEach(item => {
+    item.addEventListener("mouseenter", () => {
+      megaNavItems.forEach(other => { if (other !== item) other.classList.remove("is-open"); });
+      item.classList.add("is-open");
+    });
+    item.addEventListener("mouseleave", () => {
+      item.classList.remove("is-open");
+    });
+  });
+
+  // Vivense-Style Mobile Menu Drawer & Accordion
+  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+  const closeMobileMenuBtn = document.getElementById("mobileDrawerCloseBtn") || document.getElementById("closeMobileMenuBtn");
+  const mobileMenuOverlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+  const mobileMenuDrawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+
+  function openMobileDrawer() {
+    mobileMenuDrawer?.classList.add("active");
+    mobileMenuOverlay?.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMobileDrawer() {
+    mobileMenuDrawer?.classList.remove("active");
+    mobileMenuOverlay?.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  mobileMenuBtn?.addEventListener("click", openMobileDrawer);
+  closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
+  mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
+
+  // Mobile Drawer Wishlist / Cart Triggers
+  document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
+    closeMobileDrawer();
+    document.getElementById("wishlistBtn")?.click();
+  });
+  document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
+    closeMobileDrawer();
+    document.getElementById("cartBtn")?.click();
+  });
+
+  // Mobile Drawer Category Accordions
+  document.querySelectorAll(".mobile-cat-header").forEach(header => {
+    header.addEventListener("click", (e) => {
+      e.preventDefault();
+      const accordion = header.closest(".mobile-cat-accordion");
+      const isOpen = accordion.classList.contains("open");
+      document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
+      if (!isOpen) {
+        accordion.classList.add("open");
+      }
+    });
+  });
+
+  // Vivense-Style Hero Slider Engine (Full Drag / Swipe / Autoplay / Arrow / Dot Navigation)
+  const heroSlider = document.getElementById("heroSlider");
+  if (heroSlider) {
+    const slides = heroSlider.querySelectorAll(".slider-slide");
+    const prevBtn = document.getElementById("sliderPrevBtn");
+    const nextBtn = document.getElementById("sliderNextBtn");
+    const dots = heroSlider.querySelectorAll(".slider-dot");
+    let currentSlide = 0;
+    let sliderInterval = null;
+
+    function goToSlide(index) {
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
         }
-    };
+      });
 
-    document.querySelectorAll(".info-modal-trigger").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const type = btn.getAttribute("data-type");
-            const data = INFO_MODALS[type];
-            if (!data) return;
-            const overlay = document.getElementById("infoModalOverlay");
-            const title = document.getElementById("infoModalTitle");
-            const body = document.getElementById("infoModalBody");
-            if (overlay && title && body) {
-                title.innerHTML = data.title;
-                body.innerHTML = data.body;
-                overlay.classList.add("active");
-            }
-        });
-    });
-
-    document.getElementById("closeInfoModalBtn")?.addEventListener("click", () => {
-        document.getElementById("infoModalOverlay")?.classList.remove("active");
-    });
-    document.getElementById("infoModalOverlay")?.addEventListener("click", (e) => {
-        if (e.target.id === "infoModalOverlay") {
-            document.getElementById("infoModalOverlay")?.classList.remove("active");
+      dots.forEach((dot) => {
+        const idx = parseInt(dot.getAttribute("data-index"), 10);
+        if (idx === index) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
         }
-    });
-
-    window.addEventListener("popstate", () => {
-        handleUrlParams();
-    });
-
-    // Vivense-Style Mega Menu Interaction (Desktop)
-    const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
-    megaNavItems.forEach(item => {
-        item.addEventListener("mouseenter", () => {
-            megaNavItems.forEach(other => { if (other !== item) other.classList.remove("is-open"); });
-            item.classList.add("is-open");
-        });
-        item.addEventListener("mouseleave", () => {
-            item.classList.remove("is-open");
-        });
-    });
-
-    // Vivense-Style Mobile Menu Drawer & Accordion
-    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const closeMobileMenuBtn = document.getElementById("mobileDrawerCloseBtn") || document.getElementById("closeMobileMenuBtn");
-    const mobileMenuOverlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
-    const mobileMenuDrawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
-
-    function openMobileDrawer() {
-        mobileMenuDrawer?.classList.add("active");
-        mobileMenuOverlay?.classList.add("active");
-        document.body.style.overflow = "hidden";
+      });
+      currentSlide = index;
     }
 
-    function closeMobileDrawer() {
-        mobileMenuDrawer?.classList.remove("active");
-        mobileMenuOverlay?.classList.remove("active");
-        document.body.style.overflow = "";
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
     }
 
-    mobileMenuBtn?.addEventListener("click", openMobileDrawer);
-    closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
-    mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
-
-    // Mobile Drawer Wishlist / Cart Triggers
-    document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
-        closeMobileDrawer();
-        document.getElementById("wishlistBtn")?.click();
-    });
-    document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
-        closeMobileDrawer();
-        document.getElementById("cartBtn")?.click();
-    });
-
-    // Mobile Drawer Category Accordions
-    document.querySelectorAll(".mobile-cat-header").forEach(header => {
-        header.addEventListener("click", (e) => {
-            e.preventDefault();
-            const accordion = header.closest(".mobile-cat-accordion");
-            const isOpen = accordion.classList.contains("open");
-            document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
-            if (!isOpen) {
-                accordion.classList.add("open");
-            }
-        });
-    });
-
-    // Vivense-Style Hero Slider Engine (Full Drag / Swipe / Autoplay / Arrow / Dot Navigation)
-    const heroSlider = document.getElementById("heroSlider");
-    if (heroSlider) {
-        const slides = heroSlider.querySelectorAll(".slider-slide");
-        const prevBtn = document.getElementById("sliderPrevBtn");
-        const nextBtn = document.getElementById("sliderNextBtn");
-        const dots = heroSlider.querySelectorAll(".slider-dot");
-        let currentSlide = 0;
-        let sliderInterval = null;
-
-        function goToSlide(index) {
-            if (index < 0) index = slides.length - 1;
-            if (index >= slides.length) index = 0;
-
-            slides.forEach((slide, i) => {
-                if (i === index) {
-                    slide.classList.add("active");
-                } else {
-                    slide.classList.remove("active");
-                }
-            });
-
-            dots.forEach((dot) => {
-                const idx = parseInt(dot.getAttribute("data-index"), 10);
-                if (idx === index) {
-                    dot.classList.add("active");
-                } else {
-                    dot.classList.remove("active");
-                }
-            });
-            currentSlide = index;
-        }
-
-        function nextSlide() {
-            goToSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            goToSlide(currentSlide - 1);
-        }
-
-        prevBtn?.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            prevSlide();
-            resetInterval();
-        });
-
-        nextBtn?.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            nextSlide();
-            resetInterval();
-        });
-
-        dots.forEach(dot => {
-            dot.addEventListener("click", (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const idx = parseInt(dot.getAttribute("data-index"), 10);
-                if (!isNaN(idx)) {
-                    goToSlide(idx);
-                    resetInterval();
-                }
-            });
-        });
-
-        function startAutoplay() {
-            if (!sliderInterval) {
-                sliderInterval = setInterval(nextSlide, 4500);
-            }
-        }
-
-        function stopAutoplay() {
-            if (sliderInterval) {
-                clearInterval(sliderInterval);
-                sliderInterval = null;
-            }
-        }
-
-        function resetInterval() {
-            stopAutoplay();
-            startAutoplay();
-        }
-
-        heroSlider.addEventListener("mouseenter", stopAutoplay);
-        heroSlider.addEventListener("mouseleave", startAutoplay);
-
-        // Universal Pointer & Touch Drag / Swipe Interaction
-        let startX = 0;
-        let startY = 0;
-        let isDragging = false;
-
-        function onDragStart(e) {
-            isDragging = true;
-            stopAutoplay();
-            startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        }
-
-        function onDragEnd(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            const endX = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientX : startX) : e.clientX;
-            const endY = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientY : startY) : e.clientY;
-
-            const diffX = startX - endX;
-            const diffY = startY - endY;
-
-            // Only act if horizontal movement exceeds vertical movement and threshold
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
-                if (diffX > 0) {
-                    nextSlide();
-                } else {
-                    prevSlide();
-                }
-            }
-            resetInterval();
-        }
-
-        heroSlider.addEventListener("touchstart", onDragStart, { passive: true });
-        heroSlider.addEventListener("touchend", onDragEnd, { passive: true });
-        heroSlider.addEventListener("mousedown", onDragStart);
-        heroSlider.addEventListener("mouseup", onDragEnd);
-
-        // Keyboard navigation
-        window.addEventListener("keydown", (e) => {
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            if (e.key === "ArrowLeft") {
-                prevSlide();
-                resetInterval();
-            } else if (e.key === "ArrowRight") {
-                nextSlide();
-                resetInterval();
-            }
-        });
-
-        startAutoplay();
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
     }
 
-    // Category Subcircles Carousel Scroll Controls
-    const catCirclePrev = document.getElementById("catCirclePrev");
-    const catCircleNext = document.getElementById("catCircleNext");
-    const catSubcirclesTrack = document.getElementById("catSubcirclesTrack");
-
-    catCirclePrev?.addEventListener("click", () => {
-        catSubcirclesTrack?.scrollBy({ left: -260, behavior: "smooth" });
+    prevBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      prevSlide();
+      resetInterval();
     });
 
-    catCircleNext?.addEventListener("click", () => {
-        catSubcirclesTrack?.scrollBy({ left: 260, behavior: "smooth" });
+    nextBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      nextSlide();
+      resetInterval();
     });
+
+    dots.forEach(dot => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = parseInt(dot.getAttribute("data-index"), 10);
+        if (!isNaN(idx)) {
+          goToSlide(idx);
+          resetInterval();
+        }
+      });
+    });
+
+    function startAutoplay() {
+      if (!sliderInterval) {
+        sliderInterval = setInterval(nextSlide, 4500);
+      }
+    }
+
+    function stopAutoplay() {
+      if (sliderInterval) {
+        clearInterval(sliderInterval);
+        sliderInterval = null;
+      }
+    }
+
+    function resetInterval() {
+      stopAutoplay();
+      startAutoplay();
+    }
+
+    heroSlider.addEventListener("mouseenter", stopAutoplay);
+    heroSlider.addEventListener("mouseleave", startAutoplay);
+
+    // Universal Pointer & Touch Drag / Swipe Interaction
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+
+    function onDragStart(e) {
+      isDragging = true;
+      stopAutoplay();
+      startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+    }
+
+    function onDragEnd(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      const endX = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientX : startX) : e.clientX;
+      const endY = e.type.includes('touch') ? (e.changedTouches ? e.changedTouches[0].clientY : startY) : e.clientY;
+
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+
+      // Only act if horizontal movement exceeds vertical movement and threshold
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+      resetInterval();
+    }
+
+    heroSlider.addEventListener("touchstart", onDragStart, { passive: true });
+    heroSlider.addEventListener("touchend", onDragEnd, { passive: true });
+    heroSlider.addEventListener("mousedown", onDragStart);
+    heroSlider.addEventListener("mouseup", onDragEnd);
+
+    // Keyboard navigation
+    window.addEventListener("keydown", (e) => {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+      if (e.key === "ArrowLeft") {
+        prevSlide();
+        resetInterval();
+      } else if (e.key === "ArrowRight") {
+        nextSlide();
+        resetInterval();
+      }
+    });
+
+    startAutoplay();
+  }
+
+  // Category Subcircles Carousel Scroll Controls
+  const catCirclePrev = document.getElementById("catCirclePrev");
+  const catCircleNext = document.getElementById("catCircleNext");
+  const catSubcirclesTrack = document.getElementById("catSubcirclesTrack");
+
+  catCirclePrev?.addEventListener("click", () => {
+    catSubcirclesTrack?.scrollBy({ left: -260, behavior: "smooth" });
+  });
+
+  catCircleNext?.addEventListener("click", () => {
+    catSubcirclesTrack?.scrollBy({ left: 260, behavior: "smooth" });
+  });
 });
 
 

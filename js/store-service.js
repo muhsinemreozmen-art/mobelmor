@@ -16,7 +16,7 @@
     const initProducts = () => {
         const storedVersion = localStorage.getItem('mobelmor_catalog_version');
         const stored = localStorage.getItem('mobelmor_custom_products');
-        
+
         if (!stored || storedVersion !== CATALOG_VERSION) {
             if (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) {
                 localStorage.setItem('mobelmor_custom_products', JSON.stringify(PRODUCTS));
@@ -63,7 +63,7 @@
                 },
                 body: JSON.stringify(payload)
             }).then(r => console.log('Supabase Product Synced:', productData.title))
-              .catch(e => console.log('Supabase Product Sync Error:', e));
+                .catch(e => console.log('Supabase Product Sync Error:', e));
         },
 
         _deleteProductFromCloud: function (id) {
@@ -75,7 +75,7 @@
                     'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
                 }
             }).then(r => console.log('Supabase Product Deleted:', id))
-              .catch(e => console.log('Supabase Product Delete Error:', e));
+                .catch(e => console.log('Supabase Product Delete Error:', e));
         },
 
         // --- ÜRÜN İŞLEMLERİ (CRUD) ---
@@ -92,7 +92,7 @@
             return list.find(p => p.id === parseInt(id)) || null;
         },
 
-        
+
         addProduct: function (productData) {
             return this.saveProduct(productData);
         },
@@ -260,7 +260,7 @@
                 try {
                     const rawCusts = localStorage.getItem('mobelmor_customers');
                     if (rawCusts) custs = JSON.parse(rawCusts);
-                } catch(e) {}
+                } catch (e) { }
                 if (!Array.isArray(custs)) custs = [];
 
                 // Merge users from mobelmor_users if present
@@ -276,7 +276,7 @@
                             });
                         }
                     }
-                } catch (e) {}
+                } catch (e) { }
 
                 // Merge active customer if not in list
                 try {
@@ -297,7 +297,7 @@
                             });
                         }
                     }
-                } catch (e) {}
+                } catch (e) { }
 
                 // Merge orders customers (guest buyers)
                 try {
@@ -328,10 +328,10 @@
                             }
                         });
                     }
-                } catch (e) {}
+                } catch (e) { }
 
-                // Clean out any invalid records and demo placeholder data
-                custs = custs.filter(c => c && c.email && c.email.includes('@') && !c.email.endsWith('@example.com') && !String(c.id || '').startsWith('USR-'));
+                // Ensure valid record
+                custs = custs.filter(c => c && (c.email || c.fullName || c.name) && !c.email?.endsWith('@example.com') && !String(c.id || '').startsWith('USR-'));
                 localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
                 return custs;
             } catch (e) {
@@ -444,33 +444,33 @@
                 order.status = newStatus;
                 localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
 
-            // Push order to Supabase Cloud
-            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
-                fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': DEFAULT_CONFIG.supabaseKey,
-                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        order_number: order.orderNumber,
-                        customer_id: order.customerId,
-                        customer_name: order.customerName,
-                        customer_email: order.customerEmail,
-                        customer_phone: order.customerPhone,
-                        city: order.city,
-                        district: order.district,
-                        address: order.address,
-                        notes: order.notes,
-                        items: order.items,
-                        total_amount: order.totalAmount,
-                        payment_method: order.paymentMethod,
-                        payment_status: order.paymentStatus,
-                        status: newStatus
-                    })
-                }).catch(e => console.log('Supabase Order Sync:', e));
-            }
+                // Push order to Supabase Cloud
+                if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                    fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            order_number: order.orderNumber,
+                            customer_id: order.customerId,
+                            customer_name: order.customerName,
+                            customer_email: order.customerEmail,
+                            customer_phone: order.customerPhone,
+                            city: order.city,
+                            district: order.district,
+                            address: order.address,
+                            notes: order.notes,
+                            items: order.items,
+                            total_amount: order.totalAmount,
+                            payment_method: order.paymentMethod,
+                            payment_status: order.paymentStatus,
+                            status: newStatus
+                        })
+                    }).catch(e => console.log('Supabase Order Sync:', e));
+                }
 
                 return true;
             }
@@ -482,7 +482,7 @@
             return sessionStorage.getItem('mobelmor_admin_logged') === 'true';
         },
 
-                adminLogin: function (username, password) {
+        adminLogin: function (username, password) {
             const u = (username || '').trim().toLowerCase();
             const p = (password || '').trim();
             if (u === 'bjk98' && p === 'cocumuyo31!') {
@@ -497,7 +497,7 @@
             return false;
         },
 
-        
+
         moveProduct: function (id, dir) {
             const products = this.getProducts(true);
             const idx = products.findIndex(p => p.id == id);
@@ -526,7 +526,7 @@
             return true;
         },
 
-        
+
         syncFromCloud: async function () {
             if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return false;
             try {

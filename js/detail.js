@@ -2802,8 +2802,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             let list = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
             if (!Array.isArray(list)) list = [];
-            // Clean up any fake dummy simulation records created during previous testing
-            list = list.filter(c => c && c.email && c.email.includes("@") && !c.id?.startsWith("USR-"));
+            list = list.filter(c => c && (c.email || c.fullName || c.name) && !c.id?.startsWith("USR-"));
             localStorage.setItem("mobelmor_customers", JSON.stringify(list));
             return list;
         } catch {
@@ -2825,7 +2824,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const userJson = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
             if (!userJson) return null;
             const user = JSON.parse(userJson);
-            if (!user || !user.email || !user.email.includes("@") || (user.id && String(user.id).startsWith("USR-"))) {
+            if (!user || (!user.email && !user.name && !user.fullName) || (user.id && String(user.id).startsWith("USR-"))) {
                 localStorage.removeItem("mobelmor_active_customer");
                 localStorage.removeItem("mobelmor_current_user");
                 return null;
