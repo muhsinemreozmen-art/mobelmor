@@ -2,190 +2,354 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Hesabım & Siparişlerim | Mobelmor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesabım &amp; Profilim | Mobelmor.com</title>
+    <meta name="description" content="Mobelmor üye hesabınız, sipariş geçmişiniz, teslimat adresleriniz ve kişisel bilgileriniz.">
+    <!-- Security & Hardening Meta Tags -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="js/url-cleaner.js?v=11000"></script>
+    <!-- SVG Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="shortcut icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.min.css?v=20260826_0515">
     <style>
         .account-page-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1040px;
+            margin: 36px auto 70px auto;
+            padding: 0 16px;
         }
-        .account-header-card {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 24px 30px;
+        .account-profile-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f4f4f5;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-        .account-user-meta { display: flex; align-items: center; gap: 16px; }
-        .account-avatar {
-            width: 56px;
-            height: 56px;
+        .account-profile-meta {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .account-avatar-badge {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: #0284c7;
+            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            color: #fff;
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(107, 33, 168, 0.25);
+            text-transform: uppercase;
         }
-        .account-tabs-nav {
+        .account-name-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #18181b;
+            margin: 0 0 4px 0;
             display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 12px;
+            align-items: center;
+            gap: 8px;
         }
-        .acc-tab-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #94a3b8;
+        .account-email-sub {
+            color: #71717a;
+            font-size: 0.92rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .account-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-logout {
+            background: #fff5f5;
+            color: #ef4444;
+            border: 1px solid #fee2e2;
             padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             transition: all 0.2s ease;
         }
-        .acc-tab-btn.active {
-            background: #0284c7;
-            color: #fff;
-            border-color: #0284c7;
+        .btn-logout:hover {
+            background: #fee2e2;
+            color: #dc2626;
         }
-        .order-card {
-            background: #1e293b;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+        /* Modern Tabs Navigation */
+        .account-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #f4f4f5;
+            padding-bottom: 12px;
+            overflow-x: auto;
         }
-        .order-header-row {
+        .account-tab-btn {
+            background: #f4f4f5;
+            color: #52525b;
+            border: 1px solid transparent;
+            padding: 11px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .account-tab-btn:hover {
+            background: #e4e4e7;
+            color: #18181b;
+        }
+        .account-tab-btn.active {
+            background: #6b21a8;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(107, 33, 168, 0.25);
+        }
+
+        /* Content Card */
+        .account-content-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f4f4f5;
+        }
+        .account-card-header {
+            border-bottom: 1px solid #f4f4f5;
+            padding-bottom: 16px;
+            margin-bottom: 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding-bottom: 12px;
-            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .order-status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-        .status-Yeni { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
-        .status-Hazirlaniyor { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-        .status-Kargoda { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
-        .status-TeslimEdildi { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .order-item-mini {
+        .account-card-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #18181b;
+            margin: 0;
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
+            gap: 10px;
         }
-        .order-item-mini img {
-            width: 50px;
-            height: 50px;
-            border-radius: 6px;
-            object-fit: cover;
+
+        /* Form Inputs */
+        .profile-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
         }
+        @media (max-width: 768px) {
+            .profile-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-label-custom {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #3f3f46;
+        }
+        .form-input-custom {
+            padding: 12px 16px;
+            border: 1px solid #e4e4e7;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #fafafa;
+            color: #18181b;
+            transition: all 0.2s ease;
+        }
+        .form-input-custom:focus {
+            background: #ffffff;
+            border-color: #6b21a8;
+            box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+        }
+
+        /* Order Cards in History */
+        .history-order-card {
+            background: #faf9fc;
+            border: 1px solid #f0e8f8;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 18px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .history-order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(107, 33, 168, 0.08);
+        }
+        .history-order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee5f7;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .order-code-badge {
+            font-weight: 800;
+            color: #6b21a8;
+            font-size: 1.05rem;
+        }
+        .status-pill {
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-preparing { background: #fef3c7; color: #b45309; }
+        .status-shipping { background: #e0f2fe; color: #0369a1; }
+        .status-delivered { background: #dcfce7; color: #15803d; }
     </style>
 </head>
-<body style="background: #0f172a; color: #f8fafc;">
-    <!-- Top Announcement Bar -->
-    <div class="top-announcement-bar">
-        <div class="site-container announcement-inner">
-            <span class="announcement-badge"><i class="fa-solid fa-truck-fast"></i> ÜCRETSİZ TESLİMAT</span>
-            <p class="announcement-text">Tüm Türkiye'ye <strong>Ücretsiz Sigortalı Teslimat & Profesyonel Kurulum</strong></p>
-        </div>
-    </div>
+<body style="background-color: #faf9fc !important; color: #18181b !important;">
 
-    <!-- Header Navigation -->
-    <header class="site-header" id="siteHeader">
-        <div class="site-container header-main-row">
-            <a href="index.html" class="brand-logo">
-                <span class="logo-text">MOBEL<span>MOR</span></span>
-                <span class="logo-subtext">İNEGÖL DİZAYN</span>
+    <!-- Sticky Header -->
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
+                <div class="logo-main-title">
+                    <span class="logo-text-mobel">mobel</span>
+                    <span class="logo-mor-box">
+                        <span class="logo-com-arrow">.com</span>
+                        <span class="logo-text-mor">mor</span>
+                    </span>
+                </div>
             </a>
-            <div class="header-actions">
-                <a href="index.html" class="btn-secondary-glass" style="padding: 8px 16px; font-size: 0.9rem;">
-                    <i class="fa-solid fa-house"></i> Ana Sayfaya Dön
+
+            <div class="header-action-buttons">
+                <a href="./" class="circle-btn interactive-btn" title="Ana Sayfa">
+                    <i class="fa-solid fa-house"></i>
                 </a>
+                <a href="siparislerim.html" class="circle-btn interactive-btn" title="Sipariş Takibi">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </a>
+                <button class="circle-btn interactive-btn" id="headerAuthBtn" title="Hesabım">
+                    <i class="fa-regular fa-user"></i>
+                </button>
             </div>
         </div>
     </header>
 
     <main class="account-page-container">
-        <!-- Customer Greeting -->
-        <div class="account-header-card">
-            <div class="account-user-meta">
-                <div class="account-avatar" id="accAvatar">A</div>
+        <!-- Customer Profile Header Card -->
+        <div class="account-profile-card">
+            <div class="account-profile-meta">
+                <div class="account-avatar-badge" id="accAvatar">M</div>
                 <div>
-                    <h2 id="accFullName" style="font-size: 1.3rem; font-weight: 700;">Değerli Müşterimiz</h2>
-                    <span id="accEmail" style="color: #94a3b8; font-size: 0.9rem;">musteri@mobelmor.com</span>
+                    <h1 class="account-name-title">
+                        <span id="accFullName">Müşteri</span>
+                        <span style="font-size:0.75rem; background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:999px; font-weight:700;">
+                            <i class="fa-solid fa-check-circle"></i> Doğrulanmış Üye
+                        </span>
+                    </h1>
+                    <p class="account-email-sub">
+                        <i class="fa-regular fa-envelope"></i> <span id="accEmail">musteri@mobelmor.com</span>
+                    </p>
                 </div>
             </div>
-            <button type="button" onclick="handleLogout()" class="btn-secondary-glass" style="color: #ef4444; border-color: rgba(239,68,68,0.3);">
-                <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
-            </button>
+            <div class="account-actions-group">
+                <a href="./" class="btn interactive-btn" style="background:#f4f4f5; color:#3f3f46; padding:10px 18px; border-radius:10px; font-weight:700; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-store"></i> Alışverişe Dön
+                </a>
+                <button type="button" onclick="handleLogout()" class="btn-logout interactive-btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap
+                </button>
+            </div>
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="account-tabs-nav">
-            <button class="acc-tab-btn active" id="tabOrdersBtn" onclick="switchTab('orders')">
-                <i class="fa-solid fa-bag-shopping"></i> Sipariş Geçmişim (<span id="ordersCountBadge">0</span>)
+        <div class="account-nav-tabs">
+            <button class="account-tab-btn active" id="tabOrdersBtn" onclick="switchAccountTab('orders')">
+                <i class="fa-solid fa-box-open"></i> Sipariş Geçmişim (<span id="ordersCountBadge">0</span>)
             </button>
-            <button class="acc-tab-btn" id="tabProfileBtn" onclick="switchTab('profile')">
-                <i class="fa-solid fa-user-gear"></i> Adres & İletişim Bilgilerim
+            <button class="account-tab-btn" id="tabProfileBtn" onclick="switchAccountTab('profile')">
+                <i class="fa-solid fa-id-card"></i> Adres &amp; İletişim Bilgilerim
             </button>
         </div>
 
-        <!-- Tab 1: Orders Content -->
+        <!-- Tab 1: Orders History Content -->
         <div id="ordersContent">
-            <div id="ordersList"></div>
+            <div class="account-content-card">
+                <div class="account-card-header">
+                    <h2 class="account-card-title"><i class="fa-solid fa-clock-rotate-left" style="color:#6b21a8;"></i> Tüm Siparişleriniz</h2>
+                    <span style="color:#71717a; font-size:0.88rem;">Mobelmor üzerinden vermiş olduğunuz tüm siparişlerin durumunu takip edebilirsiniz.</span>
+                </div>
+                <div id="ordersListContainer">
+                    <!-- Dynamic Orders List -->
+                </div>
+            </div>
         </div>
 
         <!-- Tab 2: Profile & Address Content -->
         <div id="profileContent" style="display: none;">
-            <div class="account-header-card" style="display: block;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;">Teslimat & İletişim Bilgileri</h3>
-                <form id="profileForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-                    <div>
-                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Ad Soyad</label>
-                        <input type="text" id="profFullName" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+            <div class="account-content-card">
+                <div class="account-card-header">
+                    <h2 class="account-card-title"><i class="fa-solid fa-user-pen" style="color:#6b21a8;"></i> Teslimat &amp; İletişim Bilgileriniz</h2>
+                    <span style="color:#71717a; font-size:0.88rem;">Siparişlerinizin kolayca teslim edilmesi için adresinizi güncel tutun.</span>
+                </div>
+                <form id="profileUpdateForm" class="profile-form-grid">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profFullName">Adınız Soyadınız *</label>
+                        <input type="text" id="profFullName" class="form-input-custom" placeholder="Örn: Ahmet Yılmaz" required>
                     </div>
-                    <div>
-                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Telefon</label>
-                        <input type="tel" id="profPhone" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profPhone">Telefon Numaranız *</label>
+                        <input type="tel" id="profPhone" class="form-input-custom" placeholder="05XX XXX XX XX" required>
                     </div>
-                    <div>
-                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Şehir</label>
-                        <input type="text" id="profCity" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profCity">İl (Şehir)</label>
+                        <input type="text" id="profCity" class="form-input-custom" placeholder="Örn: Bursa">
                     </div>
-                    <div>
-                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">İlçe</label>
-                        <input type="text" id="profDistrict" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profDistrict">İlçe</label>
+                        <input type="text" id="profDistrict" class="form-input-custom" placeholder="Örn: Nilüfer / İnegöl">
                     </div>
-                    <div style="grid-column: span 2;">
-                        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;">Açık Teslimat Adresi</label>
-                        <textarea id="profAddress" rows="3" style="width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px;"></textarea>
+                    <div class="form-group-custom" style="grid-column: 1 / -1;">
+                        <label class="form-label-custom" for="profAddress">Açık Teslimat Adresi (Cadde, Mahalle, Kapı No)</label>
+                        <textarea id="profAddress" class="form-input-custom" rows="3" placeholder="Örn: Ertuğrulgazi Mah. Mobilyacılar Cad. No: 12"></textarea>
                     </div>
-                    <div style="grid-column: span 2; display: flex; justify-content: flex-end;">
-                        <button type="submit" class="btn-primary-glow" style="padding: 12px 28px;">
-                            <i class="fa-solid fa-floppy-disk"></i> Bilgileri Güncelle
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
+                        <button type="submit" class="btn btn-primary interactive-btn" style="padding: 13px 32px; font-weight: 700; border-radius: 10px; font-size: 0.95rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet
                         </button>
                     </div>
                 </form>
@@ -193,96 +357,248 @@
         </div>
     </main>
 
-    <script src="js/app.js?v=20260826_0515"></script>
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container footer-container">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <a href="./" class="brand-logo footer-logo">
+                        <div class="logo-main-title">
+                            <span class="logo-text-mobel">mobel</span>
+                            <span class="logo-mor-box">
+                                <span class="logo-com-arrow">.com</span>
+                                <span class="logo-text-mor">mor</span>
+                            </span>
+                        </div>
+                    </a>
+                    <p class="footer-desc">Evinizin ahengini değiştiren, %100 masif ve organik İnegöl mobilyaları.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-heading">Müşteri Hizmetleri</h4>
+                    <ul class="footer-links">
+                        <li><a href="garanti-iade.html"><i class="fa-solid fa-chevron-right"></i> Garanti &amp; İade Koşulları</a></li>
+                        <li><a href="kumas-kartelasi.html"><i class="fa-solid fa-chevron-right"></i> Kumaş &amp; Renk Kartelası</a></li>
+                        <li><a href="mesafeli-satis-sozlesmesi.html"><i class="fa-solid fa-chevron-right"></i> Mesafeli Satış Sözleşmesi</a></li>
+                        <li><a href="gizlilik-guvenlik.html"><i class="fa-solid fa-chevron-right"></i> Gizlilik &amp; Güvenlik</a></li>
+                        <li><a href="sss.html"><i class="fa-solid fa-chevron-right"></i> SSS</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Mobelmor.com - Tüm Hakları Saklıdır. Orijinal İnegöl Mobilyası.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Auth Modal (Giriş Yap / Üye Ol) -->
+    <div class="modal-overlay" id="authModalOverlay">
+        <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+            <button class="close-btn modal-close interactive-btn" id="closeAuthModalBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
+                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+            </div>
+
+            <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+                <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">Giriş Yap</button>
+            </form>
+
+            <form id="registerForm" style="display:none; flex-direction:column; gap:12px;">
+                <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">Ücretsiz Üye Ol</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="js/store-service.js?v=20260826_0515"></script>
+    <script src="js/app.js?v=20260826_0515" defer></script>
     <script>
-        const user = window.StoreService.getCurrentUser();
-        if (!user) {
-            location.href = 'giris-yap.html';
-        }
-
-        // Render User Info
-        document.getElementById('accFullName').textContent = user.fullName || 'Değerli Müşterimiz';
-        document.getElementById('accEmail').textContent = user.email || '';
-        document.getElementById('accAvatar').textContent = (user.fullName ? user.fullName[0] : 'M').toUpperCase();
-
-        document.getElementById('profFullName').value = user.fullName || '';
-        document.getElementById('profPhone').value = user.phone || '';
-        document.getElementById('profCity').value = user.city || '';
-        document.getElementById('profDistrict').value = user.district || '';
-        document.getElementById('profAddress').value = user.address || '';
-
-        // Switch Tabs
-        function switchTab(tab) {
-            document.getElementById('tabOrdersBtn').classList.toggle('active', tab === 'orders');
-            document.getElementById('tabProfileBtn').classList.toggle('active', tab === 'profile');
-            document.getElementById('ordersContent').style.display = tab === 'orders' ? 'block' : 'none';
-            document.getElementById('profileContent').style.display = tab === 'profile' ? 'block' : 'none';
-        }
-
-        // Render Orders List
-        const orders = window.StoreService.getCustomerOrders(user.id);
-        document.getElementById('ordersCountBadge').textContent = orders.length;
-
-        const container = document.getElementById('ordersList');
-        if (orders.length === 0) {
-            container.innerHTML = `
-                <div class="account-header-card" style="text-align: center; display: block; padding: 50px 20px;">
-                    <i class="fa-solid fa-bag-shopping" style="font-size: 2.5rem; color: #64748b; margin-bottom: 12px; display: block;"></i>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Henüz bir siparişiniz bulunmuyor.</h3>
-                    <p style="color: #94a3b8; margin-bottom: 20px;">Koleksiyonlarımızı inceleyerek ilk siparişinizi hemen verebilirsiniz.</p>
-                    <a href="index.html" class="btn-primary-glow" style="display: inline-block;">Koleksiyonları Keşfet</a>
-                </div>
-            `;
-        } else {
-            container.innerHTML = orders.map(ord => `
-                <div class="order-card">
-                    <div class="order-header-row">
-                        <div>
-                            <strong style="font-size: 1rem; color: #38bdf8;">${ord.orderNumber}</strong>
-                            <span style="color: #94a3b8; font-size: 0.85rem; margin-left: 10px;">${new Date(ord.createdAt).toLocaleDateString('tr-TR')}</span>
-                        </div>
-                        <div>
-                            <span class="order-status-badge status-${ord.status}">${ord.status === 'Yeni' ? 'Sipariş Alındı' : ord.status}</span>
-                            <strong style="margin-left: 15px; font-size: 1.05rem;">₺${Number(ord.totalAmount).toLocaleString('tr-TR')}</strong>
-                        </div>
-                    </div>
-                    <div class="order-items-wrap">
-                        ${(ord.items || []).map(it => `
-                            <div class="order-item-mini">
-                                <img src="${it.image || 'assets/hero_milo_sofa.webp'}" alt="">
-                                <div>
-                                    <strong style="font-size: 0.9rem;">${it.title}</strong>
-                                    <span style="display: block; font-size: 0.8rem; color: #94a3b8;">Adet: ${it.quantity || 1} | ₺${Number(it.price).toLocaleString('tr-TR')}</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Profile Form Submit
-        document.getElementById('profileForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        document.addEventListener("DOMContentLoaded", () => {
+            const rawUser = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
+            let user = null;
             try {
-                window.StoreService.updateCustomerProfile({
-                    fullName: document.getElementById('profFullName').value.trim(),
-                    phone: document.getElementById('profPhone').value.trim(),
-                    city: document.getElementById('profCity').value.trim(),
-                    district: document.getElementById('profDistrict').value.trim(),
-                    address: document.getElementById('profAddress').value.trim()
-                });
-                alert("Bilgileriniz başarıyla güncellendi!");
-                location.reload();
-            } catch (err) {
-                alert("Hata: " + err.message);
+                if (rawUser) user = JSON.parse(rawUser);
+            } catch (e) {
+                user = null;
+            }
+
+            if (!user || !user.email) {
+                // If not logged in, open auth modal or redirect
+                if (typeof window.openAuthModal === "function") {
+                    window.openAuthModal("login");
+                } else {
+                    window.location.href = "siparislerim.html";
+                }
+                return;
+            }
+
+            // Populate User Header
+            const rawName = user.fullName || user.name || "Değerli Müşterimiz";
+            document.getElementById("accFullName").textContent = rawName;
+            document.getElementById("accEmail").textContent = user.email || "";
+            document.getElementById("accAvatar").textContent = rawName.charAt(0).toUpperCase();
+
+            // Populate Form Fields
+            document.getElementById("profFullName").value = rawName;
+            document.getElementById("profPhone").value = user.phone || "";
+            document.getElementById("profCity").value = user.city || "";
+            document.getElementById("profDistrict").value = user.district || "";
+            document.getElementById("profAddress").value = user.address || "";
+
+            // Render Orders
+            renderCustomerOrders(user);
+        });
+
+        function switchAccountTab(tab) {
+            document.getElementById("tabOrdersBtn").classList.toggle("active", tab === "orders");
+            document.getElementById("tabProfileBtn").classList.toggle("active", tab === "profile");
+            document.getElementById("ordersContent").style.display = (tab === "orders" ? "block" : "none");
+            document.getElementById("profileContent").style.display = (tab === "profile" ? "block" : "none");
+        }
+
+        function renderCustomerOrders(user) {
+            const container = document.getElementById("ordersListContainer");
+            if (!container) return;
+
+            let allOrders = [];
+            try {
+                allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || localStorage.getItem("mobelmor_orders") || "[]");
+            } catch (e) {
+                allOrders = [];
+            }
+
+            const userEmail = (user.email || "").toLowerCase();
+            const userPhone = (user.phone || "").replace(/\s+/g, "");
+
+            const myOrders = allOrders.filter(o => {
+                const cEmail = (o.customer?.email || o.customerEmail || "").toLowerCase();
+                const cPhone = (o.customer?.phone || o.customerPhone || "").replace(/\s+/g, "");
+                return (userEmail && cEmail === userEmail) || (userPhone && cPhone === userPhone);
+            });
+
+            const badge = document.getElementById("ordersCountBadge");
+            if (badge) badge.textContent = myOrders.length;
+
+            if (myOrders.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 48px 20px;">
+                        <i class="fa-solid fa-basket-shopping" style="font-size: 3rem; color: #d4d4d8; margin-bottom: 14px;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 800; color: #18181b; margin: 0 0 8px 0;">Henüz Bir Siparişiniz Bulunmuyor</h3>
+                        <p style="color: #71717a; font-size: 0.92rem; max-width: 420px; margin: 0 auto 24px auto;">
+                            Özel tasarım masif İnegöl mobilya koleksiyonlarımızı keşfederek evinize şıklık katacak ilk siparişinizi hemen oluşturabilirsiniz.
+                        </p>
+                        <a href="./" class="btn btn-primary interactive-btn" style="padding: 12px 28px; font-weight: 700; border-radius: 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-couch"></i> Koleksiyonları Keşfet
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = myOrders.map(ord => {
+                const st = ord.status || "preparing";
+                const stBadge = st === "delivered" 
+                    ? `<span class="status-pill status-delivered"><i class="fa-solid fa-circle-check"></i> Teslim Edildi</span>`
+                    : (st === "shipping"
+                        ? `<span class="status-pill status-shipping"><i class="fa-solid fa-truck-fast"></i> Sevkiyatta</span>`
+                        : `<span class="status-pill status-preparing"><i class="fa-solid fa-hammer"></i> İmalat &amp; Hazırlıkta</span>`
+                    );
+
+                const items = Array.isArray(ord.items) ? ord.items : [];
+                const totalFormatted = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(ord.total || ord.totalAmount || 0);
+
+                return `
+                    <div class="history-order-card">
+                        <div class="history-order-header">
+                            <div>
+                                <span class="order-code-badge"><i class="fa-solid fa-hashtag"></i> ${ord.id || 'MBL-000000'}</span>
+                                <span style="color:#71717a; font-size:0.85rem; margin-left:10px;">${ord.date || ord.createdAt || ''}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:14px;">
+                                ${stBadge}
+                                <strong style="color:#18181b; font-size:1.1rem;">${totalFormatted}</strong>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            ${items.map(item => `
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.92rem; color:#27272a; padding:6px 0; border-bottom:1px dashed #f0e8f8;">
+                                    <span><strong>${item.qty || 1}x</strong> ${item.title || 'Mobilya Ürünü'}</span>
+                                    <span style="font-weight:600; color:#6b21a8;">${new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format((item.price || 0) * (item.qty || 1))}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px;">
+                            <span style="font-size:0.82rem; color:#71717a;"><i class="fa-solid fa-location-dot" style="color:#6b21a8;"></i> ${ord.customer?.address || ord.address || 'Kayıtlı Adres'}</span>
+                            <a href="https://wa.me/905300000000?text=Merhaba,%20${ord.id}%20numaralı%20siparişim%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" style="color:#16a34a; font-weight:700; font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="fa-brands fa-whatsapp"></i> Sipariş Durumunu Sor
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Profile Form Submit Handler
+        document.getElementById("profileUpdateForm")?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById("profFullName").value.trim();
+            const phone = document.getElementById("profPhone").value.trim();
+            const city = document.getElementById("profCity").value.trim();
+            const district = document.getElementById("profDistrict").value.trim();
+            const address = document.getElementById("profAddress").value.trim();
+
+            const rawUser = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
+            if (!rawUser) return;
+            const user = JSON.parse(rawUser);
+
+            user.fullName = fullName;
+            user.name = fullName;
+            user.phone = phone;
+            user.city = city;
+            user.district = district;
+            user.address = address;
+
+            // Save in active session
+            localStorage.setItem("mobelmor_active_customer", JSON.stringify(user));
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(user));
+
+            // Sync with all customers list
+            try {
+                let custs = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
+                const idx = custs.findIndex(c => c.email && c.email.toLowerCase() === (user.email || "").toLowerCase());
+                if (idx !== -1) {
+                    custs[idx] = { ...custs[idx], ...user };
+                    localStorage.setItem("mobelmor_customers", JSON.stringify(custs));
+                }
+            } catch (err) {}
+
+            document.getElementById("accFullName").textContent = fullName;
+            document.getElementById("accAvatar").textContent = fullName.charAt(0).toUpperCase();
+
+            if (typeof showToast === "function") {
+                showToast("Profil ve adres bilgileriniz başarıyla güncellendi!", "fa-circle-check");
+            } else {
+                alert("Bilgileriniz başarıyla güncellendi.");
             }
         });
 
         function handleLogout() {
-            window.StoreService.logoutCustomer();
-            location.href = 'index.html';
+            localStorage.removeItem("mobelmor_active_customer");
+            localStorage.removeItem("mobelmor_current_user");
+            if (typeof showToast === "function") {
+                showToast("Başarıyla çıkış yapıldı. Yönlendiriliyorsunuz...", "fa-arrow-right-from-bracket");
+            }
+            setTimeout(() => {
+                window.location.href = "./";
+            }, 600);
         }
     </script>
 </body>
