@@ -241,6 +241,45 @@
             return current;
         },
 
+        getAllCustomers: function () {
+            try {
+                let custs = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
+                const legacy = JSON.parse(localStorage.getItem('mobelmor_users') || '[]');
+                if (Array.isArray(legacy) && legacy.length > 0) {
+                    legacy.forEach(leg => {
+                        if (!custs.some(c => c.email && leg.email && c.email.toLowerCase() === leg.email.toLowerCase())) {
+                            custs.push({
+                                id: leg.id || 'cust_' + Date.now(),
+                                fullName: leg.fullName || leg.name || 'Müşteri',
+                                name: leg.name || leg.fullName || 'Müşteri',
+                                email: (leg.email || '').toLowerCase(),
+                                phone: leg.phone || '',
+                                password: leg.password || '',
+                                address: leg.address || '',
+                                createdAt: leg.createdAt || new Date().toISOString()
+                            });
+                        }
+                    });
+                    localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
+                }
+                return custs;
+            } catch (e) {
+                return [];
+            }
+        },
+
+        deleteCustomer: function (id) {
+            try {
+                let custs = this.getAllCustomers();
+                custs = custs.filter(c => c.id !== id && c.email !== id);
+                localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
+                localStorage.setItem('mobelmor_users', JSON.stringify(custs));
+                return true;
+            } catch (e) {
+                return false;
+            }
+        },
+
         // --- SİPARİŞ & SİPARİŞ GEÇMİŞİ İŞLEMLERİ ---
         createOrder: function (orderData) {
             let orders = [];

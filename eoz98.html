@@ -421,6 +421,7 @@
             <ul class="sidebar-menu">
                 <li><button class="menu-btn active" onclick="switchAdminTab('products')"><i class="fa-solid fa-boxes-stacked"></i> Ürün Yönetimi</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('orders')"><i class="fa-solid fa-receipt"></i> Gelen Siparişler</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('customers')"><i class="fa-solid fa-users"></i> Müşteri Kayıtları</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('sync')"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut & Yedekleme</button></li>
             </ul>
 
@@ -453,6 +454,13 @@
                     <div>
                         <div class="kpi-val" id="kpiTotalOrders">0</div>
                         <div class="kpi-lbl">Toplam Sipariş</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: rgba(234, 179, 8, 0.15); color: #eab308;"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <div class="kpi-val" id="kpiTotalCustomers">0</div>
+                        <div class="kpi-lbl">Kayıtlı Müşteri</div>
                     </div>
                 </div>
             </div>
@@ -522,14 +530,52 @@
                 </div>
             </div>
 
-            <!-- TAB 3: BULUT & YEDEKLEME -->
+            <!-- TAB 3: MÜŞTERİ KAYITLARI -->
+            <div id="tabCustomers" style="display: none;">
+                <div class="content-card">
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="custSearchInput" class="admin-input" placeholder="Müşteri adı, e-posta veya telefon ara..." oninput="renderCustomersTable()">
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <select id="custTypeFilter" class="admin-input" style="width: auto; padding-left: 14px;" onchange="renderCustomersTable()">
+                                <option value="all">Tüm Müşteriler</option>
+                                <option value="member">Kayıtlı Üyeler</option>
+                                <option value="guest">Misafir / Sipariş Verenler</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Müşteri ID / Ad Soyad</th>
+                                    <th>E-Posta</th>
+                                    <th>Telefon</th>
+                                    <th>Adres / İl</th>
+                                    <th>Hesap Türü</th>
+                                    <th>Kayıt / Son İşlem</th>
+                                    <th>Sipariş Sayısı</th>
+                                    <th style="text-align: right;">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: BULUT & YEDEKLEME -->
             <div id="tabSync" style="display: none;">
                 <div class="content-card">
                     <h3 style="margin-bottom: 12px; font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-cloud" style="color:#38bdf8;"></i> Bulut Veritabanı & Yedekleme</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 24px;">Tüm ürünlerinizi ve müşteri siparişlerinizi ücretsiz Supabase bulut veritabanına bağlayabilir veya tek tıkla JSON yedeği alabilirsiniz.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 24px;">Tüm ürünlerinizi ve müşteri kayıtlarınızı ücretsiz Supabase bulut veritabanına bağlayabilir veya tek tıkla JSON yedeği alabilirsiniz.</p>
 
                     <div style="display: flex; gap: 15px; margin-bottom: 30px;">
-                        <button onclick="downloadJsonBackup()" class="btn-action-primary" style="background:#0f766e;"><i class="fa-solid fa-download"></i> Tüm Verileri JSON Olarak İndir</button>
+                        <button onclick="downloadJsonBackup()" class="btn-action-primary" style="background:#0f766e;"><i class="fa-solid fa-download"></i> Tüm Verileri (Ürünler + Müşteriler + Siparişler) JSON Olarak İndir</button>
                     </div>
 
                     <div style="background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 550px;">
@@ -656,12 +702,41 @@
         </div>
     </div>
 
+    <!-- MÜŞTERİ DETAY MODAL -->
+    <div id="customerDetailModal" class="admin-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="custModalTitle" style="font-size: 1.15rem; font-weight: 700; color: #fff;"><i class="fa-solid fa-user-gear" style="color: #eab308;"></i> Müşteri Profili &amp; Detayı</h3>
+                <button type="button" onclick="closeCustomerModal()" class="modal-close-btn">&times;</button>
+            </div>
+            <div id="custModalBody" style="padding: 20px 0; font-size: 0.9rem; color: #cbd5e1;">
+                <!-- Populated via openCustomerDetail -->
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+                <button type="button" onclick="closeCustomerModal()" style="background: rgba(255,255,255,0.08); color: #fff; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/app.js?v=20260826_0115"></script>
     <script src="js/store-service.js?v=1787705560"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
+
+        // Safe fetch orders helper
+        async function fetchCloudOrders() {
+            try {
+                if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
+                    return window.StoreService.getAllOrders();
+                }
+                const orders = JSON.parse(localStorage.getItem('mobelmor_all_orders') || localStorage.getItem('mobelmor_orders') || '[]');
+                return Array.isArray(orders) ? orders : [];
+            } catch (e) {
+                return [];
+            }
+        }
 
         // Foolproof Direct Admin Login Function
         window.doAdminLogin = function(e) {
@@ -709,29 +784,38 @@
 
         function switchAdminTab(tab) {
             document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                const btn = event.target.closest('.menu-btn') || event.target;
+                btn.classList.add('active');
+            }
 
             document.getElementById('tabProducts').style.display = tab === 'products' ? 'block' : 'none';
             document.getElementById('tabOrders').style.display = tab === 'orders' ? 'block' : 'none';
+            document.getElementById('tabCustomers').style.display = tab === 'customers' ? 'block' : 'none';
             document.getElementById('tabSync').style.display = tab === 'sync' ? 'block' : 'none';
 
             if (tab === 'orders') renderOrdersTable();
+            if (tab === 'customers') renderCustomersTable();
         }
 
         function loadDashboardData() {
             const products = window.StoreService ? window.StoreService.getProducts(true) : [];
             const sets = products.filter(p => p.productType === 'Set');
             const orders = window.StoreService ? window.StoreService.getAllOrders() : [];
+            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
 
             const pEl = document.getElementById('kpiTotalProducts');
             const sEl = document.getElementById('kpiTotalSets');
             const oEl = document.getElementById('kpiTotalOrders');
+            const cEl = document.getElementById('kpiTotalCustomers');
 
             if (pEl) pEl.textContent = products.length;
             if (sEl) sEl.textContent = sets.length;
             if (oEl) oEl.textContent = orders.length;
+            if (cEl) cEl.textContent = customers.length;
 
             renderProductsTable();
+            renderCustomersTable();
 
             // Background fetch cloud orders
             fetchCloudOrders().then(cloudOrders => {
@@ -1011,9 +1095,169 @@
             `).join('');
         }
 
-        window.updateOrderStatus = (ordNum, status) => {
-            window.StoreService.updateOrderStatus(ordNum, status);
-            renderOrdersTable();
+        // Render Customers Table
+        function renderCustomersTable() {
+            const q = (document.getElementById('custSearchInput')?.value || '').toLowerCase();
+            const filterType = document.getElementById('custTypeFilter')?.value || 'all';
+            let customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const allOrders = window.StoreService ? window.StoreService.getAllOrders() : [];
+
+            if (filterType === 'member') {
+                customers = customers.filter(c => !c.isGuest);
+            } else if (filterType === 'guest') {
+                customers = customers.filter(c => c.isGuest);
+            }
+
+            if (q) {
+                customers = customers.filter(c => 
+                    (c.fullName && c.fullName.toLowerCase().includes(q)) ||
+                    (c.name && c.name.toLowerCase().includes(q)) ||
+                    (c.email && c.email.toLowerCase().includes(q)) ||
+                    (c.phone && c.phone.includes(q)) ||
+                    (c.address && c.address.toLowerCase().includes(q))
+                );
+            }
+
+            const tbody = document.getElementById('customersTableBody');
+            if (!tbody) return;
+
+            if (customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">Kayıtlı müşteri bulunamadı.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = customers.map(c => {
+                const name = c.fullName || c.name || 'Müşteri';
+                const email = c.email || '-';
+                const phone = c.phone || '-';
+                const address = c.address || '-';
+                const regDate = c.createdAt ? new Date(c.createdAt).toLocaleDateString('tr-TR') : '-';
+                const custOrders = allOrders.filter(o => 
+                    (o.customerEmail && c.email && o.customerEmail.toLowerCase() === c.email.toLowerCase()) ||
+                    (o.customer && o.customer.email && c.email && o.customer.email.toLowerCase() === c.email.toLowerCase()) ||
+                    (o.customerName && o.customerName.toLowerCase() === name.toLowerCase())
+                );
+
+                return `
+                    <tr>
+                        <td>
+                            <strong style="color: #fff;">${name}</strong>
+                            <div style="font-size: 0.75rem; color: #94a3b8;">${c.id || ''}</div>
+                        </td>
+                        <td><a href="mailto:${email}" style="color: #38bdf8; text-decoration: none;">${email}</a></td>
+                        <td>${phone}</td>
+                        <td style="max-width: 200px; white-space: normal; font-size: 0.85rem; color: #cbd5e1;">${address}</td>
+                        <td>
+                            ${c.isGuest ? '<span class="status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Sipariş / Misafir</span>' : '<span class="status-badge status-new">Kayıtlı Üye</span>'}
+                        </td>
+                        <td><small style="color: #94a3b8;">${regDate}</small></td>
+                        <td>
+                            <span class="status-badge ${custOrders.length > 0 ? 'status-shipping' : 'status-preparing'}" style="cursor: pointer;" onclick="openCustomerDetail('${c.id}')">
+                                ${custOrders.length} Sipariş
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            <button onclick="openCustomerDetail('${c.id}')" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 6px;" title="Müşteri Detayı ve Siparişleri"><i class="fa-solid fa-eye"></i> Detay</button>
+                            <button onclick="deleteCustomerAdmin('${c.id}')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Müşteriyi Sil"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        window.openCustomerDetail = (id) => {
+            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const cust = customers.find(c => c.id === id || c.email === id);
+            if (!cust) return;
+
+            const allOrders = window.StoreService ? window.StoreService.getAllOrders() : [];
+            const name = cust.fullName || cust.name || 'Müşteri';
+            const custOrders = allOrders.filter(o => 
+                (o.customerEmail && cust.email && o.customerEmail.toLowerCase() === cust.email.toLowerCase()) ||
+                (o.customer && o.customer.email && cust.email && o.customer.email.toLowerCase() === cust.email.toLowerCase()) ||
+                (o.customerName && o.customerName.toLowerCase() === name.toLowerCase())
+            );
+
+            const titleEl = document.getElementById('custModalTitle');
+            const bodyEl = document.getElementById('custModalBody');
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-user" style="color:#eab308;"></i> Müşteri: ${name}`;
+
+            let ordersHtml = '';
+            if (custOrders.length === 0) {
+                ordersHtml = '<p style="color:#64748b; font-size:0.85rem; margin-top:10px;">Bu müşteriye ait verilmiş bir sipariş bulunmuyor.</p>';
+            } else {
+                ordersHtml = `
+                    <div style="margin-top: 14px;">
+                        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 8px;">Müşterinin Siparişleri (${custOrders.length})</h4>
+                        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;">
+                            ${custOrders.map(o => `
+                                <div style="background: #0f172a; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong style="color: #38bdf8;">${o.orderNumber || o.id}</strong>
+                                        <div style="font-size: 0.78rem; color: #94a3b8;">${o.date || ''} • Durum: <span style="color: #4ade80;">${o.status || o.statusText || 'Hazırlanıyor'}</span></div>
+                                        <div style="font-size: 0.8rem; color: #cbd5e1;">${(o.items || []).map(i => `${i.qty}x ${i.title}`).join(', ')}</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <strong style="color: #4ade80; font-size: 0.95rem;">${(o.totalAmount || o.total || 0).toLocaleString('tr-TR')} ₺</strong>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (bodyEl) {
+                bodyEl.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #0f172a; padding: 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Ad Soyad</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: #fff; margin-top: 2px;">${name}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Hesap Türü</div>
+                            <div style="margin-top: 4px;">${cust.isGuest ? '<span class="status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Sipariş / Misafir</span>' : '<span class="status-badge status-new">Kayıtlı Üye</span>'}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">E-Posta</div>
+                            <div style="font-size: 0.9rem; color: #38bdf8; margin-top: 2px;"><a href="mailto:${cust.email || ''}" style="color:#38bdf8; text-decoration:none;">${cust.email || '-'}</a></div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Telefon</div>
+                            <div style="font-size: 0.9rem; color: #fff; margin-top: 2px;">${cust.phone || '-'}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Teslimat Adresi</div>
+                            <div style="font-size: 0.88rem; color: #cbd5e1; margin-top: 2px;">${cust.address || '-'}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Kayıt Tarihi</div>
+                            <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">${cust.createdAt ? new Date(cust.createdAt).toLocaleString('tr-TR') : '-'}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Müşteri ID</div>
+                            <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">${cust.id}</div>
+                        </div>
+                    </div>
+                    ${ordersHtml}
+                `;
+            }
+
+            document.getElementById('customerDetailModal').style.display = 'flex';
+        };
+
+        window.closeCustomerModal = () => {
+            const modal = document.getElementById('customerDetailModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.deleteCustomerAdmin = (id) => {
+            if (confirm("Bu müşteriyi sistemden silmek istediğinize emin misiniz?")) {
+                if (window.StoreService && window.StoreService.deleteCustomer(id)) {
+                    loadDashboardData();
+                    alert("Müşteri kaydı silindi.");
+                }
+            }
         };
 
         window.downloadJsonBackup = () => {
@@ -1021,6 +1265,7 @@
                 version: "20260826",
                 exportedAt: new Date().toISOString(),
                 products: window.StoreService.getProducts(true),
+                customers: window.StoreService.getAllCustomers(),
                 orders: window.StoreService.getAllOrders()
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });

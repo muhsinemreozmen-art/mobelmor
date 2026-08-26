@@ -1645,7 +1645,26 @@ const CATEGORY_NAMES = {
     office: "Çalışma Odası"
 };
 
+// Cart State with LocalStorage Persistence across reloads (Ctrl+F5)
 let cart = [];
+try {
+    const savedCart = localStorage.getItem("mobelmor_cart");
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        if (!Array.isArray(cart)) cart = [];
+    }
+} catch (e) {
+    cart = [];
+}
+
+const saveCart = () => {
+    try {
+        localStorage.setItem("mobelmor_cart", JSON.stringify(cart));
+    } catch (e) {
+        console.error("Cart storage save error:", e);
+    }
+};
+
 let wishlist = new Set();
 let selectedQty = 1;
 
@@ -2539,6 +2558,7 @@ const addToCart = (productId, qty = 1) => {
     const existing = cart.find(c => c.id === productId);
     if (existing) existing.qty += qty;
     else cart.push({ ...item, qty });
+    saveCart();
     updateBadges();
     showToast(`<strong>${item.title}</strong>${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
 };
@@ -2614,6 +2634,7 @@ window.changeQty = (id, delta) => {
     if (!item) return;
     item.qty += delta;
     if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+    saveCart();
     updateBadges();
     renderCart();
 };
@@ -2621,6 +2642,8 @@ window.changeQty = (id, delta) => {
 document.addEventListener("DOMContentLoaded", () => {
     createLightbox();
     renderProductDetail();
+    updateBadges();
+    renderCart();
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -2774,10 +2797,47 @@ document.addEventListener("DOMContentLoaded", () => {
         if (contractContentBox) contractContentBox.innerHTML = kvkkHtml;
     });
 
-    // ── User Authentication & Account System (Simulation & Persistence) ──
+    // ── Unified Customer & Auth System ──
+    const getCustomersList = () => {
+        try {
+            let list = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
+            const legacy = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
+            if (Array.isArray(legacy) && legacy.length > 0) {
+                legacy.forEach(leg => {
+                    if (!list.some(c => c.email && leg.email && c.email.toLowerCase() === leg.email.toLowerCase())) {
+                        list.push({
+                            id: leg.id || "cust_" + Date.now(),
+                            fullName: leg.name || leg.fullName || "Müşteri",
+                            name: leg.name || leg.fullName || "Müşteri",
+                            email: (leg.email || "").toLowerCase(),
+                            phone: leg.phone || "",
+                            password: leg.password || "",
+                            address: leg.address || "",
+                            createdAt: leg.createdAt || new Date().toISOString()
+                        });
+                    }
+                });
+                localStorage.setItem("mobelmor_customers", JSON.stringify(list));
+            }
+            return list;
+        } catch {
+            return [];
+        }
+    };
+
+    const saveCustomersList = (list) => {
+        try {
+            localStorage.setItem("mobelmor_customers", JSON.stringify(list));
+            localStorage.setItem("mobelmor_users", JSON.stringify(list));
+        } catch (e) {
+            console.error("Customer storage save error:", e);
+        }
+    };
+
     const getCurrentUser = () => {
         try {
-            return JSON.parse(localStorage.getItem("mobelmor_current_user") || "null");
+            const userJson = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
+            return userJson ? JSON.parse(userJson) : null;
         } catch {
             return null;
         }
@@ -2817,7 +2877,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropdown = document.getElementById("userMenuDropdown");
 
         if (user) {
-            const dispName = formatDisplayName(user.name);
+            const rawName = user.fullName || user.name || "Müşteri";
+            const dispName = formatDisplayName(rawName);
             authBtn?.classList.add("logged-in");
             if (authText) authText.textContent = dispName;
             if (dropdown) {
@@ -2825,16 +2886,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div style="padding:10px 14px; font-size:0.84rem; font-weight:800; color:#18181b; border-bottom:1px solid #f4f4f5;">
                         <i class="fa-solid fa-circle-user" style="color:#6b21a8;"></i> Hoş geldiniz, ${dispName}
                     </div>
+                    <a href="hesabim.html" class="user-dropdown-item"><i class="fa-solid fa-user-gear" style="color:#6b21a8;"></i> Hesabım &amp; Profil</a>
                     <a href="siparislerim.html" class="user-dropdown-item"><i class="fa-solid fa-box-open" style="color:#6b21a8;"></i> Siparişlerim &amp; Takip</a>
-                    <a href="siparislerim.html#profile" class="user-dropdown-item"><i class="fa-solid fa-id-card" style="color:#6b21a8;"></i> Adres &amp; Bilgilerim</a>
                     <div class="user-dropdown-divider"></div>
                     <a href="javascript:void(0)" class="user-dropdown-item" id="logoutBtn" style="color:#ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
                 `;
                 document.getElementById("logoutBtn")?.addEventListener("click", () => {
+                    localStorage.removeItem("mobelmor_active_customer");
                     localStorage.removeItem("mobelmor_current_user");
                     updateAuthUI();
                     showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
-                    if (window.location.pathname.includes("siparislerim")) {
+                    if (window.location.pathname.includes("siparislerim") || window.location.pathname.includes("hesabim")) {
                         setTimeout(() => window.location.reload(), 500);
                     }
                 });
@@ -2845,7 +2907,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const cEmail = document.getElementById("checkoutEmail");
             const cPhone = document.getElementById("checkoutPhone");
             const cAddr = document.getElementById("checkoutAddress");
-            if (cName && !cName.value) cName.value = user.name || "";
+            if (cName && !cName.value) cName.value = rawName;
             if (cEmail && !cEmail.value) cEmail.value = user.email || "";
             if (cPhone && !cPhone.value) cPhone.value = user.phone || "";
             if (cAddr && !cAddr.value && user.address) cAddr.value = user.address;
@@ -2914,14 +2976,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Logout Handling
-    document.getElementById("logoutBtn")?.addEventListener("click", () => {
-        localStorage.removeItem("mobelmor_current_user");
-        document.getElementById("userMenuDropdown")?.classList.remove("active");
-        updateAuthUI();
-        showToast("Başarıyla çıkış yapıldı.", "fa-arrow-right-from-bracket");
-    });
-
     // Auth Modal Tabs
     const tabLoginBtn = document.getElementById("tabLoginBtn");
     const tabRegisterBtn = document.getElementById("tabRegisterBtn");
@@ -2956,73 +3010,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
         document.getElementById("authModalOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
     });
     document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
         if (e.target.id === "authModalOverlay") {
             document.getElementById("authModalOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
         }
     });
 
-    // Login Submit
+    // Real Login Submit Handler
     loginForm?.addEventListener("submit", (e) => {
         e.preventDefault();
-        const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
-        const pass = document.getElementById("loginPassword")?.value.trim();
+        const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
+        const pass = (document.getElementById("loginPassword")?.value || "").trim();
 
-        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
-        const existing = users.find(u => u.email === email && u.password === pass);
+        const customers = getCustomersList();
+        const existing = customers.find(u => u.email && u.email.toLowerCase() === email && u.password === pass);
 
         if (existing) {
-            localStorage.setItem("mobelmor_current_user", JSON.stringify(existing));
+            const sessionUser = { ...existing };
+            delete sessionUser.password;
+            localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
+            localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
             updateAuthUI();
             document.getElementById("authModalOverlay")?.classList.remove("active");
-            showToast(`Hoş geldiniz, ${existing.name}!`, "fa-circle-check");
+            document.body.classList.remove("modal-open");
+            showToast(`Hoş geldiniz, ${existing.fullName || existing.name}!`, "fa-circle-check");
             loginForm.reset();
         } else {
-            const userObj = {
-                id: "USR-" + Date.now().toString().slice(-4),
-                name: email.split("@")[0].toUpperCase(),
-                email: email,
-                phone: "0530 000 00 00",
-                password: pass
-            };
-            users.push(userObj);
-            localStorage.setItem("mobelmor_users", JSON.stringify(users));
-            localStorage.setItem("mobelmor_current_user", JSON.stringify(userObj));
-            updateAuthUI();
-            document.getElementById("authModalOverlay")?.classList.remove("active");
-            showToast(`Giriş başarılı! Hoş geldiniz.`, "fa-circle-check");
-            loginForm.reset();
+            showToast("E-posta veya şifre hatalı. Kaydınız yoksa lütfen Kayıt Ol sekmesini kullanın.", "fa-triangle-exclamation");
         }
     });
 
-    // Register Submit
+    // Real Register Submit Handler
     registerForm?.addEventListener("submit", (e) => {
         e.preventDefault();
-        const name = document.getElementById("regName")?.value.trim();
-        const email = document.getElementById("regEmail")?.value.trim().toLowerCase();
-        const phone = document.getElementById("regPhone")?.value.trim();
-        const password = document.getElementById("regPassword")?.value.trim();
+        const name = (document.getElementById("regName")?.value || "").trim();
+        const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
+        const phone = (document.getElementById("regPhone")?.value || "").trim();
+        const password = (document.getElementById("regPassword")?.value || "").trim();
 
-        const users = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
-        const newUser = {
-            id: "USR-" + Date.now().toString().slice(-4),
-            name,
-            email,
-            phone,
-            password
+        if (!name || !email || !password) {
+            showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
+            return;
+        }
+
+        const customers = getCustomersList();
+        const exists = customers.find(u => u.email && u.email.toLowerCase() === email);
+        if (exists) {
+            showToast("Bu e-posta adresi ile zaten kayıtlı bir hesap var.", "fa-triangle-exclamation");
+            return;
+        }
+
+        const newCustomer = {
+            id: "cust_" + Date.now(),
+            fullName: name,
+            name: name,
+            email: email,
+            phone: phone || "",
+            password: password,
+            createdAt: new Date().toISOString()
         };
-        users.push(newUser);
-        localStorage.setItem("mobelmor_users", JSON.stringify(users));
-        localStorage.setItem("mobelmor_current_user", JSON.stringify(newUser));
+
+        customers.push(newCustomer);
+        saveCustomersList(customers);
+
+        const sessionUser = { ...newCustomer };
+        delete sessionUser.password;
+        localStorage.setItem("mobelmor_active_customer", JSON.stringify(sessionUser));
+        localStorage.setItem("mobelmor_current_user", JSON.stringify(sessionUser));
 
         updateAuthUI();
         document.getElementById("authModalOverlay")?.classList.remove("active");
+        document.body.classList.remove("modal-open");
         showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
         registerForm.reset();
     });
-
-    updateAuthUI();
 
     // Checkout Form Submit Handling (WhatsApp & LocalStorage Persistent with Order ID & Tracking)
     const checkoutForm = document.getElementById("checkoutForm");
@@ -3030,7 +3094,7 @@ document.addEventListener("DOMContentLoaded", () => {
         checkoutForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const name = document.getElementById("checkoutName")?.value.trim() || "";
-            const email = document.getElementById("checkoutEmail")?.value.trim() || "";
+            const email = document.getElementById("checkoutEmail")?.value.trim().toLowerCase() || "";
             const phone = document.getElementById("checkoutPhone")?.value.trim() || "";
             const address = document.getElementById("checkoutAddress")?.value.trim() || "";
             const note = document.getElementById("checkoutNote")?.value.trim() || "";
@@ -3046,25 +3110,63 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Record customer into mobelmor_customers so Admin panel has the customer data
+            if (email) {
+                const customers = getCustomersList();
+                let existingCust = customers.find(c => c.email && c.email.toLowerCase() === email);
+                if (existingCust) {
+                    if (name) { existingCust.fullName = name; existingCust.name = name; }
+                    if (phone) existingCust.phone = phone;
+                    if (address) existingCust.address = address;
+                    existingCust.lastOrderDate = new Date().toISOString();
+                } else {
+                    customers.push({
+                        id: "cust_" + Date.now(),
+                        fullName: name,
+                        name: name,
+                        email: email,
+                        phone: phone || "",
+                        address: address || "",
+                        city: address ? address.split(',')[0].trim() : "",
+                        createdAt: new Date().toISOString(),
+                        lastOrderDate: new Date().toISOString(),
+                        isGuest: true
+                    });
+                }
+                saveCustomersList(customers);
+            }
+
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const orderDate = new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
             const newOrderId = "MBL-" + Math.floor(100000 + Math.random() * 900000);
 
-            // Store order locally
+            // Store order locally in both user orders and admin store orders
             const orderData = {
                 id: newOrderId,
+                orderNumber: newOrderId,
                 date: orderDate,
+                createdAt: new Date().toISOString(),
                 status: "preparing",
                 statusText: "İmalat & Hazırlık Aşamasında",
                 customer: { name, email, phone, address, note },
-                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty })),
-                total: subtotal
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                address: address,
+                notes: note,
+                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image })),
+                total: subtotal,
+                totalAmount: subtotal
             };
 
             try {
                 const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
                 prevOrders.unshift(orderData);
                 localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
+
+                const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+                allOrders.unshift(orderData);
+                localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
             } catch (err) {
                 console.error("Order save error:", err);
             }
@@ -3089,11 +3191,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const waUrl = `https://wa.me/905300000000?text=${encodeURIComponent(waMsg)}`;
 
-            // Clear cart & close modal
+            // Clear cart & persist empty cart
             cart = [];
+            saveCart();
             updateBadges();
             renderCart();
             document.getElementById("checkoutOverlay")?.classList.remove("active");
+            document.body.classList.remove("modal-open");
             showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
             checkoutForm.reset();
 
