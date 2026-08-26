@@ -719,8 +719,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260826_0744"></script>
-    <script src="js/store-service.js?v=20260826_0744"></script>
+    <script src="js/app.js?v=20260826_0749"></script>
+    <script src="js/store-service.js?v=20260826_0749"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -807,11 +807,11 @@
             if (cEl) cEl.textContent = customers.length;
         }
 
-        function loadDashboardData() {
+        async function loadDashboardData() {
             const products = window.StoreService ? window.StoreService.getProducts(true) : [];
             const sets = products.filter(p => p.productType === 'Set');
             const orders = window.StoreService ? window.StoreService.getAllOrders() : [];
-            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const customers = window.StoreService ? await window.StoreService.fetchCloudCustomers() : [];
 
             const pEl = document.getElementById('kpiTotalProducts');
             const sEl = document.getElementById('kpiTotalSets');
@@ -1105,10 +1105,10 @@
         }
 
         // Render Customers Table
-        function renderCustomersTable() {
+        async function renderCustomersTable() {
             const q = (document.getElementById('custSearchInput')?.value || '').toLowerCase();
             const filterType = document.getElementById('custTypeFilter')?.value || 'all';
-            let customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            let customers = window.StoreService ? await window.StoreService.fetchCloudCustomers() : [];
             const allOrders = window.StoreService ? window.StoreService.getAllOrders() : [];
 
             if (filterType === 'member') {

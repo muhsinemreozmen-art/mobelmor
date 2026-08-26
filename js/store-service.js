@@ -248,6 +248,31 @@
                         createdAt: new Date().toISOString()
                     };
 
+                    // Sync directly to Supabase Cloud Database table 'customers'
+                    try {
+                        await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers`, {
+                            method: 'POST',
+                            headers: {
+                                'apikey': DEFAULT_CONFIG.supabaseKey,
+                                'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'resolution=merge-duplicates'
+                            },
+                            body: JSON.stringify({
+                                id: newUser.id,
+                                full_name: cleanName,
+                                email: cleanEmail,
+                                phone: cleanPhone,
+                                address: newUser.address,
+                                city: newUser.city,
+                                district: newUser.district,
+                                created_at: newUser.createdAt
+                            })
+                        });
+                    } catch (e) {
+                        console.warn("Cloud customer table sync:", e);
+                    }
+
                     let users = this.getAllCustomers();
                     const existingIdx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
                     if (existingIdx === -1) {
@@ -475,6 +500,46 @@
             } catch (e) {
                 return [];
             }
+        },
+
+        fetchCloudCustomers: async function () {
+            let localCusts = this.getAllCustomers();
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?select=*&order=created_at.desc`, {
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                        }
+                    });
+                    if (res.ok) {
+                        const cloudCusts = await res.json();
+                        if (Array.isArray(cloudCusts)) {
+                            cloudCusts.forEach(cc => {
+                                const email = (cc.email || '').toLowerCase();
+                                const name = cc.full_name || cc.name || 'Müşteri';
+                                if (email && !localCusts.some(lc => lc.email && lc.email.toLowerCase() === email)) {
+                                    localCusts.push({
+                                        id: cc.id || ('cust_' + Date.now()),
+                                        fullName: name,
+                                        name: name,
+                                        email: email,
+                                        phone: cc.phone || '',
+                                        address: cc.address || '',
+                                        city: cc.city || '',
+                                        district: cc.district || '',
+                                        createdAt: cc.created_at || new Date().toISOString()
+                                    });
+                                }
+                            });
+                            localStorage.setItem('mobelmor_customers', JSON.stringify(localCusts));
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Cloud customers fetch:", e);
+                }
+            }
+            return localCusts;
         },
 
         deleteCustomer: function (id) {
