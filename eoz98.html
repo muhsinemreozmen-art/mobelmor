@@ -419,10 +419,10 @@
             </div>
             
             <ul class="sidebar-menu">
-                <li><button class="menu-btn active" onclick="switchAdminTab('products')"><i class="fa-solid fa-boxes-stacked"></i> Ürün Yönetimi</button></li>
-                <li><button class="menu-btn" onclick="switchAdminTab('orders')"><i class="fa-solid fa-receipt"></i> Gelen Siparişler</button></li>
-                <li><button class="menu-btn" onclick="switchAdminTab('customers')"><i class="fa-solid fa-users"></i> Müşteri Kayıtları</button></li>
-                <li><button class="menu-btn" onclick="switchAdminTab('sync')"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut & Yedekleme</button></li>
+                <li><button class="menu-btn active" onclick="switchAdminTab('products', event)"><i class="fa-solid fa-boxes-stacked"></i> Ürün Yönetimi</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-receipt"></i> Gelen Siparişler</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('customers', event)"><i class="fa-solid fa-users"></i> Müşteri Kayıtları</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('sync', event)"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut & Yedekleme</button></li>
             </ul>
 
             <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
@@ -719,8 +719,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260826_0515"></script>
-    <script src="js/store-service.js?v=20260826_0515"></script>
+    <script src="js/app.js?v=20260826_0525"></script>
+    <script src="js/store-service.js?v=20260826_0525"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -782,11 +782,14 @@
             checkLoginState();
         }
 
-        function switchAdminTab(tab) {
-            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.target) {
-                const btn = event.target.closest('.menu-btn') || event.target;
-                btn.classList.add('active');
+        function switchAdminTab(tab, evt) {
+            document.querySelectorAll('.sidebar-menu .menu-btn').forEach(btn => btn.classList.remove('active'));
+            const targetBtn = evt ? (evt.target.closest('.menu-btn') || evt.target) : (window.event ? (window.event.target.closest('.menu-btn') || window.event.target) : null);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            } else {
+                const btn = document.querySelector(`.sidebar-menu .menu-btn[onclick*="${tab}"]`);
+                if (btn) btn.classList.add('active');
             }
 
             document.getElementById('tabProducts').style.display = tab === 'products' ? 'block' : 'none';
@@ -796,6 +799,12 @@
 
             if (tab === 'orders') renderOrdersTable();
             if (tab === 'customers') renderCustomersTable();
+            if (tab === 'products') renderProductsTable();
+
+            // Refresh KPI customer counter
+            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const cEl = document.getElementById('kpiTotalCustomers');
+            if (cEl) cEl.textContent = customers.length;
         }
 
         function loadDashboardData() {

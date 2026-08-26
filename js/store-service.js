@@ -180,9 +180,10 @@
             const newUser = {
                 id: 'cust_' + Date.now(),
                 fullName: userData.fullName,
+                name: userData.fullName,
                 email: userData.email.toLowerCase(),
                 phone: userData.phone || '',
-                password: userData.password, // SHA-256 / Hash
+                password: userData.password,
                 address: userData.address || '',
                 city: userData.city || '',
                 district: userData.district || '',
@@ -191,11 +192,13 @@
 
             users.push(newUser);
             localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            localStorage.setItem('mobelmor_users', JSON.stringify(users));
 
             // Oturumu Aç
             const sessionUser = { ...newUser };
             delete sessionUser.password;
             localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
 
             return sessionUser;
         },
@@ -253,9 +256,82 @@
 
         getAllCustomers: function () {
             try {
-                let custs = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
+                let custs = [];
+                try {
+                    const rawCusts = localStorage.getItem('mobelmor_customers');
+                    if (rawCusts) custs = JSON.parse(rawCusts);
+                } catch(e) {}
                 if (!Array.isArray(custs)) custs = [];
-                custs = custs.filter(c => c && c.email && c.email.includes('@') && !c.id?.startsWith('USR-'));
+
+                // Merge users from mobelmor_users if present
+                try {
+                    const rawUsers = localStorage.getItem('mobelmor_users');
+                    if (rawUsers) {
+                        const parsedUsers = JSON.parse(rawUsers);
+                        if (Array.isArray(parsedUsers)) {
+                            parsedUsers.forEach(u => {
+                                if (u && u.email && !custs.some(c => c.email && c.email.toLowerCase() === u.email.toLowerCase())) {
+                                    custs.push(u);
+                                }
+                            });
+                        }
+                    }
+                } catch (e) {}
+
+                // Merge active customer if not in list
+                try {
+                    const rawActive = localStorage.getItem('mobelmor_active_customer') || localStorage.getItem('mobelmor_current_user');
+                    if (rawActive) {
+                        const activeUser = JSON.parse(rawActive);
+                        if (activeUser && activeUser.email && !custs.some(c => c.email && c.email.toLowerCase() === activeUser.email.toLowerCase())) {
+                            custs.push({
+                                id: activeUser.id || ('cust_' + Date.now()),
+                                fullName: activeUser.fullName || activeUser.name || 'Kayıtlı Müşteri',
+                                name: activeUser.fullName || activeUser.name || 'Kayıtlı Müşteri',
+                                email: activeUser.email.toLowerCase(),
+                                phone: activeUser.phone || '',
+                                address: activeUser.address || '',
+                                city: activeUser.city || '',
+                                district: activeUser.district || '',
+                                createdAt: activeUser.createdAt || new Date().toISOString()
+                            });
+                        }
+                    }
+                } catch (e) {}
+
+                // Merge orders customers (guest buyers)
+                try {
+                    let orders = [];
+                    const rawOrders = localStorage.getItem('mobelmor_orders') || localStorage.getItem('mobelmor_all_orders');
+                    if (rawOrders) orders = JSON.parse(rawOrders);
+                    if (Array.isArray(orders)) {
+                        orders.forEach(o => {
+                            const email = (o.customer?.email || o.customerEmail || '').trim().toLowerCase();
+                            const name = o.customer?.name || o.customer?.fullName || o.customerName || 'Misafir Müşteri';
+                            const phone = o.customer?.phone || o.customerPhone || '';
+                            const address = o.customer?.address || o.address || '';
+                            const city = o.customer?.city || o.city || '';
+                            const district = o.customer?.district || o.district || '';
+                            if (email && email.includes('@') && !custs.some(c => c.email && c.email.toLowerCase() === email)) {
+                                custs.push({
+                                    id: 'guest_' + (o.id || Date.now()),
+                                    fullName: name,
+                                    name: name,
+                                    email: email,
+                                    phone: phone,
+                                    address: address,
+                                    city: city,
+                                    district: district,
+                                    isGuest: true,
+                                    createdAt: o.createdAt || o.date || new Date().toISOString()
+                                });
+                            }
+                        });
+                    }
+                } catch (e) {}
+
+                // Clean out any invalid records
+                custs = custs.filter(c => c && c.email && c.email.includes('@') && !String(c.id || '').startsWith('USR-'));
                 localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
                 return custs;
             } catch (e) {
