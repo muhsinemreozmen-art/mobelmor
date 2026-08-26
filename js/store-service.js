@@ -208,7 +208,14 @@
                 users = [];
             }
 
-            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+            const cleanEmail = (email || '').trim().toLowerCase();
+            const cleanPass = (password || '').trim();
+
+            if (!cleanEmail || !cleanPass) {
+                throw new Error("Lütfen e-posta adresi ve şifrenizi giriniz.");
+            }
+
+            const user = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
             if (!user) {
                 throw new Error("E-posta adresi veya şifre hatalı.");
             }
@@ -216,11 +223,13 @@
             const sessionUser = { ...user };
             delete sessionUser.password;
             localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+            localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
             return sessionUser;
         },
 
         logoutCustomer: function () {
             localStorage.removeItem('mobelmor_active_customer');
+            localStorage.removeItem('mobelmor_current_user');
         },
 
         updateCustomerProfile: function (profileData) {
@@ -236,6 +245,7 @@
                 const sessionUser = { ...users[idx] };
                 delete sessionUser.password;
                 localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
+                localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
                 return sessionUser;
             }
             return current;
@@ -244,24 +254,9 @@
         getAllCustomers: function () {
             try {
                 let custs = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
-                const legacy = JSON.parse(localStorage.getItem('mobelmor_users') || '[]');
-                if (Array.isArray(legacy) && legacy.length > 0) {
-                    legacy.forEach(leg => {
-                        if (!custs.some(c => c.email && leg.email && c.email.toLowerCase() === leg.email.toLowerCase())) {
-                            custs.push({
-                                id: leg.id || 'cust_' + Date.now(),
-                                fullName: leg.fullName || leg.name || 'Müşteri',
-                                name: leg.name || leg.fullName || 'Müşteri',
-                                email: (leg.email || '').toLowerCase(),
-                                phone: leg.phone || '',
-                                password: leg.password || '',
-                                address: leg.address || '',
-                                createdAt: leg.createdAt || new Date().toISOString()
-                            });
-                        }
-                    });
-                    localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
-                }
+                if (!Array.isArray(custs)) custs = [];
+                custs = custs.filter(c => c && c.email && c.email.includes('@') && !c.id?.startsWith('USR-'));
+                localStorage.setItem('mobelmor_customers', JSON.stringify(custs));
                 return custs;
             } catch (e) {
                 return [];

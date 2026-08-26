@@ -2801,24 +2801,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const getCustomersList = () => {
         try {
             let list = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
-            const legacy = JSON.parse(localStorage.getItem("mobelmor_users") || "[]");
-            if (Array.isArray(legacy) && legacy.length > 0) {
-                legacy.forEach(leg => {
-                    if (!list.some(c => c.email && leg.email && c.email.toLowerCase() === leg.email.toLowerCase())) {
-                        list.push({
-                            id: leg.id || "cust_" + Date.now(),
-                            fullName: leg.name || leg.fullName || "Müşteri",
-                            name: leg.name || leg.fullName || "Müşteri",
-                            email: (leg.email || "").toLowerCase(),
-                            phone: leg.phone || "",
-                            password: leg.password || "",
-                            address: leg.address || "",
-                            createdAt: leg.createdAt || new Date().toISOString()
-                        });
-                    }
-                });
-                localStorage.setItem("mobelmor_customers", JSON.stringify(list));
-            }
+            if (!Array.isArray(list)) list = [];
+            // Clean up any fake dummy simulation records created during previous testing
+            list = list.filter(c => c && c.email && c.email.includes("@") && !c.id?.startsWith("USR-"));
+            localStorage.setItem("mobelmor_customers", JSON.stringify(list));
             return list;
         } catch {
             return [];
