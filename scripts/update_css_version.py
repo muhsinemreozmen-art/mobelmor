@@ -1,7 +1,7 @@
 import glob
 import re
 
-VERSION = "20260828_1749"
+VERSION = "20260828_1751"
 
 for fpath in glob.glob("*.html"):
     with open(fpath, "r", encoding="utf-8") as f:
