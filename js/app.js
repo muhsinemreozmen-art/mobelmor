@@ -4347,9 +4347,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let startX = 0;
     let startY = 0;
     let isDragging = false;
+    let dragDistance = 0;
 
     function onDragStart(e) {
       isDragging = true;
+      dragDistance = 0;
       stopAutoplay();
       startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       startY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
@@ -4363,6 +4365,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const diffX = startX - endX;
       const diffY = startY - endY;
+      dragDistance = Math.hypot(diffX, diffY);
 
       // Only act if horizontal movement exceeds vertical movement and threshold
       if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
@@ -4379,6 +4382,26 @@ document.addEventListener("DOMContentLoaded", () => {
     heroSlider.addEventListener("touchend", onDragEnd, { passive: true });
     heroSlider.addEventListener("mousedown", onDragStart);
     heroSlider.addEventListener("mouseup", onDragEnd);
+
+    // Direct Click Navigation anywhere on the active slide
+    slides.forEach((slide) => {
+      slide.addEventListener("click", (e) => {
+        // Ignore if clicking navigation buttons or dots
+        if (e.target.closest("#sliderPrevBtn, #sliderNextBtn, .slider-dot, .slider-dots")) {
+          return;
+        }
+        // If it was a swipe/drag, don't trigger click
+        if (dragDistance > 15) {
+          return;
+        }
+
+        const targetHref = slide.getAttribute("data-href") || 
+                           slide.querySelector("a.btn-hero-cta, a.mv-cta-btn")?.getAttribute("href");
+        if (targetHref) {
+          window.location.href = targetHref;
+        }
+      });
+    });
 
     // Keyboard navigation
     window.addEventListener("keydown", (e) => {

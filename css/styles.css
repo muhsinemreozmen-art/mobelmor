@@ -1657,12 +1657,14 @@ button:active,
     visibility: hidden;
     transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
     z-index: 1;
+    cursor: pointer;
 }
 
 .slider-slide.active {
     opacity: 1;
     visibility: visible;
     z-index: 2;
+    cursor: pointer;
 }
 
 .slide-full-bg {
