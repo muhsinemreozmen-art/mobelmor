@@ -8617,6 +8617,108 @@ body.modal-open {
     }
 }
 
+/* =========================================================================
+   Product Detail Information Accordion System (Stacked Vertical Dropdown)
+   ========================================================================= */
+.detail-accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 36px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.detail-accordion-item {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.detail-accordion-item.open {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.detail-accordion-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s ease;
+    user-select: none;
+}
+
+.detail-accordion-header:hover {
+    background-color: #f8fafc;
+}
+
+.detail-accordion-item.open .detail-accordion-header {
+    border-bottom: 1px solid #f1f5f9;
+    background-color: #fcfcfd;
+}
+
+.detail-acc-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-acc-icon {
+    font-size: 1.1rem;
+    color: #64748b;
+    width: 20px;
+    text-align: center;
+}
+
+.detail-acc-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+
+.detail-acc-chevron {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-accordion-item.open .detail-acc-chevron {
+    transform: rotate(180deg);
+    color: #6b21a8;
+}
+
+.detail-accordion-body {
+    display: none;
+    padding: 20px;
+    background: #ffffff;
+    animation: accBodyFade 0.2s ease-out;
+}
+
+.detail-accordion-item.open .detail-accordion-body {
+    display: block;
+}
+
+@keyframes accBodyFade {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 
 
 
