@@ -8975,14 +8975,14 @@ body.modal-open {
     width: 42px;
     height: 42px;
     border-radius: 8px;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.18), 0 0 0 1px #cbd5e1;
+    border: 1.5px solid #18181b !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease, border-color 0.18s ease;
     padding: 0;
     background-size: cover !important;
     background-position: center !important;
@@ -8991,14 +8991,15 @@ body.modal-open {
 
 .vcolor-swatch-btn:hover {
     transform: scale(1.18);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25), 0 0 0 2px #9333ea;
+    border-color: #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 1.5px #9333ea;
     z-index: 2;
 }
 
 .vcolor-swatch-btn.active {
     transform: scale(1.20);
+    border: 2px solid #ffffff !important;
     box-shadow: 0 0 0 2.5px #6b21a8, 0 4px 14px rgba(107, 33, 168, 0.40);
-    border-color: #ffffff;
     z-index: 3;
 }
 
@@ -9037,8 +9038,8 @@ body.modal-open {
     width: 64px;
     height: 64px;
     border-radius: 12px;
-    border: 2.5px solid #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18), 0 0 0 1px #e2e8f0;
+    border: 1.5px solid #18181b;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.14);
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
