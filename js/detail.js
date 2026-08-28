@@ -1871,16 +1871,29 @@ const lockBodyScroll = () => {
     }
 };
 
-const unlockBodyScroll = () => {
-    if (activeScrollLocks > 0) {
+const unlockBodyScroll = (force = false) => {
+    if (force) {
+        activeScrollLocks = 0;
+    } else if (activeScrollLocks > 0) {
         activeScrollLocks--;
     }
-    if (activeScrollLocks === 0) {
+
+    // Check if any modal or drawer is truly active in DOM
+    const anyActive = document.querySelector(
+        ".modal-overlay.active, .cart-drawer.active, .wishlist-drawer.active, .cart-overlay.active, .wishlist-overlay.active, .yt-video-modal-overlay.active, .fabric-zoom-modal-overlay.active, .mbl-lightbox-overlay.active"
+    );
+
+    if (activeScrollLocks === 0 || !anyActive || force) {
+        activeScrollLocks = 0;
         document.documentElement.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
         document.body.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
         const top = document.body.style.top;
         document.body.style.top = "";
-        const targetY = top ? parseInt(top, 10) * -1 : bodyScrollPos;
+        document.body.style.position = "";
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.documentElement.style.overflow = "";
+        const targetY = top ? Math.abs(parseInt(top, 10)) : bodyScrollPos;
         window.scrollTo(0, targetY);
     }
 };
@@ -3425,9 +3438,11 @@ const updateBadges = () => {
 const openCheckoutModal = () => {
     const overlay = document.getElementById("checkoutOverlay");
     if (!overlay) return;
+    document.getElementById("cartDrawer")?.classList.remove("active");
+    document.getElementById("cartOverlay")?.classList.remove("active");
+    document.body.classList.remove("cart-open");
     overlay.classList.add("active");
     document.body.classList.add("modal-open");
-    lockBodyScroll();
 };
 
 const renderCart = () => {
@@ -3880,16 +3895,15 @@ document.addEventListener("DOMContentLoaded", () => {
     trapDrawerScroll(document.getElementById("cartBody"));
     trapDrawerScroll(document.getElementById("wishlistBody"));
 
-    document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
+    const closeCheckout = () => {
         document.getElementById("checkoutOverlay")?.classList.remove("active");
         document.body.classList.remove("modal-open");
-        unlockBodyScroll();
-    });
+        unlockBodyScroll(true);
+    };
+    document.getElementById("closeCheckoutBtn")?.addEventListener("click", closeCheckout);
     document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
         if (e.target.id === "checkoutOverlay") {
-            document.getElementById("checkoutOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-            unlockBodyScroll();
+            closeCheckout();
         }
     });
 
@@ -4234,11 +4248,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
         document.getElementById("authModalOverlay")?.classList.remove("active");
         document.body.classList.remove("modal-open");
+        unlockBodyScroll(true);
     });
     document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
         if (e.target.id === "authModalOverlay") {
             document.getElementById("authModalOverlay")?.classList.remove("active");
             document.body.classList.remove("modal-open");
+            unlockBodyScroll(true);
         }
     });
 
