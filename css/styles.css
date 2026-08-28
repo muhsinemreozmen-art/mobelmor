@@ -3393,9 +3393,6 @@ body.mobile-menu-open .mobile-sticky-buy-bar,
     .mobelmor-cart-btn {
         display: none !important;
     }
-    body {
-        padding-bottom: 74px !important;
-    }
     .whatsapp-float-btn {
         bottom: 84px !important;
     }
@@ -7076,9 +7073,16 @@ body.scroll-locked {
 .app-footer {
     background-color: #0f172a !important;
     color: #f8fafc !important;
-    padding: 60px 0 24px 0;
+    padding: 60px 0 max(28px, env(safe-area-inset-bottom, 28px)) 0;
     margin-top: 60px;
+    margin-bottom: 0 !important;
     border-top: 1px solid #1e293b;
+}
+
+@media (max-width: 992px) {
+    .app-footer {
+        padding-bottom: max(90px, calc(env(safe-area-inset-bottom, 0px) + 90px)) !important;
+    }
 }
 
 .app-footer .logo-text-mor {
