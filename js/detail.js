@@ -2013,6 +2013,162 @@ let currentModuleState = {
     modules: []
 };
 
+// ── Interactive Fabric & Color Studio Data ──
+const FABRIC_COLLECTIONS = [
+    {
+        id: 'babyface',
+        name: 'Baby Face Kadife',
+        badge: 'Leke Tutmaz',
+        desc: 'Su itici, silinebilir, ipeksi yumuşak kadife doku.',
+        colors: [
+            { code: 'BF-01', name: 'Krem Bej',        hex: '#f5f0eb', textColor: '#1e293b' },
+            { code: 'BF-02', name: 'Antrasit Gri',     hex: '#2e3842', textColor: '#ffffff' },
+            { code: 'BF-03', name: 'Zümrüt Yeşili',    hex: '#1b4332', textColor: '#ffffff' },
+            { code: 'BF-04', name: 'Terracotta Kiremit',hex: '#b35436', textColor: '#ffffff' },
+            { code: 'BF-05', name: 'Gece Mavisi',      hex: '#1e2d42', textColor: '#ffffff' },
+            { code: 'BF-06', name: 'Vizon / Latte',    hex: '#9c8c7d', textColor: '#ffffff' },
+            { code: 'BF-07', name: 'Hardal Sarısı',    hex: '#c99a3e', textColor: '#ffffff' },
+            { code: 'BF-08', name: 'Adaçayı Yeşili',   hex: '#60725c', textColor: '#ffffff' },
+        ]
+    },
+    {
+        id: 'bukle',
+        name: 'İtalyan Bukle',
+        badge: 'Trend 2026',
+        desc: 'Özel dokuma, 3D hacimli lüks bouclé iplik yapısı.',
+        colors: [
+            { code: 'BK-01', name: 'Kırık Beyaz Bukle', hex: '#fdfbf7', textColor: '#1e293b' },
+            { code: 'BK-02', name: 'Kum Beji Bukle',    hex: '#e6ded3', textColor: '#1e293b' },
+            { code: 'BK-03', name: 'Taş Grisi Bukle',   hex: '#9e9e9e', textColor: '#ffffff' },
+            { code: 'BK-04', name: 'Haki Yeşil Bukle',  hex: '#4a5b48', textColor: '#ffffff' },
+            { code: 'BK-05', name: 'Koyu Vizon Bukle',  hex: '#6d5d52', textColor: '#ffffff' },
+        ]
+    },
+    {
+        id: 'nubuk',
+        name: 'Silinebilir Nubuk',
+        badge: 'Pati Dostu',
+        desc: 'Tırnak takılmayan, yüksek sürtünme dayanımlı pürüzsüz doku.',
+        colors: [
+            { code: 'NB-01', name: 'Fildişi Nubuk',     hex: '#f7f4ed', textColor: '#1e293b' },
+            { code: 'NB-02', name: 'Duman Grisi Nubuk', hex: '#4b5563', textColor: '#ffffff' },
+            { code: 'NB-03', name: 'Taba Nubuk',        hex: '#8c4e2b', textColor: '#ffffff' },
+            { code: 'NB-04', name: 'Petrol Mavisi Nubuk', hex: '#164e63', textColor: '#ffffff' },
+            { code: 'NB-05', name: 'Acı Kahve Nubuk',   hex: '#38221b', textColor: '#ffffff' },
+        ]
+    },
+    {
+        id: 'keten',
+        name: 'Doğal Dokuma Keten',
+        badge: 'Nefes Alabilen',
+        desc: 'Doğal lifli, serin tutan organik dokuma keten.',
+        colors: [
+            { code: 'KT-01', name: 'Naturel Keten',     hex: '#eae4d9', textColor: '#1e293b' },
+            { code: 'KT-02', name: 'Açık Gri Keten',    hex: '#cbd5e1', textColor: '#1e293b' },
+            { code: 'KT-03', name: 'Lacivert Keten',    hex: '#1e3a8a', textColor: '#ffffff' },
+            { code: 'KT-04', name: 'Zeytin Yeşili Keten', hex: '#3f4f34', textColor: '#ffffff' },
+        ]
+    }
+];
+
+let currentFabricState = {
+    fabricId: 'babyface',
+    fabricName: 'Baby Face Kadife',
+    colorCode: 'BF-01',
+    colorName: 'Krem Bej',
+    colorHex: '#f5f0eb'
+};
+
+let currentDetailProduct = null;
+
+const renderFabricSwatchesHtml = (colId) => {
+    const col = FABRIC_COLLECTIONS.find(c => c.id === colId);
+    if (!col) return '';
+    return col.colors.map(color => `
+        <button type="button" 
+            class="vcolor-swatch-btn ${color.code === currentFabricState.colorCode ? 'active' : ''}" 
+            data-code="${color.code}" 
+            style="background-color: ${color.hex};" 
+            onclick="selectFabricColor('${color.code}', '${color.name}', '${color.hex}')" 
+            title="${color.name} (${color.code})"
+            aria-label="${color.name}">
+            <i class="fa-solid fa-check vswatch-check" style="color: ${color.textColor};"></i>
+        </button>
+    `).join('');
+};
+
+window.applyLiveColorShading = (colorHex, colorName) => {
+    const shader = document.getElementById("galleryColorShaderOverlay");
+    const badge = document.getElementById("galleryLiveTintBadge");
+    const badgeText = document.getElementById("galleryLiveTintText");
+    if (!shader) return;
+
+    if (!colorHex || colorHex === '#f5f0eb' || colorHex === '#fdfbf7') {
+        shader.style.backgroundColor = colorHex || 'transparent';
+        shader.classList.remove("active");
+        if (badge) badge.style.display = "none";
+    } else {
+        shader.style.backgroundColor = colorHex;
+        shader.classList.add("active");
+        if (badge && badgeText) {
+            badgeText.textContent = `Canlı Renk Önizleme: ${colorName}`;
+            badge.style.display = "inline-flex";
+        }
+    }
+};
+
+window.selectFabricCollection = (colId) => {
+    const col = FABRIC_COLLECTIONS.find(c => c.id === colId);
+    if (!col) return;
+    currentFabricState.fabricId = col.id;
+    currentFabricState.fabricName = col.name;
+
+    const firstColor = col.colors[0];
+    currentFabricState.colorCode = firstColor.code;
+    currentFabricState.colorName = firstColor.name;
+    currentFabricState.colorHex = firstColor.hex;
+
+    document.querySelectorAll(".vfabric-pill-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("onclick")?.includes(colId));
+    });
+
+    const grid = document.getElementById("vfabricSwatchesGrid");
+    if (grid) grid.innerHTML = renderFabricSwatchesHtml(col.id);
+
+    updateFabricLensAndBadge(col, firstColor);
+    applyLiveColorShading(firstColor.hex, firstColor.name);
+};
+
+window.selectFabricColor = (code, name, hex) => {
+    currentFabricState.colorCode = code;
+    currentFabricState.colorName = name;
+    currentFabricState.colorHex = hex;
+
+    document.querySelectorAll(".vcolor-swatch-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.code === code);
+    });
+
+    const col = FABRIC_COLLECTIONS.find(c => c.id === currentFabricState.fabricId);
+    updateFabricLensAndBadge(col, { code, name, hex });
+    applyLiveColorShading(hex, name);
+};
+
+const updateFabricLensAndBadge = (col, color) => {
+    const activeLabel = document.getElementById("vfabricActiveColorLabel");
+    const lensCircle = document.getElementById("vfabricLensCircle");
+    const selectedTitle = document.getElementById("vfabricSelectedTitle");
+    const selectedDesc = document.getElementById("vfabricSelectedDesc");
+    const sampleLink = document.getElementById("vfabricSampleLink");
+
+    if (activeLabel) activeLabel.textContent = `${color.name} (${color.code})`;
+    if (lensCircle) lensCircle.style.backgroundColor = color.hex;
+    if (selectedTitle && col) selectedTitle.textContent = `${col.name} • ${color.name}`;
+    if (selectedDesc && col) selectedDesc.textContent = col.desc;
+    if (sampleLink && currentDetailProduct) {
+        sampleLink.href = `https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(currentDetailProduct.title)}%20ürünü%20için%20${encodeURIComponent((col ? col.name : '') + ' - ' + color.name + ' [' + color.code + ']')}%20kumaş%20kartelası%20talep%20etmek%20istiyorum.`;
+    }
+};
+
 const renderProductDetail = () => {
     const pid = getProductIdFromUrl();
     const product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
@@ -2064,6 +2220,7 @@ const renderProductDetail = () => {
         }
     }
 
+    currentDetailProduct = product;
     currentModuleState.productBasePrice = product.price;
     currentModuleState.mainUnitPrice = product.price;
     currentModuleState.extraUnitPrice = Math.round(product.price * 0.18);
@@ -2111,6 +2268,12 @@ const renderProductDetail = () => {
                                 <img src="${gImg}" alt="${product.title} - Görsel ${idx + 1}" class="gallery-slide-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                             </div>
                         `).join('')}
+                    </div>
+
+                    <!-- Dynamic Realtime Color Tint Shading Overlay -->
+                    <div class="gallery-color-shader-overlay" id="galleryColorShaderOverlay"></div>
+                    <div class="gallery-live-tint-badge" id="galleryLiveTintBadge" style="display:none;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="galleryLiveTintText">Canlı Renk Önizleme</span>
                     </div>
 
                     <!-- Top-Left Circle Sticker Badge -->
@@ -2242,21 +2405,58 @@ const renderProductDetail = () => {
                     </div>
                 </div>
 
-                <!-- Fabric Customizer Button -->
-                <a href="kumas-kartelasi.html" class="vfabric-select-btn interactive-btn">
-                    <span class="vfabric-btn-left">
-                        <span class="vfabric-swatches-mini">
-                            <span style="background:#d97706;"></span>
-                            <span style="background:#0f766e;"></span>
-                            <span style="background:#3b82f6;"></span>
-                            <span style="background:#e11d48;"></span>
-                        </span>
-                        <strong>KUMAŞINI & RENGİNİ SEÇ &gt;</strong>
-                    </span>
-                    <i class="fa-solid fa-palette"></i>
-                </a>
-                <div class="vfabric-hint-bubble">
-                    <span>Bu ürünün kumaşını ve rengini ücretsiz değiştirebilirsiniz.</span>
+                <!-- Interactive Fabric & Color Studio Card -->
+                <div class="vfabric-studio-card" id="fabricStudioCard">
+                    <div class="vfabric-studio-header">
+                        <div class="vfabric-title-group">
+                            <span class="vfabric-main-title"><i class="fa-solid fa-swatchbook"></i> Kumaş & Renk Stüdyosu</span>
+                            <span class="vfabric-free-badge">Ücretsiz Değişim</span>
+                        </div>
+                        <span class="vfabric-sub-text">Dilediğiniz kumaş dokusu ve rengini seçerek anında önizleyin.</span>
+                    </div>
+
+                    <!-- 1. Fabric Type Selector Pills -->
+                    <div class="vfabric-types-wrap">
+                        <span class="vfabric-section-label">1. Kumaş Dokusu:</span>
+                        <div class="vfabric-type-pills">
+                            ${FABRIC_COLLECTIONS.map(fc => `
+                                <button type="button" class="vfabric-pill-btn ${fc.id === currentFabricState.fabricId ? 'active' : ''}" onclick="selectFabricCollection('${fc.id}')" title="${fc.desc}">
+                                    <span class="vfp-name">${fc.name}</span>
+                                    <span class="vfp-badge">${fc.badge}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- 2. Color Swatches for selected Fabric Collection -->
+                    <div class="vfabric-colors-wrap">
+                        <div class="vfabric-color-header">
+                            <span class="vfabric-section-label">2. Renginizi Seçin:</span>
+                            <span class="vfabric-active-color-name" id="vfabricActiveColorLabel">${currentFabricState.colorName} (${currentFabricState.colorCode})</span>
+                        </div>
+                        <div class="vfabric-swatches-grid" id="vfabricSwatchesGrid">
+                            ${renderFabricSwatchesHtml(currentFabricState.fabricId)}
+                        </div>
+                    </div>
+
+                    <!-- 3. Macro Texture Zoom Lens & Sample Request -->
+                    <div class="vfabric-preview-card">
+                        <div class="vfabric-macro-lens">
+                            <div class="vfabric-lens-circle" id="vfabricLensCircle" style="background-color:${currentFabricState.colorHex};">
+                                <div class="vfabric-lens-pattern" id="vfabricLensPattern"></div>
+                                <span class="vfabric-lens-mag"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                            </div>
+                            <div class="vfabric-lens-info">
+                                <strong id="vfabricSelectedTitle">${currentFabricState.fabricName} • ${currentFabricState.colorName}</strong>
+                                <span id="vfabricSelectedDesc">Leke tutmaz, silinebilir 1. sınıf dokuma.</span>
+                                <div class="vfabric-verified-tag"><i class="fa-solid fa-circle-check"></i> Siparişe Özel Üretim</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(product.title)}%20ürünü%20için%20ücretsiz%20kumaş%20kartelası%20talep%20etmek%20istiyorum." target="_blank" class="vfabric-sample-cta-btn" id="vfabricSampleLink" title="Evinizde ışık altında denemeniz için ücretsiz numune gönderiyoruz.">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <span>Adresime Ücretsiz Kumaş Numunesi İste</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Primary Buy Button -->
@@ -2794,12 +2994,23 @@ const renderRelatedProducts = (currentProduct) => {
 const addToCart = (productId, qty = 1) => {
     const item = PRODUCTS.find(p => p.id === productId);
     if (!item) return;
-    const existing = cart.find(c => c.id === productId);
-    if (existing) existing.qty += qty;
-    else cart.push({ ...item, qty });
+
+    const fabricInfo = currentFabricState ? {
+        selectedFabric: currentFabricState.fabricName,
+        selectedColor: `${currentFabricState.colorName} (${currentFabricState.colorCode})`,
+        colorHex: currentFabricState.colorHex
+    } : {};
+
+    const existing = cart.find(c => c.id === productId && c.selectedColor === fabricInfo.selectedColor);
+    if (existing) {
+        existing.qty += qty;
+    } else {
+        cart.push({ ...item, qty, ...fabricInfo });
+    }
     saveCart();
     updateBadges();
-    showToast(`<strong>${item.title}</strong>${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
+    const fabricToastText = fabricInfo.selectedFabric ? ` [${fabricInfo.selectedFabric} - ${fabricInfo.selectedColor}]` : '';
+    showToast(`<strong>${item.title}</strong>${fabricToastText}${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
 };
 
 const updateBadges = () => {
@@ -2830,6 +3041,12 @@ const renderCart = () => {
             <img src="${item.image}" alt="${item.title}" class="cart-item-img">
             <div class="cart-item-info">
                 <h5 class="cart-item-title">${item.title}</h5>
+                ${item.selectedFabric ? `
+                    <div class="cart-item-fabric-tag">
+                        <span class="cart-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
+                        <span>${item.selectedFabric}: ${item.selectedColor}</span>
+                    </div>
+                ` : ''}
                 <span class="cart-item-price">${formatPrice(item.price)}</span>
             </div>
             <div class="cart-qty-controls">
@@ -3693,7 +3910,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 customerPhone: phone,
                 address: address,
                 notes: note,
-                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image })),
+                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image, selectedFabric: i.selectedFabric, selectedColor: i.selectedColor })),
                 total: subtotal,
                 totalAmount: subtotal
             };
@@ -3721,7 +3938,8 @@ document.addEventListener("DOMContentLoaded", () => {
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
             waMsg += `📦 *Sipariş Edilen Ürünler:*\n`;
             cart.forEach((item, idx) => {
-                waMsg += `${idx + 1}. ${item.qty}x ${item.title} - ${formatPrice(item.price * item.qty)}\n`;
+                const fabricText = item.selectedFabric ? ` [${item.selectedFabric} - ${item.selectedColor}]` : '';
+                waMsg += `${idx + 1}. ${item.qty}x ${item.title}${fabricText} - ${formatPrice(item.price * item.qty)}\n`;
             });
             waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
             waMsg += `💰 *Toplam Tutar:* ${formatPrice(subtotal)}\n`;
