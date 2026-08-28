@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2230">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2245">
     <style>
         .orders-container { max-width: 960px; margin: 32px auto 60px auto; padding: 0 16px; }
         .orders-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
@@ -401,14 +401,17 @@
             <div id="userGreeting" style="font-size: 0.95rem; color: #52525b;"></div>
         </div>
 
-        <!-- Guest / Quick Lookup Search Card -->
-        <div class="track-search-card">
-            <h2 class="track-search-title"><i class="fa-solid fa-magnifying-glass"></i> Üye Olmadan Hızlı Sipariş Sorgulama</h2>
-            <p style="color:#71717a; font-size:0.88rem; margin:0;">Sipariş oluştururken kullandığınız e-posta adresinizi ve Sipariş Numaranızı (Örn: <code>MBL-782190</code>) girerek güncel imalat ve kargo durumunu anında öğrenebilirsiniz.</p>
+        <!-- Guest / Quick Lookup Search Card (Hidden by default, opened via button) -->
+        <div class="track-search-card" id="trackSearchCard" style="display: none; margin-bottom: 24px; animation: slideDownCard 0.25s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2 class="track-search-title" style="margin: 0; font-size: 1.05rem;"><i class="fa-solid fa-magnifying-glass"></i> Sipariş No İle Hızlı Sorgulama</h2>
+                <button type="button" onclick="toggleTrackSearchCard()" style="background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #64748b; font-size: 0.95rem; cursor: pointer;" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p style="color:#71717a; font-size:0.86rem; margin:0 0 14px 0;">Sipariş oluştururken kullandığınız e-posta adresinizi veya telefonunuzu ve Sipariş Numaranızı (Örn: <code>MBL-782190</code>) girerek güncel durumunuzu anında sorgulayabilirsiniz.</p>
             
             <form class="track-search-form" id="orderLookupForm">
                 <input type="text" id="lookupOrderId" class="track-input" placeholder="Sipariş No (Örn: MBL-782190)" required>
-                <input type="email" id="lookupEmail" class="track-input" placeholder="E-Posta veya Telefon" required>
+                <input type="text" id="lookupEmail" class="track-input" placeholder="E-Posta veya Telefon" required>
                 <button type="submit" class="btn btn-primary interactive-btn" style="padding:12px 24px; font-weight:700; white-space:nowrap;">
                     <i class="fa-solid fa-truck-fast"></i> Siparişi Sorgula
                 </button>
@@ -487,7 +490,7 @@
     </div>
 
     <div class="toast-container" id="toastContainer"></div>
-    <script src="js/store-service.js?v=20260828_2230"></script>
-    <script src="js/app.js?v=20260828_2230" defer></script>
+    <script src="js/store-service.js?v=20260828_2245"></script>
+    <script src="js/app.js?v=20260828_2245" defer></script>
 </body>
 </html>

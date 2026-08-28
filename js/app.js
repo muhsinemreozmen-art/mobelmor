@@ -3450,7 +3450,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
       if (userGreetingOnPage) {
-        userGreetingOnPage.innerHTML = `<span style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Giriş Yapıldı:</span> ${fullDispName} (${user.email || ''})`;
+        userGreetingOnPage.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span style="color:#16a34a; font-weight:700; font-size:0.88rem;"><i class="fa-solid fa-circle-check"></i> ${fullDispName}</span>
+            <button type="button" class="btn interactive-btn" onclick="toggleTrackSearchCard()" style="background:#f8fafc; color:#475569; font-size:0.82rem; padding:7px 14px; border-radius:999px; border:1px solid #e2e8f0; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-magnifying-glass" style="color:#7c3aed;"></i> Sipariş No İle Sorgula
+            </button>
+          </div>
+        `;
       }
 
       // Autofill checkout fields if empty
@@ -3477,7 +3484,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
       }
       if (userGreetingOnPage) {
-        userGreetingOnPage.innerHTML = `<button type="button" class="btn interactive-btn" onclick="openAuthModal('login')" style="background:#f3e8ff; color:#6b21a8; font-size:0.82rem; padding:6px 14px; border-radius:999px; border:none; font-weight:700;"><i class="fa-regular fa-user"></i> Üye Girişi Yap</button>`;
+        userGreetingOnPage.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn interactive-btn" onclick="openAuthModal('login')" style="background:#f3e8ff; color:#6b21a8; font-size:0.84rem; padding:8px 16px; border-radius:999px; border:1px solid #ddd6fe; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-regular fa-user"></i> Üye Girişi Yap
+            </button>
+            <button type="button" class="btn interactive-btn" onclick="toggleTrackSearchCard()" style="background:#ffffff; color:#374151; font-size:0.84rem; padding:8px 16px; border-radius:999px; border:1px solid #e5e7eb; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-magnifying-glass" style="color:#7c3aed;"></i> Sipariş No İle Sorgula
+            </button>
+          </div>
+        `;
       }
     }
   };
@@ -4299,19 +4315,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // TOGGLE GUEST TRACK LOOKUP CARD
+  window.toggleTrackSearchCard = () => {
+    const card = document.getElementById("trackSearchCard");
+    if (!card) return;
+    if (card.style.display === "none" || !card.style.display) {
+      card.style.display = "block";
+      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      setTimeout(() => document.getElementById("lookupOrderId")?.focus(), 150);
+    } else {
+      card.style.display = "none";
+    }
+  };
+
   // Lookup Form Submit
   const lookupForm = document.getElementById("orderLookupForm");
   if (lookupForm) {
     lookupForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const orderIdInput = document.getElementById("lookupOrderId")?.value.trim().toUpperCase();
-      const emailInput = document.getElementById("lookupEmail")?.value.trim().toLowerCase();
+      const orderIdInput = (document.getElementById("lookupOrderId")?.value || "").trim().toUpperCase();
+      const emailInput = (document.getElementById("lookupEmail")?.value || "").trim().toLowerCase();
 
-      const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+      let allOrders = [];
+      try {
+        if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
+          allOrders = window.StoreService.getAllOrders();
+        }
+        if (!allOrders.length) {
+          allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+        }
+        if (!allOrders.length) {
+          allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+        }
+      } catch (err) {}
+
       const matched = allOrders.filter(o => {
-        const idMatch = o.id && o.id.toUpperCase().includes(orderIdInput);
-        const emailMatch = (o.customer?.email && o.customer.email.toLowerCase().includes(emailInput)) ||
-          (o.customer?.phone && o.customer.phone.includes(emailInput));
+        const oNum = (o.orderNumber || o.id || "").toUpperCase();
+        const idMatch = orderIdInput && oNum.includes(orderIdInput);
+        const cEmail = (o.customerEmail || (o.customer && o.customer.email) || "").toLowerCase();
+        const cPhone = (o.customerPhone || (o.customer && o.customer.phone) || "");
+        const emailMatch = (emailInput && (cEmail.includes(emailInput) || cPhone.includes(emailInput)));
         return idMatch || emailMatch;
       });
 
