@@ -2853,6 +2853,7 @@ const renderCart = () => {
     document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
         document.getElementById("cartDrawer")?.classList.remove("active");
         document.getElementById("cartOverlay")?.classList.remove("active");
+        document.body.classList.remove("cart-open");
         const totalEl = document.getElementById("checkoutTotal");
         if (totalEl) totalEl.textContent = formatPrice(subtotal);
         openCheckoutModal();
@@ -3163,16 +3164,19 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCart();
         document.getElementById("cartDrawer")?.classList.add("active");
         document.getElementById("cartOverlay")?.classList.add("active");
+        document.body.classList.add("cart-open");
     });
 
     document.getElementById("closeCartBtn")?.addEventListener("click", () => {
         document.getElementById("cartDrawer")?.classList.remove("active");
         document.getElementById("cartOverlay")?.classList.remove("active");
+        document.body.classList.remove("cart-open");
     });
 
     document.getElementById("cartOverlay")?.addEventListener("click", () => {
         document.getElementById("cartDrawer")?.classList.remove("active");
         document.getElementById("cartOverlay")?.classList.remove("active");
+        document.body.classList.remove("cart-open");
     });
 
     document.getElementById("wishlistBtn")?.addEventListener("click", () => {
