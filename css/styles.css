@@ -8886,60 +8886,78 @@ body.modal-open {
 }
 
 .vfabric-types-wrap {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
 .vfabric-type-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
 }
 
 .vfabric-pill-btn {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 6px 10px;
+    background: #ffffff;
+    border: 1.5px solid #e4e4e7;
+    border-radius: 10px;
+    padding: 9px 12px;
     cursor: pointer;
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: flex-start;
-    gap: 2px;
-    transition: all 0.18s ease;
+    gap: 3px;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.vfabric-type-pills .vfabric-pill-btn:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
 }
 
 .vfabric-pill-btn .vfp-name {
-    font-size: 0.80rem;
+    font-size: 0.83rem;
     font-weight: 700;
-    color: #334155;
+    color: #1e293b;
+    line-height: 1.25;
 }
 
 .vfabric-pill-btn .vfp-badge {
-    font-size: 0.64rem;
+    font-size: 0.68rem;
     font-weight: 600;
     color: #64748b;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .vfabric-pill-btn:hover {
-    background: #f1f5f9;
+    background: #f8fafc;
     border-color: #cbd5e1;
     transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
 }
 
 .vfabric-pill-btn.active {
     background: #faf5ff;
-    border-color: #9333ea;
-    box-shadow: 0 0 0 1.5px #9333ea;
+    border-color: #7e22ce !important;
+    box-shadow: 0 0 0 1.5px #7e22ce, 0 4px 12px rgba(126, 34, 206, 0.12);
 }
 
 .vfabric-pill-btn.active .vfp-name {
-    color: #6b21a8;
+    color: #581c87;
     font-weight: 800;
 }
 
 .vfabric-pill-btn.active .vfp-badge {
-    color: #9333ea;
+    color: #7e22ce;
     font-weight: 700;
 }
 
