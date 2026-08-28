@@ -2182,24 +2182,24 @@ const renderProductDetail = () => {
                     </div>
 
                     <div class="vdetail-options-card">
-                        <h4 class="voptions-heading">${isDining ? 'Masa Fonksiyonu Seçenekleri' : isLiving ? 'Ölçü & Modül Seçenekleri' : 'Koleksiyon Seçenekleri'}</h4>
+                        <h4 class="voptions-heading">${isDining ? 'Masa & Takım Seçenekleri' : isLiving ? 'Ölçü & Modül Seçenekleri' : 'Koleksiyon Seçenekleri'}</h4>
                         <div class="voptions-grid">
                             <div class="voption-card active" onclick="selectOption(this, 0)">
                                 <div class="vopt-img-wrap">
-                                    <img src="${gallery[0]}" alt="Standart">
+                                    <img src="${gallery[0]}" alt="Tam Takım">
                                 </div>
                                 <div class="vopt-info">
-                                    <span class="vopt-name">${isDining ? 'Sabit Masa' : isLiving ? "3'lü + Berjer" : 'Standart Takım'}</span>
+                                    <span class="vopt-name">${isLiving ? "3'lü + 3'lü + Berjer (Tam Takım)" : isDining ? "Masa + Konsol + Sandalye" : "Standart Tam Takım"}</span>
                                     <span class="vopt-price">${formatPrice(product.price)}</span>
                                 </div>
                             </div>
                             <div class="voption-card" onclick="selectOption(this, 1)">
                                 <div class="vopt-img-wrap">
-                                    <img src="${gallery[1] || gallery[0]}" alt="Genişletilmiş">
+                                    <img src="${gallery[1] || gallery[0]}" alt="Kompakt Takım">
                                 </div>
                                 <div class="vopt-info">
-                                    <span class="vopt-name">${isDining ? 'Açılır Fonksiyonel Masa' : isLiving ? "3'lü + 3'lü + Berjer" : 'Genişletilmiş Takım'}</span>
-                                    <span class="vopt-price">${formatPrice(Math.round(product.price * 1.08))}</span>
+                                    <span class="vopt-name">${isLiving ? "3'lü + Berjer (Kompakt)" : isDining ? "Masa + Sandalye (Minimal)" : "Kompakt Takım"}</span>
+                                    <span class="vopt-price">${formatPrice(isLiving ? Math.round(product.price * 0.61) : Math.round(product.price * 0.64))}</span>
                                 </div>
                             </div>
                         </div>
@@ -2340,10 +2340,28 @@ const renderProductDetail = () => {
 };
 
 const getCategoryModuleConfig = (product) => {
-    if (product.productType === 'Set' && product.components && product.components.length > 0) {
+    const isSet = product.productType === 'Set' || (product.title && product.title.toLowerCase().includes('takım')) || (product.badges && product.badges.some(b => b.toLowerCase().includes('takım')));
+    const cat = product.category || '';
+    const sub = product.subcategory || '';
+
+    // 1. If explicit components array is provided on product object
+    if (product.components && product.components.length > 0) {
+        const count = product.components.length;
+        let weights = [];
+        if (count === 2) weights = [0.70, 0.30];
+        else if (count === 3) weights = [0.39, 0.39, 0.22];
+        else if (count === 4) weights = [0.42, 0.30, 0.16, 0.12];
+        else weights = product.components.map(() => 1 / count);
+
+        let allocated = 0;
         return product.components.map((compName, idx) => {
-            const soloMatch = PRODUCTS.find(p => p.title === compName || p.title.toLowerCase() === compName.toLowerCase() || (p.parentSet === product.title && p.title.includes(compName)));
-            const price = soloMatch ? soloMatch.price : Math.round(product.price * (idx === 0 ? 0.45 : idx === 1 ? 0.30 : 0.25));
+            let price;
+            if (idx === count - 1) {
+                price = product.price - allocated;
+            } else {
+                price = Math.round(product.price * weights[idx]);
+                allocated += price;
+            }
             return {
                 id: 'comp_' + idx,
                 label: compName,
@@ -2353,28 +2371,193 @@ const getCategoryModuleConfig = (product) => {
         });
     }
 
-    const cat = product.category;
-    const sub = product.subcategory || '';
-    if (cat === 'living' && sub === 'sofas') {
-        return [
-            { id: 'main',  label: "3'lü Koltuk",          price: Math.round(product.price * 0.55), qty: 1 },
-            { id: 'extra', label: 'Berjer (isteğe bağlı)', price: Math.round(product.price * 0.22), qty: 0 },
-        ];
-    } else if (cat === 'dining') {
-        return [
-            { id: 'main',  label: 'Masa + Sandalye Takımı', price: product.price,                    qty: 1 },
-            { id: 'extra', label: 'Ekstra Sandalye',         price: Math.round(product.price * 0.08), qty: 0 },
-        ];
-    } else if (cat === 'bedroom') {
-        return [
-            { id: 'main',  label: 'Yatak Odası Takımı',  price: product.price,                    qty: 1 },
-            { id: 'extra', label: 'Baza & Başlık',        price: Math.round(product.price * 0.20), qty: 0 },
-        ];
-    } else {
-        return [
-            { id: 'main',  label: product.title, price: product.price, qty: 1 },
-        ];
+    // 2. Living Room (Oturma Odası)
+    if (cat === 'living' || sub.includes('sofa')) {
+        if (isSet) {
+            const sofa1Price = Math.round(product.price * 0.39);
+            const sofa2Price = Math.round(product.price * 0.39);
+            const berjerPrice = product.price - (sofa1Price + sofa2Price); // 22%
+            return [
+                { id: 'sofa1',  label: "3'lü Koltuk (1. Adet)", price: sofa1Price, qty: 1 },
+                { id: 'sofa2',  label: "3'lü Koltuk (2. Adet)", price: sofa2Price, qty: 1 },
+                { id: 'berjer', label: "Berjer / Tekli Koltuk",  price: berjerPrice, qty: 1 }
+            ];
+        } else {
+            const berjerAddon = Math.round(product.price * 0.42);
+            return [
+                { id: 'main',   label: product.title,              price: product.price, qty: 1 },
+                { id: 'berjer', label: "Ekstra Berjer (Opsiyonel)", price: berjerAddon,   qty: 0 }
+            ];
+        }
     }
+
+    // 3. Dining Room (Yemek Odası)
+    if (cat === 'dining' || sub.includes('table') || sub.includes('dining')) {
+        if (isSet) {
+            const tablePrice = Math.round(product.price * 0.40);
+            const consolePrice = Math.round(product.price * 0.36);
+            const chairSetPrice = product.price - (tablePrice + consolePrice); // 24%
+            return [
+                { id: 'table',   label: "Yemek Masası (Açılır)",    price: tablePrice,     qty: 1 },
+                { id: 'console', label: "Konsol & Ayna",            price: consolePrice,   qty: 1 },
+                { id: 'chairs',  label: "Sandalye Seti (4 Adet)",   price: chairSetPrice,  qty: 1 }
+            ];
+        } else {
+            const chairAddon = Math.round(product.price * 0.18);
+            return [
+                { id: 'main',   label: product.title,                   price: product.price, qty: 1 },
+                { id: 'chairs', label: "Ekstra Sandalye (2 Adet Set)", price: chairAddon,   qty: 0 }
+            ];
+        }
+    }
+
+    // 4. Bedroom (Yatak Odası)
+    if (cat === 'bedroom' || sub.includes('bed') || sub.includes('wardrobe')) {
+        if (isSet) {
+            const wardrobePrice = Math.round(product.price * 0.42);
+            const bedPrice = Math.round(product.price * 0.30);
+            const dresserPrice = Math.round(product.price * 0.16);
+            const nightstandPrice = product.price - (wardrobePrice + bedPrice + dresserPrice); // 12%
+            return [
+                { id: 'wardrobe',   label: "Gardırop (6 Kapaklı / Sürgülü)", price: wardrobePrice,   qty: 1 },
+                { id: 'bed',        label: "Karyola & Başlık Seti",          price: bedPrice,        qty: 1 },
+                { id: 'dresser',    label: "Şifonyer & Ayna",                price: dresserPrice,    qty: 1 },
+                { id: 'nightstand', label: "Komodin Seti (2 Adet)",          price: nightstandPrice, qty: 1 }
+            ];
+        } else {
+            const nightstandAddon = Math.round(product.price * 0.15);
+            return [
+                { id: 'main',       label: product.title,             price: product.price,    qty: 1 },
+                { id: 'nightstand', label: "Ekstra Komodin (1 Adet)", price: nightstandAddon,  qty: 0 }
+            ];
+        }
+    }
+
+    // 5. Default single product
+    return [
+        { id: 'main', label: product.title, price: product.price, qty: 1 }
+    ];
+};
+
+// Global Sync for Calculated Prices across UI
+window.syncCalculatedPrices = (grandTotal) => {
+    const fmt = formatPrice(grandTotal);
+    const grandEl = document.getElementById('moduleGrandTotal');
+    const topEl = document.getElementById('topMainPriceDisplay');
+    const vsetTotalEl = document.getElementById('vsetTotalPrice');
+    const vsetListEl = document.getElementById('vsetItemsList');
+    const stickyBottomEl = document.getElementById('stickyBottomPrice');
+
+    if (grandEl) grandEl.textContent = fmt;
+    if (stickyBottomEl) stickyBottomEl.textContent = fmt;
+    if (topEl) {
+        topEl.innerHTML = `${fmt} <span class="vbuy-info-icon" title="KDV Dahil, Sepette İndirimli Fiyattır"><i class="fa-regular fa-circle-question"></i></span>`;
+    }
+    if (vsetTotalEl) vsetTotalEl.textContent = fmt;
+    if (vsetListEl && currentModuleState.modules) {
+        vsetListEl.innerHTML = currentModuleState.modules.filter(m => m.qty > 0).map(m => `
+            <div class="vset-item-row">
+                <span class="vset-item-name">${m.label}</span>
+                <span class="vset-item-calc">${m.qty} x ${formatPrice(m.price)}</span>
+            </div>
+        `).join('');
+    }
+
+    // Update Installment Matrix dynamically
+    const installmentContainer = document.getElementById("installmentTableContainer");
+    if (installmentContainer) {
+        const p = grandTotal;
+        installmentContainer.innerHTML = `
+            <div style="margin-bottom:12px; font-weight:700; color:#0f172a; font-size:0.9rem;">
+                <i class="fa-solid fa-shield-halved" style="color:#16a34a;"></i> Peşin Fiyatına 6 Taksit İmkanı (Vade Farksız)
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="installment-matrix-table" style="width:100%; border-collapse:collapse; text-align:center; font-size:0.86rem;">
+                    <thead>
+                        <tr style="background:#f8fafc; color:#475569; border-bottom:2px solid #e2e8f0;">
+                            <th style="padding:10px 14px; text-align:left;">Taksit Sayısı</th>
+                            <th style="padding:10px 14px;">Aylık Ödeme</th>
+                            <th style="padding:10px 14px;">Toplam Tutar</th>
+                            <th style="padding:10px 14px;">Vade Farkı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid #f1f5f9;">
+                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#1e293b;">Tek Çekim (Peşin)</td>
+                            <td style="padding:10px 14px; font-weight:800; color:#0f172a;">${formatPrice(p)}</td>
+                            <td style="padding:10px 14px; font-weight:700;">${formatPrice(p)}</td>
+                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Ücretsiz (0 TL)</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
+                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">3 Taksit (Peşin Fiyatına)</td>
+                            <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 3))} x 3</td>
+                            <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
+                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
+                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">6 Taksit (Peşin Fiyatına)</td>
+                            <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 6))} x 6</td>
+                            <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
+                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #f1f5f9;">
+                            <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">9 Taksit</td>
+                            <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.08) / 9))} x 9</td>
+                            <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.08))}</td>
+                            <td style="padding:10px 14px; color:#64748b;">+%8</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #f1f5f9;">
+                            <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">12 Taksit</td>
+                            <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.14) / 12))} x 12</td>
+                            <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.14))}</td>
+                            <td style="padding:10px 14px; color:#64748b;">+%14</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:14px; padding:12px 16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:0.85rem; color:#166534;">
+                <i class="fa-solid fa-money-bill-transfer" style="font-size:1.1rem;"></i>
+                <span><strong>Havale / EFT İndirimi:</strong> Havale ile yapılan ödemelerde ekstra <strong>%5 Anında İndirim</strong> uygulanır!</span>
+            </div>
+        `;
+    }
+};
+
+window.selectOption = (cardEl, optIdx) => {
+    document.querySelectorAll('.voption-card').forEach(c => c.classList.remove('active'));
+    cardEl.classList.add('active');
+    if (!currentModuleState.modules) return;
+
+    if (optIdx === 0) {
+        // Option 0: Tam Takım (Default 1 of each set piece)
+        currentModuleState.modules.forEach(m => {
+            if (m.id.startsWith('sofa') || m.id === 'berjer' || m.id === 'table' || m.id === 'console' || m.id === 'chairs' || m.id === 'wardrobe' || m.id === 'bed' || m.id === 'dresser' || m.id === 'nightstand' || m.id.startsWith('comp_') || m.id === 'main') {
+                m.qty = 1;
+            }
+        });
+    } else if (optIdx === 1) {
+        // Option 1: Kompakt Takım (e.g. 1 sofa + 1 berjer or minimal set)
+        currentModuleState.modules.forEach(m => {
+            if (m.id === 'sofa1') m.qty = 1;
+            else if (m.id === 'sofa2') m.qty = 0; // Remove 2nd 3'lü
+            else if (m.id === 'berjer') m.qty = 1;
+            else if (m.id === 'chairs') m.qty = 1;
+            else if (m.id === 'console') m.qty = 0;
+            else if (m.id === 'nightstand') m.qty = 0;
+            else if (m.id === 'dresser') m.qty = 0;
+            else if (m.id === 'main') m.qty = 1;
+        });
+    }
+
+    currentModuleState.modules.forEach(m => {
+        const qtyEl = document.getElementById(`mod_${m.id}_qty`);
+        const subEl = document.getElementById(`mod_${m.id}_sub`);
+        if (qtyEl) qtyEl.textContent = m.qty;
+        if (subEl) subEl.textContent = formatPrice(m.price * m.qty);
+    });
+
+    const grandTotal = currentModuleState.modules.reduce((s, m) => s + m.price * m.qty, 0);
+    syncCalculatedPrices(grandTotal);
 };
 
 const renderModulePriceSection = (product) => {
@@ -2399,6 +2582,8 @@ const renderModulePriceSection = (product) => {
         </tr>
     `).join('');
 
+    const initialTotal = modules.reduce((s, m) => s + m.price * m.qty, 0);
+
     container.innerHTML = `
         <div class="module-header-title">
             <span class="module-header-text">MODÜL & FİYAT HESAPLAYICI</span>
@@ -2411,7 +2596,7 @@ const renderModulePriceSection = (product) => {
             </table>
             <div class="module-total-side">
                 <span style="font-size:0.80rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">Hesaplanan Toplam:</span>
-                <span class="grand-total-val" id="moduleGrandTotal">${formatPrice(product.price)}</span>
+                <span class="grand-total-val" id="moduleGrandTotal">${formatPrice(initialTotal)}</span>
             </div>
         </div>
     `;
@@ -2421,8 +2606,7 @@ const renderModulePriceSection = (product) => {
 window.updateModuleQty = (id, delta) => {
     const mod = currentModuleState.modules?.find(m => m.id === id);
     if (!mod) return;
-    if (id === 'main') mod.qty = Math.max(1, mod.qty + delta);
-    else mod.qty = Math.max(0, mod.qty + delta);
+    mod.qty = Math.max(0, mod.qty + delta);
 
     const qtyEl = document.getElementById(`mod_${id}_qty`);
     const subEl = document.getElementById(`mod_${id}_sub`);
@@ -2430,26 +2614,7 @@ window.updateModuleQty = (id, delta) => {
     if (subEl) subEl.textContent = formatPrice(mod.price * mod.qty);
 
     const grandTotal = (currentModuleState.modules || []).reduce((s, m) => s + m.price * m.qty, 0);
-    const fmt = formatPrice(grandTotal);
-    const grandEl = document.getElementById('moduleGrandTotal');
-    const topEl = document.getElementById('topMainPriceDisplay');
-    const vsetTotalEl = document.getElementById('vsetTotalPrice');
-    const vsetListEl = document.getElementById('vsetItemsList');
-    const stickyBottomEl = document.getElementById('stickyBottomPrice');
-    if (grandEl) grandEl.textContent = fmt;
-    if (stickyBottomEl) stickyBottomEl.textContent = fmt;
-    if (topEl) {
-        topEl.innerHTML = `${fmt} <span class="vbuy-info-icon" title="KDV Dahil, Sepette İndirimli Fiyattır"><i class="fa-regular fa-circle-question"></i></span>`;
-    }
-    if (vsetTotalEl) vsetTotalEl.textContent = fmt;
-    if (vsetListEl) {
-        vsetListEl.innerHTML = (currentModuleState.modules || []).filter(m => m.qty > 0).map(m => `
-            <div class="vset-item-row">
-                <span class="vset-item-name">${m.label}</span>
-                <span class="vset-item-calc">${m.qty} x ${formatPrice(m.price)}</span>
-            </div>
-        `).join('');
-    }
+    syncCalculatedPrices(grandTotal);
 };
 
 const renderSpecsAndGeneralInfo = (product) => {
