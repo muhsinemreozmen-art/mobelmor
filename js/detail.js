@@ -2781,6 +2781,8 @@ const renderProductDetail = () => {
                 <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
             </button>
         </div>
+    `;
+
     // Real-Time Background Cloud Sync (Guarantees Mobile Phone fetches video URL instantly from Supabase)
     if (!window._cloudDetailSynced) {
         window._cloudDetailSynced = true;
