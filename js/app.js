@@ -3899,31 +3899,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     listContainer.innerHTML = orders.map(order => {
-      const statusKey = order.status || "preparing";
+      const statusKey = (order.status || "preparing").toLowerCase();
       let pillClass = "status-preparing";
       let statusLabel = "İmalat & Hazırlık Aşamasında";
-      let stepIndex = 1; // 1: Order received, 2: Crafting/Wood, 3: Quality Check, 4: Delivered
+      let stepIndex = 2; // Default when order is placed: Step 1 is done, Step 2 is Active (Hazırlanıyor)
 
-      if (statusKey === "quality") {
-        pillClass = "status-preparing";
-        statusLabel = "Kalite Kontrol & Paketleme";
-        stepIndex = 2;
-      } else if (statusKey === "shipping") {
+      if (statusKey === "shipping" || statusKey === "kargoda" || statusKey === "sevkiyatta") {
         pillClass = "status-shipping";
-        statusLabel = "Lojistik Sevkiyatında";
+        statusLabel = "Sevkiyatta / Özel Mobilya Lojistiğinde";
         stepIndex = 3;
-      } else if (statusKey === "delivered") {
+      } else if (statusKey === "delivered" || statusKey === "teslim edildi" || statusKey === "tamamlandı") {
         pillClass = "status-delivered";
         statusLabel = "Teslim Edildi & Kuruldu";
         stepIndex = 4;
+      } else if (statusKey === "cancelled" || statusKey === "iptal") {
+        pillClass = "status-cancelled";
+        statusLabel = "İptal Edildi";
+        stepIndex = 0;
+      } else {
+        // "preparing", "yeni", "hazırlanıyor"
+        pillClass = "status-preparing";
+        statusLabel = "İmalat & Hazırlık Aşamasında";
+        stepIndex = 2;
       }
+
+      const orderNum = order.orderNumber || order.id || "MBL-000000";
+      const orderDate = order.date || (order.createdAt ? new Date(order.createdAt).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "Bugün");
 
       return `
                 <div class="order-card">
                     <div class="order-card-header">
-                        <div>
-                            <span class="order-id-badge"><i class="fa-solid fa-hashtag"></i> ${order.id}</span>
-                            <span style="font-size:0.85rem; color:#71717a; margin-left:12px;"><i class="fa-regular fa-calendar"></i> ${order.date}</span>
+                        <div class="order-id-group">
+                            <span class="order-id-badge"><i class="fa-solid fa-hashtag" style="color:#7c3aed;"></i> ${orderNum}</span>
+                            <span class="order-date-badge"><i class="fa-regular fa-calendar" style="color:#7c3aed;"></i> ${orderDate}</span>
                         </div>
                         <span class="order-status-pill ${pillClass}">
                             <i class="fa-solid fa-circle" style="font-size:0.55rem;"></i> ${order.statusText || statusLabel}
@@ -3931,58 +3939,79 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
 
                     <!-- 4-Step Furniture Delivery Timeline -->
-                    <div class="order-timeline">
-                        <div class="timeline-step ${stepIndex >= 1 ? 'completed' : ''}">
-                            <div class="timeline-icon-box"><i class="fa-solid fa-check"></i></div>
-                            <div class="timeline-label">Sipariş Alındı</div>
-                        </div>
-                        <div class="timeline-step ${stepIndex > 2 ? 'completed' : (stepIndex === 2 ? 'active' : '')}">
-                            <div class="timeline-icon-box">${stepIndex > 2 ? '<i class="fa-solid fa-check"></i>' : '2'}</div>
-                            <div class="timeline-label">İskelet &amp; Döşeme</div>
-                        </div>
-                        <div class="timeline-step ${stepIndex > 3 ? 'completed' : (stepIndex === 3 ? 'active' : '')}">
-                            <div class="timeline-icon-box">${stepIndex > 3 ? '<i class="fa-solid fa-check"></i>' : '3'}</div>
-                            <div class="timeline-label">Sevkiyat &amp; Nakliye</div>
-                        </div>
-                        <div class="timeline-step ${stepIndex === 4 ? 'completed' : ''}">
-                            <div class="timeline-icon-box">${stepIndex === 4 ? '<i class="fa-solid fa-check"></i>' : '4'}</div>
-                            <div class="timeline-label">Montaj &amp; Teslim</div>
+                    <div class="order-timeline-wrap">
+                        <div class="order-timeline">
+                            <div class="timeline-step ${stepIndex >= 1 ? 'completed' : ''}">
+                                <div class="timeline-icon-box"><i class="fa-solid fa-check"></i></div>
+                                <div class="timeline-label">Sipariş Alındı</div>
+                            </div>
+                            <div class="timeline-step ${stepIndex > 2 ? 'completed' : (stepIndex === 2 ? 'active' : '')}">
+                                <div class="timeline-icon-box">${stepIndex > 2 ? '<i class="fa-solid fa-check"></i>' : (stepIndex === 2 ? '2' : '2')}</div>
+                                <div class="timeline-label">İskelet &amp; Döşeme</div>
+                            </div>
+                            <div class="timeline-step ${stepIndex > 3 ? 'completed' : (stepIndex === 3 ? 'active' : '')}">
+                                <div class="timeline-icon-box">${stepIndex > 3 ? '<i class="fa-solid fa-check"></i>' : (stepIndex === 3 ? '3' : '3')}</div>
+                                <div class="timeline-label">Sevkiyat &amp; Nakliye</div>
+                            </div>
+                            <div class="timeline-step ${stepIndex === 4 ? 'completed' : ''}">
+                                <div class="timeline-icon-box">${stepIndex === 4 ? '<i class="fa-solid fa-check"></i>' : '4'}</div>
+                                <div class="timeline-label">Montaj &amp; Teslim</div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Items Table -->
-                    <table class="order-items-table">
-                        <thead>
-                            <tr>
-                                <th>Ürün Adı</th>
-                                <th>Adet</th>
-                                <th>Birim Fiyat</th>
-                                <th style="text-align:right;">Tutar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${(order.items || []).map(item => `
-                                <tr>
-                                    <td style="font-weight:700;"><i class="fa-solid fa-couch" style="color:#6b21a8; margin-right:6px;"></i> ${item.title}</td>
-                                    <td>${item.qty} Adet</td>
-                                    <td>${formatPrice(item.price)}</td>
-                                    <td style="text-align:right; font-weight:800; color:#6b21a8;">${formatPrice(item.price * item.qty)}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+                    <!-- Unified Product Items List -->
+                    <div class="order-items-list">
+                        ${(order.items || []).map(item => {
+                          const itemImg = item.image ? `<img src="${item.image}" alt="${item.title}" class="order-item-img">` : `<div class="order-item-img-placeholder"><i class="fa-solid fa-couch"></i></div>`;
+                          const fabricBadge = item.selectedFabric ? `<span class="order-item-badge"><i class="fa-solid fa-layer-group"></i> ${item.selectedFabric}${item.selectedColor ? ` - ${item.selectedColor}` : ''}</span>` : '';
+                          return `
+                            <div class="order-item-row">
+                                <div class="order-item-left">
+                                    ${itemImg}
+                                    <div class="order-item-details">
+                                        <div class="order-item-title">${item.title}</div>
+                                        <div class="order-item-sub">
+                                            ${fabricBadge}
+                                            <span><i class="fa-solid fa-box" style="color:#7c3aed;"></i> ${item.qty || 1} Adet</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order-item-price">${formatPrice((item.price || 0) * (item.qty || 1))}</div>
+                            </div>
+                          `;
+                        }).join('')}
+                    </div>
 
-                    <div class="order-info-footer">
-                        <div style="font-size:0.85rem; color:#52525b;">
-                            <strong>Teslimat Adresi:</strong> ${order.customer?.address || 'Belirtilmedi'} 
-                            ${order.customer?.note ? `<br><span style="color:#6b21a8;"><strong>Not:</strong> ${order.customer.note}</span>` : ''}
+                    <!-- Info Box (Address, Notes, Payment) -->
+                    <div class="order-info-box">
+                        <div class="order-info-line">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div><strong>Teslimat Adresi:</strong> ${order.customer?.address || order.address || 'Belirtilmedi'}</div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:16px;">
-                            <span style="font-size:1.15rem; font-weight:900; color:#18181b;">Toplam: <span style="color:#6b21a8;">${formatPrice(order.total || 0)}</span></span>
-                            <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${order.id} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="btn interactive-btn" style="background:#f4f4f5; color:#18181b; padding:8px 14px; border-radius:999px; font-size:0.82rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-                                <i class="fa-brands fa-whatsapp" style="color:#16a34a;"></i> Destek Al
-                            </a>
+                        ${(order.customer?.note || order.notes) ? `
+                            <div class="order-info-line">
+                                <i class="fa-solid fa-note-sticky"></i>
+                                <div><strong>Sipariş Notu:</strong> ${order.customer?.note || order.notes}</div>
+                            </div>
+                        ` : ''}
+                        ${(order.paymentMethodLabel || order.paymentMethod) ? `
+                            <div class="order-info-line">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <div><strong>Ödeme:</strong> ${order.paymentMethodLabel || order.paymentMethod}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Order Footer -->
+                    <div class="order-footer">
+                        <div class="order-total-block">
+                            <span class="order-total-label">Toplam:</span>
+                            <span class="order-total-val">${formatPrice(order.total || order.totalAmount || 0)}</span>
                         </div>
+                        <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${orderNum} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="order-support-btn interactive-btn">
+                            <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Destek Al
+                        </a>
                     </div>
                 </div>
             `;

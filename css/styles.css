@@ -5237,6 +5237,332 @@ body.scroll-locked {
     display: inline-block;
 }
 
+/* ── Luxury Order Tracking & Card Styles ── */
+.order-card { 
+    background: #ffffff; 
+    border-radius: 20px; 
+    padding: 24px; 
+    margin-bottom: 24px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02); 
+    border: 1px solid #ede9fe; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.order-card:hover {
+    box-shadow: 0 14px 36px rgba(107,33,168,0.07);
+}
+
+.order-card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #f1f5f9; 
+    padding-bottom: 16px; 
+    margin-bottom: 20px; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+}
+
+.order-id-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-id-badge { 
+    font-weight: 900; 
+    color: #6b21a8; 
+    font-size: 1.15rem; 
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.order-date-badge {
+    font-size: 0.82rem; 
+    color: #64748b; 
+    background: #f8fafc; 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    border: 1px solid #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+}
+
+.order-status-pill { 
+    padding: 6px 14px; 
+    border-radius: 999px; 
+    font-size: 0.8rem; 
+    font-weight: 700; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+}
+.status-preparing { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+.status-shipping { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+.status-delivered { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.status-cancelled { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+/* ── Stepper Timeline ── */
+.order-timeline-wrap {
+    background: #faf8ff;
+    border: 1px solid #ede9fe;
+    border-radius: 14px;
+    padding: 20px 14px 16px 14px;
+    margin-bottom: 22px;
+}
+
+.order-timeline { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 4px; 
+    position: relative; 
+}
+
+.timeline-step { 
+    text-align: center; 
+    position: relative; 
+}
+
+.timeline-step::before { 
+    content: ''; 
+    position: absolute; 
+    top: 15px; 
+    left: -50%; 
+    width: 100%; 
+    height: 3px; 
+    background: #e2e8f0; 
+    z-index: 1; 
+    transition: background 0.3s ease;
+}
+.timeline-step:first-child::before { display: none; }
+.timeline-step.completed::before { background: #16a34a; }
+.timeline-step.active::before { background: #7c3aed; }
+
+.timeline-icon-box { 
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    background: #f1f5f9; 
+    color: #64748b; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin: 0 auto 8px auto; 
+    position: relative; 
+    z-index: 2; 
+    font-size: 0.85rem; 
+    font-weight: 800; 
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.timeline-step.completed .timeline-icon-box { 
+    background: #16a34a; 
+    color: #ffffff; 
+    border-color: #16a34a;
+}
+
+.timeline-step.active .timeline-icon-box { 
+    background: #7c3aed; 
+    color: #ffffff; 
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 5px rgba(124, 58, 237, 0.18);
+    animation: pulseActive 2s infinite ease-in-out;
+}
+
+.timeline-label { 
+    font-size: 0.78rem; 
+    font-weight: 700; 
+    color: #64748b; 
+    line-height: 1.25;
+    transition: color 0.3s ease;
+}
+.timeline-step.completed .timeline-label { color: #1e1b4b; }
+.timeline-step.active .timeline-label { color: #6b21a8; font-weight: 800; }
+
+@media (max-width: 520px) {
+    .timeline-label { font-size: 0.7rem; }
+    .timeline-icon-box { width: 28px; height: 28px; font-size: 0.78rem; }
+    .timeline-step::before { top: 13px; }
+}
+
+.order-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.order-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 10px 14px;
+    gap: 12px;
+    transition: background 0.2s ease;
+}
+.order-item-row:hover {
+    background: #f4f3ff;
+    border-color: #ddd6fe;
+}
+
+.order-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.order-item-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #ede9fe;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.order-item-img-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #f3e8ff;
+    color: #7c3aed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.order-item-details {
+    min-width: 0;
+}
+
+.order-item-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e1b4b;
+    margin: 0 0 3px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-item-sub {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.76rem;
+    color: #64748b;
+}
+
+.order-item-badge {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #6b21a8;
+}
+
+.order-item-price {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #6b21a8;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.order-info-box {
+    background: #faf8ff;
+    border: 1px solid #ede9fe;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 0.84rem;
+    color: #475569;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.order-info-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.order-info-line i {
+    color: #7c3aed;
+    margin-top: 2px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.order-info-line strong {
+    color: #1e1b4b;
+}
+
+.order-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 18px; 
+    padding-top: 16px; 
+    border-top: 1px solid #f1f5f9; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+}
+
+.order-total-block {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.order-total-label {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1e1b4b;
+}
+
+.order-total-val {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #6b21a8;
+}
+
+.order-support-btn {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+.order-support-btn:hover {
+    background: #16a34a;
+    color: #ffffff;
+    border-color: #16a34a;
+    transform: translateY(-1px);
+}
+
 
 /* Toast Notifications (Modern Luxury Mobelmor Design) */
 .toast-container {

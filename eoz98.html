@@ -727,8 +727,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260828_2040"></script>
-    <script src="js/store-service.js?v=20260828_2040"></script>
+    <script src="js/app.js?v=20260828_2050"></script>
+    <script src="js/store-service.js?v=20260828_2050"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -1125,12 +1125,11 @@
                     <td>${(o.items || []).map(i => `${i.qty}x ${i.title}`).join(', ')}</td>
                     <td><strong style="color:#4ade80;">${(o.totalAmount || 0).toLocaleString('tr-TR')} ₺</strong></td>
                     <td>
-                        <select onchange="updateOrderStatus('${o.orderNumber}', this.value)" class="admin-input" style="padding: 4px 8px; font-size: 0.8rem; width: auto;">
-                            <option value="Yeni" ${o.status === 'Yeni' ? 'selected' : ''}>Yeni</option>
-                            <option value="Hazırlanıyor" ${o.status === 'Hazırlanıyor' ? 'selected' : ''}>Hazırlanıyor</option>
-                            <option value="Kargoda" ${o.status === 'Kargoda' ? 'selected' : ''}>Kargoda</option>
-                            <option value="Teslim Edildi" ${o.status === 'Teslim Edildi' ? 'selected' : ''}>Teslim Edildi</option>
-                            <option value="İptal" ${o.status === 'İptal' ? 'selected' : ''}>İptal</option>
+                        <select onchange="updateOrderStatus('${o.orderNumber || o.id}', this.value)" class="admin-input" style="padding: 4px 8px; font-size: 0.8rem; width: auto; background:#1e293b; color:#f8fafc; border:1px solid #334155; border-radius:6px; cursor:pointer;">
+                            <option value="Hazırlanıyor" ${(o.status === 'Hazırlanıyor' || o.status === 'preparing' || o.status === 'Yeni') ? 'selected' : ''}>🛠️ Hazırlanıyor (İskelet &amp; Döşeme)</option>
+                            <option value="Kargoda" ${(o.status === 'Kargoda' || o.status === 'shipping' || o.status === 'Sevkiyatta') ? 'selected' : ''}>🚚 Kargoda (Sevkiyat &amp; Nakliye)</option>
+                            <option value="Teslim Edildi" ${(o.status === 'Teslim Edildi' || o.status === 'delivered') ? 'selected' : ''}>✅ Teslim Edildi (Montaj &amp; Teslim)</option>
+                            <option value="İptal" ${(o.status === 'İptal' || o.status === 'cancelled') ? 'selected' : ''}>❌ İptal Edildi</option>
                         </select>
                     </td>
                     <td>

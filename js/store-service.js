@@ -946,33 +946,54 @@
 
         updateOrderStatus: async function (orderNumber, newStatus) {
             let orders = this.getAllOrders();
-            const order = orders.find(o => o.orderNumber === orderNumber);
+            const order = orders.find(o => o.orderNumber === orderNumber || o.id === orderNumber);
+            
+            let statusText = "İmalat & Hazırlık Aşamasında";
+            if (newStatus === "Kargoda" || newStatus === "shipping" || newStatus === "Sevkiyatta") {
+                statusText = "Sevkiyatta / Özel Mobilya Lojistiğinde";
+            } else if (newStatus === "Teslim Edildi" || newStatus === "delivered") {
+                statusText = "Teslim Edildi & Kuruldu";
+            } else if (newStatus === "İptal" || newStatus === "cancelled") {
+                statusText = "İptal Edildi";
+            }
+
             if (order) {
                 order.status = newStatus;
+                order.statusText = statusText;
                 localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
-
-                // Push status update to Supabase Cloud
-                if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
-                    try {
-                        await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}`, {
-                            method: 'PATCH',
-                            headers: {
-                                'apikey': DEFAULT_CONFIG.supabaseKey,
-                                'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                status: newStatus
-                            })
-                        });
-                    } catch (e) {
-                        console.log('Supabase Order Status Sync Error:', e);
-                    }
-                }
-
-                return true;
             }
-            return false;
+
+            // Also update mobelmor_orders for client tracking
+            try {
+                let userOrders = JSON.parse(localStorage.getItem('mobelmor_orders') || '[]');
+                const uOrder = userOrders.find(o => o.orderNumber === orderNumber || o.id === orderNumber);
+                if (uOrder) {
+                    uOrder.status = newStatus;
+                    uOrder.statusText = statusText;
+                    localStorage.setItem('mobelmor_orders', JSON.stringify(userOrders));
+                }
+            } catch (e) {}
+
+            // Push status update to Supabase Cloud
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
+                    });
+                } catch (e) {
+                    console.log('Supabase Order Status Sync Error:', e);
+                }
+            }
+
+            return true;
         },
 
         deleteOrder: async function (orderNumber) {

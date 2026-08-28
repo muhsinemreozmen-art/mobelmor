@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2040">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2050">
     <style>
         .account-page-container {
             max-width: 1040px;
@@ -418,8 +418,8 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <script src="js/store-service.js?v=20260828_2040"></script>
-    <script src="js/app.js?v=20260828_2040" defer></script>
+    <script src="js/store-service.js?v=20260828_2050"></script>
+    <script src="js/app.js?v=20260828_2050" defer></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const rawUser = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
@@ -504,12 +504,14 @@
             }
 
             container.innerHTML = myOrders.map(ord => {
-                const st = ord.status || "preparing";
-                const stBadge = st === "delivered" 
+                const st = (ord.status || "preparing").toLowerCase();
+                const stBadge = (st === "delivered" || st === "teslim edildi")
                     ? `<span class="status-pill status-delivered"><i class="fa-solid fa-circle-check"></i> Teslim Edildi</span>`
-                    : (st === "shipping"
+                    : ((st === "shipping" || st === "kargoda" || st === "sevkiyatta")
                         ? `<span class="status-pill status-shipping"><i class="fa-solid fa-truck-fast"></i> Sevkiyatta</span>`
-                        : `<span class="status-pill status-preparing"><i class="fa-solid fa-hammer"></i> İmalat &amp; Hazırlıkta</span>`
+                        : (st === "cancelled" || st === "iptal")
+                            ? `<span class="status-pill" style="background:#fee2e2; color:#b91c1c;"><i class="fa-solid fa-circle-xmark"></i> İptal Edildi</span>`
+                            : `<span class="status-pill status-preparing"><i class="fa-solid fa-hammer"></i> İmalat &amp; Hazırlıkta</span>`
                     );
 
                 const items = Array.isArray(ord.items) ? ord.items : [];
