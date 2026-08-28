@@ -1691,16 +1691,21 @@ const showToast = (message, icon = "fa-circle-check") => {
 const getProductIdFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const idStr = params.get("id");
+    const slugStr = params.get("slug");
+
+    // 1. If slug is explicitly provided, resolve exact product by slug
+    if (slugStr) {
+        const foundBySlug = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === slugStr);
+        if (foundBySlug) return foundBySlug.id;
+    }
+
+    // 2. If valid ID is provided and exists in DB
     if (idStr) {
         const parsed = parseInt(idStr);
-        if (!isNaN(parsed)) return parsed;
+        if (!isNaN(parsed) && PRODUCTS.some(p => p.id === parsed)) return parsed;
     }
-    const slugStr = params.get("slug");
-    if (slugStr) {
-        const found = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === slugStr);
-        if (found) return found.id;
-    }
-    // Also check pathname: /urun/slug or /slug
+
+    // 3. Also check pathname: /urun/slug or /slug
     const pathParts = window.location.pathname.split('/').filter(Boolean);
     const lastPart = pathParts[pathParts.length - 1];
     if (lastPart && !lastPart.includes('detail') && !lastPart.includes('detay')) {
