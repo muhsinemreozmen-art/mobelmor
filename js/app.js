@@ -4193,16 +4193,17 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Items Table -->
-          <div style="margin-top:16px; overflow-x:auto;">
-            <table style="width:100%; border-collapse:collapse; border:1px solid #e4e4e7;">
+          <div class="table-scroll-hint no-print"><i class="fa-solid fa-arrows-left-right"></i> Tabloyu sağa/sola kaydırarak inceleyebilirsiniz</div>
+          <div class="invoice-table-wrapper">
+            <table class="invoice-table">
               <thead>
                 <tr style="background:#f8fafc; color:#3f3f46; font-size:0.8rem; text-transform:uppercase; font-weight:700;">
-                  <th style="padding:8px; border:1px solid #e4e4e7; width:40px; text-align:center;">Sıra</th>
-                  <th style="padding:8px 12px; border:1px solid #e4e4e7; text-align:left;">Mal / Hizmet Açıklaması</th>
-                  <th style="padding:8px; border:1px solid #e4e4e7; width:80px; text-align:center;">Miktar</th>
-                  <th style="padding:8px; border:1px solid #e4e4e7; width:100px; text-align:right;">Birim Fiyat</th>
-                  <th style="padding:8px; border:1px solid #e4e4e7; width:60px; text-align:center;">KDV</th>
-                  <th style="padding:8px; border:1px solid #e4e4e7; width:90px; text-align:right;">KDV Tutarı</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:45px; text-align:center;">Sıra</th>
+                  <th style="padding:8px 12px; border:1px solid #e4e4e7; text-align:left; min-width:200px;">Mal / Hizmet Açıklaması</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:75px; text-align:center;">Miktar</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:95px; text-align:right;">Birim Fiyat</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:55px; text-align:center;">KDV</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:85px; text-align:right;">KDV Tutarı</th>
                   <th style="padding:8px 12px; border:1px solid #e4e4e7; width:110px; text-align:right;">Mal Hizmet Tutarı</th>
                 </tr>
               </thead>
