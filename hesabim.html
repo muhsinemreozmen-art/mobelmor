@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2345">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2355">
     <style>
         .account-page-container {
             max-width: 1040px;
@@ -391,35 +391,12 @@
     </footer>
 
     <!-- Universal Auth Modal (Giriş Yap / Üye Ol) -->
-    <div class="modal-overlay" id="authModalOverlay">
-        <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
-            <button class="close-btn modal-close interactive-btn" id="closeAuthModalBtn" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
-                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
-                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
-            </div>
-
-            <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
-                <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">Giriş Yap</button>
-            </form>
-
-            <form id="registerForm" style="display:none; flex-direction:column; gap:12px;">
-                <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">Ücretsiz Üye Ol</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal-overlay" id="authModalOverlay" style="display:none;"></div>
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <script src="js/store-service.js?v=20260828_2345"></script>
-    <script src="js/app.js?v=20260828_2345" defer></script>
+    <script src="js/store-service.js?v=20260828_2355"></script>
+    <script src="js/app.js?v=20260828_2355" defer></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const rawUser = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");

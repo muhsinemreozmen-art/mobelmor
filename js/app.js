@@ -3560,6 +3560,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     overlay.innerHTML = cardHtml;
+    overlay.style.display = "flex";
     overlay.classList.add("active");
     document.body.classList.add("modal-open");
 
@@ -3571,6 +3572,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("authModalOverlay");
     if (overlay) {
       overlay.classList.remove("active");
+      overlay.style.display = "none";
       document.body.classList.remove("modal-open");
       unlockBodyScroll(true);
     }
@@ -3717,13 +3719,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const attachAuthModalEvents = (view) => {
     const overlay = document.getElementById("authModalOverlay");
     
-    // Close overlay backdrop
+    // Close overlay backdrop & close button
     if (overlay) {
       overlay.onclick = (e) => {
         if (e.target.id === "authModalOverlay") {
           closeAuthModal();
         }
       };
+      const closeBtn = overlay.querySelector(".modal-close, .close-btn");
+      if (closeBtn) {
+        closeBtn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          closeAuthModal();
+        };
+      }
     }
 
     // 1. LOGIN FORM
