@@ -4428,7 +4428,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 orderNumber: newOrderId,
                 date: orderDate,
                 createdAt: new Date().toISOString(),
-                status: "preparing",
+                status: "Hazırlanıyor",
                 statusText: "İmalat & Hazırlık Aşamasında",
                 customer: { name, email, phone, address, note },
                 customerName: name,
@@ -4446,13 +4446,17 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
-                prevOrders.unshift(orderData);
-                localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
+                if (window.StoreService && typeof window.StoreService.createOrder === "function") {
+                    window.StoreService.createOrder(orderData);
+                } else {
+                    const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+                    prevOrders.unshift(orderData);
+                    localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
 
-                const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
-                allOrders.unshift(orderData);
-                localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
+                    const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+                    allOrders.unshift(orderData);
+                    localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
+                }
             } catch (err) {
                 console.error("Order save error:", err);
             }

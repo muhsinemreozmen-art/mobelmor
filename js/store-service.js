@@ -820,9 +820,11 @@
             }
 
             const currentUser = this.getCurrentUser();
+            const orderNum = orderData.orderNumber || orderData.id || ('MBL-' + Math.floor(100000 + Math.random() * 900000));
 
             const newOrder = {
-                orderNumber: 'MBL-' + Math.floor(100000 + Math.random() * 900000),
+                id: orderNum,
+                orderNumber: orderNum,
                 customerId: currentUser ? currentUser.id : 'guest',
                 customerName: orderData.customerName || (currentUser ? currentUser.fullName : 'Misafir Müşteri'),
                 customerEmail: orderData.customerEmail || (currentUser ? currentUser.email : ''),
@@ -832,15 +834,29 @@
                 address: orderData.address || '',
                 notes: orderData.notes || '',
                 items: orderData.items || [],
-                totalAmount: orderData.totalAmount || 0,
+                total: orderData.total || orderData.totalAmount || 0,
+                totalAmount: orderData.totalAmount || orderData.total || 0,
                 paymentMethod: orderData.paymentMethod || 'Kredi Kartı / Havale',
-                paymentStatus: 'Tamamlandı',
-                status: 'Yeni', // Yeni, Hazırlanıyor, Kargoda, Teslim Edildi, İptal
-                createdAt: new Date().toISOString()
+                paymentMethodLabel: orderData.paymentMethodLabel || 'Kredi Kartı (iyzico 3D Secure)',
+                paymentStatus: orderData.paymentStatus || 'Tamamlandı',
+                status: orderData.status || 'Hazırlanıyor',
+                statusText: orderData.statusText || 'İmalat & Hazırlık Aşamasında',
+                date: orderData.date || new Date().toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+                createdAt: orderData.createdAt || new Date().toISOString()
             };
 
+            // Remove existing duplicate if any with same number
+            orders = orders.filter(o => (o.orderNumber !== orderNum && o.id !== orderNum));
             orders.unshift(newOrder);
             localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+
+            // Also update mobelmor_orders cleanly
+            try {
+                let userOrders = JSON.parse(localStorage.getItem('mobelmor_orders') || '[]');
+                userOrders = userOrders.filter(o => (o.orderNumber !== orderNum && o.id !== orderNum));
+                userOrders.unshift(newOrder);
+                localStorage.setItem('mobelmor_orders', JSON.stringify(userOrders));
+            } catch (e) {}
 
             // Push order to Supabase Cloud
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
@@ -872,7 +888,6 @@
                 }).then(r => console.log('Supabase Order Synced:', newOrder.orderNumber))
                 .catch(e => console.log('Supabase Order Sync Error:', e));
             }
-
 
             return newOrder;
         },

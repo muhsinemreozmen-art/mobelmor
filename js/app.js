@@ -3743,7 +3743,7 @@ document.addEventListener("DOMContentLoaded", () => {
         orderNumber: newOrderId,
         date: orderDate,
         createdAt: new Date().toISOString(),
-        status: "preparing",
+        status: "Hazırlanıyor",
         statusText: "İmalat & Hazırlık Aşamasında",
         customer: { name, email, phone, address, note },
         customerName: name,
@@ -3762,13 +3762,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Save order in both user orders and admin store orders
       try {
-        const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
-        prevOrders.unshift(orderData);
-        localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
+        if (window.StoreService && typeof window.StoreService.createOrder === "function") {
+          window.StoreService.createOrder(orderData);
+        } else {
+          const prevOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+          prevOrders.unshift(orderData);
+          localStorage.setItem("mobelmor_orders", JSON.stringify(prevOrders));
 
-        const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
-        allOrders.unshift(orderData);
-        localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
+          const allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+          allOrders.unshift(orderData);
+          localStorage.setItem("mobelmor_all_orders", JSON.stringify(allOrders));
+        }
       } catch (err) {
         console.error("Order save error:", err);
       }
@@ -3834,49 +3838,45 @@ document.addEventListener("DOMContentLoaded", () => {
   updateBadges();
   renderCart();
 
-  // ── Seed Demo Orders if not exists ──
-  const initOrdersStorage = () => {
-    const stored = localStorage.getItem("mobelmor_orders");
-    if (!stored) {
-      const demoOrders = [
-        {
-          id: "MBL-782190",
-          date: "15.08.2026 14:30",
-          status: "shipping", // preparing, quality, shipping, delivered
-          statusText: "Sevkiyatta / Özel Mobilya Lojistiğinde",
-          customer: {
-            name: "Ahmet Yılmaz",
-            email: "ahmet@example.com",
-            phone: "0532 111 22 33",
-            address: "Nilüfer, Bursa",
-            note: "Krem kadife kumaş döşemesi uygulandı."
-          },
-          items: [
-            { id: 1, title: "Gold Koltuk Takımı", price: 45000, qty: 1 }
-          ],
-          total: 45000
-        }
-      ];
-      localStorage.setItem("mobelmor_orders", JSON.stringify(demoOrders));
-    }
+  // ── Clean Legacy Mock / Demo Orders from Storage ──
+  const cleanupMockOrders = () => {
+    try {
+      let orders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+      const cleaned = orders.filter(o => o.id !== "MBL-782190" && o.orderNumber !== "MBL-782190" && o.customer?.email !== "ahmet@example.com");
+      if (cleaned.length !== orders.length) {
+        localStorage.setItem("mobelmor_orders", JSON.stringify(cleaned));
+      }
+
+      let allOrders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+      const cleanedAll = allOrders.filter(o => o.id !== "MBL-782190" && o.orderNumber !== "MBL-782190" && (o.customerEmail !== "ahmet@example.com" && o.customer?.email !== "ahmet@example.com"));
+      if (cleanedAll.length !== allOrders.length) {
+        localStorage.setItem("mobelmor_all_orders", JSON.stringify(cleanedAll));
+      }
+    } catch (e) {}
   };
-  initOrdersStorage();
+  cleanupMockOrders();
 
   // ── Orders & Tracking Page Logic (siparislerim.html) ──
   const renderOrdersPage = () => {
     const listContainer = document.getElementById("ordersListContainer");
     if (!listContainer) return;
 
-    const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+    cleanupMockOrders();
+
+    const allOrders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]")
+      .filter(o => o.id !== "MBL-782190" && o.orderNumber !== "MBL-782190");
     const currentUser = getCurrentUser();
 
-    let displayOrders = allOrders;
+    let displayOrders = [];
     if (currentUser) {
       displayOrders = allOrders.filter(o =>
         (o.customer?.email && o.customer.email.toLowerCase() === currentUser.email.toLowerCase()) ||
+        (o.customerEmail && o.customerEmail.toLowerCase() === currentUser.email.toLowerCase()) ||
         (o.customer?.phone && o.customer.phone === currentUser.phone)
       );
-      if (displayOrders.length === 0) displayOrders = allOrders; // fallback to all for easy test
+    } else {
+      // For guest visitors, show orders placed in their current browser session
+      displayOrders = allOrders;
     }
 
     renderOrdersList(displayOrders);
