@@ -806,8 +806,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260828_2300"></script>
-    <script src="js/store-service.js?v=20260828_2300"></script>
+    <script src="js/app.js?v=20260828_2315"></script>
+    <script src="js/store-service.js?v=20260828_2315"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -1512,10 +1512,13 @@
             currentInvoiceFileData = "";
         };
 
+        let currentInvoiceFileName = "";
+
         window.handleInvoiceFileUpload = (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
+            currentInvoiceFileName = file.name;
             const reader = new FileReader();
             reader.onload = (e) => {
                 currentInvoiceFileData = e.target.result;
@@ -1539,6 +1542,7 @@
                     invoiceNumber: invNumber,
                     invoiceUrl: invUrl,
                     invoiceData: currentInvoiceFileData,
+                    invoiceFileName: currentInvoiceFileName,
                     invoiceDate: new Date().toLocaleDateString('tr-TR')
                 });
                 renderOrdersTable();

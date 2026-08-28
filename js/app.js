@@ -4568,10 +4568,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (order.invoiceData) {
+      let ext = ".pdf";
+      if (order.invoiceData.startsWith("data:image/jpeg") || order.invoiceData.startsWith("data:image/jpg")) ext = ".jpg";
+      else if (order.invoiceData.startsWith("data:image/png")) ext = ".png";
+      else if (order.invoiceData.startsWith("data:image/webp")) ext = ".webp";
+      
+      const cleanOrderNum = (orderNum || "").replace(/[^a-zA-Z0-9_-]/g, "");
+      const fileName = order.invoiceFileName || `Mobelmor_E_Arsiv_Fatura_${cleanOrderNum}${ext}`;
+
       // Create a temporary anchor to view/download the uploaded PDF/File
       const a = document.createElement("a");
       a.href = order.invoiceData;
-      a.download = `Mobelmor_EArsiv_Fatura_${orderNum}.pdf`;
+      a.download = fileName;
       a.target = "_blank";
       document.body.appendChild(a);
       a.click();
