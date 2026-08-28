@@ -3125,7 +3125,6 @@ const initLiveSearchEngine = () => {
         return text.replace(regex, "<strong>$1</strong>");
     };
 
-    // 4 Featured products for "Popüler ürünlerden seçtik"
     const getPopularProducts = () => {
         const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
         const featuredIds = [1, 17, 36, 54];
@@ -3168,62 +3167,107 @@ const initLiveSearchEngine = () => {
             const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
             const popularProducts = getPopularProducts();
 
-            // 1. Generate Matching Search Keywords
-            let matchedKeywords = [];
+            let leftColHtml = "";
+
             if (q) {
-                matchedKeywords = keywordTaxonomy.filter(k => k.includes(q));
-                
-                // Also add matching product titles as keywords
+                // User typed a query: Show matching keyword suggestions
+                let matchedKeywords = keywordTaxonomy.filter(k => k.includes(q));
                 sourceList.forEach(p => {
                     const t = (p.title || "").toLowerCase();
                     if (t.includes(q) && !matchedKeywords.includes(t)) {
                         matchedKeywords.push(t);
                     }
                 });
-            } else {
-                // Default popular keywords when empty
-                matchedKeywords = ["koltuk takımı", "yemek masası", "tv ünitesi", "yatak odası takımı", "köşe koltuk", "berjer", "gardırop", "orta sehpa"];
-            }
+                matchedKeywords = matchedKeywords.slice(0, 8);
 
-            matchedKeywords = matchedKeywords.slice(0, 8);
+                if (matchedKeywords.length > 0) {
+                    leftColHtml = matchedKeywords.map(kw => `
+                        <div class="trendyol-suggest-item" data-query="${kw}">
+                            <div class="trendyol-suggest-left">
+                                <i class="fa-solid fa-magnifying-glass trendyol-suggest-icon"></i>
+                                <span class="trendyol-suggest-text">${highlightText(kw, q)}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    leftColHtml = `
+                        <div class="trendyol-suggest-item" data-query="${q}">
+                            <div class="trendyol-suggest-left">
+                                <i class="fa-solid fa-magnifying-glass trendyol-suggest-icon"></i>
+                                <span class="trendyol-suggest-text">"<strong>${q}</strong>" ile ara</span>
+                            </div>
+                        </div>
+                    `;
+                }
 
-            // Left Column: Suggestion rows HTML
-            let suggestRowsHtml = matchedKeywords.map(kw => {
-                return `
-                    <div class="trendyol-suggest-item" data-query="${kw}">
+                // Add store shortcut at bottom
+                leftColHtml += `
+                    <div class="trendyol-suggest-item" data-url="kategori.html?c=tum-koleksiyon">
                         <div class="trendyol-suggest-left">
-                            <i class="fa-solid fa-magnifying-glass trendyol-suggest-icon"></i>
-                            <span class="trendyol-suggest-text">${q ? highlightText(kw, q) : kw}</span>
+                            <div class="trendyol-store-logo">MM</div>
+                            <span class="trendyol-suggest-text" style="font-weight:600;">MOBELMOR COLLECTION</span>
+                        </div>
+                        <span class="trendyol-store-tag">Mağaza</span>
+                    </div>
+                `;
+            } else {
+                // Empty query: Show Popular Searches Tags + Category Shortcuts
+                leftColHtml = `
+                    <div class="trendyol-popular-tags-wrap">
+                        <div class="trendyol-pop-title" style="margin: 0 0 10px 0; font-size: 0.88rem;">
+                            <span><i class="fa-solid fa-fire" style="color:#ea580c;"></i> Popüler Aramalar</span>
+                        </div>
+                        <div class="trendyol-pop-tags-list">
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="koltuk takımı"><i class="fa-solid fa-magnifying-glass"></i> Koltuk Takımı</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="yemek masası"><i class="fa-solid fa-magnifying-glass"></i> Yemek Masası</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="yatak odası takımı"><i class="fa-solid fa-magnifying-glass"></i> Yatak Odası</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="tv ünitesi"><i class="fa-solid fa-magnifying-glass"></i> TV Ünitesi</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="köşe koltuk"><i class="fa-solid fa-magnifying-glass"></i> Köşe Koltuk</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="berjer"><i class="fa-solid fa-magnifying-glass"></i> Berjer</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="gardırop"><i class="fa-solid fa-magnifying-glass"></i> Gardırop</button>
+                            <button type="button" class="trendyol-pop-tag-btn" data-query="orta sehpa"><i class="fa-solid fa-magnifying-glass"></i> Orta Sehpa</button>
+                        </div>
+                    </div>
+                    <div style="padding-top: 4px;">
+                        <div class="trendyol-suggest-item" data-url="kategori.html?c=oturma-odasi">
+                            <div class="trendyol-suggest-left">
+                                <i class="fa-solid fa-couch trendyol-suggest-icon" style="color:#6b21a8;"></i>
+                                <span class="trendyol-suggest-text" style="font-weight:600;">Oturma Grubu &amp; Koltuklar</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="font-size:0.75rem; color:#9ca3af;"></i>
+                        </div>
+                        <div class="trendyol-suggest-item" data-url="kategori.html?c=yemek-odasi">
+                            <div class="trendyol-suggest-left">
+                                <i class="fa-solid fa-utensils trendyol-suggest-icon" style="color:#6b21a8;"></i>
+                                <span class="trendyol-suggest-text" style="font-weight:600;">Yemek Odası &amp; Masalar</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="font-size:0.75rem; color:#9ca3af;"></i>
+                        </div>
+                        <div class="trendyol-suggest-item" data-url="kategori.html?c=yatak-odasi">
+                            <div class="trendyol-suggest-left">
+                                <i class="fa-solid fa-bed trendyol-suggest-icon" style="color:#6b21a8;"></i>
+                                <span class="trendyol-suggest-text" style="font-weight:600;">Yatak Odası Takımları</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="font-size:0.75rem; color:#9ca3af;"></i>
                         </div>
                     </div>
                 `;
-            }).join('');
+            }
 
-            // Store row at bottom of suggestions
-            suggestRowsHtml += `
-                <div class="trendyol-suggest-item" data-url="kategori.html?c=tum-koleksiyon">
-                    <div class="trendyol-suggest-left">
-                        <div class="trendyol-store-logo">MM</div>
-                        <span class="trendyol-suggest-text" style="font-weight:600;">MOBELMOR COLLECTION</span>
-                    </div>
-                    <span class="trendyol-store-tag">Mağaza</span>
-                </div>
-            `;
-
-            // Right Column: "Popüler ürünlerden seçtik" HTML
+            // Right Column: Popular Products
             const badges = ["Sepette %10 İndirim", "Ücretsiz Teslimat", "İnegöl Masif", "Günün Fırsatı"];
             const ratings = ["4.9 (142)", "4.8 (98)", "5.0 (64)", "4.9 (115)"];
 
             const popularCardsHtml = popularProducts.map((p, idx) => {
                 const pSlug = window.slugify ? window.slugify(p.title) : "";
                 const prodUrl = `urun-detay.html?id=${p.id}${pSlug ? `&slug=${pSlug}` : ''}`;
-                const webpImage = p.image ? p.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/minegolden_p1_1.webp';
+                const prodImage = p.image || 'assets/zumrut_main.jpg';
                 const badgeText = badges[idx % badges.length];
                 const ratingText = ratings[idx % ratings.length];
 
                 return `
                     <div class="trendyol-pop-card" data-url="${prodUrl}">
-                        <img src="${webpImage}" alt="${p.title}" class="trendyol-pop-thumb" onerror="this.onerror=null; this.src='${p.image}';">
+                        <img src="${prodImage}" alt="${p.title}" class="trendyol-pop-thumb" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                         <div class="trendyol-pop-info">
                             <span class="trendyol-pop-badge">${badgeText}</span>
                             <h5 class="trendyol-pop-name">${p.title}</h5>
@@ -3245,11 +3289,11 @@ const initLiveSearchEngine = () => {
             dropdown.innerHTML = `
                 <div class="trendyol-search-grid">
                     <div class="trendyol-suggest-col">
-                        ${suggestRowsHtml}
+                        ${leftColHtml}
                     </div>
                     <div class="trendyol-popular-col">
                         <div class="trendyol-pop-title">
-                            <span>Popüler ürünlerden seçtik</span>
+                            <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> Popüler Ürünler</span>
                         </div>
                         <div class="trendyol-pop-list">
                             ${popularCardsHtml}
@@ -3259,6 +3303,18 @@ const initLiveSearchEngine = () => {
             `;
 
             dropdown.classList.add("active");
+
+            // Click on popular tag button
+            dropdown.querySelectorAll(".trendyol-pop-tag-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const term = btn.getAttribute("data-query");
+                    if (term) {
+                        input.value = term;
+                        executeSearchRedirect(term);
+                    }
+                });
+            });
 
             // Click on suggestion row
             dropdown.querySelectorAll(".trendyol-suggest-item").forEach(item => {
@@ -3308,9 +3364,14 @@ const initLiveSearchEngine = () => {
             if (clearBtn) clearBtn.style.display = val ? "inline-flex" : "none";
 
             clearTimeout(debounceTimer);
+            if (!val.trim()) {
+                closeDropdown();
+                return;
+            }
+
             debounceTimer = setTimeout(() => {
                 renderSearchResults(val);
-            }, 100);
+            }, 80);
         });
 
         input.addEventListener("keydown", (e) => {
