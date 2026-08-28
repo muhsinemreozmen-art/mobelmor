@@ -2016,6 +2016,12 @@ const renderCart = () => {
             <img src="${item.image}" alt="${item.title}" class="cart-item-img">
             <div class="cart-item-info">
                 <h5 class="cart-item-title">${item.title}</h5>
+                ${item.selectedFabric ? `
+                    <div class="cart-item-fabric-tag">
+                        <span class="cart-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
+                        <span>${item.selectedFabric}: ${item.selectedColor}${item.fabricPriceDiff > 0 ? ` (+${formatPrice(item.fabricPriceDiff)})` : ''}</span>
+                    </div>
+                ` : ''}
                 <span class="cart-item-price">${formatPrice(item.price)}</span>
             </div>
             <div class="cart-qty-controls">

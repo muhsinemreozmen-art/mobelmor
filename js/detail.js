@@ -2013,13 +2013,14 @@ let currentModuleState = {
     modules: []
 };
 
-// ── Interactive Fabric & Color Studio Data (Top 5 Real Fabrics) ──
+// ── Interactive Fabric & Color Studio Data (Top 5 Real Fabrics + Price Differential) ──
 const FABRIC_COLLECTIONS = [
     {
         id: 'babyface',
         name: 'Baby Face Kadife',
-        badge: 'Leke Tutmaz',
+        badge: 'Baz Fiyat (0 TL)',
         desc: 'Su itici, silinebilir, ipeksi yumuşak kadife doku.',
+        priceDiff: 0,
         colors: [
             { code: 'BF-01', name: 'Krem Bej',        image: 'assets/fabrics/bf_krem.webp', hex: '#f5f0eb', textColor: '#1e293b' },
             { code: 'BF-02', name: 'Antrasit Gri',     image: 'assets/fabrics/bf_antrasit.webp', hex: '#334155', textColor: '#ffffff' },
@@ -2032,24 +2033,11 @@ const FABRIC_COLLECTIONS = [
         ]
     },
     {
-        id: 'bukle',
-        name: 'İtalyan Bukle',
-        badge: 'Trend 2026',
-        desc: 'Özel 3D bukle dokuma, hacimli ve sıcak lüks doku.',
-        colors: [
-            { code: 'BK-01', name: 'Ekru Bukle',       image: 'assets/fabrics/bk_ekru.webp', hex: '#f8f5ee', textColor: '#1e293b' },
-            { code: 'BK-02', name: 'Fildişi Bukle',    image: 'assets/fabrics/bk_fildisi.webp', hex: '#eee8dc', textColor: '#1e293b' },
-            { code: 'BK-03', name: 'Sıcak Bej',        image: 'assets/fabrics/bk_bej.webp', hex: '#daccb9', textColor: '#1e293b' },
-            { code: 'BK-04', name: 'Taş Grisi',        image: 'assets/fabrics/bk_tasgri.webp', hex: '#949ba2', textColor: '#ffffff' },
-            { code: 'BK-05', name: 'Vizon Bukle',      image: 'assets/fabrics/bk_vizon.webp', hex: '#a08c7d', textColor: '#ffffff' },
-            { code: 'BK-06', name: 'Fıstık Yeşili',    image: 'assets/fabrics/bk_fistik.webp', hex: '#78916e', textColor: '#ffffff' },
-        ]
-    },
-    {
         id: 'nubuk',
         name: 'Silinebilir Nubuk',
-        badge: 'Pati Dostu',
+        badge: '+3.120 TL',
         desc: 'Tırnak takılmayan, leke tutmaz pürüzsüz süet nubuk dokusu.',
+        priceDiff: 3120,
         colors: [
             { code: 'NB-01', name: 'Taba Kahve',       image: 'assets/fabrics/nb_taba.webp', hex: '#b46937', textColor: '#ffffff' },
             { code: 'NB-02', name: 'Duman Gri',        image: 'assets/fabrics/nb_duman.webp', hex: '#64748b', textColor: '#ffffff' },
@@ -2060,10 +2048,26 @@ const FABRIC_COLLECTIONS = [
         ]
     },
     {
+        id: 'sonil',
+        name: 'Lüks Şönil / Jakar',
+        badge: '+5.460 TL',
+        desc: 'Ağır gramajlı, tok ve dökümlü şık jakarlı mobilya şönili.',
+        priceDiff: 5460,
+        colors: [
+            { code: 'SN-01', name: 'Lüks Antrasit',    image: 'assets/fabrics/sn_antrasit.webp', hex: '#2d3748', textColor: '#ffffff' },
+            { code: 'SN-02', name: 'Vizon Şönil',      image: 'assets/fabrics/sn_vizon.webp', hex: '#9b8778', textColor: '#ffffff' },
+            { code: 'SN-03', name: 'Zümrüt Şönil',     image: 'assets/fabrics/sn_zumrut.webp', hex: '#145537', textColor: '#ffffff' },
+            { code: 'SN-04', name: 'Krem Şönil',       image: 'assets/fabrics/sn_krem.webp', hex: '#f2ece2', textColor: '#1e293b' },
+            { code: 'SN-05', name: 'Bakır Şönil',      image: 'assets/fabrics/sn_bakir.webp', hex: '#af502d', textColor: '#ffffff' },
+            { code: 'SN-06', name: 'Lacivert Şönil',   image: 'assets/fabrics/sn_lacivert.webp', hex: '#192d5a', textColor: '#ffffff' },
+        ]
+    },
+    {
         id: 'keten',
         name: 'Doğal Dokuma Keten',
-        badge: 'Nefes Alabilen',
+        badge: '+7.800 TL',
         desc: 'Doğal lifli, ferah ve organik nefes alabilen keten dokuma.',
+        priceDiff: 7800,
         colors: [
             { code: 'KT-01', name: 'Doğal Keten',      image: 'assets/fabrics/kt_dogal.webp', hex: '#e1d7c6', textColor: '#1e293b' },
             { code: 'KT-02', name: 'Açık Bej',         image: 'assets/fabrics/kt_acikbej.webp', hex: '#f0e9de', textColor: '#1e293b' },
@@ -2074,17 +2078,18 @@ const FABRIC_COLLECTIONS = [
         ]
     },
     {
-        id: 'sonil',
-        name: 'Lüks Şönil / Jakar',
-        badge: 'Ekstra Dayanıklı',
-        desc: 'Ağır gramajlı, tok ve dökümlü şık jakarlı mobilya şönili.',
+        id: 'bukle',
+        name: 'İtalyan Bukle',
+        badge: '+14.820 TL',
+        desc: 'Özel 3D bukle dokuma, hacimli ve sıcak lüks doku.',
+        priceDiff: 14820,
         colors: [
-            { code: 'SN-01', name: 'Lüks Antrasit',    image: 'assets/fabrics/sn_antrasit.webp', hex: '#2d3748', textColor: '#ffffff' },
-            { code: 'SN-02', name: 'Vizon Şönil',      image: 'assets/fabrics/sn_vizon.webp', hex: '#9b8778', textColor: '#ffffff' },
-            { code: 'SN-03', name: 'Zümrüt Şönil',     image: 'assets/fabrics/sn_zumrut.webp', hex: '#145537', textColor: '#ffffff' },
-            { code: 'SN-04', name: 'Krem Şönil',       image: 'assets/fabrics/sn_krem.webp', hex: '#f2ece2', textColor: '#1e293b' },
-            { code: 'SN-05', name: 'Bakır Şönil',      image: 'assets/fabrics/sn_bakir.webp', hex: '#af502d', textColor: '#ffffff' },
-            { code: 'SN-06', name: 'Lacivert Şönil',   image: 'assets/fabrics/sn_lacivert.webp', hex: '#192d5a', textColor: '#ffffff' },
+            { code: 'BK-01', name: 'Ekru Bukle',       image: 'assets/fabrics/bk_ekru.webp', hex: '#f8f5ee', textColor: '#1e293b' },
+            { code: 'BK-02', name: 'Fildişi Bukle',    image: 'assets/fabrics/bk_fildisi.webp', hex: '#eee8dc', textColor: '#1e293b' },
+            { code: 'BK-03', name: 'Sıcak Bej',        image: 'assets/fabrics/bk_bej.webp', hex: '#daccb9', textColor: '#1e293b' },
+            { code: 'BK-04', name: 'Taş Grisi',        image: 'assets/fabrics/bk_tasgri.webp', hex: '#949ba2', textColor: '#ffffff' },
+            { code: 'BK-05', name: 'Vizon Bukle',      image: 'assets/fabrics/bk_vizon.webp', hex: '#a08c7d', textColor: '#ffffff' },
+            { code: 'BK-06', name: 'Fıstık Yeşili',    image: 'assets/fabrics/bk_fistik.webp', hex: '#78916e', textColor: '#ffffff' },
         ]
     }
 ];
@@ -2095,10 +2100,22 @@ let currentFabricState = {
     colorCode: 'BF-01',
     colorName: 'Krem Bej',
     colorHex: '#f5f0eb',
-    colorImage: 'assets/fabrics/bf_krem.webp'
+    colorImage: 'assets/fabrics/bf_krem.webp',
+    priceDiff: 0
 };
 
 let currentDetailProduct = null;
+
+window.recalculateDetailProductTotal = () => {
+    const baseTotal = (currentModuleState && currentModuleState.modules && currentModuleState.modules.length > 0)
+        ? currentModuleState.modules.reduce((s, m) => s + (m.price * m.qty), 0)
+        : (currentDetailProduct ? currentDetailProduct.price : 0);
+    
+    const fabricDiff = (currentFabricState && currentFabricState.priceDiff) ? currentFabricState.priceDiff : 0;
+    const grandTotal = baseTotal + fabricDiff;
+    
+    syncCalculatedPrices(grandTotal);
+};
 
 const renderFabricSwatchesHtml = (colId) => {
     const col = FABRIC_COLLECTIONS.find(c => c.id === colId);
@@ -2121,6 +2138,7 @@ window.selectFabricCollection = (colId) => {
     if (!col) return;
     currentFabricState.fabricId = col.id;
     currentFabricState.fabricName = col.name;
+    currentFabricState.priceDiff = col.priceDiff || 0;
 
     const firstColor = col.colors[0];
     currentFabricState.colorCode = firstColor.code;
@@ -2136,6 +2154,7 @@ window.selectFabricCollection = (colId) => {
     if (grid) grid.innerHTML = renderFabricSwatchesHtml(col.id);
 
     updateFabricLensAndBadge(col, firstColor);
+    recalculateDetailProductTotal();
 };
 
 window.selectFabricColor = (code, name, hex, image) => {
@@ -2158,17 +2177,36 @@ const updateFabricLensAndBadge = (col, color) => {
     const selectedTitle = document.getElementById("vfabricSelectedTitle");
     const selectedDesc = document.getElementById("vfabricSelectedDesc");
     const sampleLink = document.getElementById("vfabricSampleLink");
+    const freeBadge = document.getElementById("vfabricHeaderBadge");
 
-    if (activeLabel) activeLabel.textContent = `${color.name} (${color.code})`;
+    const priceTag = col.priceDiff > 0 ? ` (+${formatPrice(col.priceDiff)})` : ' (0 TL Fark)';
+
+    if (activeLabel) activeLabel.textContent = `${color.name} (${color.code})${priceTag}`;
     if (lensCircle) {
         lensCircle.style.backgroundImage = `url('${color.image || currentFabricState.colorImage}')`;
         lensCircle.style.backgroundSize = 'cover';
         lensCircle.style.backgroundPosition = 'center';
     }
     if (selectedTitle && col) selectedTitle.textContent = `${col.name} • ${color.name}`;
-    if (selectedDesc && col) selectedDesc.textContent = col.desc;
+    if (selectedDesc && col) {
+        const diffDesc = col.priceDiff > 0 ? ` [Kumaş Farkı: +${formatPrice(col.priceDiff)}]` : ' [Standart Baz Fiyat]';
+        selectedDesc.textContent = `${col.desc}${diffDesc}`;
+    }
+    if (freeBadge) {
+        if (col.priceDiff > 0) {
+            freeBadge.textContent = `+${formatPrice(col.priceDiff)}`;
+            freeBadge.style.background = '#faf5ff';
+            freeBadge.style.color = '#7e22ce';
+            freeBadge.style.borderColor = '#d8b4fe';
+        } else {
+            freeBadge.textContent = 'Baz Fiyat (0 TL)';
+            freeBadge.style.background = '#f0fdf4';
+            freeBadge.style.color = '#15803d';
+            freeBadge.style.borderColor = '#bbf7d0';
+        }
+    }
     if (sampleLink && currentDetailProduct) {
-        sampleLink.href = `https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(currentDetailProduct.title)}%20ürünü%20için%20${encodeURIComponent((col ? col.name : '') + ' - ' + color.name + ' [' + color.code + ']')}%20kumaş%20kartelası%20talep%20etmek%20istiyorum.`;
+        sampleLink.href = `https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(currentDetailProduct.title)}%20ürünü%20için%20${encodeURIComponent((col ? col.name : '') + ' - ' + color.name + ' [' + color.code + ']' + (col.priceDiff > 0 ? ' (+' + formatPrice(col.priceDiff) + ')' : ''))}%20kumaş%20kartelası%20talep%20etmek%20istiyorum.`;
     }
 };
 
@@ -2407,7 +2445,7 @@ const renderProductDetail = () => {
                     <div class="vfabric-studio-header">
                         <div class="vfabric-title-group">
                             <span class="vfabric-main-title"><i class="fa-solid fa-swatchbook"></i> Kumaş & Renk Stüdyosu</span>
-                            <span class="vfabric-free-badge">Ücretsiz Değişim</span>
+                            <span class="vfabric-free-badge" id="vfabricHeaderBadge">Baz Fiyat (0 TL)</span>
                         </div>
                         <span class="vfabric-sub-text">Dilediğiniz kumaş dokusu ve rengini seçerek anında önizleyin.</span>
                     </div>
@@ -2753,8 +2791,7 @@ window.selectOption = (cardEl, optIdx) => {
         if (subEl) subEl.textContent = formatPrice(m.price * m.qty);
     });
 
-    const grandTotal = currentModuleState.modules.reduce((s, m) => s + m.price * m.qty, 0);
-    syncCalculatedPrices(grandTotal);
+    recalculateDetailProductTotal();
 };
 
 const renderModulePriceSection = (product) => {
@@ -2779,7 +2816,9 @@ const renderModulePriceSection = (product) => {
         </tr>
     `).join('');
 
-    const initialTotal = modules.reduce((s, m) => s + m.price * m.qty, 0);
+    const initialBaseTotal = modules.reduce((s, m) => s + m.price * m.qty, 0);
+    const fabricDiff = (currentFabricState && currentFabricState.priceDiff) ? currentFabricState.priceDiff : 0;
+    const initialTotal = initialBaseTotal + fabricDiff;
 
     container.innerHTML = `
         <div class="module-header-title">
@@ -2810,8 +2849,7 @@ window.updateModuleQty = (id, delta) => {
     if (qtyEl) qtyEl.textContent = mod.qty;
     if (subEl) subEl.textContent = formatPrice(mod.price * mod.qty);
 
-    const grandTotal = (currentModuleState.modules || []).reduce((s, m) => s + m.price * m.qty, 0);
-    syncCalculatedPrices(grandTotal);
+    recalculateDetailProductTotal();
 };
 
 const renderSpecsAndGeneralInfo = (product) => {
@@ -2992,21 +3030,28 @@ const addToCart = (productId, qty = 1) => {
     const item = PRODUCTS.find(p => p.id === productId);
     if (!item) return;
 
+    const basePrice = (currentModuleState && currentModuleState.modules && currentModuleState.modules.length > 0)
+        ? currentModuleState.modules.reduce((s, m) => s + (m.price * m.qty), 0)
+        : item.price;
+    const fabricDiff = (currentFabricState && currentFabricState.priceDiff) ? currentFabricState.priceDiff : 0;
+    const finalUnitPrice = basePrice + fabricDiff;
+
     const fabricInfo = currentFabricState ? {
         selectedFabric: currentFabricState.fabricName,
         selectedColor: `${currentFabricState.colorName} (${currentFabricState.colorCode})`,
-        colorHex: currentFabricState.colorHex
+        colorHex: currentFabricState.colorHex,
+        fabricPriceDiff: fabricDiff
     } : {};
 
-    const existing = cart.find(c => c.id === productId && c.selectedColor === fabricInfo.selectedColor);
+    const existing = cart.find(c => c.id === productId && c.selectedColor === fabricInfo.selectedColor && c.price === finalUnitPrice);
     if (existing) {
         existing.qty += qty;
     } else {
-        cart.push({ ...item, qty, ...fabricInfo });
+        cart.push({ ...item, price: finalUnitPrice, basePrice: item.price, qty, ...fabricInfo });
     }
     saveCart();
     updateBadges();
-    const fabricToastText = fabricInfo.selectedFabric ? ` [${fabricInfo.selectedFabric} - ${fabricInfo.selectedColor}]` : '';
+    const fabricToastText = fabricInfo.selectedFabric ? ` [${fabricInfo.selectedFabric} - ${fabricInfo.selectedColor}${fabricDiff > 0 ? ` (+${formatPrice(fabricDiff)})` : ''}]` : '';
     showToast(`<strong>${item.title}</strong>${fabricToastText}${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
 };
 
@@ -3041,7 +3086,7 @@ const renderCart = () => {
                 ${item.selectedFabric ? `
                     <div class="cart-item-fabric-tag">
                         <span class="cart-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
-                        <span>${item.selectedFabric}: ${item.selectedColor}</span>
+                        <span>${item.selectedFabric}: ${item.selectedColor}${item.fabricPriceDiff > 0 ? ` (+${formatPrice(item.fabricPriceDiff)})` : ''}</span>
                     </div>
                 ` : ''}
                 <span class="cart-item-price">${formatPrice(item.price)}</span>
