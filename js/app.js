@@ -2687,14 +2687,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   handleUrlParams();
 
-  // --- ADVANCED LIVE SEARCH AUTOCOMPLETE & NAVIGATION ENGINE (TRENDYOL STYLE) ---
+  // --- ADVANCED TRENDYOL-STYLE 2-COLUMN LIVE SEARCH & POPULAR PRODUCTS ENGINE ---
   const initLiveSearchEngine = () => {
     const searchConfigs = [
-      { input: document.getElementById("searchInput"), wrap: document.querySelector(".desktop-search-wrap") },
-      { input: document.getElementById("mobileSearchInput"), wrap: document.querySelector(".mobile-search-row") }
+      { input: document.getElementById("searchInput"), wrap: document.querySelector(".desktop-search-wrap"), isDesktop: true },
+      { input: document.getElementById("mobileSearchInput"), wrap: document.querySelector(".mobile-search-row"), isDesktop: false }
     ];
 
-    const popularTags = ["Koltuk Takımı", "Köşe Koltuk", "Yemek Masası", "TV Ünitesi", "Gardırop", "Karyola", "Berjer", "Orta Sehpa"];
+    const keywordTaxonomy = [
+      "koltuk", "koltuk takımı", "köşe koltuk", "berjer koltuk", "tekli koltuk", "yataklı koltuk", "chester koltuk takımı", "ahşap koltuk", "l koltuk", "bohem koltuk",
+      "yemek masası", "ahşap yemek masası", "yemek odası takımı", "açılır yemek masası", "sandalye", "ahşap sandalye", "yemek masası seti",
+      "yatak", "yatak odası takımı", "karyola", "karyola ve yatak", "çift kişilik yatak", "bazalı yatak", "gardırop", "sürgülü gardırop", "şifonyer", "komodin",
+      "tv ünitesi", "duvar ünitesi", "tv alt konsol", "kitaplıklı tv ünitesi", "orta sehpa", "yan sehpa", "zigon sehpa", "dresuar", "çalışma masası", "kitaplık"
+    ];
 
     const escapeRegExp = (str) => {
       return (str || "").replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -2709,32 +2714,18 @@ document.addEventListener("DOMContentLoaded", () => {
       return text.replace(regex, "<strong>$1</strong>");
     };
 
-    // Category and subcategory metadata table
-    const categoryEntries = [
-      { name: "Oturma Odası", slug: "oturma-odasi", cat: "living", sub: "", icon: "fa-solid fa-couch" },
-      { name: "Koltuk Takımı", slug: "oturma-odasi", cat: "living", sub: "sofas", icon: "fa-solid fa-couch" },
-      { name: "Köşe Koltuk", slug: "oturma-odasi", cat: "living", sub: "corner-sofas", icon: "fa-solid fa-couch" },
-      { name: "Berjer & Tekli Koltuk", slug: "oturma-odasi", cat: "living", sub: "armchairs", icon: "fa-solid fa-chair" },
-      { name: "Orta & Yan Sehpa", slug: "oturma-odasi", cat: "living", sub: "tables", icon: "fa-solid fa-table" },
-      { name: "TV Ünitesi & Duvar Ünitesi", slug: "oturma-odasi", cat: "living", sub: "tv-units", icon: "fa-solid fa-tv" },
-      { name: "Konsol & Dresuar", slug: "oturma-odasi", cat: "living", sub: "consoles", icon: "fa-solid fa-layer-group" },
-      { name: "Yemek Odası Takımı", slug: "yemek-odasi", cat: "dining", sub: "dining-sets", icon: "fa-solid fa-utensils" },
-      { name: "Yemek Masası", slug: "yemek-odasi", cat: "dining", sub: "dining-tables", icon: "fa-solid fa-table" },
-      { name: "Sandalye", slug: "yemek-odasi", cat: "dining", sub: "chairs", icon: "fa-solid fa-chair" },
-      { name: "Yatak Odası Takımı", slug: "yatak-odasi", cat: "bedroom", sub: "bedroom-sets", icon: "fa-solid fa-bed" },
-      { name: "Karyola & Yatak", slug: "yatak-odasi", cat: "bedroom", sub: "beds", icon: "fa-solid fa-bed" },
-      { name: "Gardırop", slug: "yatak-odasi", cat: "bedroom", sub: "wardrobes", icon: "fa-solid fa-door-closed" },
-      { name: "Şifonyer & Makyaj Masası", slug: "yatak-odasi", cat: "bedroom", sub: "dressers", icon: "fa-solid fa-table-columns" },
-      { name: "Çalışma Odası & Masası", slug: "calisma-odasi", cat: "office", sub: "desks", icon: "fa-solid fa-briefcase" },
-      { name: "Kitaplık", slug: "calisma-odasi", cat: "office", sub: "bookcases", icon: "fa-solid fa-book" }
-    ];
+    // 4 Featured products for "Popüler ürünlerden seçtik"
+    const getPopularProducts = () => {
+      const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+      const featuredIds = [1, 17, 36, 54];
+      let selected = sourceList.filter(p => featuredIds.includes(p.id));
+      if (selected.length < 4) {
+        selected = sourceList.slice(0, 4);
+      }
+      return selected;
+    };
 
-    const storeEntries = [
-      { name: "Mobelmor Official", badge: "Mağaza", link: "kategori.html?c=tum-koleksiyon", initials: "MM" },
-      { name: "İnegöl Masif Mobilya", badge: "Koleksiyon", link: "kategori.html?c=tum-koleksiyon&filter=inegol", initials: "İM" }
-    ];
-
-    searchConfigs.forEach(({ input, wrap }) => {
+    searchConfigs.forEach(({ input, wrap, isDesktop }) => {
       if (!input || !wrap) return;
 
       let dropdown = wrap.querySelector(".live-search-dropdown");
@@ -2747,6 +2738,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const closeDropdown = () => {
         dropdown.classList.remove("active");
         dropdown.innerHTML = "";
+        const searchBox = wrap.querySelector(".search-box") || input.closest(".search-box");
+        if (searchBox) searchBox.classList.remove("has-dropdown-open");
       };
 
       const executeSearchRedirect = (val) => {
@@ -2758,112 +2751,143 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const renderSearchResults = (query) => {
         const q = (query || "").trim().toLowerCase();
-        if (!q) {
-          closeDropdown();
-          return;
-        }
+        const searchBox = wrap.querySelector(".search-box") || input.closest(".search-box");
+        if (searchBox) searchBox.classList.add("has-dropdown-open");
 
         const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+        const popularProducts = getPopularProducts();
 
-        // 1. Check matching category/subcategory
-        const matchedCategories = categoryEntries.filter(c => {
-          return c.name.toLowerCase().includes(q) || (c.sub && c.sub.includes(q)) || (c.cat && c.cat.includes(q));
-        }).slice(0, 2);
+        // 1. Generate Matching Search Keywords
+        let matchedKeywords = [];
+        if (q) {
+          matchedKeywords = keywordTaxonomy.filter(k => k.includes(q));
+          
+          // Also add matching product titles as keywords
+          sourceList.forEach(p => {
+            const t = (p.title || "").toLowerCase();
+            if (t.includes(q) && !matchedKeywords.includes(t)) {
+              matchedKeywords.push(t);
+            }
+          });
+        } else {
+          // Default popular keywords when empty
+          matchedKeywords = ["koltuk takımı", "yemek masası", "tv ünitesi", "yatak odası takımı", "köşe koltuk", "berjer", "gardırop", "orta sehpa"];
+        }
 
-        // 2. Check matching products
-        const matchedProducts = sourceList.filter(p => {
-          const title = (p.title || "").toLowerCase();
-          const mat = (p.material || "").toLowerCase();
-          const desc = (p.desc || "").toLowerCase();
-          const catName = (CATEGORY_NAMES[p.category] || "").toLowerCase();
-          const subName = (SUBCATEGORY_NAMES[p.subcategory] || "").toLowerCase();
-          return title.includes(q) || mat.includes(q) || desc.includes(q) || catName.includes(q) || subName.includes(q);
-        }).slice(0, 8);
+        matchedKeywords = matchedKeywords.slice(0, 8);
 
-        // 3. Check matching store/collection
-        const matchedStores = storeEntries.filter(s => {
-          return s.name.toLowerCase().includes(q) || q.includes("mobel") || q.includes("inegöl") || q.includes("masif");
-        }).slice(0, 2);
-
-        if (matchedCategories.length === 0 && matchedProducts.length === 0 && matchedStores.length === 0) {
-          dropdown.innerHTML = `
-            <div class="live-search-empty-state">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <div><strong>"${query}"</strong> ile ilgili sonuç bulunamadı.</div>
-              <div class="live-search-suggestions-title">Popüler Aramalar</div>
-              <div class="live-search-popular-list">
-                ${popularTags.map(t => `<span class="live-search-popular-tag" data-tag="${t}">${t}</span>`).join('')}
+        // Left Column: Suggestion rows HTML
+        let suggestRowsHtml = matchedKeywords.map(kw => {
+          return `
+            <div class="trendyol-suggest-item" data-query="${kw}">
+              <div class="trendyol-suggest-left">
+                <i class="fa-solid fa-magnifying-glass trendyol-suggest-icon"></i>
+                <span class="trendyol-suggest-text">${q ? highlightText(kw, q) : kw}</span>
               </div>
             </div>
           `;
-          dropdown.classList.add("active");
+        }).join('');
 
-          dropdown.querySelectorAll(".live-search-popular-tag").forEach(tagEl => {
-            tagEl.addEventListener("click", (e) => {
-              e.stopPropagation();
-              input.value = tagEl.getAttribute("data-tag");
-              input.dispatchEvent(new Event("input"));
-              input.focus();
-            });
-          });
-          return;
-        }
+        // Store row at bottom of suggestions
+        suggestRowsHtml += `
+          <div class="trendyol-suggest-item" data-url="kategori.html?c=tum-koleksiyon">
+            <div class="trendyol-suggest-left">
+              <div class="trendyol-store-logo">MM</div>
+              <span class="trendyol-suggest-text" style="font-weight:600;">MOBELMOR COLLECTION</span>
+            </div>
+            <span class="trendyol-store-tag">Mağaza</span>
+          </div>
+        `;
 
-        let rowsHtml = '';
+        // Right Column: "Popüler ürünlerden seçtik" HTML
+        const badges = ["Sepette %10 İndirim", "Ücretsiz Teslimat", "İnegöl Masif", "Günün Fırsatı"];
+        const ratings = ["4.9 (142)", "4.8 (98)", "5.0 (64)", "4.9 (115)"];
 
-        // Render Category rows (Row 1)
-        matchedCategories.forEach(cat => {
-          const targetUrl = `kategori.html?c=${cat.slug}${cat.sub ? `&sub=${cat.sub}` : ''}`;
-          rowsHtml += `
-            <a href="${targetUrl}" class="live-search-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
-              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-                <div class="live-search-row-icon" style="width:32px; height:32px; min-width:32px; border-radius:50%; background-color:#f3f4f6; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#374151; font-size:0.85rem;">
-                  <i class="${cat.icon}"></i>
-                </div>
-                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${highlightText(cat.name, query)}</span>
-              </div>
-              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px;">Kategori</div>
-            </a>
-          `;
-        });
-
-        // Render Product rows
-        matchedProducts.forEach(p => {
+        const popularCardsHtml = popularProducts.map((p, idx) => {
           const pSlug = window.slugify ? window.slugify(p.title) : "";
           const prodUrl = `urun-detay.html?id=${p.id}${pSlug ? `&slug=${pSlug}` : ''}`;
           const webpImage = p.image ? p.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/minegolden_p1_1.webp';
-          rowsHtml += `
-            <a href="${prodUrl}" class="live-search-row" data-id="${p.id}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
-              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-                <div class="live-search-row-icon" style="width:32px; height:32px; min-width:32px; max-width:32px; border-radius:50%; background-color:#f3f4f6; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden;">
-                  <img src="${webpImage}" alt="${p.title}" style="width:32px; height:32px; min-width:32px; max-width:32px; object-fit:cover; border-radius:50%; display:block;" onerror="this.onerror=null; this.src='${p.image}';">
+          const badgeText = badges[idx % badges.length];
+          const ratingText = ratings[idx % ratings.length];
+
+          return `
+            <div class="trendyol-pop-card" data-url="${prodUrl}">
+              <img src="${webpImage}" alt="${p.title}" class="trendyol-pop-thumb" onerror="this.onerror=null; this.src='${p.image}';">
+              <div class="trendyol-pop-info">
+                <span class="trendyol-pop-badge">${badgeText}</span>
+                <h5 class="trendyol-pop-name">${p.title}</h5>
+                <div class="trendyol-pop-rating">
+                  <i class="fa-solid fa-star"></i>
+                  <span>${ratingText}</span>
                 </div>
-                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${highlightText(p.title, query)}</span>
+                <div class="trendyol-pop-bottom-row">
+                  <span class="trendyol-pop-price">${formatPrice(p.price)}</span>
+                </div>
               </div>
-              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px; text-align:right;">
-                <span class="live-search-price-hint" style="color:#111827; font-weight:700; font-size:0.88rem; margin-right:8px;">${formatPrice(p.price)}</span>
-                <span>Ürün</span>
-              </div>
-            </a>
+              <button type="button" class="trendyol-pop-add-btn" data-add-id="${p.id}" title="Sepete Ekle" aria-label="Sepete Ekle">
+                <i class="fa-solid fa-cart-plus"></i>
+              </button>
+            </div>
           `;
-        });
+        }).join('');
 
-        // Render Store/Brand rows (Bottom)
-        matchedStores.forEach(st => {
-          rowsHtml += `
-            <a href="${st.link}" class="live-search-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
-              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-                <div class="live-search-brand-logo" style="width:28px; height:28px; min-width:28px; border-radius:50%; background-color:#0f172a; color:#ffffff; font-size:0.65rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${st.initials}</div>
-                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${st.name} <i class="fa-solid fa-circle-check live-search-verified-badge" style="color:#3b82f6; font-size:0.85rem; margin-left:6px;"></i></span>
+        dropdown.innerHTML = `
+          <div class="trendyol-search-grid">
+            <div class="trendyol-suggest-col">
+              ${suggestRowsHtml}
+            </div>
+            <div class="trendyol-popular-col">
+              <div class="trendyol-pop-title">
+                <span>Popüler ürünlerden seçtik</span>
               </div>
-              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px;">${st.badge}</div>
-            </a>
-          `;
-        });
+              <div class="trendyol-pop-list">
+                ${popularCardsHtml}
+              </div>
+            </div>
+          </div>
+        `;
 
-        dropdown.style.cssText = "position:absolute; top:calc(100% + 4px); left:0; right:0; width:100%; background:#ffffff; border:1px solid #e5e7eb; border-radius:0 0 16px 16px; box-shadow:0 14px 30px rgba(0,0,0,0.12); z-index:10000; max-height:480px; overflow-y:auto; overflow-x:hidden; padding:0; display:block;";
-        dropdown.innerHTML = `<div class="live-search-list" style="list-style:none; margin:0; padding:0;">${rowsHtml}</div>`;
         dropdown.classList.add("active");
+
+        // Click on suggestion row
+        dropdown.querySelectorAll(".trendyol-suggest-item").forEach(item => {
+          item.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const targetUrl = item.getAttribute("data-url");
+            const term = item.getAttribute("data-query");
+            if (targetUrl) {
+              window.location.href = targetUrl;
+            } else if (term) {
+              input.value = term;
+              executeSearchRedirect(term);
+            }
+          });
+        });
+
+        // Click on popular product card
+        dropdown.querySelectorAll(".trendyol-pop-card").forEach(card => {
+          card.addEventListener("click", (e) => {
+            if (e.target.closest(".trendyol-pop-add-btn")) return;
+            const url = card.getAttribute("data-url");
+            if (url) window.location.href = url;
+          });
+        });
+
+        // Click on quick add-to-cart button
+        dropdown.querySelectorAll(".trendyol-pop-add-btn").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const pid = parseInt(btn.getAttribute("data-add-id"));
+            if (pid && typeof window.addToCart === 'function') {
+              window.addToCart(pid);
+              btn.innerHTML = '<i class="fa-solid fa-check" style="color:#16a34a;"></i>';
+              setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i>';
+              }, 1200);
+            }
+          });
+        });
       };
 
       let debounceTimer = null;
@@ -2895,9 +2919,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       input.addEventListener("focus", () => {
-        if (input.value.trim().length > 0) {
-          renderSearchResults(input.value);
-        }
+        renderSearchResults(input.value);
       });
 
       const searchIcon = wrap.querySelector(".search-icon");
@@ -2932,10 +2954,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".live-search-dropdown").forEach(d => {
           d.classList.remove("active");
         });
+        document.querySelectorAll(".search-box").forEach(sb => {
+          sb.classList.remove("has-dropdown-open");
+        });
       }
     });
   };
 
+  window.addToCart = addToCart;
   initLiveSearchEngine();
 
   const sortSelect = document.getElementById("sortSelect");
