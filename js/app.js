@@ -1648,16 +1648,25 @@ const CATEGORY_NAMES = {
 
 const SUBCATEGORY_NAMES = {
   all: "Tümü",
-  sofas: "Koltuk & Takımlar",
+  sofas: "Koltuk Takımları & Kanepeler",
+  "corner-sofas": "Köşe Koltuklar",
   armchairs: "Berjerler",
   tables: "Sehpalar",
-  consoles: "Konsollar",
-  "dining-tables": "Yemek Masaları",
+  "tv-units": "TV & Yaşam Üniteleri",
+  "tv-uniteleri": "TV & Yaşam Üniteleri",
+  consoles: "Konsollar & TV Üniteleri",
+  poufs: "Puf & Tamamlayıcı",
+  "dining-tables": "Yemek Masaları & Takımlar",
+  "dining-sets": "Yemek Odası Takımları",
   chairs: "Sandalyeler",
-  buffets: "Büfeler & Konsollar",
-  beds: "Karyola & Yataklar",
+  buffets: "Konsol & Büfeler",
+  vitrines: "Vitrin & Gümüşlük",
+  "bedroom-sets": "Yatak Odası Takımları",
+  beds: "Karyola, Yatak & Bazalar",
   nightstands: "Komodinler",
   wardrobes: "Gardıroplar",
+  dressers: "Şifonyer & Makyaj Masaları",
+  sifonyer: "Şifonyerler",
   desks: "Çalışma Masaları",
   bookcases: "Kitaplıklar"
 };
@@ -1714,15 +1723,75 @@ const getFilteredProducts = () => {
   const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
   let filtered = sourceList.filter(product => {
     let matchesCat = true;
+    const pCat = product.category || "";
+    const pSub = product.subcategory || "";
+    const pType = product.productType || "";
+    const pTitle = (product.title || "").toLowerCase();
+
     if (currentCategory !== "all") {
-      if (currentCategory === "tv-unit" || currentCategory === "tv-uniteleri" || currentCategory === "office") {
-        matchesCat = (product.category === "tv-unit" || product.subcategory === "consoles" || (product.title && product.title.toLowerCase().includes("tv")));
+      if (currentCategory === "living" || currentCategory === "oturma-odasi") {
+        matchesCat = (pCat === "living");
+      } else if (currentCategory === "dining" || currentCategory === "yemek-odasi") {
+        matchesCat = (pCat === "dining");
+      } else if (currentCategory === "bedroom" || currentCategory === "yatak-odasi") {
+        matchesCat = (pCat === "bedroom");
+      } else if (currentCategory === "office" || currentCategory === "calisma-odasi") {
+        matchesCat = (pCat === "office" || pCat === "tv-unit" || pCat === "tv-uniteleri");
+      } else if (currentCategory === "garden" || currentCategory === "bahce") {
+        matchesCat = (pCat === "garden");
+      } else if (currentCategory === "tv-unit" || currentCategory === "tv-uniteleri") {
+        matchesCat = (pCat === "living" && (pSub === "consoles" || pTitle.includes("tv")));
       } else {
-        matchesCat = (product.category === currentCategory);
+        matchesCat = (pCat === currentCategory);
       }
     }
 
-    const matchesSubcat = (currentSubcategory === "all" || product.subcategory === currentSubcategory);
+    let matchesSubcat = true;
+    if (currentSubcategory !== "all") {
+      if (currentSubcategory === "sofas" || currentSubcategory === "koltuk") {
+        matchesSubcat = (pSub === "sofas");
+      } else if (currentSubcategory === "corner-sofas" || currentSubcategory === "kose-koltuk") {
+        matchesSubcat = (pSub === "sofas" || pTitle.includes("köşe") || pTitle.includes("kose") || pType === "Set");
+      } else if (currentSubcategory === "armchairs" || currentSubcategory === "berjer") {
+        matchesSubcat = (pSub === "armchairs");
+      } else if (currentSubcategory === "tables" || currentSubcategory === "sehpa") {
+        matchesSubcat = (pSub === "tables");
+      } else if (currentSubcategory === "tv-units" || currentSubcategory === "tv-uniteleri") {
+        matchesSubcat = (pCat === "living" && (pSub === "consoles" || pTitle.includes("tv")));
+      } else if (currentSubcategory === "consoles" || currentSubcategory === "konsol") {
+        if (currentCategory === "bedroom") {
+          matchesSubcat = (pSub === "consoles");
+        } else {
+          matchesSubcat = (pSub === "consoles");
+        }
+      } else if (currentSubcategory === "poufs" || currentSubcategory === "puf") {
+        matchesSubcat = (pSub === "armchairs" || pSub === "tables" || pTitle.includes("puf"));
+      } else if (currentSubcategory === "dining-sets" || currentSubcategory === "yemek-takimi") {
+        matchesSubcat = (pCat === "dining" && pType === "Set");
+      } else if (currentSubcategory === "dining-tables" || currentSubcategory === "yemek-masasi") {
+        matchesSubcat = (pSub === "dining-tables");
+      } else if (currentSubcategory === "chairs" || currentSubcategory === "sandalye") {
+        matchesSubcat = (pSub === "chairs");
+      } else if (currentSubcategory === "buffets" || currentSubcategory === "vitrines" || currentSubcategory === "bufe") {
+        matchesSubcat = (pSub === "buffets");
+      } else if (currentSubcategory === "bedroom-sets" || currentSubcategory === "yatak-takimi") {
+        matchesSubcat = (pCat === "bedroom" && pType === "Set");
+      } else if (currentSubcategory === "beds" || currentSubcategory === "karyola" || currentSubcategory === "baza") {
+        matchesSubcat = (pSub === "beds");
+      } else if (currentSubcategory === "wardrobes" || currentSubcategory === "gardirop") {
+        matchesSubcat = (pSub === "wardrobes");
+      } else if (currentSubcategory === "dressers" || currentSubcategory === "sifonyer" || currentSubcategory === "makyaj") {
+        matchesSubcat = (pCat === "bedroom" && pSub === "consoles");
+      } else if (currentSubcategory === "nightstands" || currentSubcategory === "komodin") {
+        matchesSubcat = (pSub === "nightstands");
+      } else if (currentSubcategory === "desks") {
+        matchesSubcat = (pSub === "desks" || pSub === "tables");
+      } else if (currentSubcategory === "bookcases") {
+        matchesSubcat = (pSub === "bookcases");
+      } else {
+        matchesSubcat = (pSub === currentSubcategory);
+      }
+    }
 
     const specsText = Object.values(product.specs || {}).join(" ").toLowerCase();
     const matchesSearch = (!query ||
@@ -1733,10 +1802,6 @@ const getFilteredProducts = () => {
     );
     return matchesCat && matchesSubcat && matchesSearch;
   });
-
-  if (filtered.length === 0) {
-    filtered = PRODUCTS;
-  }
 
   return filtered.sort((a, b) => {
     // 1. Always prioritize complete Sets (Takımlar) first
@@ -2322,59 +2387,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const CATEGORY_STORY_CIRCLES = {
     living: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "İnegöl Masif", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p1_1.webp" },
-      { title: "Koltuk Takımı", sub: "sofas", image: "assets/minegolden_p1_1.webp" },
-      { title: "Köşe Koltuk", sub: "sofas", image: "assets/hero_milo_sofa.webp" },
-      { title: "Berjer", sub: "armchairs", image: "assets/armchair.webp" },
-      { title: "Orta Sehpa", sub: "tables", image: "assets/minegolden_p2_1.webp" },
-      { title: "TV Ünitesi", sub: "tables", image: "assets/minegolden_p8_1.webp" },
-      { title: "Konsol & Dresuar", sub: "consoles", image: "assets/minegolden_p4_1.webp" },
-      { title: "Puf & Tamamlayıcı", sub: "armchairs", image: "assets/minegolden_p2_1.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "living", sub: "all", image: "assets/favicon.svg" },
+      { title: "İnegöl Masif", isSpecial: true, specialType: "series", badge: "Özel", cat: "living", sub: "all", image: "assets/minegolden_p1_1.webp" },
+      { title: "Koltuk Takımı", cat: "living", sub: "sofas", image: "assets/minegolden_p1_1.webp" },
+      { title: "Köşe Koltuk", cat: "living", sub: "corner-sofas", image: "assets/hero_milo_sofa.webp" },
+      { title: "Berjer", cat: "living", sub: "armchairs", image: "assets/armchair.webp" },
+      { title: "Orta Sehpa", cat: "living", sub: "tables", image: "assets/minegolden_p2_1.webp" },
+      { title: "TV Ünitesi", cat: "living", sub: "tv-units", image: "assets/minegolden_p8_1.webp" },
+      { title: "Konsol & Dresuar", cat: "living", sub: "consoles", image: "assets/minegolden_p4_1.webp" },
+      { title: "Puf & Tamamlayıcı", cat: "living", sub: "poufs", image: "assets/minegolden_p2_1.webp" }
     ],
     dining: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "Masif Yemek Serisi", isSpecial: true, specialType: "series", badge: "Özel", sub: "all", image: "assets/minegolden_p3_1.webp" },
-      { title: "Yemek Odası Takımı", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
-      { title: "Yemek Masası", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
-      { title: "Sandalye", sub: "chairs", image: "assets/armchair.webp" },
-      { title: "Konsol & Ayna", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
-      { title: "Vitrin & Gümüşlük", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
-      { title: "Bench & Sandalye", sub: "chairs", image: "assets/minegolden_p3_1.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "dining", sub: "all", image: "assets/favicon.svg" },
+      { title: "Masif Yemek Serisi", isSpecial: true, specialType: "series", badge: "Özel", cat: "dining", sub: "all", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yemek Odası Takımı", cat: "dining", sub: "dining-sets", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yemek Masası", cat: "dining", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+      { title: "Sandalye", cat: "dining", sub: "chairs", image: "assets/armchair.webp" },
+      { title: "Konsol & Ayna", cat: "dining", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+      { title: "Vitrin & Gümüşlük", cat: "dining", sub: "buffets", image: "assets/minegolden_p4_1.webp" },
+      { title: "Bench & Sandalye", cat: "dining", sub: "chairs", image: "assets/minegolden_p3_1.webp" }
     ],
     bedroom: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "Luna Bedding", isSpecial: true, specialType: "series", badge: "Yeni", sub: "beds", image: "assets/bed.webp" },
-      { title: "Yatak Odası Takımı", sub: "all", image: "assets/asya_main.webp" },
-      { title: "Baza & Başlık", sub: "beds", image: "assets/minegolden_p6_1.webp" },
-      { title: "Karyola", sub: "beds", image: "assets/bed.webp" },
-      { title: "Ortopedik Yatak", sub: "beds", image: "assets/bed.webp" },
-      { title: "Gardırop", sub: "wardrobes", image: "assets/minegolden_p5_1.webp" },
-      { title: "Komodin & Şifonyer", sub: "nightstands", image: "assets/minegolden_p7_1.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "bedroom", sub: "all", image: "assets/favicon.svg" },
+      { title: "Luna Bedding", isSpecial: true, specialType: "series", badge: "Yeni", cat: "bedroom", sub: "all", image: "assets/bed.webp" },
+      { title: "Yatak Odası Takımı", cat: "bedroom", sub: "bedroom-sets", image: "assets/asya_main.webp" },
+      { title: "Baza & Başlık", cat: "bedroom", sub: "beds", image: "assets/minegolden_p6_1.webp" },
+      { title: "Karyola", cat: "bedroom", sub: "beds", image: "assets/bed.webp" },
+      { title: "Ortopedik Yatak", cat: "bedroom", sub: "beds", image: "assets/bed.webp" },
+      { title: "Gardırop", cat: "bedroom", sub: "wardrobes", image: "assets/minegolden_p5_1.webp" },
+      { title: "Şifonyer & Makyaj", cat: "bedroom", sub: "dressers", image: "assets/minegolden_p7_1.webp" },
+      { title: "Komodin", cat: "bedroom", sub: "nightstands", image: "assets/minegolden_p7_1.webp" }
     ],
     garden: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "Bahçe Mobilyası", sub: "all", image: "assets/armchair.webp" },
-      { title: "Balkon Oturma", sub: "all", image: "assets/hero_milo_sofa.webp" },
-      { title: "Masa & Sandalye", sub: "all", image: "assets/minegolden_p3_1.webp" },
-      { title: "Salıncak & Hamak", sub: "all", image: "assets/armchair.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "garden", sub: "all", image: "assets/favicon.svg" },
+      { title: "Bahçe Mobilyası", cat: "garden", sub: "all", image: "assets/armchair.webp" },
+      { title: "Balkon Oturma", cat: "garden", sub: "all", image: "assets/hero_milo_sofa.webp" },
+      { title: "Masa & Sandalye", cat: "garden", sub: "all", image: "assets/minegolden_p3_1.webp" },
+      { title: "Salıncak & Hamak", cat: "garden", sub: "all", image: "assets/armchair.webp" }
     ],
     office: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "Çalışma Masası", sub: "desks", image: "assets/minegolden_p2_1.webp" },
-      { title: "Çalışma Koltuğu", sub: "all", image: "assets/armchair.webp" },
-      { title: "Kitaplık & Raf", sub: "bookcases", image: "assets/minegolden_p8_1.webp" },
-      { title: "Keson & Çekmece", sub: "all", image: "assets/minegolden_p7_1.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "office", sub: "all", image: "assets/favicon.svg" },
+      { title: "Çalışma Masası", cat: "office", sub: "desks", image: "assets/minegolden_p2_1.webp" },
+      { title: "Çalışma Koltuğu", cat: "office", sub: "desks", image: "assets/armchair.webp" },
+      { title: "Kitaplık & Raf", cat: "office", sub: "bookcases", image: "assets/minegolden_p8_1.webp" },
+      { title: "Keson & Çekmece", cat: "office", sub: "desks", image: "assets/minegolden_p7_1.webp" }
     ],
     all: [
-      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", sub: "all", image: "assets/favicon.svg" },
-      { title: "Oturma Odası", sub: "all", cat: "living", image: "assets/minegolden_p1_1.webp" },
-      { title: "Yemek Odası", sub: "all", cat: "dining", image: "assets/minegolden_p3_1.webp" },
-      { title: "Yatak Odası", sub: "all", cat: "bedroom", image: "assets/asya_main.webp" },
-      { title: "Koltuk Takımı", sub: "sofas", cat: "living", image: "assets/hero_milo_sofa.webp" },
-      { title: "Yemek Masası", sub: "dining-tables", cat: "dining", image: "assets/minegolden_p3_1.webp" },
-      { title: "Karyola & Baza", sub: "beds", cat: "bedroom", image: "assets/bed.webp" },
-      { title: "Sehpalar", sub: "tables", cat: "living", image: "assets/minegolden_p2_1.webp" }
+      { title: "Mobelmor Collection", isSpecial: true, specialType: "brand", badge: "Yeni", cat: "all", sub: "all", image: "assets/favicon.svg" },
+      { title: "Oturma Odası", cat: "living", sub: "all", image: "assets/minegolden_p1_1.webp" },
+      { title: "Yemek Odası", cat: "dining", sub: "all", image: "assets/minegolden_p3_1.webp" },
+      { title: "Yatak Odası", cat: "bedroom", sub: "all", image: "assets/asya_main.webp" },
+      { title: "Koltuk Takımı", cat: "living", sub: "sofas", image: "assets/hero_milo_sofa.webp" },
+      { title: "TV Ünitesi", cat: "living", sub: "tv-units", image: "assets/minegolden_p8_1.webp" },
+      { title: "Yemek Masası", cat: "dining", sub: "dining-tables", image: "assets/minegolden_p3_1.webp" },
+      { title: "Karyola & Baza", cat: "bedroom", sub: "beds", image: "assets/bed.webp" },
+      { title: "Sehpalar", cat: "living", sub: "tables", image: "assets/minegolden_p2_1.webp" }
     ]
   };
 
@@ -2412,7 +2479,7 @@ document.addEventListener("DOMContentLoaded", () => {
       circlesTrack.innerHTML = circleItems.map(item => {
         const targetCat = item.cat || currentCategory;
         const targetSub = item.sub || "all";
-        const isItemActive = (currentCategory === targetCat && currentSubcategory === targetSub);
+        const isItemActive = (currentCategory === targetCat && (currentSubcategory === targetSub || (currentSubcategory === "all" && targetSub === "all" && !item.isSpecial)));
 
         let specialClass = "";
         let innerImgContent = `<img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/minegolden_p1_1.webp';">`;
@@ -2516,7 +2583,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentSubcategory = sub;
 
     const catSlug = window.CATEGORY_SLUGS ? (window.CATEGORY_SLUGS[cat] || cat) : cat;
-    const targetUrl = (sub && sub !== 'all') ? `/kategori.html?c=${catSlug}&sub=${sub}` : `/kategori.html?c=${catSlug}`;
+    const targetUrl = (sub && sub !== 'all') ? `kategori.html?c=${catSlug}&sub=${sub}` : `kategori.html?c=${catSlug}`;
     const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
 
     if (isCategoryPage) {
@@ -2570,25 +2637,46 @@ document.addEventListener("DOMContentLoaded", () => {
     let resolvedSub = "all";
 
     if (cParam) {
-      resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
+      if (cParam === "tv-uniteleri" || cParam === "tv-unitesi") {
+        resolvedCat = "living";
+        resolvedSub = "tv-units";
+      } else {
+        resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[cParam] || cParam) : cParam;
+      }
     } else if (catParam) {
-      resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
+      if (catParam === "tv-uniteleri" || catParam === "tv-unitesi") {
+        resolvedCat = "living";
+        resolvedSub = "tv-units";
+      } else {
+        resolvedCat = window.SLUG_TO_CATEGORY ? (window.SLUG_TO_CATEGORY[catParam] || catParam) : catParam;
+      }
     } else {
       // Check direct pathname: /oturma-odasi or /oturma-odasi/sofas
       const pathParts = window.location.pathname.split('/').filter(Boolean);
       if (pathParts.length > 0) {
-        const first = pathParts[0].replace(/\.html$/, '');
-        if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[first]) {
-          resolvedCat = window.SLUG_TO_CATEGORY[first];
-          if (pathParts[1]) {
-            resolvedSub = pathParts[1];
-          }
+        const last = pathParts[pathParts.length - 1].replace(/\.html$/, '');
+        if (last === "tv-uniteleri" || last === "tv-unitesi") {
+          resolvedCat = "living";
+          resolvedSub = "tv-units";
+        } else if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[last]) {
+          resolvedCat = window.SLUG_TO_CATEGORY[last];
         }
       }
     }
 
     if (subParam) {
       resolvedSub = subParam;
+    }
+
+    const qParam = urlParams.get("q") || urlParams.get("query") || urlParams.get("search");
+    if (qParam) {
+      searchQuery = qParam;
+      const sInput = document.getElementById("searchInput");
+      if (sInput) sInput.value = qParam;
+      const mInput = document.getElementById("mobileSearchInput");
+      if (mInput) mInput.value = qParam;
+      const cBtn = document.getElementById("clearSearchBtn");
+      if (cBtn) cBtn.style.display = "inline-flex";
     }
 
     currentCategory = resolvedCat;
@@ -2599,24 +2687,256 @@ document.addEventListener("DOMContentLoaded", () => {
 
   handleUrlParams();
 
-  const searchInput = document.getElementById("searchInput");
-  const clearSearchBtn = document.getElementById("clearSearchBtn");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      if (clearSearchBtn) clearSearchBtn.style.display = searchQuery ? "inline-flex" : "none";
-      renderProducts();
-    });
-  }
+  // --- ADVANCED LIVE SEARCH AUTOCOMPLETE & NAVIGATION ENGINE (TRENDYOL STYLE) ---
+  const initLiveSearchEngine = () => {
+    const searchConfigs = [
+      { input: document.getElementById("searchInput"), wrap: document.querySelector(".desktop-search-wrap") },
+      { input: document.getElementById("mobileSearchInput"), wrap: document.querySelector(".mobile-search-row") }
+    ];
 
-  if (clearSearchBtn) {
-    clearSearchBtn.addEventListener("click", () => {
-      if (searchInput) searchInput.value = "";
-      searchQuery = "";
-      clearSearchBtn.style.display = "none";
-      renderProducts();
+    const popularTags = ["Koltuk Takımı", "Köşe Koltuk", "Yemek Masası", "TV Ünitesi", "Gardırop", "Karyola", "Berjer", "Orta Sehpa"];
+
+    const escapeRegExp = (str) => {
+      return (str || "").replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
+
+    const highlightText = (text, q) => {
+      if (!q || !text) return text || "";
+      const words = q.trim().split(/\s+/).filter(Boolean);
+      if (words.length === 0) return text;
+      const pattern = words.map(escapeRegExp).join("|");
+      const regex = new RegExp(`(${pattern})`, "gi");
+      return text.replace(regex, "<strong>$1</strong>");
+    };
+
+    // Category and subcategory metadata table
+    const categoryEntries = [
+      { name: "Oturma Odası", slug: "oturma-odasi", cat: "living", sub: "", icon: "fa-solid fa-couch" },
+      { name: "Koltuk Takımı", slug: "oturma-odasi", cat: "living", sub: "sofas", icon: "fa-solid fa-couch" },
+      { name: "Köşe Koltuk", slug: "oturma-odasi", cat: "living", sub: "corner-sofas", icon: "fa-solid fa-couch" },
+      { name: "Berjer & Tekli Koltuk", slug: "oturma-odasi", cat: "living", sub: "armchairs", icon: "fa-solid fa-chair" },
+      { name: "Orta & Yan Sehpa", slug: "oturma-odasi", cat: "living", sub: "tables", icon: "fa-solid fa-table" },
+      { name: "TV Ünitesi & Duvar Ünitesi", slug: "oturma-odasi", cat: "living", sub: "tv-units", icon: "fa-solid fa-tv" },
+      { name: "Konsol & Dresuar", slug: "oturma-odasi", cat: "living", sub: "consoles", icon: "fa-solid fa-layer-group" },
+      { name: "Yemek Odası Takımı", slug: "yemek-odasi", cat: "dining", sub: "dining-sets", icon: "fa-solid fa-utensils" },
+      { name: "Yemek Masası", slug: "yemek-odasi", cat: "dining", sub: "dining-tables", icon: "fa-solid fa-table" },
+      { name: "Sandalye", slug: "yemek-odasi", cat: "dining", sub: "chairs", icon: "fa-solid fa-chair" },
+      { name: "Yatak Odası Takımı", slug: "yatak-odasi", cat: "bedroom", sub: "bedroom-sets", icon: "fa-solid fa-bed" },
+      { name: "Karyola & Yatak", slug: "yatak-odasi", cat: "bedroom", sub: "beds", icon: "fa-solid fa-bed" },
+      { name: "Gardırop", slug: "yatak-odasi", cat: "bedroom", sub: "wardrobes", icon: "fa-solid fa-door-closed" },
+      { name: "Şifonyer & Makyaj Masası", slug: "yatak-odasi", cat: "bedroom", sub: "dressers", icon: "fa-solid fa-table-columns" },
+      { name: "Çalışma Odası & Masası", slug: "calisma-odasi", cat: "office", sub: "desks", icon: "fa-solid fa-briefcase" },
+      { name: "Kitaplık", slug: "calisma-odasi", cat: "office", sub: "bookcases", icon: "fa-solid fa-book" }
+    ];
+
+    const storeEntries = [
+      { name: "Mobelmor Official", badge: "Mağaza", link: "kategori.html?c=tum-koleksiyon", initials: "MM" },
+      { name: "İnegöl Masif Mobilya", badge: "Koleksiyon", link: "kategori.html?c=tum-koleksiyon&filter=inegol", initials: "İM" }
+    ];
+
+    searchConfigs.forEach(({ input, wrap }) => {
+      if (!input || !wrap) return;
+
+      let dropdown = wrap.querySelector(".live-search-dropdown");
+      if (!dropdown) {
+        dropdown = document.createElement("div");
+        dropdown.className = "live-search-dropdown";
+        wrap.appendChild(dropdown);
+      }
+
+      const closeDropdown = () => {
+        dropdown.classList.remove("active");
+        dropdown.innerHTML = "";
+      };
+
+      const executeSearchRedirect = (val) => {
+        const query = (val || "").trim();
+        if (!query) return;
+        closeDropdown();
+        window.location.href = `kategori.html?c=tum-koleksiyon&q=${encodeURIComponent(query)}`;
+      };
+
+      const renderSearchResults = (query) => {
+        const q = (query || "").trim().toLowerCase();
+        if (!q) {
+          closeDropdown();
+          return;
+        }
+
+        const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+
+        // 1. Check matching category/subcategory
+        const matchedCategories = categoryEntries.filter(c => {
+          return c.name.toLowerCase().includes(q) || (c.sub && c.sub.includes(q)) || (c.cat && c.cat.includes(q));
+        }).slice(0, 2);
+
+        // 2. Check matching products
+        const matchedProducts = sourceList.filter(p => {
+          const title = (p.title || "").toLowerCase();
+          const mat = (p.material || "").toLowerCase();
+          const desc = (p.desc || "").toLowerCase();
+          const catName = (CATEGORY_NAMES[p.category] || "").toLowerCase();
+          const subName = (SUBCATEGORY_NAMES[p.subcategory] || "").toLowerCase();
+          return title.includes(q) || mat.includes(q) || desc.includes(q) || catName.includes(q) || subName.includes(q);
+        }).slice(0, 8);
+
+        // 3. Check matching store/collection
+        const matchedStores = storeEntries.filter(s => {
+          return s.name.toLowerCase().includes(q) || q.includes("mobel") || q.includes("inegöl") || q.includes("masif");
+        }).slice(0, 2);
+
+        if (matchedCategories.length === 0 && matchedProducts.length === 0 && matchedStores.length === 0) {
+          dropdown.innerHTML = `
+            <div class="live-search-empty-state">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <div><strong>"${query}"</strong> ile ilgili sonuç bulunamadı.</div>
+              <div class="live-search-suggestions-title">Popüler Aramalar</div>
+              <div class="live-search-popular-list">
+                ${popularTags.map(t => `<span class="live-search-popular-tag" data-tag="${t}">${t}</span>`).join('')}
+              </div>
+            </div>
+          `;
+          dropdown.classList.add("active");
+
+          dropdown.querySelectorAll(".live-search-popular-tag").forEach(tagEl => {
+            tagEl.addEventListener("click", (e) => {
+              e.stopPropagation();
+              input.value = tagEl.getAttribute("data-tag");
+              input.dispatchEvent(new Event("input"));
+              input.focus();
+            });
+          });
+          return;
+        }
+
+        let rowsHtml = '';
+
+        // Render Category rows (Row 1)
+        matchedCategories.forEach(cat => {
+          const targetUrl = `kategori.html?c=${cat.slug}${cat.sub ? `&sub=${cat.sub}` : ''}`;
+          rowsHtml += `
+            <a href="${targetUrl}" class="live-search-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
+              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                <div class="live-search-row-icon" style="width:32px; height:32px; min-width:32px; border-radius:50%; background-color:#f3f4f6; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#374151; font-size:0.85rem;">
+                  <i class="${cat.icon}"></i>
+                </div>
+                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${highlightText(cat.name, query)}</span>
+              </div>
+              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px;">Kategori</div>
+            </a>
+          `;
+        });
+
+        // Render Product rows
+        matchedProducts.forEach(p => {
+          const pSlug = window.slugify ? window.slugify(p.title) : "";
+          const prodUrl = `urun-detay.html?id=${p.id}${pSlug ? `&slug=${pSlug}` : ''}`;
+          const webpImage = p.image ? p.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/minegolden_p1_1.webp';
+          rowsHtml += `
+            <a href="${prodUrl}" class="live-search-row" data-id="${p.id}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
+              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                <div class="live-search-row-icon" style="width:32px; height:32px; min-width:32px; max-width:32px; border-radius:50%; background-color:#f3f4f6; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden;">
+                  <img src="${webpImage}" alt="${p.title}" style="width:32px; height:32px; min-width:32px; max-width:32px; object-fit:cover; border-radius:50%; display:block;" onerror="this.onerror=null; this.src='${p.image}';">
+                </div>
+                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${highlightText(p.title, query)}</span>
+              </div>
+              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px; text-align:right;">
+                <span class="live-search-price-hint" style="color:#111827; font-weight:700; font-size:0.88rem; margin-right:8px;">${formatPrice(p.price)}</span>
+                <span>Ürün</span>
+              </div>
+            </a>
+          `;
+        });
+
+        // Render Store/Brand rows (Bottom)
+        matchedStores.forEach(st => {
+          rowsHtml += `
+            <a href="${st.link}" class="live-search-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; text-decoration:none; color:#1f2937; border-bottom:1px solid #f3f4f6; background:#ffffff;">
+              <div class="live-search-row-left" style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                <div class="live-search-brand-logo" style="width:28px; height:28px; min-width:28px; border-radius:50%; background-color:#0f172a; color:#ffffff; font-size:0.65rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${st.initials}</div>
+                <span class="live-search-text" style="color:#374151; font-size:0.91rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${st.name} <i class="fa-solid fa-circle-check live-search-verified-badge" style="color:#3b82f6; font-size:0.85rem; margin-left:6px;"></i></span>
+              </div>
+              <div class="live-search-row-right" style="font-size:0.82rem; color:#9ca3af; font-weight:400; flex-shrink:0; margin-left:14px;">${st.badge}</div>
+            </a>
+          `;
+        });
+
+        dropdown.style.cssText = "position:absolute; top:calc(100% + 4px); left:0; right:0; width:100%; background:#ffffff; border:1px solid #e5e7eb; border-radius:0 0 16px 16px; box-shadow:0 14px 30px rgba(0,0,0,0.12); z-index:10000; max-height:480px; overflow-y:auto; overflow-x:hidden; padding:0; display:block;";
+        dropdown.innerHTML = `<div class="live-search-list" style="list-style:none; margin:0; padding:0;">${rowsHtml}</div>`;
+        dropdown.classList.add("active");
+      };
+
+      let debounceTimer = null;
+      input.addEventListener("input", (e) => {
+        const val = e.target.value;
+        searchQuery = val;
+
+        const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
+        if (clearBtn) clearBtn.style.display = val ? "inline-flex" : "none";
+
+        const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
+        if (isCategoryPage) {
+          renderProducts();
+        }
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          renderSearchResults(val);
+        }, 100);
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          executeSearchRedirect(input.value);
+        } else if (e.key === "Escape") {
+          closeDropdown();
+        }
+      });
+
+      input.addEventListener("focus", () => {
+        if (input.value.trim().length > 0) {
+          renderSearchResults(input.value);
+        }
+      });
+
+      const searchIcon = wrap.querySelector(".search-icon");
+      if (searchIcon) {
+        searchIcon.addEventListener("click", () => {
+          if (input.value.trim().length > 0) {
+            executeSearchRedirect(input.value);
+          } else {
+            input.focus();
+          }
+        });
+      }
+
+      const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          input.value = "";
+          searchQuery = "";
+          clearBtn.style.display = "none";
+          closeDropdown();
+          const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
+          if (isCategoryPage) {
+            renderProducts();
+          }
+        });
+      }
     });
-  }
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".desktop-search-wrap") && !e.target.closest(".mobile-search-row") && !e.target.closest(".live-search-dropdown")) {
+        document.querySelectorAll(".live-search-dropdown").forEach(d => {
+          d.classList.remove("active");
+        });
+      }
+    });
+  };
+
+  initLiveSearchEngine();
 
   const sortSelect = document.getElementById("sortSelect");
   if (sortSelect) {
