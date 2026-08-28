@@ -3343,7 +3343,7 @@ const addToCart = (productId, qty = 1) => {
 
     const fabricInfo = currentFabricState ? {
         selectedFabric: currentFabricState.fabricName,
-        selectedColor: `${currentFabricState.colorName} (${currentFabricState.colorCode})`,
+        selectedColor: currentFabricState.colorName,
         colorHex: currentFabricState.colorHex,
         fabricPriceDiff: fabricDiff
     } : {};
@@ -3356,7 +3356,7 @@ const addToCart = (productId, qty = 1) => {
     }
     saveCart();
     updateBadges();
-    const fabricToastText = fabricInfo.selectedFabric ? ` [${fabricInfo.selectedFabric} - ${fabricInfo.selectedColor}${fabricDiff > 0 ? ` (+${formatPrice(fabricDiff)})` : ''}]` : '';
+    const fabricToastText = fabricInfo.selectedFabric ? ` — ${fabricInfo.selectedFabric}, ${fabricInfo.selectedColor}${fabricDiff > 0 ? ` (+${formatPrice(fabricDiff)})` : ''}` : '';
     showToast(`<strong>${item.title}</strong>${fabricToastText}${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
 };
 
@@ -3783,16 +3783,19 @@ document.addEventListener("DOMContentLoaded", () => {
         renderWishlist();
         document.getElementById("wishlistDrawer")?.classList.add("active");
         document.getElementById("wishlistOverlay")?.classList.add("active");
+        document.body.classList.add("wishlist-open");
     });
 
     document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
         document.getElementById("wishlistDrawer")?.classList.remove("active");
         document.getElementById("wishlistOverlay")?.classList.remove("active");
+        document.body.classList.remove("wishlist-open");
     });
 
     document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
         document.getElementById("wishlistDrawer")?.classList.remove("active");
         document.getElementById("wishlistOverlay")?.classList.remove("active");
+        document.body.classList.remove("wishlist-open");
     });
 
     document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {

@@ -3053,16 +3053,19 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWishlist();
     document.getElementById("wishlistDrawer")?.classList.add("active");
     document.getElementById("wishlistOverlay")?.classList.add("active");
+    document.body.classList.add("wishlist-open");
   });
 
   document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
     document.getElementById("wishlistDrawer")?.classList.remove("active");
     document.getElementById("wishlistOverlay")?.classList.remove("active");
+    document.body.classList.remove("wishlist-open");
   });
 
   document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
     document.getElementById("wishlistDrawer")?.classList.remove("active");
     document.getElementById("wishlistOverlay")?.classList.remove("active");
+    document.body.classList.remove("wishlist-open");
   });
 
   // Cart Drawer Trigger

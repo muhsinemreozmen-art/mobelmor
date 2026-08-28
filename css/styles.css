@@ -4598,8 +4598,21 @@ body.mobile-menu-open .mobile-sticky-buy-bar,
     justify-content: center;
 }
 
-body.modal-open {
+body.modal-open,
+body.cart-open,
+body.wishlist-open {
     overflow: hidden !important;
+    overscroll-behavior: none;
+}
+
+/* iOS Safari scroll lock fix */
+@supports (-webkit-touch-callout: none) {
+    body.cart-open,
+    body.wishlist-open,
+    body.modal-open {
+        position: fixed;
+        width: 100%;
+    }
 }
 
 .cart-drawer {
