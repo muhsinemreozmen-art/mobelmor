@@ -482,6 +482,7 @@
                                 <option value="bedroom">Yatak Odası</option>
                             </select>
 
+                            <button class="btn-action-primary" onclick="syncAllToCloudManual(event)" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);" title="Tüm ürün ve ayarları Supabase bulut veritabanına yedekler"><i class="fa-solid fa-cloud-arrow-up"></i> Buluta Senkronize Et</button>
                             <button class="btn-action-primary" onclick="openProductModal(0)"><i class="fa-solid fa-plus"></i> Yeni Ürün Ekle</button>
                         </div>
                     </div>
@@ -915,6 +916,30 @@
             }
         };
 
+        window.syncAllToCloudManual = async function(e) {
+            if (!confirm("Tüm ürün kataloğunu ve yaptığınız tüm değişiklikleri Supabase bulut veritabanına aktarmak istiyor musunuz?")) return;
+            const btn = e ? e.currentTarget : null;
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Buluta Aktarılıyor...';
+            }
+            try {
+                const res = await window.StoreService.syncAllProductsToCloud();
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+                alert(`✅ ${res.success} / ${res.total} ürün başarıyla Supabase bulutuna aktarıldı ve senkronize edildi!`);
+            } catch (err) {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+                alert("❌ Bulut senkronizasyonu sırasında hata oluştu: " + err.message);
+            }
+        };
+
         // BİLGİSAYARDAN FOTOĞRAF YÜKLEME HANDLER
         window.handlePCImageUpload = (event) => {
             const files = event.target.files;
@@ -1034,8 +1059,7 @@
             document.getElementById('productModal').style.display = 'none';
         };
 
-        // Bulletproof Save Product Modal Function
-        window.saveProductModal = function(e) {
+        window.saveProductModal = async function(e) {
             if (e) {
                 if (typeof e.preventDefault === 'function') e.preventDefault();
                 if (typeof e.stopPropagation === 'function') e.stopPropagation();
@@ -1074,7 +1098,7 @@
             };
 
             if (window.StoreService) {
-                window.StoreService.saveProduct(updatedData);
+                await window.StoreService.saveProduct(updatedData);
             }
 
             closeProductModal();

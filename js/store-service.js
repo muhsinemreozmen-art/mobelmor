@@ -32,68 +32,124 @@
         }
     };
 
-    function extractProductVideo(p) {
-        if (!p) return p;
-        if (p.material && p.material.includes('||VIDEO:')) {
-            const m = p.material.match(/\|\|VIDEO:([^|]+)\|\|/);
-            if (m && m[1]) {
-                p.videoUrl = m[1];
-                p.youtubeUrl = m[1];
-                p.material = p.material.replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+    function encodeProductMeta(productData) {
+        const meta = {};
+        const knownNativeCols = new Set([
+            'id', 'title', 'category', 'price', 'original_price', 'originalPrice',
+            'main_image', 'image', 'gallery', 'dimensions', 'material', 'skeleton',
+            'sponge', 'fabric', 'is_active', 'isActive', 'created_at'
+        ]);
+
+        for (const [k, v] of Object.entries(productData)) {
+            if (!knownNativeCols.has(k) && v !== undefined && v !== null && v !== '') {
+                meta[k] = v;
             }
         }
-        return p;
+        if (productData.videoUrl || productData.youtubeUrl) {
+            meta.videoUrl = (productData.videoUrl || productData.youtubeUrl || '').trim();
+            meta.youtubeUrl = meta.videoUrl;
+        }
+        if (productData.productType) meta.productType = productData.productType;
+        if (productData.subcategory) meta.subcategory = productData.subcategory;
+        if (productData.warranty) meta.warranty = productData.warranty;
+        if (productData.sortOrder !== undefined) meta.sortOrder = productData.sortOrder;
+        if (productData.specs) meta.specs = productData.specs;
+
+        let cleanMaterial = (productData.material || '').replace(/\|\|META:[^|]*\|\|/g, '').replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+        if (Object.keys(meta).length > 0) {
+            cleanMaterial = `${cleanMaterial} ||META:${JSON.stringify(meta)}||`;
+        }
+        return cleanMaterial;
+    }
+
+    function decodeProductMeta(product) {
+        if (!product) return product;
+        if (product.material && (product.material.includes('||META:') || product.material.includes('||VIDEO:'))) {
+            if (product.material.includes('||META:')) {
+                const match = product.material.match(/\|\|META:(\{.*?\})\|\|/);
+                if (match && match[1]) {
+                    try {
+                        const parsed = JSON.parse(match[1]);
+                        Object.assign(product, parsed);
+                    } catch (e) {
+                        console.error('Meta parse error:', e);
+                    }
+                }
+            }
+            if (product.material.includes('||VIDEO:')) {
+                const vm = product.material.match(/\|\|VIDEO:([^|]+)\|\|/);
+                if (vm && vm[1]) {
+                    product.videoUrl = vm[1];
+                    product.youtubeUrl = vm[1];
+                }
+            }
+            product.material = product.material.replace(/\|\|META:[^|]*\|\|/g, '').replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+        }
+        return product;
     }
 
     // 3. StoreService Ana Motoru
     window.StoreService = {
 
-        _pushProductToCloud: function (productData) {
-            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
-            const vUrl = (productData.videoUrl || productData.youtubeUrl || '').trim();
-            let cleanMat = (productData.material || '').replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
-            if (vUrl) {
-                cleanMat = `${cleanMat} ||VIDEO:${vUrl}||`;
-            }
+        _pushProductToCloud: async function (productData) {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return false;
+            const encodedMaterial = encodeProductMeta(productData);
             const payload = {
                 id: parseInt(productData.id),
                 title: productData.title,
-                category: productData.category,
-                price: parseFloat(productData.price),
-                original_price: parseFloat(productData.originalPrice || productData.price),
-                main_image: productData.image,
+                category: productData.category || 'living',
+                price: parseFloat(productData.price) || 0,
+                original_price: parseFloat(productData.originalPrice || productData.price) || 0,
+                main_image: productData.image || (Array.isArray(productData.gallery) ? productData.gallery[0] : ''),
                 gallery: Array.isArray(productData.gallery) ? productData.gallery : [productData.image],
                 dimensions: productData.dimensions || '',
-                material: cleanMat,
+                material: encodedMaterial,
                 skeleton: productData.skeleton || '',
                 sponge: productData.sponge || '',
                 fabric: productData.fabric || '',
                 is_active: productData.isActive !== false
             };
 
-            fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products`, {
-                method: 'POST',
-                headers: {
-                    'apikey': DEFAULT_CONFIG.supabaseKey,
-                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'resolution=merge-duplicates'
-                },
-                body: JSON.stringify(payload)
-            }).then(r => console.log('Supabase Product Synced:', productData.title))
-                .catch(e => console.log('Supabase Product Sync Error:', e));
+            try {
+                const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    console.log('✅ Supabase Cloud Sync Success:', productData.title);
+                    return true;
+                } else {
+                    const err = await res.text();
+                    console.error('❌ Supabase Cloud Sync HTTP Error:', res.status, err);
+                    return false;
+                }
+            } catch (e) {
+                console.error('❌ Supabase Cloud Sync Exception:', e);
+                return false;
+            }
         },
 
-        _deleteProductFromCloud: function (id) {
-            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
-            fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?id=eq.${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'apikey': DEFAULT_CONFIG.supabaseKey,
-                    'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
-                }
-            }).then(r => console.log('Supabase Product Deleted:', id))
-                .catch(e => console.log('Supabase Product Delete Error:', e));
+        _deleteProductFromCloud: async function (id) {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return false;
+            try {
+                const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                    }
+                });
+                return res.ok;
+            } catch (e) {
+                console.error('Supabase Delete Error:', e);
+                return false;
+            }
         },
 
         // --- ÜRÜN İŞLEMLERİ (CRUD) ---
@@ -102,17 +158,17 @@
             if (!includeInactive) {
                 list = list.filter(p => p.isActive !== false);
             }
-            return list.map(extractProductVideo);
+            return list.map(decodeProductMeta);
         },
 
         getProductById: function (id) {
             const list = this.getProducts(true);
             const found = list.find(p => p.id === parseInt(id)) || null;
-            return found ? extractProductVideo(found) : null;
+            return found ? decodeProductMeta(found) : null;
         },
 
         syncProductsFromCloud: async function () {
-            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return [];
             try {
                 const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?select=*`, {
                     headers: {
@@ -125,17 +181,7 @@
                     if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
                         let list = initProducts();
                         cloudProducts.forEach(cp => {
-                            let cleanMat = cp.material || '';
-                            let vUrl = '';
-                            if (cleanMat.includes('||VIDEO:')) {
-                                const m = cleanMat.match(/\|\|VIDEO:([^|]+)\|\|/);
-                                if (m && m[1]) {
-                                    vUrl = m[1];
-                                    cleanMat = cleanMat.replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
-                                }
-                            }
-                            const idx = list.findIndex(p => p.id === cp.id);
-                            const formatted = {
+                            let item = {
                                 id: cp.id,
                                 title: cp.title,
                                 category: cp.category,
@@ -144,26 +190,39 @@
                                 image: cp.main_image || cp.image,
                                 gallery: cp.gallery || (cp.main_image ? [cp.main_image] : []),
                                 dimensions: cp.dimensions || '',
-                                material: cleanMat,
+                                material: cp.material || '',
                                 skeleton: cp.skeleton || '',
                                 sponge: cp.sponge || '',
                                 fabric: cp.fabric || '',
-                                videoUrl: vUrl,
-                                youtubeUrl: vUrl,
                                 isActive: cp.is_active !== false
                             };
+                            item = decodeProductMeta(item);
+
+                            const idx = list.findIndex(p => p.id === cp.id);
                             if (idx !== -1) {
-                                list[idx] = { ...list[idx], ...formatted };
+                                list[idx] = { ...list[idx], ...item };
                             } else {
-                                list.push(formatted);
+                                list.push(item);
                             }
                         });
                         localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
+                        return list;
                     }
                 }
             } catch (e) {
                 console.log('Cloud Sync Error:', e);
             }
+            return [];
+        },
+
+        syncAllProductsToCloud: async function () {
+            const list = this.getProducts(true);
+            let successCount = 0;
+            for (const p of list) {
+                const ok = await this._pushProductToCloud(p);
+                if (ok) successCount++;
+            }
+            return { total: list.length, success: successCount };
         },
 
 

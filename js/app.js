@@ -4200,6 +4200,15 @@ document.addEventListener("DOMContentLoaded", () => {
   catCircleNext?.addEventListener("click", () => {
     catSubcirclesTrack?.scrollBy({ left: 260, behavior: "smooth" });
   });
+
+  // Background Cloud Sync on site load (ensures mobile devices pull latest admin edits immediately)
+  if (typeof window.StoreService !== 'undefined' && window.StoreService.syncProductsFromCloud) {
+    window.StoreService.syncProductsFromCloud().then(updatedList => {
+      if (Array.isArray(updatedList) && updatedList.length > 0 && typeof renderProducts === 'function') {
+        renderProducts();
+      }
+    }).catch(e => console.log('App background sync:', e));
+  }
 });
 
 
