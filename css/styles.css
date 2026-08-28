@@ -9551,3 +9551,163 @@ body.modal-open {
         justify-content: center;
     }
 }
+
+/* ==========================================================================
+   Product Detail Accordions & Specifications Tables
+   ========================================================================== */
+.detail-accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+    margin-bottom: 36px;
+}
+
+.detail-accordion-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.detail-accordion-item.open {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.detail-accordion-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+
+.detail-accordion-header:hover {
+    background: #f8fafc;
+}
+
+.detail-acc-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-acc-icon {
+    font-size: 1.1rem;
+    color: #6b21a8;
+}
+
+.detail-acc-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.detail-acc-chevron {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    transition: transform 0.25s ease;
+}
+
+.detail-accordion-item.open .detail-acc-chevron {
+    transform: rotate(180deg);
+    color: #6b21a8;
+}
+
+.detail-accordion-body {
+    display: none;
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.detail-accordion-item.open .detail-accordion-body {
+    display: block;
+    animation: accSlideDown 0.2s ease;
+}
+
+@keyframes accSlideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.specs-double-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    padding-top: 16px;
+}
+
+@media (max-width: 860px) {
+    .specs-double-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.specs-sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.specs-sub-table td, 
+.specs-sub-table th {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.specs-sub-table tr:last-child td,
+.specs-sub-table tr:last-child th {
+    border-bottom: none;
+}
+
+.specs-sub-table .spec-label,
+.specs-sub-table th {
+    font-weight: 700;
+    color: #334155;
+    background: #f8fafc;
+    width: 40%;
+}
+
+.specs-sub-table .spec-value,
+.specs-sub-table td {
+    color: #475569;
+    background: #ffffff;
+}
+
+.general-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.general-info-list li {
+    font-size: 0.86rem;
+    color: #475569;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.general-info-list li i {
+    color: #16a34a;
+    margin-top: 3px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
