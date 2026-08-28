@@ -10617,37 +10617,187 @@ body.scroll-locked {
         max-height: none !important;
         width: 100% !important;
     }
-/* ── Auth Modal Extended Styling (Forgot Password & Email OTP) ── */
+/* ── ULTRA-MODERN LUXURY AUTH MODAL & BUTTONS ── */
+.auth-modal-card {
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px -12px rgba(107, 33, 168, 0.25), 0 0 0 1px rgba(228, 228, 231, 0.7) !important;
+    padding: 32px 28px !important;
+    position: relative !important;
+    max-width: 440px !important;
+    width: 92% !important;
+}
+
+.auth-tabs-modern {
+    display: flex !important;
+    gap: 8px !important;
+    background: #f4f4f5 !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+    margin-bottom: 22px !important;
+}
+
+.auth-tab-btn-modern {
+    flex: 1 !important;
+    padding: 10px 0 !important;
+    border: none !important;
+    background: transparent !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #71717a !important;
+    border-radius: 9px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+}
+
+.auth-tab-btn-modern.active {
+    background: #ffffff !important;
+    color: #6b21a8 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.auth-input-modern {
+    width: 100% !important;
+    height: 48px !important;
+    padding: 12px 16px !important;
+    background: #f8fafc !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem !important;
+    color: #18181b !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+}
+
+.auth-input-modern:focus {
+    background: #ffffff !important;
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3.5px rgba(124, 58, 237, 0.15) !important;
+}
+
+.auth-input-modern::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Primary Button (Matches 2nd image style: "SEPETE EKLE" glowing purple pill) */
+.btn-auth-primary {
+    background: #6b21a8 !important;
+    background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 14px 24px !important;
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.35) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 6px !important;
+}
+
+.btn-auth-primary:hover {
+    background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%) !important;
+    box-shadow: 0 8px 24px rgba(107, 33, 168, 0.45) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-auth-primary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 3px 10px rgba(107, 33, 168, 0.3) !important;
+}
+
+.btn-auth-secondary {
+    background: #faf5ff !important;
+    color: #6b21a8 !important;
+    border: 1.5px solid #ddd6fe !important;
+    border-radius: 12px !important;
+    padding: 12px 18px !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.btn-auth-secondary:hover {
+    background: #f3e8ff !important;
+    border-color: #c4b5fd !important;
+    transform: translateY(-1px) !important;
+}
+
+.auth-checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+
+.auth-checkbox-wrap input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #7c3aed;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
 .auth-link-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.82rem;
-    margin-top: -2px;
-    margin-bottom: 2px;
+    font-size: 0.84rem;
+    margin-top: 2px;
+    margin-bottom: 4px;
 }
-.auth-link-row a {
-    color: #7c3aed;
-    font-weight: 700;
-    text-decoration: none;
-    transition: color 0.2s ease;
+
+.auth-forgot-link {
+    color: #7c3aed !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    font-size: 0.84rem !important;
+    transition: all 0.2s ease !important;
 }
-.auth-link-row a:hover {
-    color: #5b21b6;
-    text-decoration: underline;
+
+.auth-forgot-link:hover {
+    color: #5b21b6 !important;
+    text-decoration: underline !important;
 }
 
 .auth-divider {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 8px 0;
+    margin: 12px 0;
 }
+
 .auth-divider-line {
     flex: 1;
     height: 1px;
     background: #e4e4e7;
 }
+
 .auth-divider-text {
     font-size: 0.75rem;
     font-weight: 700;
@@ -10656,34 +10806,11 @@ body.scroll-locked {
     letter-spacing: 0.5px;
 }
 
-.btn-outline-mail {
-    background: #faf5ff !important;
-    color: #7c3aed !important;
-    border: 1.5px solid #ddd6fe !important;
-    border-radius: 10px !important;
-    padding: 11px 16px !important;
-    font-weight: 700 !important;
-    font-size: 0.88rem !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    cursor: pointer;
-    transition: all 0.2s ease !important;
-    width: 100%;
-}
-.btn-outline-mail:hover {
-    background: #f3e8ff !important;
-    border-color: #c4b5fd !important;
-    color: #6b21a8 !important;
-    transform: translateY(-1px);
-}
-
 .auth-back-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.84rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #64748b;
     background: none;
@@ -10693,15 +10820,16 @@ body.scroll-locked {
     margin-top: 10px;
     transition: color 0.2s ease;
 }
+
 .auth-back-link:hover {
     color: #18181b;
 }
 
 .otp-code-input {
-    letter-spacing: 6px;
-    text-align: center;
-    font-size: 1.25rem !important;
-    font-weight: 800;
-    font-family: monospace;
+    letter-spacing: 8px !important;
+    text-align: center !important;
+    font-size: 1.35rem !important;
+    font-weight: 900 !important;
+    font-family: monospace !important;
 }
 

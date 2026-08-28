@@ -4066,164 +4066,177 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (view === "register") {
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
-                        <button type="button" class="auth-tab-btn" onclick="openAuthModal('login')" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Giriş Yap</button>
-                        <button type="button" class="auth-tab-btn active" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Üye Ol</button>
+                    <div class="auth-tabs-modern">
+                        <button type="button" class="auth-tab-btn-modern" onclick="openAuthModal('login')">Giriş Yap</button>
+                        <button type="button" class="auth-tab-btn-modern active">Üye Ol</button>
                     </div>
 
                     <form id="registerForm" style="display:flex; flex-direction:column; gap:12px;">
-                        <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
-                            Ücretsiz Üye Ol
+                        <input type="text" id="regName" class="auth-input-modern" placeholder="Adınız Soyadınız" required>
+                        <input type="email" id="regEmail" class="auth-input-modern" placeholder="E-Posta Adresiniz" required>
+                        <input type="tel" id="regPhone" class="auth-input-modern" placeholder="Telefon Numaranız" required>
+                        <input type="password" id="regPassword" class="auth-input-modern" placeholder="Şifreniz (En az 6 karakter)" required>
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-user-plus"></i> ÜCRETSİZ ÜYE OL
                         </button>
                     </form>
                 </div>
             `;
         } else if (view === "forgot") {
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div style="margin-bottom:18px;">
-                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-key" style="color:#7c3aed;"></i> Şifremi Unuttum
-                        </h3>
-                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
-                            Kayıtlı e-posta adresinizi giriniz. Şifrenizi sıfırlayabilmeniz için 6 haneli doğrulama kodu iletilecektir.
+                    <div style="margin-bottom:20px; text-align:center;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:#f3e8ff; color:#7c3aed; display:inline-flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:10px;">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h3 style="font-size:1.25rem; font-weight:800; color:#18181b; margin:0 0 6px 0;">Şifremi Unuttum</h3>
+                        <p style="font-size:0.86rem; color:#71717a; margin:0; line-height:1.4;">
+                            Kayıtlı e-posta adresinizi giriniz. Şifrenizi yenilemeniz için 6 haneli doğrulama kodu iletilecektir.
                         </p>
                     </div>
 
-                    <form id="forgotReqForm" style="display:flex; flex-direction:column; gap:12px;">
-                        <input type="email" id="forgotEmail" placeholder="Kayıtlı E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
-                            <i class="fa-solid fa-paper-plane"></i> Sıfırlama Kodu Gönder
+                    <form id="forgotReqForm" style="display:flex; flex-direction:column; gap:14px;">
+                        <input type="email" id="forgotEmail" class="auth-input-modern" placeholder="Kayıtlı E-Posta Adresiniz" required>
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-paper-plane"></i> SIFIRLAMA KODU GÖNDER
                         </button>
-                        <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
-                            <i class="fa-solid fa-arrow-left"></i> Giriş Yap'a Dön
-                        </button>
+                        <div style="text-align:center;">
+                            <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
+                                <i class="fa-solid fa-arrow-left"></i> Giriş Yap'a Dön
+                            </button>
+                        </div>
                     </form>
                 </div>
             `;
         } else if (view === "forgot_step2") {
             const resetEmail = data.email || "";
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div style="margin-bottom:18px;">
-                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-shield-check" style="color:#16a34a;"></i> Yeni Şifre Belirle
-                        </h3>
-                        <p style="font-size:0.84rem; color:#71717a; margin:0; line-height:1.4;">
+                    <div style="margin-bottom:18px; text-align:center;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:#f0fdf4; color:#16a34a; display:inline-flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:10px;">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                        <h3 style="font-size:1.25rem; font-weight:800; color:#18181b; margin:0 0 6px 0;">Yeni Şifre Belirle</h3>
+                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
                             <strong style="color:#18181b;">${resetEmail}</strong> adresine iletilen 6 haneli kodu ve yeni şifrenizi giriniz.
                         </p>
                         ${data.code ? `
-                            <div style="margin-top:8px; padding:6px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; font-size:0.8rem; color:#15803d;">
-                                <i class="fa-solid fa-circle-check"></i> Doğrulama Kodunuz: <strong>${data.code}</strong>
+                            <div style="margin-top:10px; padding:8px 12px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; font-size:0.84rem; color:#15803d; font-weight:700;">
+                                <i class="fa-solid fa-circle-check"></i> Doğrulama Kodunuz: ${data.code}
                             </div>
                         ` : ''}
                     </div>
 
                     <form id="forgotVerifyForm" style="display:flex; flex-direction:column; gap:12px;">
                         <input type="hidden" id="resetTargetEmail" value="${resetEmail}">
-                        <input type="text" id="resetCode" class="otp-code-input" placeholder="000000" maxlength="6" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                        <input type="password" id="resetNewPassword" placeholder="Yeni Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
-                            <i class="fa-solid fa-check"></i> Şifremi Güncelle &amp; Giriş Yap
+                        <input type="text" id="resetCode" class="auth-input-modern otp-code-input" placeholder="000000" maxlength="6" required>
+                        <input type="password" id="resetNewPassword" class="auth-input-modern" placeholder="Yeni Şifreniz (En az 6 karakter)" required>
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-check"></i> ŞİFREMİ GÜNCELLE &amp; GİRİŞ YAP
                         </button>
-                        <button type="button" class="auth-back-link" onclick="openAuthModal('forgot')">
-                            <i class="fa-solid fa-arrow-left"></i> E-Postayı Değiştir
-                        </button>
+                        <div style="text-align:center;">
+                            <button type="button" class="auth-back-link" onclick="openAuthModal('forgot')">
+                                <i class="fa-solid fa-arrow-left"></i> E-Postayı Değiştir
+                            </button>
+                        </div>
                     </form>
                 </div>
             `;
         } else if (view === "magic_otp") {
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div style="margin-bottom:18px;">
-                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-envelope-circle-check" style="color:#7c3aed;"></i> E-Posta ile Şifresiz Giriş
-                        </h3>
-                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
-                            Şifre hatırlamanıza gerek yok! E-postanızı girin, size tek kullanımlık 6 haneli hızlı giriş kodu gönderelim.
+                    <div style="margin-bottom:20px; text-align:center;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:#f3e8ff; color:#7c3aed; display:inline-flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:10px;">
+                            <i class="fa-solid fa-envelope-circle-check"></i>
+                        </div>
+                        <h3 style="font-size:1.25rem; font-weight:800; color:#18181b; margin:0 0 6px 0;">Şifresiz Hızlı Giriş</h3>
+                        <p style="font-size:0.86rem; color:#71717a; margin:0; line-height:1.4;">
+                            Şifre hatırlamanıza gerek yok! E-postanızı girin, size tek kullanımlık 6 haneli giriş kodu gönderelim.
                         </p>
                     </div>
 
-                    <form id="magicOtpReqForm" style="display:flex; flex-direction:column; gap:12px;">
-                        <input type="email" id="magicOtpEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
-                            <i class="fa-solid fa-paper-plane"></i> Tek Kullanımlık Kod Gönder
+                    <form id="magicOtpReqForm" style="display:flex; flex-direction:column; gap:14px;">
+                        <input type="email" id="magicOtpEmail" class="auth-input-modern" placeholder="E-Posta Adresiniz" required>
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-paper-plane"></i> GİRİŞ KODU GÖNDER
                         </button>
-                        <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
-                            <i class="fa-solid fa-arrow-left"></i> Şifre ile Normal Giriş
-                        </button>
+                        <div style="text-align:center;">
+                            <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
+                                <i class="fa-solid fa-arrow-left"></i> Şifre ile Normal Giriş
+                            </button>
+                        </div>
                     </form>
                 </div>
             `;
         } else if (view === "magic_otp_step2") {
             const loginEmail = data.email || "";
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div style="margin-bottom:18px;">
-                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
-                            <i class="fa-solid fa-envelope-open-text" style="color:#16a34a;"></i> Giriş Kodunu Giriniz
-                        </h3>
-                        <p style="font-size:0.84rem; color:#71717a; margin:0; line-height:1.4;">
-                            <strong style="color:#18181b;">${loginEmail}</strong> adresinize tek kullanımlık 6 haneli giriş kodu iletildi.
+                    <div style="margin-bottom:18px; text-align:center;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:#f0fdf4; color:#16a34a; display:inline-flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:10px;">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <h3 style="font-size:1.25rem; font-weight:800; color:#18181b; margin:0 0 6px 0;">Giriş Kodunu Giriniz</h3>
+                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
+                            <strong style="color:#18181b;">${loginEmail}</strong> adresinize 6 haneli tek kullanımlık kod iletildi.
                         </p>
                         ${data.code ? `
-                            <div style="margin-top:8px; padding:6px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; font-size:0.8rem; color:#15803d;">
-                                <i class="fa-solid fa-circle-check"></i> Tek Kullanımlık Giriş Kodunuz: <strong>${data.code}</strong>
+                            <div style="margin-top:10px; padding:8px 12px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; font-size:0.84rem; color:#15803d; font-weight:700;">
+                                <i class="fa-solid fa-circle-check"></i> Giriş Kodunuz: ${data.code}
                             </div>
                         ` : ''}
                     </div>
 
-                    <form id="magicOtpVerifyForm" style="display:flex; flex-direction:column; gap:12px;">
+                    <form id="magicOtpVerifyForm" style="display:flex; flex-direction:column; gap:14px;">
                         <input type="hidden" id="magicTargetEmail" value="${loginEmail}">
-                        <input type="text" id="magicCode" class="otp-code-input" placeholder="000000" maxlength="6" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px;">
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
-                            <i class="fa-solid fa-right-to-bracket"></i> Şifresiz Giriş Yap
+                        <input type="text" id="magicCode" class="auth-input-modern otp-code-input" placeholder="000000" maxlength="6" required>
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-right-to-bracket"></i> ŞİFRESİZ GİRİŞ YAP
                         </button>
-                        <button type="button" class="auth-back-link" onclick="openAuthModal('magic_otp')">
-                            <i class="fa-solid fa-arrow-left"></i> Farklı E-Posta Kullan
-                        </button>
+                        <div style="text-align:center;">
+                            <button type="button" class="auth-back-link" onclick="openAuthModal('magic_otp')">
+                                <i class="fa-solid fa-arrow-left"></i> Farklı E-Posta Kullan
+                            </button>
+                        </div>
                     </form>
                 </div>
             `;
         } else {
             // Default: Standard Login
             cardHtml = `
-                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                <div class="auth-modal-card">
                     <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
                     
-                    <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
-                        <button type="button" class="auth-tab-btn active" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
-                        <button type="button" class="auth-tab-btn" onclick="openAuthModal('register')" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+                    <div class="auth-tabs-modern">
+                        <button type="button" class="auth-tab-btn-modern active">Giriş Yap</button>
+                        <button type="button" class="auth-tab-btn-modern" onclick="openAuthModal('register')">Üye Ol</button>
                     </div>
 
                     <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
-                        <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
-                        <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <input type="email" id="loginEmail" class="auth-input-modern" placeholder="E-Posta Adresiniz" required>
+                        <input type="password" id="loginPassword" class="auth-input-modern" placeholder="Şifreniz" required>
                         
                         <div class="auth-link-row">
-                            <label style="display:flex; align-items:center; gap:6px; color:#52525b; cursor:pointer; font-size:0.82rem;">
-                                <input type="checkbox" id="rememberMe" checked> Beni Hatırla
+                            <label class="auth-checkbox-wrap">
+                                <input type="checkbox" id="rememberMe" checked>
+                                <span>Beni Hatırla</span>
                             </label>
-                            <a href="javascript:void(0)" onclick="openAuthModal('forgot')">Şifremi Unuttum?</a>
+                            <a href="javascript:void(0)" onclick="openAuthModal('forgot')" class="auth-forgot-link">Şifremi Unuttum?</a>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:2px;">
-                            <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+                        <button type="submit" class="btn-auth-primary interactive-btn">
+                            <i class="fa-solid fa-right-to-bracket"></i> GİRİŞ YAP
                         </button>
 
                         <div class="auth-divider">
@@ -4232,12 +4245,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="auth-divider-line"></div>
                         </div>
 
-                        <button type="button" class="btn-outline-mail interactive-btn" onclick="openAuthModal('magic_otp')">
-                            <i class="fa-solid fa-envelope-circle-check"></i> E-Posta ile Şifresiz Giriş Yap (Kodlu)
+                        <button type="button" class="btn-auth-secondary interactive-btn" onclick="openAuthModal('magic_otp')">
+                            <i class="fa-solid fa-envelope-circle-check" style="color:#7c3aed; font-size:1rem;"></i> E-Posta ile Şifresiz Giriş Yap (Kodlu)
                         </button>
 
-                        <p style="text-align:center; font-size:0.82rem; color:#71717a; margin:6px 0 0 0;">
-                            Üye olmadan sipariş takip etmek için <a href="siparislerim.html" style="color:#6b21a8; font-weight:600;">tıklayınız</a>.
+                        <p style="text-align:center; font-size:0.82rem; color:#71717a; margin:8px 0 0 0;">
+                            Üye olmadan sipariş takip etmek için <a href="siparislerim.html" style="color:#6b21a8; font-weight:700; text-decoration:none;">tıklayınız</a>.
                         </p>
                     </form>
                 </div>
