@@ -2065,6 +2065,12 @@ const addToCart = (productId) => {
   updateBadges();
   showToast(`<strong>${item.title}</strong> sepete eklendi!`, "fa-bag-shopping");
   renderCart();
+  
+  // Otomatik olarak sepeti aç
+  document.getElementById("cartDrawer")?.classList.add("active");
+  document.getElementById("cartOverlay")?.classList.add("active");
+  document.body.classList.add("cart-open");
+  lockBodyScroll();
 };
 
 const updateBadges = () => {
@@ -3630,7 +3636,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Checkout Form Submit Handler (Saves Customer Data & Creates Order)
+  // Payment method selection & card input formatters
+  let selectedPayMethod = "card";
+  const payMethodBtns = document.querySelectorAll(".payment-method-btn");
+  payMethodBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      payMethodBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedPayMethod = btn.getAttribute("data-method") || "card";
+      
+      document.getElementById("panelPayCard")?.classList.toggle("active", selectedPayMethod === "card");
+      document.getElementById("panelPayBank")?.classList.toggle("active", selectedPayMethod === "bank");
+      document.getElementById("panelPayCod")?.classList.toggle("active", selectedPayMethod === "cod");
+
+      const submitText = document.getElementById("checkoutSubmitText");
+      if (submitText) {
+        if (selectedPayMethod === "card") submitText.textContent = "iyzico ile Güvenli Ödeme Yap";
+        else if (selectedPayMethod === "bank") submitText.textContent = "Havale ile Siparişi Tamamla";
+        else if (selectedPayMethod === "cod") submitText.textContent = "Kapıda Ödeme ile Siparişi Onayla";
+      }
+    });
+  });
+
+  document.getElementById("cardNumber")?.addEventListener("input", (e) => {
+    let val = e.target.value.replace(/\D/g, '').substring(0, 16);
+    val = val.replace(/(\d{4})(?=\d)/g, '$1 ');
+    e.target.value = val;
+  });
+
+  document.getElementById("cardExpiry")?.addEventListener("input", (e) => {
+    let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+    if (val.length >= 2) {
+      val = val.substring(0, 2) + '/' + val.substring(2);
+    }
+    e.target.value = val;
+  });
+
+  // Checkout Form Submit Handler (iyzico & Online Payment Ready)
   const checkoutForm = document.getElementById("checkoutForm");
   if (checkoutForm) {
     checkoutForm.addEventListener("submit", (e) => {
@@ -3650,6 +3692,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cart.length === 0) {
         showToast("Sepetiniz boş!", "fa-basket-shopping");
         return;
+      }
+
+      let paymentMethodLabel = "Kredi Kartı (iyzico 3D Secure)";
+      let paymentStatus = "paid";
+      let paymentGateway = "iyzico";
+
+      if (selectedPayMethod === "bank") {
+        paymentMethodLabel = "Banka Havalesi / EFT";
+        paymentStatus = "pending_bank";
+        paymentGateway = "bank_transfer";
+      } else if (selectedPayMethod === "cod") {
+        paymentMethodLabel = "Kapıda Ödeme (Teslimatta)";
+        paymentStatus = "pending_cod";
+        paymentGateway = "cod";
       }
 
       // Record customer into mobelmor_customers so Admin panel has the customer data
@@ -3695,6 +3751,10 @@ document.addEventListener("DOMContentLoaded", () => {
         customerPhone: phone,
         address: address,
         notes: note,
+        paymentMethod: selectedPayMethod,
+        paymentMethodLabel: paymentMethodLabel,
+        paymentStatus: paymentStatus,
+        paymentGateway: paymentGateway,
         items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image })),
         total: subtotal,
         totalAmount: subtotal
@@ -3713,40 +3773,60 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Order save error:", err);
       }
 
-      // Build formatted WhatsApp message
-      let waMsg = `🛋️ *MOBELMOR SİPARİŞ TALEBİ* (${orderData.id})\n`;
-      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-      waMsg += `👤 *Müşteri:* ${name}\n`;
-      waMsg += `📧 *E-Posta:* ${email}\n`;
-      waMsg += `📞 *Telefon:* ${phone}\n`;
-      waMsg += `📍 *Adres:* ${address}\n`;
-      if (note) waMsg += `📝 *Not:* ${note}\n`;
-      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-      waMsg += `📦 *Sipariş Edilen Ürünler:*\n`;
-      cart.forEach((item, idx) => {
-        waMsg += `${idx + 1}. ${item.qty}x ${item.title} - ${formatPrice(item.price * item.qty)}\n`;
-      });
-      waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-      waMsg += `💰 *Toplam Tutar:* ${formatPrice(subtotal)}\n`;
-      waMsg += `📅 *Tarih:* ${orderDate}\n\n`;
-      waMsg += `Siparişimin teyit edilmesini ve teslimat planlamasının başlatılmasını rica ederim.`;
-
-      const waUrl = `https://wa.me/905300000000?text=${encodeURIComponent(waMsg)}`;
-
       // Clear cart & persist empty cart
       cart = [];
       saveCart();
       updateBadges();
       renderCart();
-      document.getElementById("checkoutOverlay")?.classList.remove("active");
-      document.body.classList.remove("modal-open");
-      showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
-      checkoutForm.reset();
 
-      // Open WhatsApp with prefilled order
-      setTimeout(() => {
-        window.open(waUrl, "_blank");
-      }, 600);
+      // Show in-modal Order Success screen
+      const mainContent = document.getElementById("checkoutMainContent");
+      const successContent = document.getElementById("checkoutSuccessContent");
+      if (mainContent && successContent) {
+        mainContent.style.display = "none";
+        successContent.style.display = "block";
+        successContent.innerHTML = `
+          <div class="order-success-box">
+              <div class="success-icon-badge"><i class="fa-solid fa-check"></i></div>
+              <h3 style="margin:0; color:#15803d; font-size:1.25rem;">Siparişiniz Başarıyla Alındı!</h3>
+              <p style="color:#64748b; font-size:0.85rem; margin:4px 0 10px 0;">Ödeme ve sipariş bilgileriniz ${selectedPayMethod === 'card' ? 'iyzico 3D Secure güvencesiyle' : ''} sisteme kaydedildi.</p>
+              <div class="order-success-num">Sipariş No: <strong>${newOrderId}</strong></div>
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin:12px 0; text-align:left; font-size:0.82rem;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                      <span style="color:#64748b;">Ödeme Yöntemi:</span>
+                      <strong style="color:#1e1b4b;">${paymentMethodLabel}</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                      <span style="color:#64748b;">Toplam Tutar:</span>
+                      <strong style="color:#6b21a8;">${formatPrice(subtotal)}</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between;">
+                      <span style="color:#64748b;">Teslimat Adresi:</span>
+                      <span style="color:#1e1b4b; max-width:180px; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${address}</span>
+                  </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+                  <a href="siparislerim.html" class="btn btn-primary btn-block interactive-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;">
+                      <i class="fa-solid fa-box"></i> Siparişlerimi Görüntüle
+                  </a>
+                  <button type="button" class="btn btn-block interactive-btn" id="successCloseBtn" style="background:#f1f5f9; color:#475569; padding:10px; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                      Alışverişe Devam Et
+                  </button>
+              </div>
+          </div>
+        `;
+
+        document.getElementById("successCloseBtn")?.addEventListener("click", () => {
+          document.getElementById("checkoutOverlay")?.classList.remove("active");
+          document.body.classList.remove("modal-open");
+          unlockBodyScroll();
+          mainContent.style.display = "block";
+          successContent.style.display = "none";
+          checkoutForm.reset();
+        });
+      }
+
+      showToast(`Siparişiniz Alındı! Takip No: ${newOrderId}`, "fa-circle-check");
     });
   }
 

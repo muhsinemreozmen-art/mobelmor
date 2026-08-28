@@ -5013,6 +5013,230 @@ body.scroll-locked {
     border-color: #ddd6fe;
 }
 
+/* ── Payment Method Selector & iyzico Ready Styles ── */
+.checkout-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e1b4b;
+    margin: 4px 0 2px 0;
+}
+
+.checkout-section-header i {
+    color: #7c3aed;
+}
+
+.payment-method-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 4px 0;
+}
+
+@media (max-width: 520px) {
+    .payment-method-selector {
+        grid-template-columns: 1fr;
+    }
+}
+
+.payment-method-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.payment-method-btn i {
+    font-size: 1.1rem;
+    color: #64748b;
+    transition: color 0.2s ease;
+}
+
+.payment-method-btn.active {
+    border-color: #7c3aed;
+    background: #faf5ff;
+    color: #6b21a8;
+    box-shadow: 0 0 0 1px #7c3aed;
+}
+
+.payment-method-btn.active i {
+    color: #7c3aed;
+}
+
+.payment-method-panel {
+    display: none;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 4px;
+    animation: fadeInTab 0.2s ease;
+}
+
+.payment-method-panel.active {
+    display: block;
+}
+
+@keyframes fadeInTab {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.iyzico-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.iyzico-security-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.card-brands-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    font-size: 1.15rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.card-grid-full {
+    grid-column: 1 / -1;
+}
+
+.card-input-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.card-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 0.85rem;
+    color: #0f172a;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.bank-info-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+}
+
+.bank-info-card:last-child {
+    margin-bottom: 0;
+}
+
+.bank-name {
+    font-weight: 800;
+    color: #1e1b4b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bank-iban {
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: #6b21a8;
+    font-weight: 700;
+    margin: 4px 0 2px 0;
+    word-break: break-all;
+}
+
+.bank-holder {
+    font-size: 0.74rem;
+    color: #64748b;
+}
+
+.order-success-box {
+    text-align: center;
+    padding: 24px 16px;
+}
+
+.success-icon-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+    animation: bounceIn 0.5s ease;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.08); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.order-success-num {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #6b21a8;
+    margin: 8px 0;
+    background: #faf5ff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px dashed #c084fc;
+    display: inline-block;
+}
+
 
 /* Toast Notifications (Modern Luxury Mobelmor Design) */
 .toast-container {
