@@ -2530,6 +2530,14 @@ const renderProductDetail = () => {
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
 
+                    <!-- Floating Video Watch Pill (Always Visible & Clickable) -->
+                    ${(product.videoUrl || product.youtubeUrl) ? `
+                    <button type="button" class="vgallery-floating-video-btn" onclick="openYouTubeVideoModal('${encodeURIComponent(product.videoUrl || product.youtubeUrl)}')" title="Ürünün Videosunu İzle">
+                        <span class="vgallery-video-play-pulse"><i class="fa-solid fa-play"></i></span>
+                        <span>VİDEO İZLE</span>
+                    </button>
+                    ` : ''}
+
                     <!-- Bottom Dot Indicators (Mobile & Tablet) -->
                     <div class="gallery-dots-strip" id="galleryDotsStrip">
                         ${gallery.map((_, idx) => `
