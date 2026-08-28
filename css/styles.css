@@ -10617,12 +10617,91 @@ body.scroll-locked {
         max-height: none !important;
         width: 100% !important;
     }
-    .invoice-paper {
-        padding: 10mm 15mm !important;
-        font-size: 10pt !important;
-    }
-    .invoice-table {
-        min-width: 100% !important;
-    }
+/* ── Auth Modal Extended Styling (Forgot Password & Email OTP) ── */
+.auth-link-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    margin-top: -2px;
+    margin-bottom: 2px;
+}
+.auth-link-row a {
+    color: #7c3aed;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.auth-link-row a:hover {
+    color: #5b21b6;
+    text-decoration: underline;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+}
+.auth-divider-line {
+    flex: 1;
+    height: 1px;
+    background: #e4e4e7;
+}
+.auth-divider-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-outline-mail {
+    background: #faf5ff !important;
+    color: #7c3aed !important;
+    border: 1.5px solid #ddd6fe !important;
+    border-radius: 10px !important;
+    padding: 11px 16px !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
+    width: 100%;
+}
+.btn-outline-mail:hover {
+    background: #f3e8ff !important;
+    border-color: #c4b5fd !important;
+    color: #6b21a8 !important;
+    transform: translateY(-1px);
+}
+
+.auth-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #64748b;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 10px;
+    transition: color 0.2s ease;
+}
+.auth-back-link:hover {
+    color: #18181b;
+}
+
+.otp-code-input {
+    letter-spacing: 6px;
+    text-align: center;
+    font-size: 1.25rem !important;
+    font-weight: 800;
+    font-family: monospace;
 }
 

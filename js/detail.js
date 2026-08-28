@@ -4050,53 +4050,213 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    window.openAuthModal = (tab = "login") => {
-        const overlay = document.getElementById("authModalOverlay");
-        const loginFormEl = document.getElementById("loginForm");
-        const registerFormEl = document.getElementById("registerForm");
-        const tabLoginBtnEl = document.getElementById("tabLoginBtn");
-        const tabRegisterBtnEl = document.getElementById("tabRegisterBtn");
+    window.openAuthModal = (view = "login", data = {}) => {
+        let overlay = document.getElementById("authModalOverlay");
+        if (!overlay) {
+            overlay = document.createElement("div");
+            overlay.id = "authModalOverlay";
+            overlay.className = "modal-overlay";
+            document.body.appendChild(overlay);
+        }
 
         document.getElementById("userMenuDropdown")?.classList.remove("active");
         document.getElementById("orderTrackDropdown")?.classList.remove("active");
 
-        if (overlay) {
-            overlay.classList.add("active");
-            document.body.classList.add("modal-open");
+        let cardHtml = "";
+
+        if (view === "register") {
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                        <button type="button" class="auth-tab-btn" onclick="openAuthModal('login')" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Giriş Yap</button>
+                        <button type="button" class="auth-tab-btn active" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Üye Ol</button>
+                    </div>
+
+                    <form id="registerForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="text" id="regName" placeholder="Adınız Soyadınız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <input type="email" id="regEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <input type="tel" id="regPhone" placeholder="Telefon Numaranız" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <input type="password" id="regPassword" placeholder="Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:6px;">
+                            Ücretsiz Üye Ol
+                        </button>
+                    </form>
+                </div>
+            `;
+        } else if (view === "forgot") {
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div style="margin-bottom:18px;">
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-key" style="color:#7c3aed;"></i> Şifremi Unuttum
+                        </h3>
+                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
+                            Kayıtlı e-posta adresinizi giriniz. Şifrenizi sıfırlayabilmeniz için 6 haneli doğrulama kodu iletilecektir.
+                        </p>
+                    </div>
+
+                    <form id="forgotReqForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="email" id="forgotEmail" placeholder="Kayıtlı E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
+                            <i class="fa-solid fa-paper-plane"></i> Sıfırlama Kodu Gönder
+                        </button>
+                        <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
+                            <i class="fa-solid fa-arrow-left"></i> Giriş Yap'a Dön
+                        </button>
+                    </form>
+                </div>
+            `;
+        } else if (view === "forgot_step2") {
+            const resetEmail = data.email || "";
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div style="margin-bottom:18px;">
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-shield-check" style="color:#16a34a;"></i> Yeni Şifre Belirle
+                        </h3>
+                        <p style="font-size:0.84rem; color:#71717a; margin:0; line-height:1.4;">
+                            <strong style="color:#18181b;">${resetEmail}</strong> adresine iletilen 6 haneli kodu ve yeni şifrenizi giriniz.
+                        </p>
+                        ${data.code ? `
+                            <div style="margin-top:8px; padding:6px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; font-size:0.8rem; color:#15803d;">
+                                <i class="fa-solid fa-circle-check"></i> Doğrulama Kodunuz: <strong>${data.code}</strong>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <form id="forgotVerifyForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="hidden" id="resetTargetEmail" value="${resetEmail}">
+                        <input type="text" id="resetCode" class="otp-code-input" placeholder="000000" maxlength="6" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                        <input type="password" id="resetNewPassword" placeholder="Yeni Şifreniz (En az 6 karakter)" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
+                            <i class="fa-solid fa-check"></i> Şifremi Güncelle &amp; Giriş Yap
+                        </button>
+                        <button type="button" class="auth-back-link" onclick="openAuthModal('forgot')">
+                            <i class="fa-solid fa-arrow-left"></i> E-Postayı Değiştir
+                        </button>
+                    </form>
+                </div>
+            `;
+        } else if (view === "magic_otp") {
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div style="margin-bottom:18px;">
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-envelope-circle-check" style="color:#7c3aed;"></i> E-Posta ile Şifresiz Giriş
+                        </h3>
+                        <p style="font-size:0.85rem; color:#71717a; margin:0; line-height:1.4;">
+                            Şifre hatırlamanıza gerek yok! E-postanızı girin, size tek kullanımlık 6 haneli hızlı giriş kodu gönderelim.
+                        </p>
+                    </div>
+
+                    <form id="magicOtpReqForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="email" id="magicOtpEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
+                            <i class="fa-solid fa-paper-plane"></i> Tek Kullanımlık Kod Gönder
+                        </button>
+                        <button type="button" class="auth-back-link" onclick="openAuthModal('login')">
+                            <i class="fa-solid fa-arrow-left"></i> Şifre ile Normal Giriş
+                        </button>
+                    </form>
+                </div>
+            `;
+        } else if (view === "magic_otp_step2") {
+            const loginEmail = data.email || "";
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div style="margin-bottom:18px;">
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-envelope-open-text" style="color:#16a34a;"></i> Giriş Kodunu Giriniz
+                        </h3>
+                        <p style="font-size:0.84rem; color:#71717a; margin:0; line-height:1.4;">
+                            <strong style="color:#18181b;">${loginEmail}</strong> adresinize tek kullanımlık 6 haneli giriş kodu iletildi.
+                        </p>
+                        ${data.code ? `
+                            <div style="margin-top:8px; padding:6px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; font-size:0.8rem; color:#15803d;">
+                                <i class="fa-solid fa-circle-check"></i> Tek Kullanımlık Giriş Kodunuz: <strong>${data.code}</strong>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <form id="magicOtpVerifyForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="hidden" id="magicTargetEmail" value="${loginEmail}">
+                        <input type="text" id="magicCode" class="otp-code-input" placeholder="000000" maxlength="6" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px;">
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:4px;">
+                            <i class="fa-solid fa-right-to-bracket"></i> Şifresiz Giriş Yap
+                        </button>
+                        <button type="button" class="auth-back-link" onclick="openAuthModal('magic_otp')">
+                            <i class="fa-solid fa-arrow-left"></i> Farklı E-Posta Kullan
+                        </button>
+                    </form>
+                </div>
+            `;
+        } else {
+            // Default: Standard Login
+            cardHtml = `
+                <div class="modal-card" style="max-width: 440px; width: 92%; padding: 28px;">
+                    <button class="close-btn modal-close interactive-btn" onclick="closeAuthModal()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div class="auth-tabs" style="display:flex; border-bottom:1px solid #f4f4f5; margin-bottom:20px; gap:16px;">
+                        <button type="button" class="auth-tab-btn active" style="padding:10px 0; border:none; background:none; font-weight:800; font-size:1.05rem; color:#6b21a8; border-bottom:2px solid #6b21a8; cursor:pointer;">Giriş Yap</button>
+                        <button type="button" class="auth-tab-btn" onclick="openAuthModal('register')" style="padding:10px 0; border:none; background:none; font-weight:700; font-size:1.05rem; color:#71717a; cursor:pointer;">Üye Ol</button>
+                    </div>
+
+                    <form id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+                        <input type="email" id="loginEmail" placeholder="E-Posta Adresiniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        <input type="password" id="loginPassword" placeholder="Şifreniz" required style="padding:12px 14px; border:1px solid #e4e4e7; border-radius:8px; font-size:0.95rem;">
+                        
+                        <div class="auth-link-row">
+                            <label style="display:flex; align-items:center; gap:6px; color:#52525b; cursor:pointer; font-size:0.82rem;">
+                                <input type="checkbox" id="rememberMe" checked> Beni Hatırla
+                            </label>
+                            <a href="javascript:void(0)" onclick="openAuthModal('forgot')">Şifremi Unuttum?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block interactive-btn" style="padding:13px; font-weight:700; margin-top:2px;">
+                            <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+                        </button>
+
+                        <div class="auth-divider">
+                            <div class="auth-divider-line"></div>
+                            <span class="auth-divider-text">veya</span>
+                            <div class="auth-divider-line"></div>
+                        </div>
+
+                        <button type="button" class="btn-outline-mail interactive-btn" onclick="openAuthModal('magic_otp')">
+                            <i class="fa-solid fa-envelope-circle-check"></i> E-Posta ile Şifresiz Giriş Yap (Kodlu)
+                        </button>
+
+                        <p style="text-align:center; font-size:0.82rem; color:#71717a; margin:6px 0 0 0;">
+                            Üye olmadan sipariş takip etmek için <a href="siparislerim.html" style="color:#6b21a8; font-weight:600;">tıklayınız</a>.
+                        </p>
+                    </form>
+                </div>
+            `;
         }
 
-        if (tab === "register") {
-            if (tabRegisterBtnEl) {
-                tabRegisterBtnEl.classList.add("active");
-                tabRegisterBtnEl.style.color = "#6b21a8";
-                tabRegisterBtnEl.style.borderBottom = "2px solid #6b21a8";
-                tabRegisterBtnEl.style.fontWeight = "800";
-            }
-            if (tabLoginBtnEl) {
-                tabLoginBtnEl.classList.remove("active");
-                tabLoginBtnEl.style.color = "#71717a";
-                tabLoginBtnEl.style.borderBottom = "none";
-                tabLoginBtnEl.style.fontWeight = "700";
-            }
-            if (registerFormEl) registerFormEl.style.display = "flex";
-            if (loginFormEl) loginFormEl.style.display = "none";
-            setTimeout(() => document.getElementById("regName")?.focus(), 100);
-        } else {
-            if (tabLoginBtnEl) {
-                tabLoginBtnEl.classList.add("active");
-                tabLoginBtnEl.style.color = "#6b21a8";
-                tabLoginBtnEl.style.borderBottom = "2px solid #6b21a8";
-                tabLoginBtnEl.style.fontWeight = "800";
-            }
-            if (tabRegisterBtnEl) {
-                tabRegisterBtnEl.classList.remove("active");
-                tabRegisterBtnEl.style.color = "#71717a";
-                tabRegisterBtnEl.style.borderBottom = "none";
-                tabRegisterBtnEl.style.fontWeight = "700";
-            }
-            if (loginFormEl) loginFormEl.style.display = "flex";
-            if (registerFormEl) registerFormEl.style.display = "none";
-            setTimeout(() => document.getElementById("loginEmail")?.focus(), 100);
+        overlay.innerHTML = cardHtml;
+        overlay.classList.add("active");
+        document.body.classList.add("modal-open");
+
+        attachAuthModalEvents(view);
+    };
+
+    window.closeAuthModal = () => {
+        const overlay = document.getElementById("authModalOverlay");
+        if (overlay) {
+            overlay.classList.remove("active");
+            document.body.classList.remove("modal-open");
+            unlockBodyScroll(true);
         }
     };
 
@@ -4232,109 +4392,226 @@ document.addEventListener("DOMContentLoaded", () => {
         if (registerForm) registerForm.style.display = "none";
     });
 
-    tabRegisterBtn?.addEventListener("click", () => {
-        tabRegisterBtn.classList.add("active");
-        tabRegisterBtn.style.color = "#6b21a8";
-        tabRegisterBtn.style.borderBottom = "2px solid #6b21a8";
-        tabRegisterBtn.style.fontWeight = "800";
-        tabLoginBtn.classList.remove("active");
-        tabLoginBtn.style.color = "#71717a";
-        tabLoginBtn.style.borderBottom = "none";
-        tabLoginBtn.style.fontWeight = "700";
-        if (registerForm) registerForm.style.display = "flex";
-        if (loginForm) loginForm.style.display = "none";
-    });
-
-    document.getElementById("closeAuthModalBtn")?.addEventListener("click", () => {
-        document.getElementById("authModalOverlay")?.classList.remove("active");
-        document.body.classList.remove("modal-open");
-        unlockBodyScroll(true);
-    });
-    document.getElementById("authModalOverlay")?.addEventListener("click", (e) => {
-        if (e.target.id === "authModalOverlay") {
-            document.getElementById("authModalOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-            unlockBodyScroll(true);
-        }
-    });
-
-    // Real Login Submit Handler
-    loginForm?.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
-        const pass = (document.getElementById("loginPassword")?.value || "").trim();
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
-        const origText = submitBtn ? submitBtn.innerHTML : "Giriş Yap";
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kontrol Ediliyor...';
+    // Auth Modal Event Handlers (Multi-View: Login, Register, Forgot Password, Magic OTP Login)
+    const attachAuthModalEvents = (view) => {
+        const overlay = document.getElementById("authModalOverlay");
+        
+        // Close overlay backdrop
+        if (overlay) {
+            overlay.onclick = (e) => {
+                if (e.target.id === "authModalOverlay") {
+                    closeAuthModal();
+                }
+            };
         }
 
-        try {
-            const sessionUser = await window.StoreService.loginCustomer(email, pass);
-            updateAuthUI();
-            document.getElementById("authModalOverlay")?.classList.remove("active");
-            document.body.classList.remove("modal-open");
-            showToast(`Hoş geldiniz, ${sessionUser.fullName || sessionUser.name}!`, "fa-circle-check");
-            loginForm.reset();
-        } catch (err) {
-            showToast(err.message, "fa-triangle-exclamation");
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = origText;
-            }
-        }
-    });
+        // 1. LOGIN FORM
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+            setTimeout(() => document.getElementById("loginEmail")?.focus(), 150);
+            loginForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = (document.getElementById("loginEmail")?.value || "").trim().toLowerCase();
+                const pass = (document.getElementById("loginPassword")?.value || "").trim();
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Giriş Yap";
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kontrol Ediliyor...';
+                }
 
-    // Real Register Submit Handler
-    registerForm?.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const name = (document.getElementById("regName")?.value || "").trim();
-        const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
-        const phone = (document.getElementById("regPhone")?.value || "").trim();
-        const password = (document.getElementById("regPassword")?.value || "").trim();
-        const submitBtn = registerForm.querySelector('button[type="submit"]');
-        const origText = submitBtn ? submitBtn.innerHTML : "Ücretsiz Üye Ol";
-
-        if (!name || !email || !password) {
-            showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
-            return;
-        }
-
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt Yapılıyor...';
+                try {
+                    const sessionUser = await window.StoreService.loginCustomer(email, pass);
+                    updateAuthUI();
+                    closeAuthModal();
+                    showToast(`Hoş geldiniz, ${sessionUser.fullName || sessionUser.name}!`, "fa-circle-check");
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
         }
 
-        try {
-            const res = await window.StoreService.registerCustomer({
-                fullName: name,
-                email: email,
-                phone: phone,
-                password: password
-            });
+        // 2. REGISTER FORM
+        const registerForm = document.getElementById("registerForm");
+        if (registerForm) {
+            setTimeout(() => document.getElementById("regName")?.focus(), 150);
+            registerForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const name = (document.getElementById("regName")?.value || "").trim();
+                const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
+                const phone = (document.getElementById("regPhone")?.value || "").trim();
+                const password = (document.getElementById("regPassword")?.value || "").trim();
+                const submitBtn = registerForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Ücretsiz Üye Ol";
 
-            if (res.confirmationSent) {
-                showToast(`Doğrulama bağlantısı ${email} adresinize gönderildi! Lütfen e-postanızı onaylayınız.`, "fa-envelope-circle-check");
-                registerForm.reset();
-                window.openAuthModal("login");
-            } else {
-                updateAuthUI();
-                document.getElementById("authModalOverlay")?.classList.remove("active");
-                document.body.classList.remove("modal-open");
-                showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
-                registerForm.reset();
-            }
-        } catch (err) {
-            showToast(err.message, "fa-triangle-exclamation");
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = origText;
-            }
+                if (!name || !email || !password) {
+                    showToast("Lütfen zorunlu alanları doldurunuz.", "fa-triangle-exclamation");
+                    return;
+                }
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt Yapılıyor...';
+                }
+
+                try {
+                    const res = await window.StoreService.registerCustomer({
+                        fullName: name,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        password: password
+                    });
+
+                    if (res && res.confirmationSent) {
+                        showToast(`Doğrulama bağlantısı ${email} adresinize gönderildi! Lütfen e-postanızı onaylayınız.`, "fa-envelope-circle-check");
+                        window.openAuthModal("login");
+                    } else {
+                        updateAuthUI();
+                        closeAuthModal();
+                        showToast(`Üyeliğiniz oluşturuldu! Hoş geldiniz, ${name}.`, "fa-circle-check");
+                    }
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
         }
-    });
+
+        // 3. FORGOT PASSWORD REQUEST FORM (STEP 1)
+        const forgotReqForm = document.getElementById("forgotReqForm");
+        if (forgotReqForm) {
+            setTimeout(() => document.getElementById("forgotEmail")?.focus(), 150);
+            forgotReqForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = (document.getElementById("forgotEmail")?.value || "").trim().toLowerCase();
+                const submitBtn = forgotReqForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Sıfırlama Kodu Gönder";
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kod Gönderiliyor...';
+                }
+
+                try {
+                    const res = await window.StoreService.requestPasswordReset(email);
+                    showToast(`Sıfırlama kodu ${email} adresinize iletildi!`, "fa-envelope-circle-check");
+                    window.openAuthModal("forgot_step2", { email: res.email, code: res.code });
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
+        }
+
+        // 4. FORGOT PASSWORD VERIFY & RESET FORM (STEP 2)
+        const forgotVerifyForm = document.getElementById("forgotVerifyForm");
+        if (forgotVerifyForm) {
+            setTimeout(() => document.getElementById("resetCode")?.focus(), 150);
+            forgotVerifyForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = document.getElementById("resetTargetEmail")?.value || "";
+                const code = (document.getElementById("resetCode")?.value || "").trim();
+                const newPass = (document.getElementById("resetNewPassword")?.value || "").trim();
+                const submitBtn = forgotVerifyForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Şifremi Güncelle & Giriş Yap";
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Güncelleniyor...';
+                }
+
+                try {
+                    const sessionUser = await window.StoreService.verifyAndResetPassword(email, code, newPass);
+                    updateAuthUI();
+                    closeAuthModal();
+                    showToast(`Şifreniz başarıyla güncellendi! Hoş geldiniz, ${sessionUser.fullName || sessionUser.name}.`, "fa-circle-check");
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
+        }
+
+        // 5. MAGIC OTP LOGIN REQUEST FORM (STEP 1)
+        const magicOtpReqForm = document.getElementById("magicOtpReqForm");
+        if (magicOtpReqForm) {
+            setTimeout(() => document.getElementById("magicOtpEmail")?.focus(), 150);
+            magicOtpReqForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = (document.getElementById("magicOtpEmail")?.value || "").trim().toLowerCase();
+                const submitBtn = magicOtpReqForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Tek Kullanımlık Kod Gönder";
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kod Gönderiliyor...';
+                }
+
+                try {
+                    const res = await window.StoreService.requestEmailOtpLogin(email);
+                    showToast(`Giriş kodu ${email} adresinize iletildi!`, "fa-envelope-circle-check");
+                    window.openAuthModal("magic_otp_step2", { email: res.email, code: res.code });
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
+        }
+
+        // 6. MAGIC OTP LOGIN VERIFY FORM (STEP 2)
+        const magicOtpVerifyForm = document.getElementById("magicOtpVerifyForm");
+        if (magicOtpVerifyForm) {
+            setTimeout(() => document.getElementById("magicCode")?.focus(), 150);
+            magicOtpVerifyForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = document.getElementById("magicTargetEmail")?.value || "";
+                const code = (document.getElementById("magicCode")?.value || "").trim();
+                const submitBtn = magicOtpVerifyForm.querySelector('button[type="submit"]');
+                const origText = submitBtn ? submitBtn.innerHTML : "Şifresiz Giriş Yap";
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Giriş Yapılıyor...';
+                }
+
+                try {
+                    const sessionUser = await window.StoreService.verifyEmailOtpLogin(email, code);
+                    updateAuthUI();
+                    closeAuthModal();
+                    showToast(`Giriş başarılı! Hoş geldiniz, ${sessionUser.fullName || sessionUser.name}.`, "fa-circle-check");
+                } catch (err) {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = origText;
+                    }
+                }
+            };
+        }
+    };
 
     // Payment method selection & card input formatters
     let selectedPayMethod = "card";

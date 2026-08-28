@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2245">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260828_2300">
     <style>
         .auth-page-wrapper {
             min-height: 80vh;
@@ -104,27 +104,40 @@
                     </div>
                 </div>
 
-                <div class="auth-form-group">
-                    <label for="loginPassword">Şifre *</label>
+                <div class="auth-form-group" style="margin-bottom: 8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <label for="loginPassword" style="margin-bottom:0;">Şifre *</label>
+                        <a href="javascript:void(0)" onclick="openAuthModal('forgot')" style="font-size:0.8rem; color:#7c3aed; font-weight:700; text-decoration:none;">Şifremi Unuttum?</a>
+                    </div>
                     <div class="auth-input-wrap">
                         <i class="fa-solid fa-lock"></i>
                         <input type="password" id="loginPassword" class="auth-input" placeholder="••••••••" required>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-auth-submit">
+                <button type="submit" class="btn-auth-submit" style="margin-top: 10px;">
                     <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+                </button>
+
+                <div class="auth-divider" style="margin: 14px 0;">
+                    <div class="auth-divider-line"></div>
+                    <span class="auth-divider-text">veya</span>
+                    <div class="auth-divider-line"></div>
+                </div>
+
+                <button type="button" class="btn-outline-mail interactive-btn" onclick="openAuthModal('magic_otp')">
+                    <i class="fa-solid fa-envelope-circle-check"></i> E-Posta ile Şifresiz Giriş Yap (Kodlu)
                 </button>
             </form>
 
-            <div class="auth-footer-link">
+            <div class="auth-footer-link" style="margin-top: 18px;">
                 Hesabınız yok mu? <a href="uye-ol.html">Hemen Kayıt Ol</a>
             </div>
         </div>
     </div>
 
-    <script src="js/app.js?v=20260828_2245"></script>
-    <script src="js/store-service.js?v=20260828_2245"></script>
+    <script src="js/app.js?v=20260828_2300"></script>
+    <script src="js/store-service.js?v=20260828_2300"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
