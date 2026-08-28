@@ -510,19 +510,35 @@
             <!-- TAB 2: GELEN SİPARİŞLER -->
             <div id="tabOrders" style="display: none;">
                 <div class="content-card">
-                    <h3 style="margin-bottom: 20px; font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-receipt" style="color:#38bdf8;"></i> Müşteri Siparişleri</h3>
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="orderSearchInput" class="admin-input" placeholder="Sipariş No, Müşteri Adı, Telefon veya E-Posta ara..." oninput="renderOrdersTable()">
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <select id="orderStatusFilter" class="admin-input" style="width: auto; padding-left: 14px;" onchange="renderOrdersTable()">
+                                <option value="all">Tüm Durumlar</option>
+                                <option value="Hazırlanıyor">🛠️ Hazırlanıyor</option>
+                                <option value="Kargoda">🚚 Kargoda / Sevkiyatta</option>
+                                <option value="Teslim Edildi">✅ Teslim Edildi</option>
+                                <option value="İptal">❌ İptal Edildi</option>
+                            </select>
+                        </div>
+                    </div>
                     
                     <div class="table-responsive">
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>Sipariş No</th>
-                                    <th>Müşteri</th>
-                                    <th>Telefon / İl</th>
+                                    <th>Sipariş No &amp; Tarih</th>
+                                    <th>Müşteri Bilgileri</th>
+                                    <th>Teslimat Adresi</th>
                                     <th>Ürünler</th>
-                                    <th>Tutar</th>
-                                    <th>Durum</th>
-                                    <th>İşlem</th>
+                                    <th>Tutar &amp; Ödeme</th>
+                                    <th>Durum (İlerleme)</th>
+                                    <th>Fatura Durumu</th>
+                                    <th style="text-align: right;">İşlemler</th>
                                 </tr>
                             </thead>
                             <tbody id="ordersTableBody"></tbody>
@@ -726,9 +742,72 @@
         </div>
     </div>
 
+    <!-- FATURA EKLEME & YÖNETİMİ MODAL -->
+    <div id="adminInvoiceModal" class="admin-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;"><i class="fa-solid fa-file-invoice-dollar" style="color: #38bdf8;"></i> Sipariş Faturası Ekle / Düzenle</h3>
+                <button type="button" onclick="closeAdminInvoiceModal()" class="modal-close-btn">&times;</button>
+            </div>
+            <div style="padding: 16px 0; font-size: 0.9rem; color: #cbd5e1;">
+                <input type="hidden" id="invModalOrderNum" value="">
+                
+                <div style="background: #0f172a; padding: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="color:#94a3b8;">Sipariş No:</span>
+                        <strong id="invOrderNumDisp" style="color:#38bdf8;">-</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="color:#94a3b8;">Müşteri:</span>
+                        <span id="invCustomerDisp" style="color:#fff;">-</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span style="color:#94a3b8;">Toplam Tutar:</span>
+                        <strong id="invTotalDisp" style="color:#4ade80;">-</strong>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label style="color:#fff; font-weight:600;">Resmi Fatura No (Örn: EAR2026000001234)</label>
+                    <input type="text" id="invNumberInput" class="admin-input" placeholder="MBL-FAT-782190" style="padding-left:14px;">
+                </div>
+
+                <!-- BİLGİSAYARDAN PDF / DOSYA YÜKLEME -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+                    <label style="color:#38bdf8; font-weight:700;"><i class="fa-solid fa-file-pdf"></i> 1. Seçenek: Fatura Dosyası Yükle (PDF / Görsel)</label>
+                    
+                    <div class="upload-dropzone" onclick="document.getElementById('invoiceFileInput').click()" style="padding:16px; margin-top:6px;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.5rem; color: #38bdf8; margin-bottom: 4px;"></i>
+                        <p style="font-size: 0.85rem; font-weight: 600; margin:0;" id="invoiceFileStatusText">Bilgisayardan PDF veya Görsel Seçmek İçin Tıklayın</p>
+                        <span style="font-size: 0.72rem; color: #94a3b8;">PDF, PNG, JPG formatları doğrudan müşteriye sunulur</span>
+                        <input type="file" id="invoiceFileInput" accept=".pdf,image/*" style="display: none;" onchange="handleInvoiceFileUpload(event)">
+                    </div>
+                    <div id="invoiceUploadedBadge" style="display:none; margin-top:8px; background:rgba(34,197,94,0.15); color:#4ade80; padding:6px 12px; border-radius:6px; font-size:0.8rem; border:1px solid rgba(34,197,94,0.3);">
+                        <i class="fa-solid fa-check"></i> Fatura dosyası hazırlandı.
+                    </div>
+                </div>
+
+                <!-- VEYA FATURA URL BAĞLANTISI -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+                    <label style="color:#cbd5e1; font-weight:600;"><i class="fa-solid fa-link"></i> 2. Seçenek: E-Fatura / E-Arşiv Bağlantı Linki (URL)</label>
+                    <input type="text" id="invUrlInput" class="admin-input" placeholder="https://earsivportal.gib.gov.tr/... veya https://..." style="padding-left:14px;">
+                    <span style="font-size:0.72rem; color:#94a3b8;">Müşteri bu bağlantıya tıklayarak resmi e-fatura portalından faturasını açabilir.</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+                <button type="button" onclick="removeAdminInvoice()" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size:0.85rem;"><i class="fa-solid fa-trash"></i> Faturayı Kaldır</button>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeAdminInvoiceModal()" style="background: rgba(255,255,255,0.08); color: #fff; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;">İptal</button>
+                    <button type="button" onclick="saveAdminInvoice()" class="btn-action-primary" style="padding:8px 20px;"><i class="fa-solid fa-floppy-disk"></i> Faturayı Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script src="js/app.js?v=20260828_2145"></script>
-    <script src="js/store-service.js?v=20260828_2145"></script>
+    <script src="js/app.js?v=20260828_2200"></script>
+    <script src="js/store-service.js?v=20260828_2200"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -1294,10 +1373,214 @@
             if (modal) modal.style.display = 'none';
         };
 
+        // SİPARİŞ YÖNETİMİ & TABLOSU
+        let currentInvoiceFileData = "";
+
+        window.renderOrdersTable = () => {
+            const tbody = document.getElementById('ordersTableBody');
+            if (!tbody) return;
+
+            const q = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('orderStatusFilter')?.value || 'all';
+
+            let orders = window.StoreService ? window.StoreService.getAllOrders() : [];
+
+            if (statusFilter !== 'all') {
+                orders = orders.filter(o => (o.status || 'Hazırlanıyor') === statusFilter);
+            }
+
+            if (q) {
+                orders = orders.filter(o => {
+                    const oNum = (o.orderNumber || o.id || '').toLowerCase();
+                    const cName = (o.customerName || (o.customer && o.customer.fullName) || '').toLowerCase();
+                    const cEmail = (o.customerEmail || (o.customer && o.customer.email) || '').toLowerCase();
+                    const cPhone = (o.customerPhone || (o.customer && o.customer.phone) || '').toLowerCase();
+                    const cCity = (o.city || (o.customer && o.customer.city) || '').toLowerCase();
+                    return oNum.includes(q) || cName.includes(q) || cEmail.includes(q) || cPhone.includes(q) || cCity.includes(q);
+                });
+            }
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">Kayıtlı sipariş bulunamadı.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = orders.map(o => {
+                const orderNum = o.orderNumber || o.id || 'MBL-000000';
+                const cName = o.customerName || (o.customer && o.customer.fullName) || 'Müşteri';
+                const cEmail = o.customerEmail || (o.customer && o.customer.email) || '-';
+                const cPhone = o.customerPhone || (o.customer && o.customer.phone) || '-';
+                const cAddress = o.address || (o.customer && o.customer.address) || (o.city ? `${o.city} / ${o.district || ''}` : '-');
+                const oDate = o.date || (o.createdAt ? new Date(o.createdAt).toLocaleDateString('tr-TR') : '-');
+                const totalAmt = (o.totalAmount || o.total || 0).toLocaleString('tr-TR');
+                const currentStatus = o.status || 'Hazırlanıyor';
+                const payMethod = o.paymentMethodLabel || o.paymentMethod || 'Kredi Kartı / İyzico';
+
+                // Invoice Status Badge
+                const hasInvoice = !!(o.invoiceUrl || o.invoiceData || o.invoiceAttached);
+                const invNumber = o.invoiceNumber || `MBL-FAT-${orderNum.replace('MBL-', '')}`;
+
+                const itemsSummary = (o.items || []).map(i => {
+                    const fabricInfo = i.selectedFabric ? ` <span style="color:#a855f7; font-size:0.75rem;">(${i.selectedFabric})</span>` : '';
+                    return `<div><strong>${i.qty || 1}x</strong> ${i.title}${fabricInfo}</div>`;
+                }).join('');
+
+                return `
+                    <tr>
+                        <td>
+                            <strong style="color: #38bdf8; font-size: 0.95rem;">${orderNum}</strong>
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-top:2px;"><i class="fa-regular fa-calendar"></i> ${oDate}</div>
+                        </td>
+                        <td>
+                            <strong style="color: #fff;">${cName}</strong>
+                            <div style="font-size: 0.78rem; color: #38bdf8;"><a href="mailto:${cEmail}" style="color:#38bdf8; text-decoration:none;">${cEmail}</a></div>
+                            <div style="font-size: 0.78rem; color: #94a3b8;"><i class="fa-solid fa-phone" style="font-size:0.7rem;"></i> ${cPhone}</div>
+                        </td>
+                        <td style="max-width: 180px; font-size: 0.8rem; color: #cbd5e1; white-space: normal;">
+                            ${cAddress}
+                            ${(o.notes || (o.customer && o.customer.note)) ? `<div style="font-size:0.72rem; color:#eab308; margin-top:4px;"><i class="fa-solid fa-note-sticky"></i> ${o.notes || o.customer.note}</div>` : ''}
+                        </td>
+                        <td style="font-size: 0.82rem; color: #cbd5e1; max-width: 200px; white-space: normal;">
+                            ${itemsSummary || '<span style="color:#64748b;">Ürün bilgisi yok</span>'}
+                        </td>
+                        <td>
+                            <strong style="color: #4ade80; font-size: 0.95rem;">${totalAmt} ₺</strong>
+                            <div style="font-size: 0.72rem; color: #94a3b8;">${payMethod}</div>
+                        </td>
+                        <td>
+                            <select onchange="updateOrderStatus('${orderNum}', this.value)" style="background:#0f172a; color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:6px 10px; font-size:0.8rem; font-weight:600; cursor:pointer;">
+                                <option value="Hazırlanıyor" ${currentStatus === 'Hazırlanıyor' || currentStatus === 'preparing' ? 'selected' : ''}>🛠️ Hazırlanıyor</option>
+                                <option value="Kargoda" ${currentStatus === 'Kargoda' || currentStatus === 'shipping' ? 'selected' : ''}>🚚 Kargoda / Sevkiyatta</option>
+                                <option value="Teslim Edildi" ${currentStatus === 'Teslim Edildi' || currentStatus === 'delivered' ? 'selected' : ''}>✅ Teslim Edildi</option>
+                                <option value="İptal" ${currentStatus === 'İptal' || currentStatus === 'cancelled' ? 'selected' : ''}>❌ İptal</option>
+                            </select>
+                        </td>
+                        <td>
+                            ${hasInvoice ? `
+                                <div style="display:flex; flex-direction:column; gap:4px;">
+                                    <span class="status-badge" style="background:rgba(34,197,94,0.15); color:#4ade80; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-file-check"></i> Fatura Ekli
+                                    </span>
+                                    <small style="font-size:0.7rem; color:#94a3b8;">${invNumber}</small>
+                                    <button onclick="openAdminInvoiceModal('${orderNum}')" style="background:rgba(56,189,248,0.12); color:#38bdf8; border:none; padding:4px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer; font-weight:600;"><i class="fa-solid fa-pen"></i> Düzenle</button>
+                                </div>
+                            ` : `
+                                <div style="display:flex; flex-direction:column; gap:4px;">
+                                    <span class="status-badge" style="background:rgba(234,179,8,0.15); color:#eab308; font-size:0.75rem;">Otomatik E-Arşiv</span>
+                                    <button onclick="openAdminInvoiceModal('${orderNum}')" style="background:linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color:#fff; border:none; padding:5px 9px; border-radius:6px; font-size:0.75rem; cursor:pointer; font-weight:700;"><i class="fa-solid fa-plus"></i> Fatura Yükle</button>
+                                </div>
+                            `}
+                        </td>
+                        <td style="text-align: right;">
+                            <button onclick="deleteAdminOrder('${orderNum}')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Siparişi Sil"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        // ADMIN INVOICE MODAL LOGIC
+        window.openAdminInvoiceModal = (orderNum) => {
+            const orders = window.StoreService ? window.StoreService.getAllOrders() : [];
+            const order = orders.find(o => o.orderNumber === orderNum || o.id === orderNum);
+            if (!order) return;
+
+            currentInvoiceFileData = order.invoiceData || "";
+            document.getElementById('invModalOrderNum').value = orderNum;
+            document.getElementById('invOrderNumDisp').textContent = orderNum;
+            document.getElementById('invCustomerDisp').textContent = order.customerName || (order.customer && order.customer.fullName) || 'Müşteri';
+            document.getElementById('invTotalDisp').textContent = (order.totalAmount || order.total || 0).toLocaleString('tr-TR') + " ₺";
+            document.getElementById('invNumberInput').value = order.invoiceNumber || `MBL-FAT-${orderNum.replace('MBL-', '')}`;
+            document.getElementById('invUrlInput').value = order.invoiceUrl || '';
+            
+            const badge = document.getElementById('invoiceUploadedBadge');
+            const statusText = document.getElementById('invoiceFileStatusText');
+            if (currentInvoiceFileData) {
+                if (badge) badge.style.display = 'block';
+                if (statusText) statusText.textContent = 'Yüklü fatura dosyası mevcut (Değiştirmek için tıklayın)';
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (statusText) statusText.textContent = 'Bilgisayardan PDF veya Görsel Seçmek İçin Tıklayın';
+            }
+
+            document.getElementById('adminInvoiceModal').style.display = 'flex';
+        };
+
+        window.closeAdminInvoiceModal = () => {
+            const modal = document.getElementById('adminInvoiceModal');
+            if (modal) modal.style.display = 'none';
+            currentInvoiceFileData = "";
+        };
+
+        window.handleInvoiceFileUpload = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentInvoiceFileData = e.target.result;
+                const badge = document.getElementById('invoiceUploadedBadge');
+                const statusText = document.getElementById('invoiceFileStatusText');
+                if (badge) badge.style.display = 'block';
+                if (statusText) statusText.textContent = `Seçilen Dosya: ${file.name}`;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveAdminInvoice = async () => {
+            const orderNum = document.getElementById('invModalOrderNum').value;
+            if (!orderNum) return;
+
+            const invNumber = (document.getElementById('invNumberInput').value || '').trim();
+            const invUrl = (document.getElementById('invUrlInput').value || '').trim();
+
+            if (window.StoreService) {
+                await window.StoreService.updateOrderInvoice(orderNum, {
+                    invoiceNumber: invNumber,
+                    invoiceUrl: invUrl,
+                    invoiceData: currentInvoiceFileData,
+                    invoiceDate: new Date().toLocaleDateString('tr-TR')
+                });
+                renderOrdersTable();
+                closeAdminInvoiceModal();
+                alert(`✅ ${orderNum} numaralı siparişin faturası başarıyla kaydedildi!`);
+            }
+        };
+
+        window.removeAdminInvoice = async () => {
+            const orderNum = document.getElementById('invModalOrderNum').value;
+            if (!orderNum) return;
+
+            if (confirm("Bu siparişin yüklenmiş faturasını kaldırmak istediğinize emin misiniz? (Otomatik Mobelmor e-Arşiv faturası görüntülenmeye devam eder)")) {
+                if (window.StoreService) {
+                    await window.StoreService.updateOrderInvoice(orderNum, {
+                        invoiceNumber: '',
+                        invoiceUrl: '',
+                        invoiceData: '',
+                        invoiceAttached: false
+                    });
+                    renderOrdersTable();
+                    closeAdminInvoiceModal();
+                    alert("Fatura başarıyla kaldırıldı.");
+                }
+            }
+        };
+
+        window.deleteAdminOrder = (orderNum) => {
+            if (confirm(`${orderNum} numaralı siparişi silmek istediğinize emin misiniz?`)) {
+                let orders = window.StoreService ? window.StoreService.getAllOrders() : [];
+                orders = orders.filter(o => o.orderNumber !== orderNum && o.id !== orderNum);
+                localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+                renderOrdersTable();
+                loadDashboardData().catch(e => console.log('Error:', e));
+            }
+        };
+
         window.updateOrderStatus = async function (orderNumber, newStatus) {
             if (window.StoreService) {
                 await window.StoreService.updateOrderStatus(orderNumber, newStatus);
-                loadDashboardData();
+                renderOrdersTable();
+                loadDashboardData().catch(e => console.log('Error:', e));
             }
         };
 

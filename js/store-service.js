@@ -978,7 +978,7 @@
                 localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
             }
 
-            // Also update mobelmor_orders for client tracking
+            // Sync user orders in localStorage
             try {
                 let userOrders = JSON.parse(localStorage.getItem('mobelmor_orders') || '[]');
                 const uOrder = userOrders.find(o => o.orderNumber === orderNumber || o.id === orderNumber);
@@ -989,27 +989,51 @@
                 }
             } catch (e) {}
 
-            // Push status update to Supabase Cloud
+            // Sync with Supabase Cloud
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
-                try {
-                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(orderNumber)}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'apikey': DEFAULT_CONFIG.supabaseKey,
-                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            status: newStatus
-                        })
-                    });
-                } catch (e) {
-                    console.log('Supabase Order Status Sync Error:', e);
-                }
+                fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/orders?order_number=eq.${orderNumber}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                }).then(r => console.log('Supabase status updated:', orderNumber, newStatus))
+                .catch(e => console.log('Supabase status update error:', e));
             }
 
-            return true;
+            return order;
         },
+
+        updateOrderInvoice: async function (orderNumber, invoiceData) {
+            let orders = this.getAllOrders();
+            const order = orders.find(o => o.orderNumber === orderNumber || o.id === orderNumber);
+            if (order) {
+                order.invoiceUrl = invoiceData.invoiceUrl || order.invoiceUrl || "";
+                order.invoiceData = invoiceData.invoiceData || order.invoiceData || "";
+                order.invoiceNumber = invoiceData.invoiceNumber || order.invoiceNumber || ("MBL-FAT-" + (order.orderNumber || order.id || "").replace("MBL-", ""));
+                order.invoiceDate = invoiceData.invoiceDate || order.invoiceDate || new Date().toLocaleDateString("tr-TR");
+                order.invoiceAttached = true;
+                localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+            }
+
+            try {
+                let userOrders = JSON.parse(localStorage.getItem('mobelmor_orders') || '[]');
+                const uOrder = userOrders.find(o => o.orderNumber === orderNumber || o.id === orderNumber);
+                if (uOrder) {
+                    uOrder.invoiceUrl = invoiceData.invoiceUrl || uOrder.invoiceUrl || "";
+                    uOrder.invoiceData = invoiceData.invoiceData || uOrder.invoiceData || "";
+                    uOrder.invoiceNumber = invoiceData.invoiceNumber || uOrder.invoiceNumber || ("MBL-FAT-" + (uOrder.orderNumber || uOrder.id || "").replace("MBL-", ""));
+                    uOrder.invoiceDate = invoiceData.invoiceDate || uOrder.invoiceDate || new Date().toLocaleDateString("tr-TR");
+                    uOrder.invoiceAttached = true;
+                    localStorage.setItem('mobelmor_orders', JSON.stringify(userOrders));
+                }
+            } catch (e) {}
+
+            return order;
+        },
+
 
         deleteOrder: async function (orderNumber) {
             let orders = this.getAllOrders();

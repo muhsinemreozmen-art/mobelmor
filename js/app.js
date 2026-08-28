@@ -4023,13 +4023,245 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="order-total-label">Toplam:</span>
                             <span class="order-total-val">${formatPrice(order.total || order.totalAmount || 0)}</span>
                         </div>
-                        <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${orderNum} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="order-support-btn interactive-btn">
-                            <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Destek Al
-                        </a>
+                        <div class="order-actions-group" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <button type="button" class="order-invoice-btn interactive-btn" onclick="openOrderInvoice('${orderNum}')" title="Sipariş Faturasını Görüntüle / İndir">
+                                <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;"></i> Faturayı Görüntüle
+                            </button>
+                            <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${orderNum} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="order-support-btn interactive-btn">
+                                <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Destek Al
+                            </a>
+                        </div>
                     </div>
                 </div>
             `;
     }).join('');
+  };
+
+  // ORDER INVOICE (E-ARŞİV / E-FATURA) VIEWER & PRINT ENGINE
+  window.openOrderInvoice = (orderNum) => {
+    let orders = [];
+    try {
+      if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
+        orders = window.StoreService.getAllOrders();
+      }
+      if (!orders.length) {
+        orders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+      }
+      if (!orders.length) {
+        orders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+      }
+    } catch (e) {}
+
+    const order = orders.find(o => o.orderNumber === orderNum || o.id === orderNum) || {
+      orderNumber: orderNum,
+      date: new Date().toLocaleDateString("tr-TR"),
+      customerName: "Değerli Müşterimiz",
+      totalAmount: 0,
+      items: []
+    };
+
+    const cName = order.customerName || (order.customer && order.customer.fullName) || "Değerli Müşterimiz";
+    const cEmail = order.customerEmail || (order.customer && order.customer.email) || "-";
+    const cPhone = order.customerPhone || (order.customer && order.customer.phone) || "-";
+    const cAddress = order.address || (order.customer && order.customer.address) || (order.city ? `${order.city} / ${order.district || ''}` : "Türkiye");
+    const oDate = order.date || (order.createdAt ? new Date(order.createdAt).toLocaleDateString("tr-TR") : new Date().toLocaleDateString("tr-TR"));
+    const invNumber = order.invoiceNumber || `MBL-FAT-${orderNum.replace('MBL-', '')}`;
+    const total = order.totalAmount || order.total || 0;
+    
+    // KDV Calculations (%10 for furniture in Turkey)
+    const kdvRate = 0.10;
+    const subTotal = Math.round(total / (1 + kdvRate));
+    const kdvTotal = total - subTotal;
+
+    let invoiceOverlay = document.getElementById("orderInvoiceOverlay");
+    if (!invoiceOverlay) {
+      invoiceOverlay = document.createElement("div");
+      invoiceOverlay.id = "orderInvoiceOverlay";
+      invoiceOverlay.className = "modal-overlay invoice-modal-overlay";
+      document.body.appendChild(invoiceOverlay);
+    }
+
+    const hasCustomFile = !!(order.invoiceData || order.invoiceUrl);
+    const customFileUrl = order.invoiceData || order.invoiceUrl || "";
+
+    const itemsRows = (order.items || []).map((item, idx) => {
+      const itemQty = item.qty || 1;
+      const itemTotal = (item.price || 0) * itemQty;
+      const itemSub = Math.round(itemTotal / (1 + kdvRate));
+      const itemUnitSub = Math.round(itemSub / itemQty);
+      const itemKdv = itemTotal - itemSub;
+      const fabricDetail = item.selectedFabric ? ` (${item.selectedFabric}${item.selectedColor ? ' - ' + item.selectedColor : ''})` : '';
+
+      return `
+        <tr>
+          <td style="text-align:center; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem;">${idx + 1}</td>
+          <td style="padding:8px 12px; border:1px solid #e4e4e7; font-size:0.85rem;">
+            <strong>${item.title || 'Mobilya Ürünü'}</strong>
+            ${fabricDetail ? `<div style="font-size:0.75rem; color:#71717a;">${fabricDetail}</div>` : ''}
+          </td>
+          <td style="text-align:center; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem;">${itemQty} Adet</td>
+          <td style="text-align:right; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem;">${formatPrice(itemUnitSub)}</td>
+          <td style="text-align:center; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem;">%10</td>
+          <td style="text-align:right; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem;">${formatPrice(itemKdv)}</td>
+          <td style="text-align:right; padding:8px; border:1px solid #e4e4e7; font-size:0.85rem; font-weight:700;">${formatPrice(itemTotal)}</td>
+        </tr>
+      `;
+    }).join('') || `
+      <tr>
+        <td style="text-align:center; padding:8px; border:1px solid #e4e4e7;">1</td>
+        <td style="padding:8px 12px; border:1px solid #e4e4e7;">Mobelmor Mobilya Siparişi (${orderNum})</td>
+        <td style="text-align:center; padding:8px; border:1px solid #e4e4e7;">1 Adet</td>
+        <td style="text-align:right; padding:8px; border:1px solid #e4e4e7;">${formatPrice(subTotal)}</td>
+        <td style="text-align:center; padding:8px; border:1px solid #e4e4e7;">%10</td>
+        <td style="text-align:right; padding:8px; border:1px solid #e4e4e7;">${formatPrice(kdvTotal)}</td>
+        <td style="text-align:right; padding:8px; border:1px solid #e4e4e7; font-weight:700;">${formatPrice(total)}</td>
+      </tr>
+    `;
+
+    invoiceOverlay.innerHTML = `
+      <div class="invoice-modal-card" id="printableInvoiceCard">
+        <!-- Invoice Action Toolbar (hidden during print) -->
+        <div class="invoice-toolbar no-print">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-file-invoice" style="color:#7c3aed; font-size:1.2rem;"></i>
+            <span style="font-weight:800; font-size:1rem; color:#18181b;">E-Arşiv Fatura Belgesi</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${hasCustomFile ? `
+              <a href="${customFileUrl}" download="Fatura_${orderNum}.pdf" target="_blank" class="invoice-btn-custom-file">
+                <i class="fa-solid fa-download"></i> Ekli PDF Faturayı İndir
+              </a>
+            ` : ''}
+            <button type="button" onclick="window.print()" class="invoice-btn-print">
+              <i class="fa-solid fa-print"></i> Yazdır / PDF Kaydet
+            </button>
+            <button type="button" onclick="closeOrderInvoice()" class="invoice-btn-close" aria-label="Kapat">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Official E-Arşiv Fatura Body -->
+        <div class="invoice-paper" id="invoicePaperArea">
+          <!-- Top Header -->
+          <div class="inv-header-grid">
+            <div class="inv-seller-info">
+              <div class="inv-logo-wrap">
+                <img src="assets/mobelmor-logo-vector.svg" onerror="this.src='assets/favicon.svg'" alt="Mobelmor" style="height:36px; width:auto; margin-bottom:6px;">
+              </div>
+              <h3 style="font-size:0.95rem; font-weight:800; color:#18181b; margin:0 0 4px 0;">MOBELMOR MOBİLYA SAN. VE TİC. LTD. ŞTİ.</h3>
+              <div style="font-size:0.8rem; color:#52525b; line-height:1.4;">
+                Mobilya Sanayi İhtisas Bölgesi 4. Cadde No: 18<br>
+                İnegöl / BURSA - TÜRKİYE<br>
+                <strong>Vergi Dairesi:</strong> İnegöl V.D. | <strong>VKN:</strong> 6220819420<br>
+                <strong>Mersis No:</strong> 0622081942000001 | <strong>Web:</strong> mobelmor.com
+              </div>
+            </div>
+
+            <div class="inv-meta-box">
+              <div class="inv-title-badge">e-ARŞİV FATURA</div>
+              <table style="width:100%; font-size:0.82rem; border-collapse:collapse; margin-top:8px;">
+                <tr>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Fatura No:</td>
+                  <td style="padding:3px 0; text-align:right; font-weight:800; color:#18181b;">${invNumber}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Fatura Tarihi:</td>
+                  <td style="padding:3px 0; text-align:right; font-weight:700; color:#18181b;">${oDate}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Sipariş No:</td>
+                  <td style="padding:3px 0; text-align:right; font-weight:700; color:#7c3aed;">${orderNum}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Ödeme Türü:</td>
+                  <td style="padding:3px 0; text-align:right; font-weight:700; color:#18181b;">${order.paymentMethodLabel || order.paymentMethod || 'Kredi Kartı / 3D Secure'}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Customer & Buyer Box -->
+          <div class="inv-customer-box">
+            <div style="font-size:0.75rem; font-weight:800; color:#7c3aed; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">SAYIN (ALICI BİLGİLERİ)</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#18181b;">${cName}</div>
+            <div style="font-size:0.82rem; color:#52525b; margin-top:3px; line-height:1.4;">
+              <strong>Adres:</strong> ${cAddress}<br>
+              <strong>E-Posta:</strong> ${cEmail} | <strong>Telefon:</strong> ${cPhone}<br>
+              <strong>VKN / TCKN:</strong> 11111111111 (Nihai Tüketici)
+            </div>
+          </div>
+
+          <!-- Items Table -->
+          <div style="margin-top:16px; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; border:1px solid #e4e4e7;">
+              <thead>
+                <tr style="background:#f8fafc; color:#3f3f46; font-size:0.8rem; text-transform:uppercase; font-weight:700;">
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:40px; text-align:center;">Sıra</th>
+                  <th style="padding:8px 12px; border:1px solid #e4e4e7; text-align:left;">Mal / Hizmet Açıklaması</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:80px; text-align:center;">Miktar</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:100px; text-align:right;">Birim Fiyat</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:60px; text-align:center;">KDV</th>
+                  <th style="padding:8px; border:1px solid #e4e4e7; width:90px; text-align:right;">KDV Tutarı</th>
+                  <th style="padding:8px 12px; border:1px solid #e4e4e7; width:110px; text-align:right;">Mal Hizmet Tutarı</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsRows}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Totals & Legal Notice -->
+          <div class="inv-bottom-grid">
+            <div class="inv-legal-notice">
+              <div style="font-size:0.75rem; color:#71717a; line-height:1.4;">
+                <i class="fa-solid fa-circle-info" style="color:#7c3aed;"></i> İşbu belge 213 sayılı V.U.K. hükümlerine göre <strong>e-Arşiv Fatura</strong> olarak düzenlenmiştir.<br>
+                İrsaliye yerine geçen bu belge, mobilya teslimatı ve resmi 2 yıl garanti belgesi yerine geçer.
+              </div>
+              <div style="margin-top:8px; font-size:0.72rem; color:#a1a1aa;">
+                Düzenleme Saati: ${new Date().toLocaleTimeString('tr-TR')} | Belge Durumu: ONAYLANDI
+              </div>
+            </div>
+
+            <div class="inv-totals-box">
+              <table style="width:100%; font-size:0.85rem; border-collapse:collapse;">
+                <tr>
+                  <td style="padding:4px 0; color:#71717a;">Mal / Hizmet Toplamı:</td>
+                  <td style="padding:4px 0; text-align:right; font-weight:600; color:#18181b;">${formatPrice(subTotal)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#71717a;">Hesaplanan KDV (%10):</td>
+                  <td style="padding:4px 0; text-align:right; font-weight:600; color:#18181b;">${formatPrice(kdvTotal)}</td>
+                </tr>
+                <tr style="border-top:2px solid #18181b; border-bottom:2px solid #18181b;">
+                  <td style="padding:8px 0; font-weight:800; font-size:0.95rem; color:#18181b;">ÖDENECEK TOPLAM:</td>
+                  <td style="padding:8px 0; text-align:right; font-weight:900; font-size:1.1rem; color:#7c3aed;">${formatPrice(total)}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    invoiceOverlay.classList.add("active");
+    document.body.classList.add("modal-open");
+
+    // Close on backdrop click
+    invoiceOverlay.onclick = (e) => {
+      if (e.target.id === "orderInvoiceOverlay") {
+        closeOrderInvoice();
+      }
+    };
+  };
+
+  window.closeOrderInvoice = () => {
+    const overlay = document.getElementById("orderInvoiceOverlay");
+    if (overlay) {
+      overlay.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
   };
 
   // Lookup Form Submit
