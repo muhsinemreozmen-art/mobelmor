@@ -694,6 +694,13 @@
                     </div>
                 </div>
 
+                <!-- YOUTUBE VİDEO ENTEGRASYONU -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
+                    <label style="color:#ef4444; font-weight:700;"><i class="fa-brands fa-youtube"></i> YouTube Video URL (Opsiyonel)</label>
+                    <input type="text" id="editProdVideoUrl" class="admin-input" style="padding-left: 14px;" placeholder="https://www.youtube.com/watch?v=... veya https://youtu.be/...">
+                    <span style="font-size: 0.72rem; color: #94a3b8;">Link girilirse ürün detayında <strong>"VİDEO İZLE"</strong> butonu görünür, boş bırakılırsa buton gizlenir.</span>
+                </div>
+
                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;">
                     <button type="button" onclick="closeProductModal()" style="background: rgba(255,255,255,0.08); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">İptal</button>
                     <button type="button" onclick="saveProductModal(event)" class="btn-action-primary"><i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet</button>
@@ -1009,10 +1016,12 @@
                 document.getElementById('editProdSponge').value = prod.sponge || '';
                 document.getElementById('editProdFabric').value = prod.fabric || prod.material || '';
                 document.getElementById('editProdWarranty').value = prod.warranty || '';
+                document.getElementById('editProdVideoUrl').value = prod.videoUrl || prod.youtubeUrl || '';
             } else {
                 title.textContent = "Yeni Ürün Ekle";
                 document.getElementById('productForm').reset();
                 document.getElementById('editProdId').value = "0";
+                document.getElementById('editProdVideoUrl').value = "";
                 currentMainImage = "";
                 currentModalImages = [];
             }
@@ -1043,6 +1052,7 @@
 
             const mainImg = currentMainImage || currentModalImages[0] || "assets/minegolden_p1_1.webp";
             const galleryList = currentModalImages.length > 0 ? currentModalImages : [mainImg];
+            const videoUrlVal = (document.getElementById('editProdVideoUrl').value || '').trim();
 
             const updatedData = {
                 id: id,
@@ -1053,6 +1063,8 @@
                 originalPrice: parseFloat(document.getElementById('editProdOldPrice').value) || Math.round(price * 1.15),
                 image: mainImg,
                 gallery: galleryList,
+                videoUrl: videoUrlVal,
+                youtubeUrl: videoUrlVal,
                 dimensions: (document.getElementById('editProdDimensions').value || '').trim(),
                 skeleton: (document.getElementById('editProdSkeleton').value || '').trim(),
                 sponge: (document.getElementById('editProdSponge').value || '').trim(),

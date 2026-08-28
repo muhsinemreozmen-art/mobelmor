@@ -1696,7 +1696,30 @@ const saveCart = () => {
   }
 };
 
-let wishlist = new Set();
+const loadWishlist = () => {
+  try {
+    const raw = localStorage.getItem("mobelmor_wishlist");
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        return new Set(arr.map(Number));
+      }
+    }
+  } catch (e) {
+    console.error("Wishlist load error:", e);
+  }
+  return new Set();
+};
+
+const saveWishlist = () => {
+  try {
+    localStorage.setItem("mobelmor_wishlist", JSON.stringify(Array.from(wishlist)));
+  } catch (e) {
+    console.error("Wishlist save error:", e);
+  }
+};
+
+let wishlist = loadWishlist();
 
 const formatPrice = (num) => {
   return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
@@ -1964,6 +1987,7 @@ const attachCardEventListeners = () => {
         wishlist.add(id);
         showToast("Ürün favorilerinize eklendi!", "fa-heart");
       }
+      saveWishlist();
       updateBadges();
       renderProducts();
     });
@@ -1996,8 +2020,10 @@ const addToCart = (productId) => {
 const updateBadges = () => {
   const cartBadge = document.getElementById("cartBadge");
   const wishBadge = document.getElementById("wishlistBadge");
+  const mobWishBadge = document.getElementById("mobileWishlistBadge");
   if (cartBadge) cartBadge.textContent = cart.reduce((sum, c) => sum + c.qty, 0);
   if (wishBadge) wishBadge.textContent = wishlist.size;
+  if (mobWishBadge) mobWishBadge.textContent = wishlist.size;
 };
 
 const renderCart = () => {
@@ -2324,8 +2350,15 @@ const renderWishlist = () => {
 };
 
 window.toggleWishlist = (id) => {
-  if (wishlist.has(id)) wishlist.delete(id);
-  else wishlist.add(id);
+  id = parseInt(id);
+  if (wishlist.has(id)) {
+    wishlist.delete(id);
+    showToast("Ürün favorilerinizden çıkarıldı.", "fa-heart-crack");
+  } else {
+    wishlist.add(id);
+    showToast("Ürün favorilerinize eklendi!", "fa-heart");
+  }
+  saveWishlist();
   updateBadges();
   renderProducts();
 };

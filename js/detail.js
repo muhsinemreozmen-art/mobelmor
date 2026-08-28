@@ -1665,8 +1665,194 @@ const saveCart = () => {
     }
 };
 
-let wishlist = new Set();
+const loadWishlist = () => {
+    try {
+        const raw = localStorage.getItem("mobelmor_wishlist");
+        if (raw) {
+            const arr = JSON.parse(raw);
+            if (Array.isArray(arr)) {
+                return new Set(arr.map(Number));
+            }
+        }
+    } catch (e) {
+        console.error("Wishlist load error:", e);
+    }
+    return new Set();
+};
+
+const saveWishlist = () => {
+    try {
+        localStorage.setItem("mobelmor_wishlist", JSON.stringify(Array.from(wishlist)));
+    } catch (e) {
+        console.error("Wishlist save error:", e);
+    }
+};
+
+let wishlist = loadWishlist();
 let selectedQty = 1;
+
+const updateWishlistBadges = () => {
+    const wishBadge = document.getElementById("wishlistBadge");
+    if (wishBadge) wishBadge.textContent = wishlist.size;
+    const mobileWishBadge = document.getElementById("mobileWishlistBadge");
+    if (mobileWishBadge) mobileWishBadge.textContent = wishlist.size;
+};
+
+const renderWishlist = () => {
+    const body = document.getElementById("wishlistBody");
+    const footer = document.getElementById("wishlistFooter");
+    if (!body || !footer) return;
+
+    const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts(true) : PRODUCTS;
+    const wishListItems = sourceList.filter(p => wishlist.has(p.id));
+
+    if (wishListItems.length === 0) {
+        body.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#71717a;"><i class="fa-regular fa-heart" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:12px;"></i><p style="margin:0;">Henüz favorilere ürün eklemediniz.</p></div>`;
+        footer.innerHTML = "";
+        return;
+    }
+
+    body.innerHTML = wishListItems.map(item => `
+        <div class="cart-item-row">
+            <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+            <div class="cart-item-info">
+                <h5 class="cart-item-title">${item.title}</h5>
+                <span class="cart-item-price">${formatPrice(item.price)}</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+                <button class="pill-add-btn" onclick="addToCart(${item.id}); toggleDetailWishlist(${item.id}); renderWishlist();" title="Sepete Aktar" style="padding:4px 8px; font-size:0.75rem;">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+                <button class="qty-btn" onclick="toggleDetailWishlist(${item.id}); renderWishlist();" title="Kaldır" style="color:#ef4444 !important;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+
+    footer.innerHTML = `
+        <button class="btn btn-primary btn-block interactive-btn" onclick="wishListItems.forEach(i => addToCart(i.id)); showToast('Tüm favoriler sepete eklendi!', 'fa-basket-shopping');">
+            Tüm Favorileri Sepete Ekle
+        </button>
+    `;
+};
+
+// ── YouTube Video Player & Modal Engine ──
+function getYouTubeEmbedUrl(url) {
+    if (!url) return null;
+    try {
+        let decoded = decodeURIComponent(url).trim();
+        let match = decoded.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i);
+        if (match && match[1]) {
+            return `https://www.youtube-nocookie.com/embed/${match[1]}?autoplay=1&rel=0`;
+        }
+    } catch (e) {
+        console.error("YouTube URL parse error:", e);
+    }
+    return null;
+}
+
+window.openYouTubeVideoModal = function(rawUrl) {
+    const embedUrl = getYouTubeEmbedUrl(rawUrl);
+    if (!embedUrl) {
+        showToast("Geçersiz veya bulunamayan video bağlantısı.", "fa-triangle-exclamation");
+        return;
+    }
+    let modal = document.getElementById("youtubeVideoModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "youtubeVideoModal";
+        modal.className = "yt-video-modal-overlay";
+        modal.innerHTML = `
+            <div class="yt-video-modal-container">
+                <button type="button" class="yt-video-close-btn" onclick="closeYouTubeVideoModal()" aria-label="Videoyu Kapat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="yt-video-iframe-wrapper">
+                    <iframe id="ytVideoIframe" src="" title="Mobelmor Ürün Tanıtım Videosu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeYouTubeVideoModal();
+        });
+    }
+    const iframe = document.getElementById("ytVideoIframe");
+    if (iframe) iframe.src = embedUrl;
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+};
+
+window.closeYouTubeVideoModal = function() {
+    const modal = document.getElementById("youtubeVideoModal");
+    if (modal) {
+        modal.classList.remove("active");
+        const iframe = document.getElementById("ytVideoIframe");
+        if (iframe) iframe.src = "";
+    }
+    document.body.style.overflow = "";
+};
+
+// ── Fabric Macro Texture Zoom Lightbox Modal ──
+window.openFabricZoomModal = function() {
+    let modal = document.getElementById("fabricZoomModal");
+    const currentImg = currentFabricState.colorImage || 'assets/fabrics/bf_krem.webp';
+    const currentTitle = `${currentFabricState.fabricName} • ${currentFabricState.colorName} (${currentFabricState.colorCode})`;
+    
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "fabricZoomModal";
+        modal.className = "fabric-zoom-modal-overlay";
+        modal.innerHTML = `
+            <div class="fabric-zoom-modal-container">
+                <button type="button" class="fabric-zoom-close-btn" onclick="closeFabricZoomModal()" aria-label="Kapat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="fabric-zoom-header">
+                    <div class="fabric-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Makro Doku Büyüteci</div>
+                    <h3 id="fabricZoomModalTitle" class="fabric-zoom-title">${currentTitle}</h3>
+                    <p id="fabricZoomModalSubtitle" class="fabric-zoom-subtitle">1. Sınıf Dokuma &amp; Leke Tutmaz Silinebilir Özel Mobilya Kumaşı</p>
+                </div>
+                <div class="fabric-zoom-image-wrapper">
+                    <img id="fabricZoomModalImg" src="${currentImg}" alt="${currentTitle}" class="fabric-zoom-img">
+                </div>
+                <div class="fabric-zoom-footer">
+                    <span class="fabric-zoom-info-tag"><i class="fa-solid fa-circle-check"></i> %100 Orijinal Renk ve Doku</span>
+                    <a href="${document.getElementById('vfabricSampleLink')?.href || '#'}" target="_blank" class="fabric-zoom-sample-btn" id="fabricZoomModalSampleLink">
+                        <i class="fa-solid fa-truck-fast"></i> Ücretsiz Numune İste
+                    </a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeFabricZoomModal();
+        });
+    } else {
+        const titleEl = document.getElementById("fabricZoomModalTitle");
+        const imgEl = document.getElementById("fabricZoomModalImg");
+        const sampleLinkEl = document.getElementById("fabricZoomModalSampleLink");
+        if (titleEl) titleEl.textContent = currentTitle;
+        if (imgEl) {
+            imgEl.src = currentImg;
+            imgEl.alt = currentTitle;
+        }
+        if (sampleLinkEl) {
+            sampleLinkEl.href = document.getElementById('vfabricSampleLink')?.href || '#';
+        }
+    }
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+};
+
+window.closeFabricZoomModal = function() {
+    const modal = document.getElementById("fabricZoomModal");
+    if (modal) {
+        modal.classList.remove("active");
+    }
+    document.body.style.overflow = "";
+};
 
 const formatPrice = (num) => {
     return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
@@ -1988,19 +2174,22 @@ window.scrollThumbs = (dir) => {
 };
 
 window.toggleDetailWishlist = (id) => {
+    id = parseInt(id);
     if (wishlist.has(id)) {
         wishlist.delete(id);
-        showToast("Favorilerden çıkarıldı", "fa-heart");
+        showToast("Favorilerden çıkarıldı", "fa-heart-crack");
     } else {
         wishlist.add(id);
         showToast("Favorilere eklendi!", "fa-heart");
     }
+    saveWishlist();
     updateWishlistBadges();
     const btn = document.querySelector('.vgallery-main-view .card-heart-btn');
     if (btn) {
         btn.classList.toggle('active', wishlist.has(id));
         btn.innerHTML = `<i class="fa-${wishlist.has(id) ? 'solid' : 'regular'} fa-heart"></i>`;
     }
+    renderWishlist();
 };
 
 window.selectOption = (el, optIdx) => {
@@ -2356,10 +2545,12 @@ const renderProductDetail = () => {
                             <span class="vtag-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>
                             <span class="vtag-custom">Siparişe Özel Üretim</span>
                         </div>
-                        <button type="button" class="vdetail-video-btn" onclick="openLightbox(0)" title="Görselleri ve Detayları İncele">
+                        ${(product.videoUrl || product.youtubeUrl) ? `
+                        <button type="button" class="vdetail-video-btn" onclick="openYouTubeVideoModal('${encodeURIComponent(product.videoUrl || product.youtubeUrl)}')" title="Ürün Tanıtım Videosunu İzle">
                             <span class="vvideo-play-icon"><i class="fa-solid fa-play"></i></span>
                             <span>VİDEO İZLE</span>
                         </button>
+                        ` : ''}
                     </div>
 
                     <!-- Quick Perks & Action Rows (Matching Photo 2) -->
@@ -2481,15 +2672,15 @@ const renderProductDetail = () => {
 
                     <!-- 3. Macro Texture Zoom Lens & Sample Request -->
                     <div class="vfabric-preview-card">
-                        <div class="vfabric-macro-lens">
-                            <div class="vfabric-lens-circle" id="vfabricLensCircle" style="background-color:${currentFabricState.colorHex};">
+                        <div class="vfabric-macro-lens" onclick="openFabricZoomModal()" style="cursor: pointer;" title="Kumaş Dokusunu Büyütmek İçin Tıklayın">
+                            <div class="vfabric-lens-circle" id="vfabricLensCircle" style="background-image: url('${currentFabricState.colorImage}'); background-size: cover; background-position: center;">
                                 <div class="vfabric-lens-pattern" id="vfabricLensPattern"></div>
-                                <span class="vfabric-lens-mag"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                                <span class="vfabric-lens-mag" title="Doku Büyüteci"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
                             </div>
                             <div class="vfabric-lens-info">
                                 <strong id="vfabricSelectedTitle">${currentFabricState.fabricName} • ${currentFabricState.colorName}</strong>
                                 <span id="vfabricSelectedDesc">Leke tutmaz, silinebilir 1. sınıf dokuma.</span>
-                                <div class="vfabric-verified-tag"><i class="fa-solid fa-circle-check"></i> Siparişe Özel Üretim</div>
+                                <div class="vfabric-verified-tag"><i class="fa-solid fa-magnifying-glass-plus" style="color:#6b21a8;"></i> Dokuyu Büyütmek İçin Tıklayın</div>
                             </div>
                         </div>
                         <a href="https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(product.title)}%20ürünü%20için%20ücretsiz%20kumaş%20kartelası%20talep%20etmek%20istiyorum." target="_blank" class="vfabric-sample-cta-btn" id="vfabricSampleLink" title="Evinizde ışık altında denemeniz için ücretsiz numune gönderiyoruz.">
@@ -2505,13 +2696,13 @@ const renderProductDetail = () => {
                 </button>
 
                 <!-- Financing & Credit Card Info Box -->
-                <div class="vcredit-info-box">
+                <div class="vcredit-info-box" onclick="window.openInstallmentAccordion()" style="cursor: pointer;" title="Tüm Taksit ve Ödeme Seçeneklerini İncele">
                     <div class="vcredit-row">
                         <i class="fa-solid fa-credit-card"></i>
                         <div>
                             <strong>${formatPrice(Math.round(product.price / 6))}/ay x 6 Ay Taksit</strong>
                             <p>Tüm kredi kartlarına peşin fiyatına vade farksız taksit imkanı.</p>
-                            <a href="javascript:void(0)" onclick="document.querySelector('[data-tab=inegolInstallmentTab]')?.click(); document.getElementById('inegolInstallmentTab')?.scrollIntoView({behavior:'smooth'});" class="vcredit-link">Taksit Seçenekleri &gt;</a>
+                            <a href="javascript:void(0)" onclick="window.openInstallmentAccordion(); event.stopPropagation();" class="vcredit-link">Taksit Seçenekleri &gt;</a>
                         </div>
                     </div>
                 </div>
@@ -3480,11 +3671,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("wishlistBtn")?.addEventListener("click", () => {
+        renderWishlist();
         document.getElementById("wishlistDrawer")?.classList.add("active");
         document.getElementById("wishlistOverlay")?.classList.add("active");
     });
 
     document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
+        document.getElementById("wishlistDrawer")?.classList.remove("active");
+        document.getElementById("wishlistOverlay")?.classList.remove("active");
+    });
+
+    document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
         document.getElementById("wishlistDrawer")?.classList.remove("active");
         document.getElementById("wishlistOverlay")?.classList.remove("active");
     });
@@ -4218,6 +4415,13 @@ document.addEventListener("DOMContentLoaded", () => {
         closeMobileDrawer();
         document.getElementById("cartBtn")?.click();
     });
+
+    document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
+        closeMobileDrawer();
+        document.getElementById("wishlistBtn")?.click();
+    });
+
+    updateWishlistBadges();
 
     // Mobile Drawer Category Accordions
     document.querySelectorAll(".mobile-cat-header").forEach(header => {

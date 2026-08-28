@@ -9207,3 +9207,285 @@ body.modal-open {
     border: 1px solid rgba(0,0,0,0.15);
     display: inline-block;
 }
+
+/* ==========================================
+   YouTube Product Video Modal Styles
+   ========================================== */
+.yt-video-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 5, 20, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.yt-video-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.yt-video-modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 920px;
+    background: #0f172a;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(107, 33, 168, 0.25);
+    overflow: hidden;
+    transform: scale(0.92);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.yt-video-modal-overlay.active .yt-video-modal-container {
+    transform: scale(1);
+}
+
+.yt-video-close-btn {
+    position: absolute;
+    top: -44px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.yt-video-close-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.yt-video-iframe-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.yt-video-iframe-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+@media (max-width: 640px) {
+    .yt-video-modal-overlay {
+        padding: 10px;
+    }
+    .yt-video-modal-container {
+        border-radius: 14px;
+    }
+    .yt-video-close-btn {
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+}
+
+/* ==========================================
+   Fabric Texture Macro Zoom Modal Styles
+   ========================================== */
+.fabric-zoom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.fabric-zoom-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.fabric-zoom-modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 580px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 35px rgba(107, 33, 168, 0.15);
+    overflow: hidden;
+    transform: scale(0.92);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #e2e8f0;
+}
+
+.fabric-zoom-modal-overlay.active .fabric-zoom-modal-container {
+    transform: scale(1);
+}
+
+.fabric-zoom-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0, 0, 0, 0.06);
+    border: none;
+    color: #475569;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.fabric-zoom-close-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+    transform: rotate(90deg) scale(1.08);
+}
+
+.fabric-zoom-header {
+    padding: 22px 24px 14px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.fabric-zoom-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #faf5ff;
+    border: 1px solid #e9d5ff;
+    color: #6b21a8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.fabric-zoom-title {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.fabric-zoom-subtitle {
+    font-size: 0.84rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.fabric-zoom-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    background: #f8fafc;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fabric-zoom-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.fabric-zoom-image-wrapper:hover .fabric-zoom-img {
+    transform: scale(1.15);
+}
+
+.fabric-zoom-footer {
+    padding: 16px 24px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.fabric-zoom-info-tag {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #15803d;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fabric-zoom-sample-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6b21a8 0%, #4a0b5c 100%);
+    color: #ffffff !important;
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(107, 33, 168, 0.25);
+}
+
+.fabric-zoom-sample-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.35);
+}
+
+@media (max-width: 640px) {
+    .fabric-zoom-modal-container {
+        border-radius: 16px;
+    }
+    .fabric-zoom-image-wrapper {
+        height: 280px;
+    }
+    .fabric-zoom-footer {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    .fabric-zoom-sample-btn {
+        justify-content: center;
+    }
+}

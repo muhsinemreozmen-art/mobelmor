@@ -50,6 +50,7 @@
                 skeleton: productData.skeleton || '',
                 sponge: productData.sponge || '',
                 fabric: productData.fabric || '',
+                video_url: productData.videoUrl || productData.youtubeUrl || '',
                 is_active: productData.isActive !== false
             };
 
