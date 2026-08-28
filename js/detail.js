@@ -2410,7 +2410,17 @@ const updateFabricLensAndBadge = (col, color) => {
 
 const renderProductDetail = () => {
     const pid = getProductIdFromUrl();
-    const product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    let product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
+    
+    // Extract video if embedded in material
+    if (product && product.material && product.material.includes('||VIDEO:')) {
+        const m = product.material.match(/\|\|VIDEO:([^|]+)\|\|/);
+        if (m && m[1]) {
+            product.videoUrl = m[1];
+            product.youtubeUrl = m[1];
+        }
+    }
+
     let gallery = product.gallery && product.gallery.length > 0 ? [...product.gallery] : [product.image];
     if (product.image && gallery[0] !== product.image) {
         gallery = [product.image, ...gallery.filter(g => g !== product.image)];
@@ -2771,7 +2781,53 @@ const renderProductDetail = () => {
                 <i class="fa-solid fa-bag-shopping"></i> SEPETE EKLE
             </button>
         </div>
-    `;
+    // Real-Time Background Cloud Sync (Guarantees Mobile Phone fetches video URL instantly from Supabase)
+    if (!window._cloudDetailSynced) {
+        window._cloudDetailSynced = true;
+        fetch(`https://kzbqqollfqatrauacjhj.supabase.co/rest/v1/products?id=eq.${product.id}&select=*`, {
+            headers: {
+                'apikey': 'sb_publishable_7cMrt7S85Iza4y7H01FghA_Le91PIhS',
+                'Authorization': 'Bearer sb_publishable_7cMrt7S85Iza4y7H01FghA_Le91PIhS'
+            }
+        }).then(r => r.json()).then(rows => {
+            if (rows && rows.length > 0) {
+                const cp = rows[0];
+                let vUrl = cp.video_url || cp.videoUrl || '';
+                if (!vUrl && cp.material && cp.material.includes('||VIDEO:')) {
+                    const m = cp.material.match(/\|\|VIDEO:([^|]+)\|\|/);
+                    if (m && m[1]) vUrl = m[1];
+                }
+                if (vUrl && (!product.videoUrl || product.videoUrl !== vUrl)) {
+                    product.videoUrl = vUrl;
+                    product.youtubeUrl = vUrl;
+                    
+                    // 1. Update/Inject floating video button in main gallery carousel
+                    const mainGalleryView = document.querySelector('.vgallery-main-view');
+                    if (mainGalleryView && !document.querySelector('.vgallery-floating-video-btn')) {
+                        const floatBtn = document.createElement('button');
+                        floatBtn.type = 'button';
+                        floatBtn.className = 'vgallery-floating-video-btn';
+                        floatBtn.onclick = () => window.openYouTubeVideoModal(vUrl);
+                        floatBtn.title = 'Ürünün Videosunu İzle';
+                        floatBtn.innerHTML = `<span class="vgallery-video-play-pulse"><i class="fa-solid fa-play"></i></span><span>VİDEO İZLE</span>`;
+                        mainGalleryView.appendChild(floatBtn);
+                    }
+                    
+                    // 2. Update/Inject meta row video button
+                    const metaRow = document.querySelector('.vdetail-meta-row');
+                    if (metaRow && !document.querySelector('.vdetail-video-btn')) {
+                        const metaBtn = document.createElement('button');
+                        metaBtn.type = 'button';
+                        metaBtn.className = 'vdetail-video-btn';
+                        metaBtn.onclick = () => window.openYouTubeVideoModal(vUrl);
+                        metaBtn.title = 'Ürün Tanıtım Videosunu İzle';
+                        metaBtn.innerHTML = `<span class="vvideo-play-icon"><i class="fa-solid fa-play"></i></span><span>VİDEO İZLE</span>`;
+                        metaRow.appendChild(metaBtn);
+                    }
+                }
+            }
+        }).catch(e => console.log('Detail real-time sync error:', e));
+    }
 
     document.getElementById("topDetailAddToCartBtn")?.addEventListener("click", () => {
         addToCart(product.id, 1);

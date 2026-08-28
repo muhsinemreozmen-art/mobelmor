@@ -32,11 +32,29 @@
         }
     };
 
+    function extractProductVideo(p) {
+        if (!p) return p;
+        if (p.material && p.material.includes('||VIDEO:')) {
+            const m = p.material.match(/\|\|VIDEO:([^|]+)\|\|/);
+            if (m && m[1]) {
+                p.videoUrl = m[1];
+                p.youtubeUrl = m[1];
+                p.material = p.material.replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+            }
+        }
+        return p;
+    }
+
     // 3. StoreService Ana Motoru
     window.StoreService = {
 
         _pushProductToCloud: function (productData) {
             if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
+            const vUrl = (productData.videoUrl || productData.youtubeUrl || '').trim();
+            let cleanMat = (productData.material || '').replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+            if (vUrl) {
+                cleanMat = `${cleanMat} ||VIDEO:${vUrl}||`;
+            }
             const payload = {
                 id: parseInt(productData.id),
                 title: productData.title,
@@ -46,11 +64,10 @@
                 main_image: productData.image,
                 gallery: Array.isArray(productData.gallery) ? productData.gallery : [productData.image],
                 dimensions: productData.dimensions || '',
-                material: productData.material || '',
+                material: cleanMat,
                 skeleton: productData.skeleton || '',
                 sponge: productData.sponge || '',
                 fabric: productData.fabric || '',
-                video_url: productData.videoUrl || productData.youtubeUrl || '',
                 is_active: productData.isActive !== false
             };
 
@@ -85,12 +102,68 @@
             if (!includeInactive) {
                 list = list.filter(p => p.isActive !== false);
             }
-            return list;
+            return list.map(extractProductVideo);
         },
 
         getProductById: function (id) {
             const list = this.getProducts(true);
-            return list.find(p => p.id === parseInt(id)) || null;
+            const found = list.find(p => p.id === parseInt(id)) || null;
+            return found ? extractProductVideo(found) : null;
+        },
+
+        syncProductsFromCloud: async function () {
+            if (!DEFAULT_CONFIG.supabaseUrl || !DEFAULT_CONFIG.supabaseKey) return;
+            try {
+                const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/products?select=*`, {
+                    headers: {
+                        'apikey': DEFAULT_CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`
+                    }
+                });
+                if (res.ok) {
+                    const cloudProducts = await res.json();
+                    if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
+                        let list = initProducts();
+                        cloudProducts.forEach(cp => {
+                            let cleanMat = cp.material || '';
+                            let vUrl = '';
+                            if (cleanMat.includes('||VIDEO:')) {
+                                const m = cleanMat.match(/\|\|VIDEO:([^|]+)\|\|/);
+                                if (m && m[1]) {
+                                    vUrl = m[1];
+                                    cleanMat = cleanMat.replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
+                                }
+                            }
+                            const idx = list.findIndex(p => p.id === cp.id);
+                            const formatted = {
+                                id: cp.id,
+                                title: cp.title,
+                                category: cp.category,
+                                price: cp.price,
+                                originalPrice: cp.original_price || cp.price,
+                                image: cp.main_image || cp.image,
+                                gallery: cp.gallery || (cp.main_image ? [cp.main_image] : []),
+                                dimensions: cp.dimensions || '',
+                                material: cleanMat,
+                                skeleton: cp.skeleton || '',
+                                sponge: cp.sponge || '',
+                                fabric: cp.fabric || '',
+                                videoUrl: vUrl,
+                                youtubeUrl: vUrl,
+                                isActive: cp.is_active !== false
+                            };
+                            if (idx !== -1) {
+                                list[idx] = { ...list[idx], ...formatted };
+                            } else {
+                                list.push(formatted);
+                            }
+                        });
+                        localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
+                    }
+                }
+            } catch (e) {
+                console.log('Cloud Sync Error:', e);
+            }
         },
 
 
