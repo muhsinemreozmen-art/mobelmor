@@ -2713,11 +2713,276 @@ window.changeQty = (id, delta) => {
     renderCart();
 };
 
+window.addToCart = addToCart;
+
+// --- ADVANCED TRENDYOL-STYLE 2-COLUMN LIVE SEARCH & POPULAR PRODUCTS ENGINE ---
+const initLiveSearchEngine = () => {
+    const searchConfigs = [
+        { input: document.getElementById("searchInput"), wrap: document.querySelector(".desktop-search-wrap"), isDesktop: true },
+        { input: document.getElementById("mobileSearchInput"), wrap: document.querySelector(".mobile-search-row"), isDesktop: false }
+    ];
+
+    const keywordTaxonomy = [
+        "koltuk", "koltuk takımı", "köşe koltuk", "berjer koltuk", "tekli koltuk", "yataklı koltuk", "chester koltuk takımı", "ahşap koltuk", "l koltuk", "bohem koltuk",
+        "yemek masası", "ahşap yemek masası", "yemek odası takımı", "açılır yemek masası", "sandalye", "ahşap sandalye", "yemek masası seti",
+        "yatak", "yatak odası takımı", "karyola", "karyola ve yatak", "çift kişilik yatak", "bazalı yatak", "gardırop", "sürgülü gardırop", "şifonyer", "komodin",
+        "tv ünitesi", "duvar ünitesi", "tv alt konsol", "kitaplıklı tv ünitesi", "orta sehpa", "yan sehpa", "zigon sehpa", "dresuar", "çalışma masası", "kitaplık"
+    ];
+
+    const escapeRegExp = (str) => {
+        return (str || "").replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
+
+    const highlightText = (text, q) => {
+        if (!q || !text) return text || "";
+        const words = q.trim().split(/\s+/).filter(Boolean);
+        if (words.length === 0) return text;
+        const pattern = words.map(escapeRegExp).join("|");
+        const regex = new RegExp(`(${pattern})`, "gi");
+        return text.replace(regex, "<strong>$1</strong>");
+    };
+
+    // 4 Featured products for "Popüler ürünlerden seçtik"
+    const getPopularProducts = () => {
+        const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+        const featuredIds = [1, 17, 36, 54];
+        let selected = sourceList.filter(p => featuredIds.includes(p.id));
+        if (selected.length < 4) {
+            selected = sourceList.slice(0, 4);
+        }
+        return selected;
+    };
+
+    searchConfigs.forEach(({ input, wrap, isDesktop }) => {
+        if (!input || !wrap) return;
+
+        let dropdown = wrap.querySelector(".live-search-dropdown");
+        if (!dropdown) {
+            dropdown = document.createElement("div");
+            dropdown.className = "live-search-dropdown";
+            wrap.appendChild(dropdown);
+        }
+
+        const closeDropdown = () => {
+            dropdown.classList.remove("active");
+            dropdown.innerHTML = "";
+            const searchBox = wrap.querySelector(".search-box") || input.closest(".search-box");
+            if (searchBox) searchBox.classList.remove("has-dropdown-open");
+        };
+
+        const executeSearchRedirect = (val) => {
+            const query = (val || "").trim();
+            if (!query) return;
+            closeDropdown();
+            window.location.href = `kategori.html?c=tum-koleksiyon&q=${encodeURIComponent(query)}`;
+        };
+
+        const renderSearchResults = (query) => {
+            const q = (query || "").trim().toLowerCase();
+            const searchBox = wrap.querySelector(".search-box") || input.closest(".search-box");
+            if (searchBox) searchBox.classList.add("has-dropdown-open");
+
+            const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+            const popularProducts = getPopularProducts();
+
+            // 1. Generate Matching Search Keywords
+            let matchedKeywords = [];
+            if (q) {
+                matchedKeywords = keywordTaxonomy.filter(k => k.includes(q));
+                
+                // Also add matching product titles as keywords
+                sourceList.forEach(p => {
+                    const t = (p.title || "").toLowerCase();
+                    if (t.includes(q) && !matchedKeywords.includes(t)) {
+                        matchedKeywords.push(t);
+                    }
+                });
+            } else {
+                // Default popular keywords when empty
+                matchedKeywords = ["koltuk takımı", "yemek masası", "tv ünitesi", "yatak odası takımı", "köşe koltuk", "berjer", "gardırop", "orta sehpa"];
+            }
+
+            matchedKeywords = matchedKeywords.slice(0, 8);
+
+            // Left Column: Suggestion rows HTML
+            let suggestRowsHtml = matchedKeywords.map(kw => {
+                return `
+                    <div class="trendyol-suggest-item" data-query="${kw}">
+                        <div class="trendyol-suggest-left">
+                            <i class="fa-solid fa-magnifying-glass trendyol-suggest-icon"></i>
+                            <span class="trendyol-suggest-text">${q ? highlightText(kw, q) : kw}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Store row at bottom of suggestions
+            suggestRowsHtml += `
+                <div class="trendyol-suggest-item" data-url="kategori.html?c=tum-koleksiyon">
+                    <div class="trendyol-suggest-left">
+                        <div class="trendyol-store-logo">MM</div>
+                        <span class="trendyol-suggest-text" style="font-weight:600;">MOBELMOR COLLECTION</span>
+                    </div>
+                    <span class="trendyol-store-tag">Mağaza</span>
+                </div>
+            `;
+
+            // Right Column: "Popüler ürünlerden seçtik" HTML
+            const badges = ["Sepette %10 İndirim", "Ücretsiz Teslimat", "İnegöl Masif", "Günün Fırsatı"];
+            const ratings = ["4.9 (142)", "4.8 (98)", "5.0 (64)", "4.9 (115)"];
+
+            const popularCardsHtml = popularProducts.map((p, idx) => {
+                const pSlug = window.slugify ? window.slugify(p.title) : "";
+                const prodUrl = `urun-detay.html?id=${p.id}${pSlug ? `&slug=${pSlug}` : ''}`;
+                const webpImage = p.image ? p.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/minegolden_p1_1.webp';
+                const badgeText = badges[idx % badges.length];
+                const ratingText = ratings[idx % ratings.length];
+
+                return `
+                    <div class="trendyol-pop-card" data-url="${prodUrl}">
+                        <img src="${webpImage}" alt="${p.title}" class="trendyol-pop-thumb" onerror="this.onerror=null; this.src='${p.image}';">
+                        <div class="trendyol-pop-info">
+                            <span class="trendyol-pop-badge">${badgeText}</span>
+                            <h5 class="trendyol-pop-name">${p.title}</h5>
+                            <div class="trendyol-pop-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>${ratingText}</span>
+                            </div>
+                            <div class="trendyol-pop-bottom-row">
+                                <span class="trendyol-pop-price">${formatPrice(p.price)}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="trendyol-pop-add-btn" data-add-id="${p.id}" title="Sepete Ekle" aria-label="Sepete Ekle">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            dropdown.innerHTML = `
+                <div class="trendyol-search-grid">
+                    <div class="trendyol-suggest-col">
+                        ${suggestRowsHtml}
+                    </div>
+                    <div class="trendyol-popular-col">
+                        <div class="trendyol-pop-title">
+                            <span>Popüler ürünlerden seçtik</span>
+                        </div>
+                        <div class="trendyol-pop-list">
+                            ${popularCardsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            dropdown.classList.add("active");
+
+            // Click on suggestion row
+            dropdown.querySelectorAll(".trendyol-suggest-item").forEach(item => {
+                item.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const targetUrl = item.getAttribute("data-url");
+                    const term = item.getAttribute("data-query");
+                    if (targetUrl) {
+                        window.location.href = targetUrl;
+                    } else if (term) {
+                        input.value = term;
+                        executeSearchRedirect(term);
+                    }
+                });
+            });
+
+            // Click on popular product card
+            dropdown.querySelectorAll(".trendyol-pop-card").forEach(card => {
+                card.addEventListener("click", (e) => {
+                    if (e.target.closest(".trendyol-pop-add-btn")) return;
+                    const url = card.getAttribute("data-url");
+                    if (url) window.location.href = url;
+                });
+            });
+
+            // Click on quick add-to-cart button
+            dropdown.querySelectorAll(".trendyol-pop-add-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const pid = parseInt(btn.getAttribute("data-add-id"));
+                    if (pid) {
+                        addToCart(pid, 1);
+                        btn.innerHTML = '<i class="fa-solid fa-check" style="color:#16a34a;"></i>';
+                        setTimeout(() => {
+                            btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i>';
+                        }, 1200);
+                    }
+                });
+            });
+        };
+
+        let debounceTimer = null;
+        input.addEventListener("input", (e) => {
+            const val = e.target.value;
+            const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
+            if (clearBtn) clearBtn.style.display = val ? "inline-flex" : "none";
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                renderSearchResults(val);
+            }, 100);
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                executeSearchRedirect(input.value);
+            } else if (e.key === "Escape") {
+                closeDropdown();
+            }
+        });
+
+        input.addEventListener("focus", () => {
+            renderSearchResults(input.value);
+        });
+
+        const searchIcon = wrap.querySelector(".search-icon");
+        if (searchIcon) {
+            searchIcon.addEventListener("click", () => {
+                if (input.value.trim().length > 0) {
+                    executeSearchRedirect(input.value);
+                } else {
+                    input.focus();
+                }
+            });
+        }
+
+        const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
+        if (clearBtn) {
+            clearBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                input.value = "";
+                clearBtn.style.display = "none";
+                closeDropdown();
+            });
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".desktop-search-wrap") && !e.target.closest(".mobile-search-row") && !e.target.closest(".live-search-dropdown")) {
+            document.querySelectorAll(".live-search-dropdown").forEach(d => {
+                d.classList.remove("active");
+            });
+            document.querySelectorAll(".search-box").forEach(sb => {
+                sb.classList.remove("has-dropdown-open");
+            });
+        }
+    });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     createLightbox();
     renderProductDetail();
     updateBadges();
     renderCart();
+    initLiveSearchEngine();
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.addEventListener("click", () => {
