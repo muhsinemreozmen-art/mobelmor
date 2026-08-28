@@ -1764,12 +1764,12 @@ window.openYouTubeVideoModal = function(rawUrl) {
         modal.id = "youtubeVideoModal";
         modal.className = "yt-video-modal-overlay";
         modal.innerHTML = `
-            <div class="yt-video-modal-container">
-                <button type="button" class="yt-video-close-btn" onclick="closeYouTubeVideoModal()" aria-label="Videoyu Kapat">
+            <div class="yt-video-modal-container" style="position:relative; width:94%; max-width:880px; background:#0f172a; border-radius:18px; box-shadow:0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(107,33,168,0.3); overflow:hidden; border:1px solid rgba(255,255,255,0.15);">
+                <button type="button" class="yt-video-close-btn" onclick="closeYouTubeVideoModal()" aria-label="Videoyu Kapat" style="position:absolute; top:12px; right:12px; z-index:20; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.3); color:#fff; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-                <div class="yt-video-iframe-wrapper">
-                    <iframe id="ytVideoIframe" src="" title="Mobelmor Ürün Tanıtım Videosu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div class="yt-video-iframe-wrapper" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000;">
+                    <iframe id="ytVideoIframe" src="" title="Mobelmor Ürün Tanıtım Videosu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"></iframe>
                 </div>
             </div>
         `;
@@ -1781,6 +1781,8 @@ window.openYouTubeVideoModal = function(rawUrl) {
     const iframe = document.getElementById("ytVideoIframe");
     if (iframe) iframe.src = embedUrl;
     modal.classList.add("active");
+    modal.style.display = "flex";
+    modal.style.opacity = "1";
     document.body.style.overflow = "hidden";
 };
 
@@ -1788,6 +1790,8 @@ window.closeYouTubeVideoModal = function() {
     const modal = document.getElementById("youtubeVideoModal");
     if (modal) {
         modal.classList.remove("active");
+        modal.style.display = "none";
+        modal.style.opacity = "0";
         const iframe = document.getElementById("ytVideoIframe");
         if (iframe) iframe.src = "";
     }
