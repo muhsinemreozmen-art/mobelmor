@@ -2554,14 +2554,6 @@ const renderProductDetail = () => {
                         <span id="currentSlideNum">1</span> / ${gallery.length}
                     </div>
 
-                    <!-- Floating Video Watch Pill (Always Visible & Clickable) -->
-                    ${(product.videoUrl || product.youtubeUrl) ? `
-                    <button type="button" class="vgallery-floating-video-btn" onclick="openYouTubeVideoModal('${encodeURIComponent(product.videoUrl || product.youtubeUrl)}')" title="Ürünün Videosunu İzle">
-                        <span class="vgallery-video-play-pulse"><i class="fa-solid fa-play"></i></span>
-                        <span>VİDEO İZLE</span>
-                    </button>
-                    ` : ''}
-
                     <!-- Bottom Dot Indicators (Mobile & Tablet) -->
                     <div class="gallery-dots-strip" id="galleryDotsStrip">
                         ${gallery.map((_, idx) => `
@@ -2826,19 +2818,7 @@ const renderProductDetail = () => {
                     product.videoUrl = vUrl;
                     product.youtubeUrl = vUrl;
                     
-                    // 1. Update/Inject floating video button in main gallery carousel
-                    const mainGalleryView = document.querySelector('.vgallery-main-view');
-                    if (mainGalleryView && !document.querySelector('.vgallery-floating-video-btn')) {
-                        const floatBtn = document.createElement('button');
-                        floatBtn.type = 'button';
-                        floatBtn.className = 'vgallery-floating-video-btn';
-                        floatBtn.onclick = () => window.openYouTubeVideoModal(vUrl);
-                        floatBtn.title = 'Ürünün Videosunu İzle';
-                        floatBtn.innerHTML = `<span class="vgallery-video-play-pulse"><i class="fa-solid fa-play"></i></span><span>VİDEO İZLE</span>`;
-                        mainGalleryView.appendChild(floatBtn);
-                    }
-                    
-                    // 2. Update/Inject meta row video button
+                    // Update/Inject meta row video button under title
                     const metaRow = document.querySelector('.vdetail-meta-row');
                     if (metaRow && !document.querySelector('.vdetail-video-btn')) {
                         const metaBtn = document.createElement('button');
