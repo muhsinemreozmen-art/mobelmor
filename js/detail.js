@@ -2013,7 +2013,7 @@ let currentModuleState = {
     modules: []
 };
 
-// ── Interactive Fabric & Color Studio Data ──
+// ── Interactive Fabric & Color Studio Data (Top 5 Real Fabrics) ──
 const FABRIC_COLLECTIONS = [
     {
         id: 'babyface',
@@ -2021,52 +2021,70 @@ const FABRIC_COLLECTIONS = [
         badge: 'Leke Tutmaz',
         desc: 'Su itici, silinebilir, ipeksi yumuşak kadife doku.',
         colors: [
-            { code: 'BF-01', name: 'Krem Bej',        hex: '#f5f0eb', textColor: '#1e293b' },
-            { code: 'BF-02', name: 'Antrasit Gri',     hex: '#2e3842', textColor: '#ffffff' },
-            { code: 'BF-03', name: 'Zümrüt Yeşili',    hex: '#1b4332', textColor: '#ffffff' },
-            { code: 'BF-04', name: 'Terracotta Kiremit',hex: '#b35436', textColor: '#ffffff' },
-            { code: 'BF-05', name: 'Gece Mavisi',      hex: '#1e2d42', textColor: '#ffffff' },
-            { code: 'BF-06', name: 'Vizon / Latte',    hex: '#9c8c7d', textColor: '#ffffff' },
-            { code: 'BF-07', name: 'Hardal Sarısı',    hex: '#c99a3e', textColor: '#ffffff' },
-            { code: 'BF-08', name: 'Adaçayı Yeşili',   hex: '#60725c', textColor: '#ffffff' },
+            { code: 'BF-01', name: 'Krem Bej',        image: 'assets/fabrics/bf_krem.webp', hex: '#f5f0eb', textColor: '#1e293b' },
+            { code: 'BF-02', name: 'Antrasit Gri',     image: 'assets/fabrics/bf_antrasit.webp', hex: '#334155', textColor: '#ffffff' },
+            { code: 'BF-03', name: 'Zümrüt Yeşili',    image: 'assets/fabrics/bf_zumrut.webp', hex: '#166534', textColor: '#ffffff' },
+            { code: 'BF-04', name: 'Terracotta',       image: 'assets/fabrics/bf_terracotta.webp', hex: '#c2410c', textColor: '#ffffff' },
+            { code: 'BF-05', name: 'Gece Mavisi',      image: 'assets/fabrics/bf_gecemavisi.webp', hex: '#1e3a8a', textColor: '#ffffff' },
+            { code: 'BF-06', name: 'Vizon Latte',      image: 'assets/fabrics/bf_vizon.webp', hex: '#a89484', textColor: '#ffffff' },
+            { code: 'BF-07', name: 'Hardal Sarısı',    image: 'assets/fabrics/bf_hardal.webp', hex: '#ca8a04', textColor: '#ffffff' },
+            { code: 'BF-08', name: 'Adaçayı Yeşili',   image: 'assets/fabrics/bf_adacayi.webp', hex: '#57755f', textColor: '#ffffff' },
         ]
     },
     {
         id: 'bukle',
         name: 'İtalyan Bukle',
         badge: 'Trend 2026',
-        desc: 'Özel dokuma, 3D hacimli lüks bouclé iplik yapısı.',
+        desc: 'Özel 3D bukle dokuma, hacimli ve sıcak lüks doku.',
         colors: [
-            { code: 'BK-01', name: 'Kırık Beyaz Bukle', hex: '#fdfbf7', textColor: '#1e293b' },
-            { code: 'BK-02', name: 'Kum Beji Bukle',    hex: '#e6ded3', textColor: '#1e293b' },
-            { code: 'BK-03', name: 'Taş Grisi Bukle',   hex: '#9e9e9e', textColor: '#ffffff' },
-            { code: 'BK-04', name: 'Haki Yeşil Bukle',  hex: '#4a5b48', textColor: '#ffffff' },
-            { code: 'BK-05', name: 'Koyu Vizon Bukle',  hex: '#6d5d52', textColor: '#ffffff' },
+            { code: 'BK-01', name: 'Ekru Bukle',       image: 'assets/fabrics/bk_ekru.webp', hex: '#f8f5ee', textColor: '#1e293b' },
+            { code: 'BK-02', name: 'Fildişi Bukle',    image: 'assets/fabrics/bk_fildisi.webp', hex: '#eee8dc', textColor: '#1e293b' },
+            { code: 'BK-03', name: 'Sıcak Bej',        image: 'assets/fabrics/bk_bej.webp', hex: '#daccb9', textColor: '#1e293b' },
+            { code: 'BK-04', name: 'Taş Grisi',        image: 'assets/fabrics/bk_tasgri.webp', hex: '#949ba2', textColor: '#ffffff' },
+            { code: 'BK-05', name: 'Vizon Bukle',      image: 'assets/fabrics/bk_vizon.webp', hex: '#a08c7d', textColor: '#ffffff' },
+            { code: 'BK-06', name: 'Fıstık Yeşili',    image: 'assets/fabrics/bk_fistik.webp', hex: '#78916e', textColor: '#ffffff' },
         ]
     },
     {
         id: 'nubuk',
         name: 'Silinebilir Nubuk',
         badge: 'Pati Dostu',
-        desc: 'Tırnak takılmayan, yüksek sürtünme dayanımlı pürüzsüz doku.',
+        desc: 'Tırnak takılmayan, leke tutmaz pürüzsüz süet nubuk dokusu.',
         colors: [
-            { code: 'NB-01', name: 'Fildişi Nubuk',     hex: '#f7f4ed', textColor: '#1e293b' },
-            { code: 'NB-02', name: 'Duman Grisi Nubuk', hex: '#4b5563', textColor: '#ffffff' },
-            { code: 'NB-03', name: 'Taba Nubuk',        hex: '#8c4e2b', textColor: '#ffffff' },
-            { code: 'NB-04', name: 'Petrol Mavisi Nubuk', hex: '#164e63', textColor: '#ffffff' },
-            { code: 'NB-05', name: 'Acı Kahve Nubuk',   hex: '#38221b', textColor: '#ffffff' },
+            { code: 'NB-01', name: 'Taba Kahve',       image: 'assets/fabrics/nb_taba.webp', hex: '#b46937', textColor: '#ffffff' },
+            { code: 'NB-02', name: 'Duman Gri',        image: 'assets/fabrics/nb_duman.webp', hex: '#64748b', textColor: '#ffffff' },
+            { code: 'NB-03', name: 'Kum Beji',         image: 'assets/fabrics/nb_kum.webp', hex: '#d4c4b0', textColor: '#1e293b' },
+            { code: 'NB-04', name: 'Çikolata Kahve',   image: 'assets/fabrics/nb_cikolata.webp', hex: '#4e342e', textColor: '#ffffff' },
+            { code: 'NB-05', name: 'Petrol Yeşili',    image: 'assets/fabrics/nb_petrol.webp', hex: '#155e75', textColor: '#ffffff' },
+            { code: 'NB-06', name: 'Kül Grisi',        image: 'assets/fabrics/nb_kul.webp', hex: '#8c8c91', textColor: '#ffffff' },
         ]
     },
     {
         id: 'keten',
         name: 'Doğal Dokuma Keten',
         badge: 'Nefes Alabilen',
-        desc: 'Doğal lifli, serin tutan organik dokuma keten.',
+        desc: 'Doğal lifli, ferah ve organik nefes alabilen keten dokuma.',
         colors: [
-            { code: 'KT-01', name: 'Naturel Keten',     hex: '#eae4d9', textColor: '#1e293b' },
-            { code: 'KT-02', name: 'Açık Gri Keten',    hex: '#cbd5e1', textColor: '#1e293b' },
-            { code: 'KT-03', name: 'Lacivert Keten',    hex: '#1e3a8a', textColor: '#ffffff' },
-            { code: 'KT-04', name: 'Zeytin Yeşili Keten', hex: '#3f4f34', textColor: '#ffffff' },
+            { code: 'KT-01', name: 'Doğal Keten',      image: 'assets/fabrics/kt_dogal.webp', hex: '#e1d7c6', textColor: '#1e293b' },
+            { code: 'KT-02', name: 'Açık Bej',         image: 'assets/fabrics/kt_acikbej.webp', hex: '#f0e9de', textColor: '#1e293b' },
+            { code: 'KT-03', name: 'Taş Rengi',        image: 'assets/fabrics/kt_tas.webp', hex: '#b9afa0', textColor: '#1e293b' },
+            { code: 'KT-04', name: 'Grafit Keten',     image: 'assets/fabrics/kt_grafit.webp', hex: '#4b5563', textColor: '#ffffff' },
+            { code: 'KT-05', name: 'Zeytin Yeşili',    image: 'assets/fabrics/kt_zeytin.webp', hex: '#5f6e50', textColor: '#ffffff' },
+            { code: 'KT-06', name: 'Çöl Kumu',         image: 'assets/fabrics/kt_colkumu.webp', hex: '#cdb99b', textColor: '#1e293b' },
+        ]
+    },
+    {
+        id: 'sonil',
+        name: 'Lüks Şönil / Jakar',
+        badge: 'Ekstra Dayanıklı',
+        desc: 'Ağır gramajlı, tok ve dökümlü şık jakarlı mobilya şönili.',
+        colors: [
+            { code: 'SN-01', name: 'Lüks Antrasit',    image: 'assets/fabrics/sn_antrasit.webp', hex: '#2d3748', textColor: '#ffffff' },
+            { code: 'SN-02', name: 'Vizon Şönil',      image: 'assets/fabrics/sn_vizon.webp', hex: '#9b8778', textColor: '#ffffff' },
+            { code: 'SN-03', name: 'Zümrüt Şönil',     image: 'assets/fabrics/sn_zumrut.webp', hex: '#145537', textColor: '#ffffff' },
+            { code: 'SN-04', name: 'Krem Şönil',       image: 'assets/fabrics/sn_krem.webp', hex: '#f2ece2', textColor: '#1e293b' },
+            { code: 'SN-05', name: 'Bakır Şönil',      image: 'assets/fabrics/sn_bakir.webp', hex: '#af502d', textColor: '#ffffff' },
+            { code: 'SN-06', name: 'Lacivert Şönil',   image: 'assets/fabrics/sn_lacivert.webp', hex: '#192d5a', textColor: '#ffffff' },
         ]
     }
 ];
@@ -2076,7 +2094,8 @@ let currentFabricState = {
     fabricName: 'Baby Face Kadife',
     colorCode: 'BF-01',
     colorName: 'Krem Bej',
-    colorHex: '#f5f0eb'
+    colorHex: '#f5f0eb',
+    colorImage: 'assets/fabrics/bf_krem.webp'
 };
 
 let currentDetailProduct = null;
@@ -2088,33 +2107,13 @@ const renderFabricSwatchesHtml = (colId) => {
         <button type="button" 
             class="vcolor-swatch-btn ${color.code === currentFabricState.colorCode ? 'active' : ''}" 
             data-code="${color.code}" 
-            style="background-color: ${color.hex};" 
-            onclick="selectFabricColor('${color.code}', '${color.name}', '${color.hex}')" 
+            style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
+            onclick="selectFabricColor('${color.code}', '${color.name}', '${color.hex}', '${color.image}')" 
             title="${color.name} (${color.code})"
             aria-label="${color.name}">
-            <i class="fa-solid fa-check vswatch-check" style="color: ${color.textColor};"></i>
+            <i class="fa-solid fa-check vswatch-check"></i>
         </button>
     `).join('');
-};
-
-window.applyLiveColorShading = (colorHex, colorName) => {
-    const shader = document.getElementById("galleryColorShaderOverlay");
-    const badge = document.getElementById("galleryLiveTintBadge");
-    const badgeText = document.getElementById("galleryLiveTintText");
-    if (!shader) return;
-
-    if (!colorHex || colorHex === '#f5f0eb' || colorHex === '#fdfbf7') {
-        shader.style.backgroundColor = colorHex || 'transparent';
-        shader.classList.remove("active");
-        if (badge) badge.style.display = "none";
-    } else {
-        shader.style.backgroundColor = colorHex;
-        shader.classList.add("active");
-        if (badge && badgeText) {
-            badgeText.textContent = `Canlı Renk Önizleme: ${colorName}`;
-            badge.style.display = "inline-flex";
-        }
-    }
 };
 
 window.selectFabricCollection = (colId) => {
@@ -2127,6 +2126,7 @@ window.selectFabricCollection = (colId) => {
     currentFabricState.colorCode = firstColor.code;
     currentFabricState.colorName = firstColor.name;
     currentFabricState.colorHex = firstColor.hex;
+    currentFabricState.colorImage = firstColor.image;
 
     document.querySelectorAll(".vfabric-pill-btn").forEach(btn => {
         btn.classList.toggle("active", btn.getAttribute("onclick")?.includes(colId));
@@ -2136,21 +2136,20 @@ window.selectFabricCollection = (colId) => {
     if (grid) grid.innerHTML = renderFabricSwatchesHtml(col.id);
 
     updateFabricLensAndBadge(col, firstColor);
-    applyLiveColorShading(firstColor.hex, firstColor.name);
 };
 
-window.selectFabricColor = (code, name, hex) => {
+window.selectFabricColor = (code, name, hex, image) => {
     currentFabricState.colorCode = code;
     currentFabricState.colorName = name;
     currentFabricState.colorHex = hex;
+    currentFabricState.colorImage = image || currentFabricState.colorImage;
 
     document.querySelectorAll(".vcolor-swatch-btn").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.code === code);
     });
 
     const col = FABRIC_COLLECTIONS.find(c => c.id === currentFabricState.fabricId);
-    updateFabricLensAndBadge(col, { code, name, hex });
-    applyLiveColorShading(hex, name);
+    updateFabricLensAndBadge(col, { code, name, hex, image: currentFabricState.colorImage });
 };
 
 const updateFabricLensAndBadge = (col, color) => {
@@ -2161,7 +2160,11 @@ const updateFabricLensAndBadge = (col, color) => {
     const sampleLink = document.getElementById("vfabricSampleLink");
 
     if (activeLabel) activeLabel.textContent = `${color.name} (${color.code})`;
-    if (lensCircle) lensCircle.style.backgroundColor = color.hex;
+    if (lensCircle) {
+        lensCircle.style.backgroundImage = `url('${color.image || currentFabricState.colorImage}')`;
+        lensCircle.style.backgroundSize = 'cover';
+        lensCircle.style.backgroundPosition = 'center';
+    }
     if (selectedTitle && col) selectedTitle.textContent = `${col.name} • ${color.name}`;
     if (selectedDesc && col) selectedDesc.textContent = col.desc;
     if (sampleLink && currentDetailProduct) {
@@ -2268,12 +2271,6 @@ const renderProductDetail = () => {
                                 <img src="${gImg}" alt="${product.title} - Görsel ${idx + 1}" class="gallery-slide-img" onerror="this.onerror=null; this.src='assets/zumrut_main.jpg';">
                             </div>
                         `).join('')}
-                    </div>
-
-                    <!-- Dynamic Realtime Color Tint Shading Overlay -->
-                    <div class="gallery-color-shader-overlay" id="galleryColorShaderOverlay"></div>
-                    <div class="gallery-live-tint-badge" id="galleryLiveTintBadge" style="display:none;">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="galleryLiveTintText">Canlı Renk Önizleme</span>
                     </div>
 
                     <!-- Top-Left Circle Sticker Badge -->
