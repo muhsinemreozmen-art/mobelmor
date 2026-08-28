@@ -4598,21 +4598,45 @@ body.mobile-menu-open .mobile-sticky-buy-bar,
     justify-content: center;
 }
 
-body.modal-open,
-body.cart-open,
-body.wishlist-open {
+html.modal-open,
+html.cart-open,
+html.wishlist-open,
+html.scroll-locked {
     overflow: hidden !important;
-    overscroll-behavior: none;
+    height: 100% !important;
+    max-height: 100% !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto;
 }
 
-/* iOS Safari scroll lock fix */
-@supports (-webkit-touch-callout: none) {
-    body.cart-open,
-    body.wishlist-open,
-    body.modal-open {
-        position: fixed;
-        width: 100%;
-    }
+body.modal-open,
+body.cart-open,
+body.wishlist-open,
+body.scroll-locked {
+    overflow: hidden !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overscroll-behavior: none !important;
+    touch-action: none;
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 30000;
+    display: none;
+    backdrop-filter: blur(4px);
+    touch-action: none !important;
+    overscroll-behavior: none !important;
 }
 
 .cart-drawer {
@@ -4622,6 +4646,8 @@ body.wishlist-open {
     width: 100%;
     max-width: 400px;
     height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
     background-color: #ffffff !important;
     color: #18181b !important;
     z-index: 35000;
@@ -4629,6 +4655,8 @@ body.wishlist-open {
     flex-direction: column;
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+    overscroll-behavior: contain !important;
+    touch-action: pan-y;
 }
 
 .cart-drawer.active {
@@ -4641,6 +4669,8 @@ body.wishlist-open {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e4e4e7 !important;
+    flex-shrink: 0;
+    touch-action: none;
 }
 
 .cart-header h3 {
@@ -4668,8 +4698,12 @@ body.wishlist-open {
 
 .cart-body {
     padding: 16px;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y;
 }
 
 .cart-item-row {
@@ -4724,6 +4758,8 @@ body.wishlist-open {
     padding: 20px;
     background-color: #faf8ff !important;
     border-top: 1px solid #e9d5ff !important;
+    flex-shrink: 0;
+    touch-action: none;
 }
 
 @media (max-width: 576px) {

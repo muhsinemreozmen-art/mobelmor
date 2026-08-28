@@ -1725,6 +1725,56 @@ const formatPrice = (num) => {
   return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
 };
 
+let bodyScrollPos = 0;
+let activeScrollLocks = 0;
+
+const lockBodyScroll = () => {
+  activeScrollLocks++;
+  if (activeScrollLocks === 1) {
+    bodyScrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    document.documentElement.classList.add("scroll-locked", "cart-open");
+    document.body.classList.add("scroll-locked", "cart-open");
+    document.body.style.top = `-${bodyScrollPos}px`;
+  }
+};
+
+const unlockBodyScroll = () => {
+  if (activeScrollLocks > 0) {
+    activeScrollLocks--;
+  }
+  if (activeScrollLocks === 0) {
+    document.documentElement.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
+    document.body.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
+    const top = document.body.style.top;
+    document.body.style.top = "";
+    const targetY = top ? parseInt(top, 10) * -1 : bodyScrollPos;
+    window.scrollTo(0, targetY);
+  }
+};
+
+const trapDrawerScroll = (element) => {
+  if (!element) return;
+  let startY = 0;
+  element.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+      startY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  element.addEventListener("touchmove", (e) => {
+    if (e.touches.length !== 1) return;
+    const currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+    const scrollTop = element.scrollTop;
+    const isAtTop = scrollTop <= 0;
+    const isAtBottom = (scrollTop + element.clientHeight) >= (element.scrollHeight - 1);
+
+    if ((isAtTop && deltaY > 0) || (isAtBottom && deltaY < 0)) {
+      if (e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+};
+
 const showToast = (message, icon = "fa-circle-check") => {
   const container = document.getElementById("toastContainer");
   if (!container) return;
@@ -3054,18 +3104,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("wishlistDrawer")?.classList.add("active");
     document.getElementById("wishlistOverlay")?.classList.add("active");
     document.body.classList.add("wishlist-open");
+    lockBodyScroll();
   });
 
   document.getElementById("closeWishlistBtn")?.addEventListener("click", () => {
     document.getElementById("wishlistDrawer")?.classList.remove("active");
     document.getElementById("wishlistOverlay")?.classList.remove("active");
     document.body.classList.remove("wishlist-open");
+    unlockBodyScroll();
   });
 
   document.getElementById("wishlistOverlay")?.addEventListener("click", () => {
     document.getElementById("wishlistDrawer")?.classList.remove("active");
     document.getElementById("wishlistOverlay")?.classList.remove("active");
     document.body.classList.remove("wishlist-open");
+    unlockBodyScroll();
   });
 
   // Cart Drawer Trigger
@@ -3074,39 +3127,67 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cartDrawer")?.classList.add("active");
     document.getElementById("cartOverlay")?.classList.add("active");
     document.body.classList.add("cart-open");
+    lockBodyScroll();
   });
 
   document.getElementById("closeCartBtn")?.addEventListener("click", () => {
     document.getElementById("cartDrawer")?.classList.remove("active");
     document.getElementById("cartOverlay")?.classList.remove("active");
     document.body.classList.remove("cart-open");
+    unlockBodyScroll();
   });
 
   document.getElementById("cartOverlay")?.addEventListener("click", () => {
     document.getElementById("cartDrawer")?.classList.remove("active");
     document.getElementById("cartOverlay")?.classList.remove("active");
     document.body.classList.remove("cart-open");
+    unlockBodyScroll();
   });
+
+  // Prevent background touch scrolling on overlays and fixed drawer sections
+  const preventScrollTouch = (e) => {
+    if (e.cancelable) e.preventDefault();
+  };
+  document.getElementById("cartOverlay")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+  document.getElementById("wishlistOverlay")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+  document.getElementById("checkoutOverlay")?.addEventListener("touchmove", (e) => {
+    if (e.target.id === "checkoutOverlay") preventScrollTouch(e);
+  }, { passive: false });
+  document.getElementById("quickViewOverlay")?.addEventListener("touchmove", (e) => {
+    if (e.target.id === "quickViewOverlay") preventScrollTouch(e);
+  }, { passive: false });
+
+  document.querySelector("#cartDrawer .cart-header")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+  document.querySelector("#cartDrawer .cart-footer")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+  document.querySelector("#wishlistDrawer .cart-header")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+  document.querySelector("#wishlistDrawer .cart-footer")?.addEventListener("touchmove", preventScrollTouch, { passive: false });
+
+  trapDrawerScroll(document.getElementById("cartBody"));
+  trapDrawerScroll(document.getElementById("wishlistBody"));
 
   document.getElementById("closeQuickViewBtn")?.addEventListener("click", () => {
     document.getElementById("quickViewOverlay")?.classList.remove("active");
     document.body.classList.remove("modal-open");
+    unlockBodyScroll();
   });
   document.getElementById("quickViewOverlay")?.addEventListener("click", (e) => {
     if (e.target.id === "quickViewOverlay") {
       document.getElementById("quickViewOverlay")?.classList.remove("active");
       document.body.classList.remove("modal-open");
+      unlockBodyScroll();
     }
   });
 
   document.getElementById("closeCheckoutBtn")?.addEventListener("click", () => {
     document.getElementById("checkoutOverlay")?.classList.remove("active");
     document.body.classList.remove("modal-open");
+    unlockBodyScroll();
   });
   document.getElementById("checkoutOverlay")?.addEventListener("click", (e) => {
     if (e.target.id === "checkoutOverlay") {
       document.getElementById("checkoutOverlay")?.classList.remove("active");
       document.body.classList.remove("modal-open");
+      unlockBodyScroll();
     }
   });
 
@@ -4015,13 +4096,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function openMobileDrawer() {
     mobileMenuDrawer?.classList.add("active");
     mobileMenuOverlay?.classList.add("active");
-    document.body.style.overflow = "hidden";
+    lockBodyScroll();
   }
 
   function closeMobileDrawer() {
     mobileMenuDrawer?.classList.remove("active");
     mobileMenuOverlay?.classList.remove("active");
-    document.body.style.overflow = "";
+    unlockBodyScroll();
   }
 
   mobileMenuBtn?.addEventListener("click", openMobileDrawer);
