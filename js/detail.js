@@ -2413,11 +2413,25 @@ const renderProductDetail = () => {
     let product = (typeof window.StoreService !== 'undefined' ? window.StoreService.getProductById(pid) : null) || PRODUCTS.find(p => p.id === pid) || PRODUCTS[0];
     
     // Extract video if embedded in material
-    if (product && product.material && product.material.includes('||VIDEO:')) {
-        const m = product.material.match(/\|\|VIDEO:([^|]+)\|\|/);
-        if (m && m[1]) {
-            product.videoUrl = m[1];
-            product.youtubeUrl = m[1];
+    if (product && product.material) {
+        if (product.material.includes('||META:')) {
+            const match = product.material.match(/\|\|META:(\{.*?\})\|\|/);
+            if (match && match[1]) {
+                try {
+                    const parsed = JSON.parse(match[1]);
+                    if (parsed.videoUrl || parsed.youtubeUrl) {
+                        product.videoUrl = parsed.videoUrl || parsed.youtubeUrl;
+                        product.youtubeUrl = product.videoUrl;
+                    }
+                } catch(e) {}
+            }
+        }
+        if (product.material.includes('||VIDEO:')) {
+            const m = product.material.match(/\|\|VIDEO:([^|]+)\|\|/);
+            if (m && m[1]) {
+                product.videoUrl = m[1];
+                product.youtubeUrl = m[1];
+            }
         }
     }
 
@@ -2795,6 +2809,15 @@ const renderProductDetail = () => {
             if (rows && rows.length > 0) {
                 const cp = rows[0];
                 let vUrl = cp.video_url || cp.videoUrl || '';
+                if (!vUrl && cp.material && cp.material.includes('||META:')) {
+                    const match = cp.material.match(/\|\|META:(\{.*?\})\|\|/);
+                    if (match && match[1]) {
+                        try {
+                            const parsed = JSON.parse(match[1]);
+                            if (parsed.videoUrl || parsed.youtubeUrl) vUrl = parsed.videoUrl || parsed.youtubeUrl;
+                        } catch(e) {}
+                    }
+                }
                 if (!vUrl && cp.material && cp.material.includes('||VIDEO:')) {
                     const m = cp.material.match(/\|\|VIDEO:([^|]+)\|\|/);
                     if (m && m[1]) vUrl = m[1];
