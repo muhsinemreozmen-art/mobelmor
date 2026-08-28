@@ -85,7 +85,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260828_1751">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260828_1754">
     <style id="header-alignment-guarantee">
         .app-header .header-container,
         .vivense-nav-wrapper .vivense-nav-container,
@@ -340,6 +340,7 @@
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="mobileSearchInput" placeholder="Evin için ne arıyorsun?" autocomplete="off" oninput="const val=this.value; const s=document.getElementById('searchInput'); if(s){ s.value=val; s.dispatchEvent(new Event('input')); }">
+                <button type="button" class="clear-btn" style="display: none;" aria-label="Temizle"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
 
@@ -1696,7 +1697,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main Logic JS -->
-    <script src="js/store-service.js?v=20260828_1751"></script>
-    <script src="js/app.js?v=20260828_1751" defer></script>
+    <script src="js/store-service.js?v=20260828_1754"></script>
+    <script src="js/app.js?v=20260828_1754" defer></script>
 </body>
 </html>

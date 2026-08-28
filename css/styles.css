@@ -638,6 +638,30 @@ button:active,
         color: #64748b !important;
         font-size: 1rem !important;
     }
+    .mobile-search-row .search-box .clear-btn {
+        position: absolute !important;
+        right: 8px !important;
+        left: auto !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+        display: none;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #e4e4e7 !important;
+        color: #3f3f46 !important;
+        font-size: 0.85rem !important;
+        cursor: pointer !important;
+        border: none !important;
+        padding: 0 !important;
+        z-index: 5 !important;
+    }
+    .mobile-search-row .search-box .clear-btn:active {
+        background: #d4d4d8 !important;
+        color: #18181b !important;
+    }
     .header-action-buttons {
         display: flex;
         align-items: center;

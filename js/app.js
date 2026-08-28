@@ -2901,13 +2901,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       };
 
+      let clearBtn = wrap.querySelector(".clear-btn");
+      if (!clearBtn) {
+        clearBtn = document.createElement("button");
+        clearBtn.type = "button";
+        clearBtn.className = "clear-btn";
+        clearBtn.style.display = "none";
+        clearBtn.setAttribute("aria-label", "Temizle");
+        clearBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        const searchBox = wrap.querySelector(".search-box") || input.parentElement;
+        if (searchBox) searchBox.appendChild(clearBtn);
+      }
+
+      const searchIcon = wrap.querySelector(".search-icon");
+
+      const updateClearBtnState = (val) => {
+        const hasText = !!(val && val.trim().length > 0);
+        if (clearBtn) clearBtn.style.display = hasText ? "inline-flex" : "none";
+        if (searchIcon) searchIcon.style.display = hasText ? "none" : "block";
+      };
+
       let debounceTimer = null;
       input.addEventListener("input", (e) => {
         const val = e.target.value;
         searchQuery = val;
-
-        const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
-        if (clearBtn) clearBtn.style.display = val ? "inline-flex" : "none";
+        updateClearBtnState(val);
 
         const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
         if (isCategoryPage) {
@@ -2935,12 +2953,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       input.addEventListener("focus", () => {
+        updateClearBtnState(input.value);
         if (input.value.trim()) {
           renderSearchResults(input.value);
         }
       });
 
-      const searchIcon = wrap.querySelector(".search-icon");
       if (searchIcon) {
         searchIcon.addEventListener("click", () => {
           if (input.value.trim().length > 0) {
@@ -2951,18 +2969,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      const clearBtn = wrap.querySelector(".clear-btn") || document.getElementById("clearSearchBtn");
       if (clearBtn) {
         clearBtn.addEventListener("click", (e) => {
           e.preventDefault();
+          e.stopPropagation();
           input.value = "";
           searchQuery = "";
-          clearBtn.style.display = "none";
+          updateClearBtnState("");
           closeDropdown();
           const isCategoryPage = window.location.pathname.includes("kategori") || window.location.pathname.includes("category");
           if (isCategoryPage) {
             renderProducts();
           }
+          input.focus();
         });
       }
     });
