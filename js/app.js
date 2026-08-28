@@ -4024,9 +4024,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="order-total-val">${formatPrice(order.total || order.totalAmount || 0)}</span>
                         </div>
                         <div class="order-actions-group" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                            <button type="button" class="order-invoice-btn interactive-btn" onclick="openOrderInvoice('${orderNum}')" title="Sipariş Faturasını Görüntüle / İndir">
-                                <i class="fa-solid fa-file-invoice-dollar" style="color:#7c3aed;"></i> Faturayı Görüntüle
+                            <button type="button" class="order-receipt-btn interactive-btn" onclick="openOrderReceipt('${orderNum}')" title="Sipariş Makbuzu & Teyit Formu">
+                                <i class="fa-solid fa-receipt" style="color:#7c3aed;"></i> Sipariş Makbuzu
                             </button>
+                            ${(order.invoiceData || order.invoiceUrl || order.invoiceAttached) ? `
+                                <button type="button" class="order-invoice-btn-official interactive-btn" onclick="openOfficialInvoice('${orderNum}')" title="Yüklenen Resmi E-Arşiv Faturasını Aç / İndir">
+                                    <i class="fa-solid fa-file-invoice" style="color:#15803d;"></i> E-Arşiv Faturası
+                                </button>
+                            ` : ''}
                             <a href="https://wa.me/905300000000?text=${encodeURIComponent(`Merhaba, ${orderNum} numaralı siparişim hakkında bilgi almak istiyorum.`)}" target="_blank" class="order-support-btn interactive-btn">
                                 <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Destek Al
                             </a>
@@ -4037,8 +4042,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }).join('');
   };
 
-  // ORDER INVOICE (E-ARŞİV / E-FATURA) VIEWER & PRINT ENGINE
-  window.openOrderInvoice = (orderNum) => {
+  // 1. OTOMATİK SİPARİŞ MAKBUZU & BİLGİ FORMU (RESMİ E-ARŞİV DEĞİL)
+  window.openOrderReceipt = (orderNum) => {
     let orders = [];
     try {
       if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
@@ -4065,24 +4070,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const cPhone = order.customerPhone || (order.customer && order.customer.phone) || "-";
     const cAddress = order.address || (order.customer && order.customer.address) || (order.city ? `${order.city} / ${order.district || ''}` : "Türkiye");
     const oDate = order.date || (order.createdAt ? new Date(order.createdAt).toLocaleDateString("tr-TR") : new Date().toLocaleDateString("tr-TR"));
-    const invNumber = order.invoiceNumber || `MBL-FAT-${orderNum.replace('MBL-', '')}`;
+    const receiptNum = `MBL-MKB-${orderNum.replace('MBL-', '')}`;
     const total = order.totalAmount || order.total || 0;
     
-    // KDV Calculations (%10 for furniture in Turkey)
+    // KDV Calculations
     const kdvRate = 0.10;
     const subTotal = Math.round(total / (1 + kdvRate));
     const kdvTotal = total - subTotal;
 
-    let invoiceOverlay = document.getElementById("orderInvoiceOverlay");
-    if (!invoiceOverlay) {
-      invoiceOverlay = document.createElement("div");
-      invoiceOverlay.id = "orderInvoiceOverlay";
-      invoiceOverlay.className = "modal-overlay invoice-modal-overlay";
-      document.body.appendChild(invoiceOverlay);
+    let receiptOverlay = document.getElementById("orderInvoiceOverlay");
+    if (!receiptOverlay) {
+      receiptOverlay = document.createElement("div");
+      receiptOverlay.id = "orderInvoiceOverlay";
+      receiptOverlay.className = "modal-overlay invoice-modal-overlay";
+      document.body.appendChild(receiptOverlay);
     }
-
-    const hasCustomFile = !!(order.invoiceData || order.invoiceUrl);
-    const customFileUrl = order.invoiceData || order.invoiceUrl || "";
 
     const itemsRows = (order.items || []).map((item, idx) => {
       const itemQty = item.qty || 1;
@@ -4118,30 +4120,25 @@ document.addEventListener("DOMContentLoaded", () => {
       </tr>
     `;
 
-    invoiceOverlay.innerHTML = `
+    receiptOverlay.innerHTML = `
       <div class="invoice-modal-card" id="printableInvoiceCard">
-        <!-- Invoice Action Toolbar (hidden during print) -->
+        <!-- Toolbar (hidden during print) -->
         <div class="invoice-toolbar no-print">
           <div style="display:flex; align-items:center; gap:8px;">
-            <i class="fa-solid fa-file-invoice" style="color:#7c3aed; font-size:1.2rem;"></i>
-            <span style="font-weight:800; font-size:1rem; color:#18181b;">E-Arşiv Fatura Belgesi</span>
+            <i class="fa-solid fa-receipt" style="color:#7c3aed; font-size:1.2rem;"></i>
+            <span style="font-weight:800; font-size:1rem; color:#18181b;">Sipariş Makbuzu &amp; Teyit Belgesi</span>
           </div>
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            ${hasCustomFile ? `
-              <a href="${customFileUrl}" download="Fatura_${orderNum}.pdf" target="_blank" class="invoice-btn-custom-file">
-                <i class="fa-solid fa-download"></i> Ekli PDF Faturayı İndir
-              </a>
-            ` : ''}
             <button type="button" onclick="window.print()" class="invoice-btn-print">
               <i class="fa-solid fa-print"></i> Yazdır / PDF Kaydet
             </button>
-            <button type="button" onclick="closeOrderInvoice()" class="invoice-btn-close" aria-label="Kapat">
+            <button type="button" onclick="closeOrderReceipt()" class="invoice-btn-close" aria-label="Kapat">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
         </div>
 
-        <!-- Official E-Arşiv Fatura Body -->
+        <!-- Official Sipariş Makbuzu Paper -->
         <div class="invoice-paper" id="invoicePaperArea">
           <!-- Top Header -->
           <div class="inv-header-grid">
@@ -4159,14 +4156,14 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="inv-meta-box">
-              <div class="inv-title-badge">e-ARŞİV FATURA</div>
+              <div class="inv-title-badge">SİPARİŞ MAKBUZU</div>
               <table style="width:100%; font-size:0.82rem; border-collapse:collapse; margin-top:8px;">
                 <tr>
-                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Fatura No:</td>
-                  <td style="padding:3px 0; text-align:right; font-weight:800; color:#18181b;">${invNumber}</td>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Makbuz No:</td>
+                  <td style="padding:3px 0; text-align:right; font-weight:800; color:#18181b;">${receiptNum}</td>
                 </tr>
                 <tr>
-                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Fatura Tarihi:</td>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Sipariş Tarihi:</td>
                   <td style="padding:3px 0; text-align:right; font-weight:700; color:#18181b;">${oDate}</td>
                 </tr>
                 <tr>
@@ -4174,7 +4171,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td style="padding:3px 0; text-align:right; font-weight:700; color:#7c3aed;">${orderNum}</td>
                 </tr>
                 <tr>
-                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Ödeme Türü:</td>
+                  <td style="padding:3px 0; color:#71717a; font-weight:600;">Ödeme Yöntemi:</td>
                   <td style="padding:3px 0; text-align:right; font-weight:700; color:#18181b;">${order.paymentMethodLabel || order.paymentMethod || 'Kredi Kartı / 3D Secure'}</td>
                 </tr>
               </table>
@@ -4186,9 +4183,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <div style="font-size:0.75rem; font-weight:800; color:#7c3aed; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">SAYIN (ALICI BİLGİLERİ)</div>
             <div style="font-size:0.95rem; font-weight:800; color:#18181b;">${cName}</div>
             <div style="font-size:0.82rem; color:#52525b; margin-top:3px; line-height:1.4;">
-              <strong>Adres:</strong> ${cAddress}<br>
+              <strong>Teslimat Adresi:</strong> ${cAddress}<br>
               <strong>E-Posta:</strong> ${cEmail} | <strong>Telefon:</strong> ${cPhone}<br>
-              <strong>VKN / TCKN:</strong> 11111111111 (Nihai Tüketici)
+              <strong>Müşteri Tipi:</strong> Bireysel / Nihai Tüketici
             </div>
           </div>
 
@@ -4199,12 +4196,12 @@ document.addEventListener("DOMContentLoaded", () => {
               <thead>
                 <tr style="background:#f8fafc; color:#3f3f46; font-size:0.8rem; text-transform:uppercase; font-weight:700;">
                   <th style="padding:8px; border:1px solid #e4e4e7; width:45px; text-align:center;">Sıra</th>
-                  <th style="padding:8px 12px; border:1px solid #e4e4e7; text-align:left; min-width:200px;">Mal / Hizmet Açıklaması</th>
+                  <th style="padding:8px 12px; border:1px solid #e4e4e7; text-align:left; min-width:200px;">Sipariş Edilen Ürün &amp; Seçenekler</th>
                   <th style="padding:8px; border:1px solid #e4e4e7; width:75px; text-align:center;">Miktar</th>
                   <th style="padding:8px; border:1px solid #e4e4e7; width:95px; text-align:right;">Birim Fiyat</th>
                   <th style="padding:8px; border:1px solid #e4e4e7; width:55px; text-align:center;">KDV</th>
                   <th style="padding:8px; border:1px solid #e4e4e7; width:85px; text-align:right;">KDV Tutarı</th>
-                  <th style="padding:8px 12px; border:1px solid #e4e4e7; width:110px; text-align:right;">Mal Hizmet Tutarı</th>
+                  <th style="padding:8px 12px; border:1px solid #e4e4e7; width:110px; text-align:right;">Toplam Tutar</th>
                 </tr>
               </thead>
               <tbody>
@@ -4213,26 +4210,26 @@ document.addEventListener("DOMContentLoaded", () => {
             </table>
           </div>
 
-          <!-- Bottom Totals & Legal Notice -->
+          <!-- Bottom Totals & Notice -->
           <div class="inv-bottom-grid">
             <div class="inv-legal-notice">
               <div style="font-size:0.75rem; color:#71717a; line-height:1.4;">
-                <i class="fa-solid fa-circle-info" style="color:#7c3aed;"></i> İşbu belge 213 sayılı V.U.K. hükümlerine göre <strong>e-Arşiv Fatura</strong> olarak düzenlenmiştir.<br>
-                İrsaliye yerine geçen bu belge, mobilya teslimatı ve resmi 2 yıl garanti belgesi yerine geçer.
+                <i class="fa-solid fa-circle-info" style="color:#7c3aed;"></i> İşbu belge Mobelmor <strong>Sipariş Teyit Makbuzu ve Bilgi Formudur</strong>.<br>
+                Resmi e-Arşiv faturanız muhasebe ve sevkiyat sürecinde düzenlenerek panelinize yüklenir.
               </div>
               <div style="margin-top:8px; font-size:0.72rem; color:#a1a1aa;">
-                Düzenleme Saati: ${new Date().toLocaleTimeString('tr-TR')} | Belge Durumu: ONAYLANDI
+                Düzenleme Saati: ${new Date().toLocaleTimeString('tr-TR')} | Durum: SİPARİŞ ONAYLANDI
               </div>
             </div>
 
             <div class="inv-totals-box">
               <table style="width:100%; font-size:0.85rem; border-collapse:collapse;">
                 <tr>
-                  <td style="padding:4px 0; color:#71717a;">Mal / Hizmet Toplamı:</td>
+                  <td style="padding:4px 0; color:#71717a;">Ara Toplam:</td>
                   <td style="padding:4px 0; text-align:right; font-weight:600; color:#18181b;">${formatPrice(subTotal)}</td>
                 </tr>
                 <tr>
-                  <td style="padding:4px 0; color:#71717a;">Hesaplanan KDV (%10):</td>
+                  <td style="padding:4px 0; color:#71717a;">KDV (%10):</td>
                   <td style="padding:4px 0; text-align:right; font-weight:600; color:#18181b;">${formatPrice(kdvTotal)}</td>
                 </tr>
                 <tr style="border-top:2px solid #18181b; border-bottom:2px solid #18181b;">
@@ -4246,22 +4243,59 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    invoiceOverlay.classList.add("active");
+    receiptOverlay.classList.add("active");
     document.body.classList.add("modal-open");
 
-    // Close on backdrop click
-    invoiceOverlay.onclick = (e) => {
+    receiptOverlay.onclick = (e) => {
       if (e.target.id === "orderInvoiceOverlay") {
-        closeOrderInvoice();
+        closeOrderReceipt();
       }
     };
   };
 
-  window.closeOrderInvoice = () => {
+  window.closeOrderReceipt = () => {
     const overlay = document.getElementById("orderInvoiceOverlay");
     if (overlay) {
       overlay.classList.remove("active");
       document.body.classList.remove("modal-open");
+    }
+  };
+
+  // 2. RESMİ PANEL E-ARŞİV FATURASINI AÇMA FONKSİYONU
+  window.openOfficialInvoice = (orderNum) => {
+    let orders = [];
+    try {
+      if (window.StoreService && typeof window.StoreService.getAllOrders === 'function') {
+        orders = window.StoreService.getAllOrders();
+      }
+      if (!orders.length) {
+        orders = JSON.parse(localStorage.getItem("mobelmor_all_orders") || "[]");
+      }
+      if (!orders.length) {
+        orders = JSON.parse(localStorage.getItem("mobelmor_orders") || "[]");
+      }
+    } catch (e) {}
+
+    const order = orders.find(o => o.orderNumber === orderNum || o.id === orderNum);
+    if (!order || (!order.invoiceData && !order.invoiceUrl)) {
+      alert("Bu sipariş için resmi e-Arşiv faturası muhasebe departmanımız tarafından hazırlanmaktadır.");
+      return;
+    }
+
+    if (order.invoiceUrl && !order.invoiceData) {
+      window.open(order.invoiceUrl, "_blank");
+      return;
+    }
+
+    if (order.invoiceData) {
+      // Create a temporary anchor to view/download the uploaded PDF/File
+      const a = document.createElement("a");
+      a.href = order.invoiceData;
+      a.download = `Mobelmor_EArsiv_Fatura_${orderNum}.pdf`;
+      a.target = "_blank";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   };
 

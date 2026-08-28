@@ -10317,9 +10317,9 @@ body.scroll-locked {
 }
 
 /* ==========================================================================
-   OFFICIAL E-ARŞİV / E-FATURA STYLES & PRINT ENGINE
+   OFFICIAL SİPARİŞ MAKBUZU & E-ARŞİV FATURA STYLES & PRINT ENGINE
    ========================================================================== */
-.order-invoice-btn {
+.order-receipt-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -10334,9 +10334,30 @@ body.scroll-locked {
     transition: all 0.2s ease;
 }
 
-.order-invoice-btn:hover {
+.order-receipt-btn:hover {
     background: #ede9fe;
     border-color: #c4b5fd;
+    transform: translateY(-1px);
+}
+
+.order-invoice-btn-official {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.order-invoice-btn-official:hover {
+    background: #dcfce7;
+    border-color: #86efac;
     transform: translateY(-1px);
 }
 
