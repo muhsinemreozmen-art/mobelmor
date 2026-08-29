@@ -3457,7 +3457,7 @@ window.applyCartCoupon = () => {
     if (!input) return;
     const code = input.value.trim().toUpperCase();
     if (!code) {
-        if (typeof showToast === 'function') showToast("Lütfen bir kupon kodu giriniz.", "fa-circle-exmark");
+        if (typeof showToast === 'function') showToast("Lütfen bir kupon kodu giriniz.", "fa-circle-exclamation");
         return;
     }
 
@@ -3478,12 +3478,12 @@ window.applyCartCoupon = () => {
         }
     }
 
-    // Fallback if StoreService is loading
+    // Fallback
     if (code === "MOBELMOR500" || code === "HOSGELDIN" || code === "MOBELMOR") {
         appliedCouponDiscount = 500;
         appliedCouponCode = code;
         renderCart();
-        if (typeof showToast === 'function') showToast("500 TL Kupon İndirimi Başarıyla Uygulandı!", "fa-tag");
+        if (typeof showToast === 'function') showToast("500 TL Kupon İndirimi Uygulandı!", "fa-tag");
     } else if (code === "YAZ1000") {
         appliedCouponDiscount = 1000;
         appliedCouponCode = code;
@@ -3503,6 +3503,25 @@ window.removeCartCoupon = () => {
     }
 };
 
+window.togglePriceBreakdown = () => {
+    const details = document.getElementById("tyPriceBreakdown");
+    const arrow = document.getElementById("tyPriceArrow");
+    if (!details) return;
+    if (details.style.display === "none" || !details.style.display) {
+        details.style.display = "flex";
+        if (arrow) arrow.classList.add("open");
+    } else {
+        details.style.display = "none";
+        if (arrow) arrow.classList.remove("open");
+    }
+};
+
+window.togglePromoAccordion = () => {
+    const content = document.getElementById("tyPromoContent");
+    if (!content) return;
+    content.style.display = content.style.display === "none" || !content.style.display ? "block" : "none";
+};
+
 const renderCart = () => {
     const drawer = document.getElementById("cartDrawer");
     const body = document.getElementById("cartBody");
@@ -3511,30 +3530,32 @@ const renderCart = () => {
 
     const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
 
-    // 1. Theme-Harmonious Cart Header
+    // 1. Trendyol Style Header (< Back Arrow, Centered Title, X Button)
     const headerEl = drawer ? drawer.querySelector(".cart-header") : null;
     if (headerEl) {
+        headerEl.className = "ty-cart-header";
         headerEl.innerHTML = `
-            <div class="cart-header-title-theme">
-                <h3><i class="fa-solid fa-bag-shopping"></i> Alışveriş Sepetim</h3>
-                <span class="theme-count-badge">${totalQty} Ürün</span>
-            </div>
-            <button type="button" class="cart-close-theme-btn" id="closeCartBtn" aria-label="Sepeti Kapat" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open'); unlockBodyScroll();">
+            <button type="button" class="ty-header-back-btn" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open'); unlockBodyScroll();" aria-label="Geri">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <h3 class="ty-header-title">Sepetim (${totalQty} Ürün)</h3>
+            <button type="button" class="ty-header-back-btn" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open'); unlockBodyScroll();" aria-label="Kapat">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         `;
     }
 
     if (cart.length === 0) {
+        body.className = "ty-cart-body";
         body.innerHTML = `
-            <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center;">
-                <div style="width:64px; height:64px; border-radius:50%; background:#f3e8ff; color:#6b21a8; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.5rem; border:1px solid #e9d5ff;">
-                    <i class="fa-solid fa-bag-shopping"></i>
+            <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center; background:#ffffff; border-radius:12px; margin-top:10px;">
+                <div style="width:64px; height:64px; border-radius:50%; background:#fff7ed; color:#ea580c; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.6rem; border:1px solid #ffedd5;">
+                    <i class="fa-solid fa-cart-shopping"></i>
                 </div>
-                <h4 style="font-size:1.15rem; font-weight:800; color:#18181b; margin:0 0 6px 0;">Sepetiniz Boş</h4>
-                <p style="font-size:0.86rem; color:#71717a; margin:0 0 20px 0; max-width:240px; line-height:1.5;">Eviniz için seçkin mobilya koleksiyonlarımızı keşfedin.</p>
-                <a href="kategori.html?c=all" class="btn interactive-btn" style="background:#6b21a8; color:#ffffff; padding:12px 24px; font-weight:800; font-size:0.9rem; border-radius:10px; text-decoration:none;" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open');">
-                    Koleksiyonu İncele
+                <h4 style="font-size:1.1rem; font-weight:800; color:#0f172a; margin:0 0 6px 0;">Sepetiniz Boş</h4>
+                <p style="font-size:0.84rem; color:#64748b; margin:0 0 20px 0; max-width:240px; line-height:1.4;">Eviniz için mobilya modellerimizi keşfetmeye başlayın.</p>
+                <a href="kategori.html?c=all" class="btn interactive-btn" style="background:#f97316; color:#ffffff; padding:12px 24px; font-weight:800; font-size:0.9rem; border-radius:10px; text-decoration:none;" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open');">
+                    Alışverişe Başla
                 </a>
             </div>
         `;
@@ -3544,114 +3565,131 @@ const renderCart = () => {
         return;
     }
 
-    // 2. Theme-Harmonious Product Cards List
-    body.innerHTML = `
-        <div style="display:flex; flex-direction:column; gap:10px;">
-            ${cart.map(item => `
-                <div class="theme-cart-card">
-                    <div class="theme-cart-img-wrap">
-                        <img src="${item.image}" alt="${item.title}" class="theme-cart-img">
-                    </div>
-                    <div class="theme-cart-details">
-                        <div>
-                            <div class="theme-cart-head">
-                                <h4 class="theme-cart-title" title="${item.title}">${item.title}</h4>
-                                <button type="button" class="theme-cart-delete-btn" onclick="removeCartItem(${item.id})" title="Ürünü Sepetten Kaldır" aria-label="Sil">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
-
-                            ${item.selectedFabric ? `
-                                <div class="theme-cart-fabric">
-                                    <span class="theme-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
-                                    <span>${item.selectedFabric} / ${item.selectedColor}</span>
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="theme-cart-foot">
-                            <span class="theme-cart-price">${formatPrice(item.price * item.qty)}</span>
-                            <div class="theme-qty-pill">
-                                <button type="button" class="theme-qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Azalt">-</button>
-                                <span class="theme-qty-val">${item.qty}</span>
-                                <button type="button" class="theme-qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Artır">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-
-        <!-- 3. Minimalist Expandable Coupon & Cancel Pill -->
-        <div class="theme-coupon-toggle">
-            ${appliedCouponDiscount > 0 ? `
-                <div class="luxury-applied-coupon-row">
-                    <div class="luxury-coupon-badge-info">
-                        <i class="fa-solid fa-tag"></i>
-                        <span><strong>${appliedCouponCode}</strong> (-${formatPrice(appliedCouponDiscount)})</span>
-                    </div>
-                    <button type="button" class="luxury-coupon-cancel-btn" onclick="removeCartCoupon()" title="Kuponu Kaldır">
-                        <i class="fa-solid fa-xmark"></i> İptal Et
-                    </button>
-                </div>
-            ` : `
-                <button type="button" class="theme-coupon-btn-toggle" onclick="const w=document.getElementById('themeCouponWrap'); w.style.display = w.style.display === 'none' ? 'flex' : 'none';">
-                    <i class="fa-solid fa-ticket"></i>
-                    <span>İndirim Kuponu Ekle +</span>
-                </button>
-                <div id="themeCouponWrap" class="theme-coupon-input-wrap" style="display:none;">
-                    <input type="text" id="cartCouponInput" class="theme-coupon-input" placeholder="Örn: MOBELMOR500" value="${appliedCouponCode}">
-                    <button type="button" class="theme-coupon-apply-btn" onclick="applyCartCoupon()">Uygula</button>
-                </div>
-            `}
-        </div>
-    `;
-
     const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
     const finalTotal = Math.max(0, subtotal - appliedCouponDiscount);
 
-    // 4. Theme-Harmonious Footer
-    footer.innerHTML = `
-        <div class="theme-summary-list">
-            <div class="theme-summary-row">
-                <span>Ara Toplam</span>
-                <span style="font-weight:700; color:#18181b;">${formatPrice(subtotal)}</span>
+    // 2. Trendyol Style Body
+    body.className = "ty-cart-body";
+    body.innerHTML = `
+        <!-- Top Promo Bar -->
+        <div class="ty-promo-bar" onclick="togglePromoAccordion()">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span>🎉</span>
+                <span>${appliedCouponDiscount > 0 ? `Kupon Uygulandı (${appliedCouponCode} -${formatPrice(appliedCouponDiscount)})` : 'Sepetine Özel İndirim Kuponu!'}</span>
             </div>
-            <div class="theme-summary-row">
-                <span>Teslimat &amp; Kurulum</span>
-                <span style="color:#16a34a; font-weight:800;">Ücretsiz</span>
-            </div>
-            ${appliedCouponDiscount > 0 ? `
-                <div class="theme-summary-row">
-                    <span>Kupon İndirimi (${appliedCouponCode})</span>
-                    <span style="color:#16a34a; font-weight:800;">-${formatPrice(appliedCouponDiscount)}</span>
-                </div>
-            ` : ''}
-            <div class="theme-summary-row total-row">
-                <span>Genel Toplam</span>
-                <span class="theme-total-amount">${formatPrice(finalTotal)}</span>
-            </div>
+            <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i>
         </div>
 
-        <button type="button" class="theme-checkout-button interactive-btn" id="openCheckoutBtn">
-            <i class="fa-solid fa-lock" style="font-size:0.92rem; opacity:0.9;"></i>
-            <span>GÜVENLİ SİPARİŞİ TAMAMLA</span>
-            <i class="fa-solid fa-arrow-right" style="font-size:0.9rem; transition:transform 0.2s ease;"></i>
-        </button>
+        <div class="ty-promo-content" id="tyPromoContent" style="${appliedCouponDiscount > 0 ? 'display:block;' : 'display:none;'}">
+            ${appliedCouponDiscount > 0 ? `
+                <div style="display:flex; align-items:center; justify-content:space-between; background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 12px; border-radius:8px;">
+                    <span style="font-size:0.82rem; color:#15803d; font-weight:800;"><i class="fa-solid fa-tag"></i> ${appliedCouponCode} (-${formatPrice(appliedCouponDiscount)})</span>
+                    <button type="button" onclick="removeCartCoupon()" style="background:#fee2e2; border:1px solid #fca5a5; color:#dc2626; font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px; cursor:pointer;">İptal Et</button>
+                </div>
+            ` : `
+                <div class="ty-promo-input-group">
+                    <input type="text" id="cartCouponInput" class="ty-promo-input" placeholder="KUPON KODU (örn: MOBELMOR500)" value="${appliedCouponCode}">
+                    <button type="button" class="ty-promo-btn" onclick="applyCartCoupon()">Uygula</button>
+                </div>
+            `}
+        </div>
 
-        <div class="theme-trust-badges-row">
-            <div class="theme-trust-badge-item">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>2 Yıl Garanti</span>
+        <!-- Store & Items Card -->
+        <div class="ty-store-card">
+            <div class="ty-store-header">
+                <input type="checkbox" class="ty-store-checkbox" checked disabled>
+                <span>Mobelmor İnegöl Fabrika</span>
+                <span class="ty-store-rating">9.9</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
             </div>
-            <div class="theme-trust-badge-item">
-                <i class="fa-solid fa-truck"></i>
-                <span>Ücretsiz Montaj</span>
+            <div class="ty-free-shipping-strip">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Kargo Bedava &amp; Ücretsiz Daireye Kurulum!</span>
             </div>
-            <div class="theme-trust-badge-item">
-                <i class="fa-solid fa-credit-card"></i>
-                <span>12 Taksit</span>
+
+            <!-- Product Rows -->
+            ${cart.map((item, idx) => {
+                const popularPeople = (12 + (item.id * 3)) % 40 + 8;
+                return `
+                <div class="ty-item-row">
+                    <input type="checkbox" class="ty-item-checkbox" checked disabled>
+                    <div class="ty-item-img-wrap">
+                        <img src="${item.image}" alt="${item.title}" class="ty-item-img">
+                    </div>
+                    <div class="ty-item-details">
+                        <div class="ty-item-top">
+                            <h4 class="ty-item-title" title="${item.title}">${item.title}</h4>
+                            <button type="button" class="ty-item-trash" onclick="removeCartItem(${item.id})" title="Ürünü Sil" aria-label="Sil">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+
+                        <span class="ty-item-social-pill">
+                            <i class="fa-solid fa-cart-shopping" style="font-size:0.65rem;"></i> ${popularPeople} kişinin sepetinde
+                        </span>
+
+                        <span class="ty-item-delivery-info">
+                            <i class="fa-solid fa-truck"></i> Hızlı Teslimat: 3-5 gün içinde kargoda
+                        </span>
+
+                        ${item.selectedFabric ? `
+                            <div style="font-size:0.72rem; color:#64748b; font-weight:600; display:flex; align-items:center; gap:4px;">
+                                <span style="width:7px; height:7px; border-radius:50%; background-color:${item.colorHex || '#6b21a8'}; display:inline-block;"></span>
+                                <span>${item.selectedFabric}: ${item.selectedColor}</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="ty-item-foot">
+                            <div class="ty-qty-pill">
+                                <button type="button" class="ty-qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Azalt">-</button>
+                                <span class="ty-qty-val">${item.qty}</span>
+                                <button type="button" class="ty-qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Artır">+</button>
+                            </div>
+                            <span class="ty-item-price">${formatPrice(item.price * item.qty)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ty-warranty-bar">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-shield-halved" style="color:#f59e0b;"></i>
+                        <span>2 Yıl Mobelmor Üretici Garantisi Dahildir</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                </div>
+            `}).join('')}
+        </div>
+    `;
+
+    // 3. Trendyol Sticky Bottom Bar
+    footer.className = "ty-cart-footer";
+    footer.innerHTML = `
+        <div class="ty-breakdown-details" id="tyPriceBreakdown">
+            <div style="display:flex; justify-content:space-between;">
+                <span>Ürünler Toplamı:</span>
+                <span>${formatPrice(subtotal)}</span>
             </div>
+            <div style="display:flex; justify-content:space-between; color:#16a34a; font-weight:700;">
+                <span>Kargo &amp; Montaj:</span>
+                <span>Bedava (0 TL)</span>
+            </div>
+            ${appliedCouponDiscount > 0 ? `
+                <div style="display:flex; justify-content:space-between; color:#ea580c; font-weight:800;">
+                    <span>Kupon İndirimi (${appliedCouponCode}):</span>
+                    <span>-${formatPrice(appliedCouponDiscount)}</span>
+                </div>
+            ` : ''}
+        </div>
+
+        <div class="ty-footer-bar-row">
+            <div class="ty-footer-price-box" onclick="togglePriceBreakdown()" title="Fiyat Detayını Gör">
+                <i class="fa-solid fa-chevron-up ty-footer-arrow" id="tyPriceArrow"></i>
+                <span class="ty-footer-total">${formatPrice(finalTotal)}</span>
+            </div>
+            <button type="button" class="ty-checkout-btn interactive-btn" id="openCheckoutBtn">
+                <span>Sepeti Onayla</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </div>
     `;
 
