@@ -3126,15 +3126,46 @@ function initApp() {
     }
   });
 
-  // Vivense-Style Mega Menu Interaction (Desktop)
+  // Vivense-Style Mega Menu Interaction (Desktop - with safe hover bridge)
   const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
+  let megaCloseTimer = null;
+
   megaNavItems.forEach(item => {
     item.addEventListener("mouseenter", () => {
-      megaNavItems.forEach(other => { if (other !== item) other.classList.remove("is-open"); });
+      if (megaCloseTimer) {
+        clearTimeout(megaCloseTimer);
+        megaCloseTimer = null;
+      }
+      megaNavItems.forEach(other => {
+        if (other !== item) other.classList.remove("is-open");
+      });
       item.classList.add("is-open");
     });
+
     item.addEventListener("mouseleave", () => {
-      item.classList.remove("is-open");
+      if (megaCloseTimer) clearTimeout(megaCloseTimer);
+      megaCloseTimer = setTimeout(() => {
+        item.classList.remove("is-open");
+      }, 160);
+    });
+  });
+
+  const megaDropdowns = document.querySelectorAll(".vivense-mega-dropdown");
+  megaDropdowns.forEach(dropdown => {
+    dropdown.addEventListener("mouseenter", () => {
+      if (megaCloseTimer) {
+        clearTimeout(megaCloseTimer);
+        megaCloseTimer = null;
+      }
+      const parent = dropdown.closest(".vivense-nav-item");
+      if (parent) parent.classList.add("is-open");
+    });
+    dropdown.addEventListener("mouseleave", () => {
+      if (megaCloseTimer) clearTimeout(megaCloseTimer);
+      megaCloseTimer = setTimeout(() => {
+        const parent = dropdown.closest(".vivense-nav-item");
+        if (parent) parent.classList.remove("is-open");
+      }, 160);
     });
   });
 
