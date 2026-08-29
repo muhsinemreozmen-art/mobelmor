@@ -3530,7 +3530,7 @@ const renderCart = () => {
 
     const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
 
-    // 1. Trendyol Style Header (< Back Arrow, Centered Title, X Button)
+    // 1. Mobelmor Header (< Back Arrow, Centered Title, X Button)
     const headerEl = drawer ? drawer.querySelector(".cart-header") : null;
     if (headerEl) {
         headerEl.className = "ty-cart-header";
@@ -3549,12 +3549,12 @@ const renderCart = () => {
         body.className = "ty-cart-body";
         body.innerHTML = `
             <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center; background:#ffffff; border-radius:12px; margin-top:10px;">
-                <div style="width:64px; height:64px; border-radius:50%; background:#fff7ed; color:#ea580c; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.6rem; border:1px solid #ffedd5;">
+                <div style="width:64px; height:64px; border-radius:50%; background:#f3e8ff; color:#6b21a8; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.6rem; border:1px solid #e9d5ff;">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </div>
                 <h4 style="font-size:1.1rem; font-weight:800; color:#0f172a; margin:0 0 6px 0;">Sepetiniz Boş</h4>
                 <p style="font-size:0.84rem; color:#64748b; margin:0 0 20px 0; max-width:240px; line-height:1.4;">Eviniz için mobilya modellerimizi keşfetmeye başlayın.</p>
-                <a href="kategori.html?c=all" class="btn interactive-btn" style="background:#f97316; color:#ffffff; padding:12px 24px; font-weight:800; font-size:0.9rem; border-radius:10px; text-decoration:none;" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open');">
+                <a href="kategori.html?c=all" class="btn interactive-btn" style="background:#6b21a8; color:#ffffff; padding:12px 24px; font-weight:800; font-size:0.9rem; border-radius:10px; text-decoration:none;" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open');">
                     Alışverişe Başla
                 </a>
             </div>
@@ -3568,7 +3568,7 @@ const renderCart = () => {
     const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
     const finalTotal = Math.max(0, subtotal - appliedCouponDiscount);
 
-    // 2. Trendyol Style Body
+    // 2. Mobelmor Purple Body
     body.className = "ty-cart-body";
     body.innerHTML = `
         <!-- Top Promo Bar -->
@@ -3588,7 +3588,7 @@ const renderCart = () => {
                 </div>
             ` : `
                 <div class="ty-promo-input-group">
-                    <input type="text" id="cartCouponInput" class="ty-promo-input" placeholder="KUPON KODU (örn: MOBELMOR500)" value="${appliedCouponCode}">
+                    <input type="text" id="cartCouponInput" class="ty-promo-input" placeholder="KUPON KODU" value="${appliedCouponCode}">
                     <button type="button" class="ty-promo-btn" onclick="applyCartCoupon()">Uygula</button>
                 </div>
             `}
@@ -3629,7 +3629,7 @@ const renderCart = () => {
                         </span>
 
                         <span class="ty-item-delivery-info">
-                            <i class="fa-solid fa-truck"></i> Hızlı Teslimat: 3-5 gün içinde kargoda
+                            <i class="fa-solid fa-truck"></i> Özel Üretim &amp; Teslimat: 10-14 iş günü
                         </span>
 
                         ${item.selectedFabric ? `
@@ -3652,7 +3652,7 @@ const renderCart = () => {
 
                 <div class="ty-warranty-bar">
                     <div style="display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-shield-halved" style="color:#f59e0b;"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
                         <span>2 Yıl Mobelmor Üretici Garantisi Dahildir</span>
                     </div>
                     <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
@@ -3661,7 +3661,7 @@ const renderCart = () => {
         </div>
     `;
 
-    // 3. Trendyol Sticky Bottom Bar
+    // 3. Mobelmor Sticky Bottom Bar
     footer.className = "ty-cart-footer";
     footer.innerHTML = `
         <div class="ty-breakdown-details" id="tyPriceBreakdown">
@@ -3674,7 +3674,7 @@ const renderCart = () => {
                 <span>Bedava (0 TL)</span>
             </div>
             ${appliedCouponDiscount > 0 ? `
-                <div style="display:flex; justify-content:space-between; color:#ea580c; font-weight:800;">
+                <div style="display:flex; justify-content:space-between; color:#6b21a8; font-weight:800;">
                     <span>Kupon İndirimi (${appliedCouponCode}):</span>
                     <span>-${formatPrice(appliedCouponDiscount)}</span>
                 </div>
