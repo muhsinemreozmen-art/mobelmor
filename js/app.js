@@ -2221,9 +2221,9 @@ const renderCart = () => {
     const totalQty = cart.reduce((sum, c) => sum + (c.qty || 1), 0);
 
     // 1. Mobelmor Header (< Back Arrow, Centered Title, X Button)
-    const headerEl = drawer ? drawer.querySelector(".cart-header") : null;
+    const headerEl = drawer ? drawer.querySelector(".cart-header, .ty-cart-header") : null;
     if (headerEl) {
-        headerEl.className = "ty-cart-header";
+        headerEl.className = "cart-header ty-cart-header";
         headerEl.innerHTML = `
             <button type="button" class="ty-header-back-btn" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open'); unlockBodyScroll();" aria-label="Geri">
                 <i class="fa-solid fa-chevron-left"></i>
