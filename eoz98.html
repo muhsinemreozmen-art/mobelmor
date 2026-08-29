@@ -918,14 +918,22 @@
                 if (btn) btn.classList.add('active');
             }
 
-            document.getElementById('tabProducts').style.display = tab === 'products' ? 'block' : 'none';
-            document.getElementById('tabOrders').style.display = tab === 'orders' ? 'block' : 'none';
-            document.getElementById('tabCustomers').style.display = tab === 'customers' ? 'block' : 'none';
-            document.getElementById('tabSync').style.display = tab === 'sync' ? 'block' : 'none';
+            const tabProducts = document.getElementById('tabProducts');
+            const tabOrders = document.getElementById('tabOrders');
+            const tabCustomers = document.getElementById('tabCustomers');
+            const tabCoupons = document.getElementById('tabCoupons');
+            const tabSync = document.getElementById('tabSync');
+
+            if (tabProducts) tabProducts.style.display = tab === 'products' ? 'block' : 'none';
+            if (tabOrders) tabOrders.style.display = tab === 'orders' ? 'block' : 'none';
+            if (tabCustomers) tabCustomers.style.display = tab === 'customers' ? 'block' : 'none';
+            if (tabCoupons) tabCoupons.style.display = tab === 'coupons' ? 'block' : 'none';
+            if (tabSync) tabSync.style.display = tab === 'sync' ? 'block' : 'none';
 
             if (tab === 'orders') renderOrdersTable();
             if (tab === 'customers') renderCustomersTable();
             if (tab === 'products') renderProductsTable();
+            if (tab === 'coupons') renderCouponsTable();
 
             // Refresh KPI customer counter
             const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];

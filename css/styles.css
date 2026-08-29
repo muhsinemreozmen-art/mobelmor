@@ -11342,7 +11342,7 @@ body.scroll-locked {
 
 
 /* ==========================================================================
-   MOBELMOR ULTRA-LUXURY EDITORIAL CART DRAWER (2026 HIGH-END DESIGN)
+   MOBELMOR THEME-HARMONIOUS LUXURY CART DRAWER (MATCHING HOMEPAGE PALETTE)
    ========================================================================== */
 
 .cart-drawer {
@@ -11355,132 +11355,140 @@ body.scroll-locked {
     height: 100dvh;
     max-height: 100dvh;
     background: #ffffff !important;
-    color: #0f172a !important;
+    color: #18181b !important;
     z-index: 35000;
     display: flex;
     flex-direction: column;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -12px 0 40px rgba(107, 33, 168, 0.12);
     overscroll-behavior: contain !important;
     touch-action: pan-y;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .cart-drawer.active {
     right: 0;
 }
 
-/* 1. EDITORIAL HEADER */
+/* 1. THEME-MATCHED CART HEADER */
 .cart-header {
-    padding: 22px 24px 18px 24px;
+    padding: 20px 22px 18px 22px;
     background: #ffffff;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+    border-bottom: 1px solid #e4e4e7 !important;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.cart-header-title-luxury {
+.cart-header-title-theme {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 10px;
 }
 
-.cart-header-title-luxury h3 {
+.cart-header-title-theme h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.18rem;
     font-weight: 800;
-    color: #09090b;
-    letter-spacing: -0.03em;
+    color: #18181b;
+    letter-spacing: -0.02em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.cart-header-title-luxury .cart-count-pill {
+.cart-header-title-theme h3 i {
+    color: #6b21a8;
+}
+
+.cart-header-title-theme .theme-count-badge {
     font-size: 0.76rem;
     font-weight: 700;
     color: #6b21a8;
-    background: #faf5ff;
-    border: 1px solid #f3e8ff;
-    padding: 2px 8px;
+    background: #f3e8ff;
+    border: 1px solid #e9d5ff;
+    padding: 2px 9px;
     border-radius: 20px;
 }
 
-.cart-close-luxury-btn {
-    width: 36px;
-    height: 36px;
+.cart-close-theme-btn {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #64748b;
+    color: #71717a;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cart-close-luxury-btn:hover {
-    background: #09090b;
-    color: #ffffff;
-    border-color: #09090b;
+.cart-close-theme-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fca5a5;
     transform: rotate(90deg);
 }
 
-/* 2. LUXURY CART BODY */
+/* 2. THEME-MATCHED CART BODY */
 .cart-body {
-    padding: 20px 24px;
+    padding: 18px 20px;
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain !important;
     touch-action: pan-y;
-    background: #fafafa;
+    background: #faf9fc;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
-/* Luxury Product Card */
-.luxury-cart-card {
+/* Theme Product Card */
+.theme-cart-card {
     background: #ffffff;
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 14px;
     display: flex;
-    gap: 16px;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    gap: 14px;
+    border: 1px solid #e4e4e7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     position: relative;
     transition: all 0.2s ease;
 }
 
-.luxury-cart-card:hover {
-    border-color: #e2e8f0;
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.07);
+.theme-cart-card:hover {
+    border-color: #d8b4fe;
+    box-shadow: 0 6px 18px rgba(107, 33, 168, 0.06);
 }
 
-.luxury-cart-img-wrap {
-    width: 90px;
-    height: 90px;
-    border-radius: 12px;
+.theme-cart-img-wrap {
+    width: 86px;
+    height: 86px;
+    border-radius: 10px;
     background: #f4f4f5;
     overflow: hidden;
     flex-shrink: 0;
-    position: relative;
+    border: 1px solid #f1f5f9;
 }
 
-.luxury-cart-img {
+.theme-cart-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.luxury-cart-card:hover .luxury-cart-img {
-    transform: scale(1.04);
+.theme-cart-card:hover .theme-cart-img {
+    transform: scale(1.05);
 }
 
-.luxury-cart-details {
+.theme-cart-details {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -11488,102 +11496,98 @@ body.scroll-locked {
     min-width: 0;
 }
 
-.luxury-cart-head {
+.theme-cart-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
 }
 
-.luxury-cart-brand {
-    font-size: 0.68rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #9333ea;
-    margin-bottom: 2px;
-}
-
-.luxury-cart-title {
+.theme-cart-title {
     margin: 0;
     font-size: 0.94rem;
     font-weight: 800;
-    color: #09090b;
+    color: #18181b;
     line-height: 1.35;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
+    letter-spacing: -0.01em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.luxury-cart-delete-btn {
+.theme-cart-delete-btn {
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: #a1a1aa;
     cursor: pointer;
     padding: 4px;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     border-radius: 6px;
     transition: all 0.15s ease;
+    flex-shrink: 0;
 }
 
-.luxury-cart-delete-btn:hover {
+.theme-cart-delete-btn:hover {
     color: #ef4444;
     background: #fee2e2;
 }
 
-.luxury-cart-fabric {
+.theme-cart-fabric {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.74rem;
-    color: #64748b;
+    font-size: 0.78rem;
+    color: #71717a;
     font-weight: 600;
     margin-top: 4px;
 }
 
-.luxury-fabric-dot {
+.theme-fabric-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     border: 1px solid #cbd5e1;
+    flex-shrink: 0;
 }
 
-.luxury-cart-foot {
+.theme-cart-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
     padding-top: 8px;
-    border-top: 1px dashed #f1f5f9;
+    border-top: 1px solid #f4f4f5;
 }
 
-.luxury-cart-price {
-    font-size: 1.05rem;
+.theme-cart-price {
+    font-size: 1.12rem;
     font-weight: 900;
-    color: #09090b;
+    color: #6b21a8;
     letter-spacing: -0.02em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Minimalist Pill Counter */
-.luxury-qty-pill {
+/* Modern Theme Quantity Pill */
+.theme-qty-pill {
     display: inline-flex;
     align-items: center;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 2px 4px;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    padding: 2px;
 }
 
-.luxury-qty-btn {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #475569;
+.theme-qty-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #18181b;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -11591,89 +11595,94 @@ body.scroll-locked {
     transition: all 0.15s ease;
 }
 
-.luxury-qty-btn:hover {
-    background: #ffffff;
-    color: #09090b;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.theme-qty-btn:hover {
+    background: #6b21a8;
+    color: #ffffff;
+    border-color: #6b21a8;
 }
 
-.luxury-qty-val {
-    font-size: 0.82rem;
+.theme-qty-val {
+    font-size: 0.88rem;
     font-weight: 800;
-    color: #09090b;
-    min-width: 22px;
+    color: #18181b;
+    min-width: 26px;
     text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* 3. INTEGRATED EXPANDABLE COUPON */
-.luxury-coupon-toggle {
+/* 3. THEME COUPON ACCORDION */
+.theme-coupon-toggle {
     margin-top: 4px;
 }
 
-.luxury-coupon-btn-toggle {
+.theme-coupon-btn-toggle {
     background: none;
     border: none;
-    color: #64748b;
-    font-size: 0.78rem;
+    color: #6b21a8;
+    font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 0;
+    padding: 6px 0;
     transition: color 0.15s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.luxury-coupon-btn-toggle:hover {
-    color: #7c3aed;
+.theme-coupon-btn-toggle:hover {
+    color: #581c87;
+    text-decoration: underline;
 }
 
-.luxury-coupon-input-wrap {
+.theme-coupon-input-wrap {
     display: flex;
     gap: 8px;
     background: #ffffff;
     padding: 6px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e4e4e7;
     border-radius: 10px;
     margin-top: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
-.luxury-coupon-input {
+.theme-coupon-input {
     flex: 1;
     border: none;
     outline: none;
-    padding: 6px 10px;
-    font-size: 0.8rem;
+    padding: 8px 12px;
+    font-size: 0.84rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #09090b;
+    color: #18181b;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.luxury-coupon-apply-btn {
-    background: #09090b;
+.theme-coupon-apply-btn {
+    background: #6b21a8;
     color: #ffffff;
     border: none;
-    padding: 7px 14px;
+    padding: 8px 16px;
     border-radius: 8px;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 800;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.luxury-coupon-apply-btn:hover {
-    background: #6b21a8;
+.theme-coupon-apply-btn:hover {
+    background: #581c87;
 }
 
-/* 4. LUXURY FOOTER & CHECKOUT CTA */
+/* 4. THEME-MATCHED CART FOOTER */
 .cart-footer {
-    padding: 20px 24px 24px 24px;
+    padding: 18px 22px 22px 22px;
     background: #ffffff !important;
-    border-top: 1px solid #f1f5f9 !important;
+    border-top: 1px solid #e4e4e7 !important;
     flex-shrink: 0;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 -8px 24px rgba(107, 33, 168, 0.04);
 }
 
 @media (max-width: 576px) {
@@ -11686,45 +11695,46 @@ body.scroll-locked {
     }
 }
 
-.luxury-summary-list {
+.theme-summary-list {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
-.luxury-summary-row {
+.theme-summary-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.84rem;
-    color: #64748b;
+    font-size: 0.86rem;
+    color: #71717a;
+    font-weight: 500;
 }
 
-.luxury-summary-row.total-row {
+.theme-summary-row.total-row {
     font-size: 1.15rem;
-    font-weight: 900;
-    color: #09090b;
+    font-weight: 800;
+    color: #18181b;
     padding-top: 10px;
     margin-top: 6px;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #f4f4f5;
 }
 
-.luxury-summary-row.total-row .total-amount {
+.theme-summary-row.total-row .theme-total-amount {
     font-size: 1.35rem;
     font-weight: 900;
     color: #6b21a8;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
-.luxury-checkout-button {
-    background: linear-gradient(135deg, #18181b 0%, #09090b 100%) !important;
+.theme-checkout-button {
+    background: linear-gradient(135deg, #6b21a8 0%, #7e22ce 100%) !important;
     color: #ffffff !important;
     width: 100%;
     height: 52px;
     border-radius: 12px;
     border: none;
-    font-size: 0.96rem;
+    font-size: 0.98rem;
     font-weight: 800;
     letter-spacing: 0.02em;
     display: flex;
@@ -11732,106 +11742,38 @@ body.scroll-locked {
     justify-content: center;
     gap: 10px;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(9, 9, 11, 0.2);
+    box-shadow: 0 6px 20px rgba(107, 33, 168, 0.35);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Plus Jakarta Sans', sans-serif;
     position: relative;
     overflow: hidden;
 }
 
-.luxury-checkout-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transform: skewX(-20deg);
-    transition: 0.75s;
-}
-
-.luxury-checkout-button:hover::after {
-    left: 150%;
-}
-
-.luxury-checkout-button:hover {
-    background: linear-gradient(135deg, #6b21a8 0%, #4c1d95 100%) !important;
+.theme-checkout-button:hover {
+    background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%) !important;
     transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(107, 33, 168, 0.35);
+    box-shadow: 0 8px 24px rgba(107, 33, 168, 0.45);
 }
 
-.luxury-trust-badges-row {
+.theme-trust-badges-row {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding-top: 14px;
-    margin-top: 14px;
-    border-top: 1px solid #f8fafc;
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid #f4f4f5;
 }
 
-.luxury-trust-badge-item {
+.theme-trust-badge-item {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 700;
-    color: #64748b;
+    color: #6b21a8;
 }
 
-.luxury-trust-badge-item i {
-    color: #9333ea;
-    font-size: 0.8rem;
-}
-
-
-/* Luxury Applied Coupon Pill & Cancel Button */
-.luxury-applied-coupon-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-radius: 10px;
-    padding: 8px 12px;
-    margin-top: 6px;
-    animation: fadeInCoupon 0.25s ease-out;
-}
-
-@keyframes fadeInCoupon {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.luxury-coupon-badge-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: #15803d;
-    font-weight: 800;
-}
-
-.luxury-coupon-badge-info i {
-    font-size: 0.85rem;
-}
-
-.luxury-coupon-cancel-btn {
-    background: #ffffff;
-    border: 1px solid #fecaca;
-    color: #dc2626;
-    font-size: 0.72rem;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.15s ease;
-}
-
-.luxury-coupon-cancel-btn:hover {
-    background: #fee2e2;
-    border-color: #f87171;
-    color: #b91c1c;
+.theme-trust-badge-item i {
+    color: #7e22ce;
+    font-size: 0.84rem;
 }
