@@ -1670,6 +1670,17 @@ const saveCart = () => {
 // MOBELMOR MODERN LUXURY FAVORITES (WISHLIST) ENGINE (SEPET İLE TAM UYUMLU)
 // =========================================================================
 
+// Global Wishlist State Definition
+let wishlist = new Set();
+try {
+    const raw = localStorage.getItem("mobelmor_wishlist");
+    if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) wishlist = new Set(parsed.map(x => parseInt(x) || x));
+    }
+} catch (e) {}
+window.wishlist = wishlist;
+
 window.loadWishlist = () => {
     try {
         const raw = localStorage.getItem("mobelmor_wishlist");

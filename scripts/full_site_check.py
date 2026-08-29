@@ -1,46 +1,42 @@
 import urllib.request
-import re
-import sys
+import os
+from accurate_js_linter import check_js_syntax
 
-if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding="utf-8")
+print("--- RUNNING FULL SITE & STRICT JS PARSER AUDIT ---")
 
-# 1. Test Localhost HTTP responses
 urls = [
     "http://127.0.0.1:5500/index.html",
     "http://127.0.0.1:5500/urun-detay.html?id=1",
+    "http://127.0.0.1:5500/urun-detay.html?id=54&slug=zen-modern-yatak-odasi-takimi",
     "http://127.0.0.1:5500/kategori.html",
     "http://127.0.0.1:5500/js/detail.js?v=20260829_1200",
     "http://127.0.0.1:5500/js/app.js?v=20260829_1200",
+    "http://127.0.0.1:5500/js/auth-modal.js?v=20260829_1200",
     "http://127.0.0.1:5500/js/checkout-helper.js?v=20260829_1200",
     "http://127.0.0.1:5500/css/styles.min.css?v=20260829_1200"
 ]
 
-all_http_ok = True
-for u in urls:
+all_ok = True
+
+# 1. HTTP 200 checks
+for url in urls:
     try:
-        req = urllib.request.urlopen(u, timeout=5)
-        status = req.getcode()
-        data = req.read()
-        print(f"[HTTP {status}] {len(data)} bytes -> {u}")
+        req = urllib.request.urlopen(url)
+        content = req.read()
+        print(f"[HTTP {req.status}] {len(content)} bytes -> {url}")
     except Exception as e:
-        print(f"[HTTP FAIL] {u}: {e}")
-        all_http_ok = False
+        print(f"[FAIL] {url} -> {e}")
+        all_ok = False
 
-# 2. Test JS Brace Integrity
-js_files = ["js/detail.js", "js/app.js", "js/checkout-helper.js", "js/store-service.js"]
-for jf in js_files:
-    with open(jf, "r", encoding="utf-8") as f:
-        c = f.read()
-    opens = c.count('{')
-    closes = c.count('}')
-    if opens == closes:
-        print(f"[JS BRACE OK] {jf} -> ({opens} pairs)")
-    else:
-        print(f"[JS BRACE ERROR] {jf} -> {opens} opens vs {closes} closes")
-        all_http_ok = False
+# 2. Strict AST/Token State Machine JS Syntax Validation
+js_files = ["js/detail.js", "js/app.js", "js/auth-modal.js", "js/checkout-helper.js", "js/store-service.js"]
+for fpath in js_files:
+    if os.path.exists(fpath):
+        if not check_js_syntax(fpath):
+            all_ok = False
 
-if all_http_ok:
-    print("\n>>> ALL VALIDATIONS PASSED: NO ERRORS FOUND! <<<")
+if all_ok:
+    print("\n>>> ALL VALIDATIONS PASSED: ZERO ERRORS FOUND! <<<")
 else:
     print("\n>>> VALIDATION FAILED! <<<")
+    exit(1)
