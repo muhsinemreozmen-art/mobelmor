@@ -3257,63 +3257,67 @@ const renderSpecsAndGeneralInfo = (product) => {
         ).join('') + '</tbody>';
     }
 
-    // Dynamic Installment Matrix Table for Accordion
+    // Dynamic Installment Matrix Table for Accordion (6 Bank Tabbed Matrix)
     const installmentContainer = document.getElementById("installmentTableContainer");
     if (installmentContainer) {
         const p = product.price;
-        installmentContainer.innerHTML = `
-            <div style="margin-bottom:12px; font-weight:700; color:#0f172a; font-size:0.9rem;">
-                <i class="fa-solid fa-shield-halved" style="color:#16a34a;"></i> Peşin Fiyatına 6 Taksit İmkanı (Vade Farksız)
-            </div>
-            <div style="overflow-x:auto;">
-                <table class="installment-matrix-table" style="width:100%; border-collapse:collapse; text-align:center; font-size:0.86rem;">
-                    <thead>
-                        <tr style="background:#f8fafc; color:#475569; border-bottom:2px solid #e2e8f0;">
-                            <th style="padding:10px 14px; text-align:left;">Taksit Sayısı</th>
-                            <th style="padding:10px 14px;">Aylık Ödeme</th>
-                            <th style="padding:10px 14px;">Toplam Tutar</th>
-                            <th style="padding:10px 14px;">Vade Farkı</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="border-bottom:1px solid #f1f5f9;">
-                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#1e293b;">Tek Çekim (Peşin)</td>
-                            <td style="padding:10px 14px; font-weight:800; color:#0f172a;">${formatPrice(p)}</td>
-                            <td style="padding:10px 14px; font-weight:700;">${formatPrice(p)}</td>
-                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Ücretsiz (0 TL)</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
-                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">3 Taksit (Peşin Fiyatına)</td>
-                            <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 3))} x 3</td>
-                            <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
-                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
-                            <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">6 Taksit (Peşin Fiyatına)</td>
-                            <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 6))} x 6</td>
-                            <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
-                            <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #f1f5f9;">
-                            <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">9 Taksit</td>
-                            <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.08) / 9))} x 9</td>
-                            <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.08))}</td>
-                            <td style="padding:10px 14px; color:#64748b;">+%8</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #f1f5f9;">
-                            <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">12 Taksit</td>
-                            <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.14) / 12))} x 12</td>
-                            <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.14))}</td>
-                            <td style="padding:10px 14px; color:#64748b;">+%14</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="margin-top:14px; padding:12px 16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:0.85rem; color:#166534;">
-                <i class="fa-solid fa-money-bill-transfer" style="font-size:1.1rem;"></i>
-                <span><strong>Havale / EFT İndirimi:</strong> Havale ile yapılan ödemelerde ekstra <strong>%5 Anında İndirim</strong> uygulanır!</span>
-            </div>
-        `;
+        if (window.MobelmorCheckout && typeof window.MobelmorCheckout.renderBankInstallmentTable === 'function') {
+            window.MobelmorCheckout.renderBankInstallmentTable(installmentContainer, p);
+        } else {
+            installmentContainer.innerHTML = `
+                <div style="margin-bottom:12px; font-weight:700; color:#0f172a; font-size:0.9rem;">
+                    <i class="fa-solid fa-shield-halved" style="color:#16a34a;"></i> Peşin Fiyatına 6 Taksit İmkanı (Vade Farksız)
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="installment-matrix-table" style="width:100%; border-collapse:collapse; text-align:center; font-size:0.86rem;">
+                        <thead>
+                            <tr style="background:#f8fafc; color:#475569; border-bottom:2px solid #e2e8f0;">
+                                <th style="padding:10px 14px; text-align:left;">Taksit Sayısı</th>
+                                <th style="padding:10px 14px;">Aylık Ödeme</th>
+                                <th style="padding:10px 14px;">Toplam Tutar</th>
+                                <th style="padding:10px 14px;">Vade Farkı</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td style="padding:10px 14px; text-align:left; font-weight:700; color:#1e293b;">Tek Çekim (Peşin)</td>
+                                <td style="padding:10px 14px; font-weight:800; color:#0f172a;">${formatPrice(p)}</td>
+                                <td style="padding:10px 14px; font-weight:700;">${formatPrice(p)}</td>
+                                <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Ücretsiz (0 TL)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
+                                <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">3 Taksit (Peşin Fiyatına)</td>
+                                <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 3))} x 3</td>
+                                <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
+                                <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f1f5f9; background:#faf5ff;">
+                                <td style="padding:10px 14px; text-align:left; font-weight:700; color:#6b21a8;">6 Taksit (Peşin Fiyatına)</td>
+                                <td style="padding:10px 14px; font-weight:800; color:#6b21a8;">${formatPrice(Math.round(p / 6))} x 6</td>
+                                <td style="padding:10px 14px; font-weight:700; color:#6b21a8;">${formatPrice(p)}</td>
+                                <td style="padding:10px 14px; color:#16a34a; font-weight:700;">Vade Farksız</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">9 Taksit</td>
+                                <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.08) / 9))} x 9</td>
+                                <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.08))}</td>
+                                <td style="padding:10px 14px; color:#64748b;">+%8</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td style="padding:10px 14px; text-align:left; font-weight:600; color:#475569;">12 Taksit</td>
+                                <td style="padding:10px 14px; font-weight:700; color:#334155;">${formatPrice(Math.round((p * 1.14) / 12))} x 12</td>
+                                <td style="padding:10px 14px; font-weight:600;">${formatPrice(Math.round(p * 1.14))}</td>
+                                <td style="padding:10px 14px; color:#64748b;">+%14</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top:14px; padding:12px 16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:0.85rem; color:#166534;">
+                    <i class="fa-solid fa-money-bill-transfer" style="font-size:1.1rem;"></i>
+                    <span><strong>Havale / EFT İndirimi:</strong> Havale ile yapılan ödemelerde ekstra <strong>%5 Anında İndirim</strong> uygulanır!</span>
+                </div>
+            `;
+        }
     }
 };
 
@@ -3445,46 +3449,213 @@ const openCheckoutModal = () => {
     document.body.classList.add("modal-open");
 };
 
+let appliedCouponDiscount = 0;
+let appliedCouponCode = "";
+
+window.applyCartCoupon = () => {
+    const input = document.getElementById("cartCouponInput");
+    if (!input) return;
+    const code = input.value.trim().toUpperCase();
+    if (!code) {
+        if (typeof showToast === 'function') showToast("Lütfen bir kupon kodu giriniz.", "fa-circle-exmark");
+        return;
+    }
+
+    const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+    
+    // Validate via StoreService database engine
+    if (window.StoreService && typeof window.StoreService.validateCoupon === 'function') {
+        const result = window.StoreService.validateCoupon(code, subtotal);
+        if (result.valid) {
+            appliedCouponDiscount = result.discount;
+            appliedCouponCode = result.coupon.code;
+            renderCart();
+            if (typeof showToast === 'function') showToast(result.message, "fa-tag");
+            return;
+        } else {
+            if (typeof showToast === 'function') showToast(result.message, "fa-circle-xmark");
+            return;
+        }
+    }
+
+    // Fallback if StoreService is loading
+    if (code === "MOBELMOR500" || code === "HOSGELDIN" || code === "MOBELMOR") {
+        appliedCouponDiscount = 500;
+        appliedCouponCode = code;
+        renderCart();
+        if (typeof showToast === 'function') showToast("500 TL Kupon İndirimi Başarıyla Uygulandı!", "fa-tag");
+    } else if (code === "YAZ1000") {
+        appliedCouponDiscount = 1000;
+        appliedCouponCode = code;
+        renderCart();
+        if (typeof showToast === 'function') showToast("1.000 TL Sezon Kupon İndirimi Uygulandı!", "fa-tag");
+    } else {
+        if (typeof showToast === 'function') showToast("Geçersiz veya süresi dolmuş kupon kodu.", "fa-circle-xmark");
+    }
+};
+
+window.removeCartCoupon = () => {
+    appliedCouponDiscount = 0;
+    appliedCouponCode = "";
+    renderCart();
+    if (typeof showToast === 'function') {
+        showToast("Kupon iptal edildi.", "fa-circle-info");
+    }
+};
+
 const renderCart = () => {
+    const drawer = document.getElementById("cartDrawer");
     const body = document.getElementById("cartBody");
     const footer = document.getElementById("cartFooter");
     if (!body || !footer) return;
 
+    const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
+
+    // 1. Editorial Luxury Header
+    const headerEl = drawer ? drawer.querySelector(".cart-header") : null;
+    if (headerEl) {
+        headerEl.innerHTML = `
+            <div class="cart-header-title-luxury">
+                <h3>Sepetiniz</h3>
+                <span class="cart-count-pill">${totalQty} Ürün</span>
+            </div>
+            <button type="button" class="cart-close-luxury-btn" id="closeCartBtn" aria-label="Sepeti Kapat" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open'); unlockBodyScroll();">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        `;
+    }
+
     if (cart.length === 0) {
-        body.innerHTML = `<p style="text-align:center; padding:30px; color:#71717a;">Sepetiniz boş.</p>`;
+        body.innerHTML = `
+            <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center;">
+                <div style="width:68px; height:68px; border-radius:50%; background:#faf5ff; color:#9333ea; display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:1.6rem; border:1px solid #f3e8ff;">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <h4 style="font-size:1.15rem; font-weight:800; color:#09090b; margin:0 0 6px 0; letter-spacing:-0.02em;">Sepetiniz Boş</h4>
+                <p style="font-size:0.86rem; color:#64748b; margin:0 0 20px 0; max-width:240px; line-height:1.5;">Eviniz için seçkin mobilya koleksiyonlarımızı keşfedin.</p>
+                <a href="kategori.html?c=all" class="btn interactive-btn" style="background:#09090b; color:#ffffff; padding:12px 24px; font-weight:800; font-size:0.88rem; border-radius:10px; text-decoration:none;" onclick="document.getElementById('cartDrawer')?.classList.remove('active'); document.getElementById('cartOverlay')?.classList.remove('active'); document.body.classList.remove('cart-open');">
+                    Koleksiyonu İncele
+                </a>
+            </div>
+        `;
         footer.innerHTML = "";
+        appliedCouponDiscount = 0;
+        appliedCouponCode = "";
         return;
     }
 
-    body.innerHTML = cart.map(item => `
-        <div class="cart-item-row">
-            <img src="${item.image}" alt="${item.title}" class="cart-item-img">
-            <div class="cart-item-info">
-                <h5 class="cart-item-title">${item.title}</h5>
-                ${item.selectedFabric ? `
-                    <div class="cart-item-fabric-tag">
-                        <span class="cart-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
-                        <span>${item.selectedFabric}: ${item.selectedColor}${item.fabricPriceDiff > 0 ? ` (+${formatPrice(item.fabricPriceDiff)})` : ''}</span>
+    // 2. Luxury Product Cards List
+    body.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            ${cart.map(item => `
+                <div class="luxury-cart-card">
+                    <div class="luxury-cart-img-wrap">
+                        <img src="${item.image}" alt="${item.title}" class="luxury-cart-img">
                     </div>
-                ` : ''}
-                <span class="cart-item-price">${formatPrice(item.price)}</span>
-            </div>
-            <div class="cart-qty-controls">
-                <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-                <span style="font-weight:800;">${item.qty}</span>
-                <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
+                    <div class="luxury-cart-details">
+                        <div>
+                            <div class="luxury-cart-head">
+                                <div>
+                                    <div class="luxury-cart-brand">Mobelmor Atelier</div>
+                                    <h4 class="luxury-cart-title" title="${item.title}">${item.title}</h4>
+                                </div>
+                                <button type="button" class="luxury-cart-delete-btn" onclick="removeCartItem(${item.id})" title="Ürünü Sil" aria-label="Sil">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+
+                            ${item.selectedFabric ? `
+                                <div class="luxury-cart-fabric">
+                                    <span class="luxury-fabric-dot" style="background-color:${item.colorHex || '#6b21a8'};"></span>
+                                    <span>${item.selectedFabric} / ${item.selectedColor}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="luxury-cart-foot">
+                            <span class="luxury-cart-price">${formatPrice(item.price * item.qty)}</span>
+                            <div class="luxury-qty-pill">
+                                <button type="button" class="luxury-qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Azalt">-</button>
+                                <span class="luxury-qty-val">${item.qty}</span>
+                                <button type="button" class="luxury-qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Artır">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
         </div>
-    `).join('');
+
+        <!-- 3. Minimalist Expandable Coupon & Cancel Pill -->
+        <div class="luxury-coupon-toggle">
+            ${appliedCouponDiscount > 0 ? `
+                <div class="luxury-applied-coupon-row">
+                    <div class="luxury-coupon-badge-info">
+                        <i class="fa-solid fa-tag"></i>
+                        <span><strong>${appliedCouponCode}</strong> (-${formatPrice(appliedCouponDiscount)})</span>
+                    </div>
+                    <button type="button" class="luxury-coupon-cancel-btn" onclick="removeCartCoupon()" title="Kuponu Kaldır">
+                        <i class="fa-solid fa-xmark"></i> İptal Et
+                    </button>
+                </div>
+            ` : `
+                <button type="button" class="luxury-coupon-btn-toggle" onclick="const w=document.getElementById('luxuryCouponWrap'); w.style.display = w.style.display === 'none' ? 'flex' : 'none';">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>İndirim Kuponu Ekle +</span>
+                </button>
+                <div id="luxuryCouponWrap" class="luxury-coupon-input-wrap" style="display:none;">
+                    <input type="text" id="cartCouponInput" class="luxury-coupon-input" placeholder="Örn: MOBELMOR500" value="${appliedCouponCode}">
+                    <button type="button" class="luxury-coupon-apply-btn" onclick="applyCartCoupon()">Uygula</button>
+                </div>
+            `}
+        </div>
+    `;
 
     const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+    const finalTotal = Math.max(0, subtotal - appliedCouponDiscount);
 
+    // 4. Ultra-Luxury Footer
     footer.innerHTML = `
-        <div class="cart-total-line">
-            <span>Toplam:</span>
-            <span style="color:#6b21a8;">${formatPrice(subtotal)}</span>
+        <div class="luxury-summary-list">
+            <div class="luxury-summary-row">
+                <span>Ara Toplam</span>
+                <span style="font-weight:700; color:#09090b;">${formatPrice(subtotal)}</span>
+            </div>
+            <div class="luxury-summary-row">
+                <span>Teslimat &amp; Kurulum</span>
+                <span style="color:#10b981; font-weight:800;">Ücretsiz</span>
+            </div>
+            ${appliedCouponDiscount > 0 ? `
+                <div class="luxury-summary-row">
+                    <span>Kupon İndirimi (${appliedCouponCode})</span>
+                    <span style="color:#10b981; font-weight:800;">-${formatPrice(appliedCouponDiscount)}</span>
+                </div>
+            ` : ''}
+            <div class="luxury-summary-row total-row">
+                <span>Toplam</span>
+                <span class="total-amount">${formatPrice(finalTotal)}</span>
+            </div>
         </div>
-        <button class="btn btn-primary btn-block interactive-btn" id="openCheckoutBtn">Güvenli Ödemeye Geç</button>
+
+        <button type="button" class="luxury-checkout-button interactive-btn" id="openCheckoutBtn">
+            <i class="fa-solid fa-lock" style="font-size:0.88rem; opacity:0.85;"></i>
+            <span>SİPARİŞİ TAMAMLA</span>
+            <i class="fa-solid fa-arrow-right" style="font-size:0.85rem; transition:transform 0.2s ease;"></i>
+        </button>
+
+        <div class="luxury-trust-badges-row">
+            <div class="luxury-trust-badge-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>2 Yıl Garanti</span>
+            </div>
+            <div class="luxury-trust-badge-item">
+                <i class="fa-solid fa-truck"></i>
+                <span>Ücretsiz Montaj</span>
+            </div>
+            <div class="luxury-trust-badge-item">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>12 Taksit</span>
+            </div>
+        </div>
     `;
 
     document.getElementById("openCheckoutBtn")?.addEventListener("click", () => {
@@ -3492,18 +3663,14 @@ const renderCart = () => {
         document.getElementById("cartOverlay")?.classList.remove("active");
         document.body.classList.remove("cart-open");
         const totalEl = document.getElementById("checkoutTotal");
-        if (totalEl) totalEl.textContent = formatPrice(subtotal);
-        openCheckoutModal();
+        if (totalEl) totalEl.textContent = formatPrice(finalTotal);
+        if (typeof openCheckoutModal === 'function') {
+            openCheckoutModal();
+        } else {
+            document.getElementById("checkoutOverlay")?.classList.add("active");
+            document.body.classList.add("modal-open");
+        }
     });
-};
-
-window.buyNow = (productId) => {
-    addToCart(productId, 1);
-    const item = PRODUCTS.find(p => p.id === productId);
-    const subtotal = item ? item.price : 0;
-    const totalEl = document.getElementById("checkoutTotal");
-    if (totalEl) totalEl.textContent = formatPrice(subtotal);
-    openCheckoutModal();
 };
 
 window.changeQty = (id, delta) => {

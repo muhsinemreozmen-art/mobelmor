@@ -10897,3 +10897,941 @@ body.scroll-locked {
     font-family: monospace !important;
 }
 
+
+/* ==========================================================================
+   MOBELMOR ADVANCED CHECKOUT, INSTALLMENTS & FURNITURE UX (2026 UPDATE)
+   ========================================================================== */
+
+/* 1. Multi-Step Checkout Modal Enhancements */
+.checkout-steps-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0 16px 0;
+    padding: 0 4px;
+    position: relative;
+}
+
+.checkout-step-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #94a3b8;
+    position: relative;
+    z-index: 2;
+}
+
+.checkout-step-item.active {
+    color: #6b21a8;
+}
+
+.checkout-step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.checkout-step-item.active .checkout-step-num {
+    background: #6b21a8;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(107, 33, 168, 0.3);
+}
+
+.checkout-step-divider {
+    flex: 1;
+    height: 2px;
+    background: #e2e8f0;
+    margin: 0 8px;
+}
+
+/* Invoice Type Selector Toggle */
+.invoice-type-toggle {
+    display: flex;
+    gap: 8px;
+    background: #f8fafc;
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    margin: 6px 0;
+}
+
+.invoice-toggle-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #64748b;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.invoice-toggle-btn.active {
+    background: #ffffff;
+    color: #6b21a8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.invoice-kurumsal-fields {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    background: #faf5ff;
+    border: 1px dashed #d8b4fe;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 4px;
+}
+
+.invoice-kurumsal-fields.show {
+    display: flex;
+}
+
+/* City & District Selects */
+.city-district-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.checkout-select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    background: #ffffff;
+    color: #1e293b;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.checkout-select:focus {
+    outline: none;
+    border-color: #6b21a8;
+    box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+}
+
+/* Logistic & Assembly Selection Cards */
+.delivery-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+@media (max-width: 540px) {
+    .delivery-options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.delivery-card-radio {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    position: relative;
+}
+
+.delivery-card-radio.active {
+    border-color: #6b21a8;
+    background: #faf5ff;
+    box-shadow: 0 2px 8px rgba(107, 33, 168, 0.08);
+}
+
+.delivery-card-radio input[type="radio"] {
+    accent-color: #6b21a8;
+    margin-top: 3px;
+}
+
+.delivery-card-info h6 {
+    margin: 0 0 2px 0;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: #1e1b4b;
+}
+
+.delivery-card-info p {
+    margin: 0;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.35;
+}
+
+.delivery-card-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.delivery-card-badge.free {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.delivery-card-badge.plus {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+/* Card BIN & Installment Dropdown */
+.card-bin-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin: 4px 0 8px 0;
+    font-size: 0.78rem;
+    color: #475569;
+}
+
+.bank-detected-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-size: 0.75rem;
+}
+
+.installment-select-wrap {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.installment-select-wrap label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+/* IBAN Copy Box */
+.iban-copy-btn {
+    background: #f3e8ff;
+    color: #6b21a8;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.iban-copy-btn:hover {
+    background: #6b21a8;
+    color: #ffffff;
+}
+
+/* Order Success Modal State */
+.order-success-card {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.order-success-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 16px auto;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.2);
+}
+
+.order-code-badge {
+    display: inline-block;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-family: monospace;
+    font-size: 1.15rem;
+    font-weight: 900;
+    padding: 6px 16px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    margin: 8px 0 14px 0;
+    border: 1px dashed #cbd5e1;
+}
+
+/* 2. Product Detail Installment Table Component */
+.bank-tabs-nav {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 0 10px 0;
+    scrollbar-width: thin;
+}
+
+.bank-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.bank-tab-btn.active {
+    border-color: #6b21a8;
+    background: #6b21a8;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(107, 33, 168, 0.25);
+}
+
+.installment-table-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 0.84rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.installment-table-matrix th {
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 800;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1.5px solid #e2e8f0;
+}
+
+.installment-table-matrix td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+}
+
+.installment-table-matrix tr:hover td {
+    background: #faf5ff;
+}
+
+.tag-no-interest {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* 3. Free Fabric Sample Modal */
+.fabric-sample-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+.fabric-sample-chip {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.fabric-sample-chip.selected {
+    border-color: #6b21a8;
+    background: #faf5ff;
+}
+
+.fabric-chip-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+.fabric-chip-name {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+/* Production & Lead Time Badge on Buy Box */
+.leadtime-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #10b981;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.leadtime-icon {
+    font-size: 1.3rem;
+    color: #10b981;
+    flex-shrink: 0;
+}
+
+.leadtime-text h6 {
+    margin: 0 0 2px 0;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.leadtime-text p {
+    margin: 0;
+    font-size: 0.76rem;
+    color: #64748b;
+}
+
+
+/* ==========================================================================
+   MOBELMOR ULTRA-LUXURY EDITORIAL CART DRAWER (2026 HIGH-END DESIGN)
+   ========================================================================== */
+
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -520px;
+    width: 100%;
+    max-width: 440px;
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    z-index: 35000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+    overscroll-behavior: contain !important;
+    touch-action: pan-y;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cart-drawer.active {
+    right: 0;
+}
+
+/* 1. EDITORIAL HEADER */
+.cart-header {
+    padding: 22px 24px 18px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-header-title-luxury {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.cart-header-title-luxury h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #09090b;
+    letter-spacing: -0.03em;
+}
+
+.cart-header-title-luxury .cart-count-pill {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #6b21a8;
+    background: #faf5ff;
+    border: 1px solid #f3e8ff;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.cart-close-luxury-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-close-luxury-btn:hover {
+    background: #09090b;
+    color: #ffffff;
+    border-color: #09090b;
+    transform: rotate(90deg);
+}
+
+/* 2. LUXURY CART BODY */
+.cart-body {
+    padding: 20px 24px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Luxury Product Card */
+.luxury-cart-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.luxury-cart-card:hover {
+    border-color: #e2e8f0;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.07);
+}
+
+.luxury-cart-img-wrap {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    background: #f4f4f5;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.luxury-cart-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.luxury-cart-card:hover .luxury-cart-img {
+    transform: scale(1.04);
+}
+
+.luxury-cart-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.luxury-cart-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.luxury-cart-brand {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9333ea;
+    margin-bottom: 2px;
+}
+
+.luxury-cart-title {
+    margin: 0;
+    font-size: 0.94rem;
+    font-weight: 800;
+    color: #09090b;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.luxury-cart-delete-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.luxury-cart-delete-btn:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.luxury-cart-fabric {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.luxury-fabric-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #cbd5e1;
+}
+
+.luxury-cart-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #f1f5f9;
+}
+
+.luxury-cart-price {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #09090b;
+    letter-spacing: -0.02em;
+}
+
+/* Minimalist Pill Counter */
+.luxury-qty-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 2px 4px;
+}
+
+.luxury-qty-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.luxury-qty-btn:hover {
+    background: #ffffff;
+    color: #09090b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.luxury-qty-val {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #09090b;
+    min-width: 22px;
+    text-align: center;
+}
+
+/* 3. INTEGRATED EXPANDABLE COUPON */
+.luxury-coupon-toggle {
+    margin-top: 4px;
+}
+
+.luxury-coupon-btn-toggle {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    transition: color 0.15s ease;
+}
+
+.luxury-coupon-btn-toggle:hover {
+    color: #7c3aed;
+}
+
+.luxury-coupon-input-wrap {
+    display: flex;
+    gap: 8px;
+    background: #ffffff;
+    padding: 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-top: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.luxury-coupon-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #09090b;
+}
+
+.luxury-coupon-apply-btn {
+    background: #09090b;
+    color: #ffffff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.luxury-coupon-apply-btn:hover {
+    background: #6b21a8;
+}
+
+/* 4. LUXURY FOOTER & CHECKOUT CTA */
+.cart-footer {
+    padding: 20px 24px 24px 24px;
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+    flex-shrink: 0;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.03);
+}
+
+@media (max-width: 576px) {
+    .cart-drawer {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .cart-footer {
+        padding: 16px 20px max(24px, env(safe-area-inset-bottom, 24px)) 20px !important;
+    }
+}
+
+.luxury-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.luxury-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.84rem;
+    color: #64748b;
+}
+
+.luxury-summary-row.total-row {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #09090b;
+    padding-top: 10px;
+    margin-top: 6px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.luxury-summary-row.total-row .total-amount {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #6b21a8;
+    letter-spacing: -0.03em;
+}
+
+.luxury-checkout-button {
+    background: linear-gradient(135deg, #18181b 0%, #09090b 100%) !important;
+    color: #ffffff !important;
+    width: 100%;
+    height: 52px;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.96rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(9, 9, 11, 0.2);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.luxury-checkout-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transform: skewX(-20deg);
+    transition: 0.75s;
+}
+
+.luxury-checkout-button:hover::after {
+    left: 150%;
+}
+
+.luxury-checkout-button:hover {
+    background: linear-gradient(135deg, #6b21a8 0%, #4c1d95 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(107, 33, 168, 0.35);
+}
+
+.luxury-trust-badges-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 14px;
+    margin-top: 14px;
+    border-top: 1px solid #f8fafc;
+}
+
+.luxury-trust-badge-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.luxury-trust-badge-item i {
+    color: #9333ea;
+    font-size: 0.8rem;
+}
+
+
+/* Luxury Applied Coupon Pill & Cancel Button */
+.luxury-applied-coupon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-top: 6px;
+    animation: fadeInCoupon 0.25s ease-out;
+}
+
+@keyframes fadeInCoupon {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.luxury-coupon-badge-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #15803d;
+    font-weight: 800;
+}
+
+.luxury-coupon-badge-info i {
+    font-size: 0.85rem;
+}
+
+.luxury-coupon-cancel-btn {
+    background: #ffffff;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+
+.luxury-coupon-cancel-btn:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+    color: #b91c1c;
+}

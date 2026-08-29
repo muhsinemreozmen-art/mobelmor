@@ -421,6 +421,7 @@
             <ul class="sidebar-menu">
                 <li><button class="menu-btn active" onclick="switchAdminTab('products', event)"><i class="fa-solid fa-boxes-stacked"></i> Ürün Yönetimi</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-receipt"></i> Gelen Siparişler</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('coupons', event)"><i class="fa-solid fa-ticket"></i> Kupon Yönetimi</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('customers', event)"><i class="fa-solid fa-users"></i> Müşteri Kayıtları</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('sync', event)"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut & Yedekleme</button></li>
             </ul>
@@ -586,6 +587,44 @@
             </div>
 
             <!-- TAB 4: BULUT & YEDEKLEME -->
+            
+            <!-- TAB 5: KUPON & İNDİRİM YÖNETİMİ -->
+            <div id="tabCoupons" style="display: none;">
+                <div class="content-card">
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="couponSearchInput" class="admin-input" placeholder="Kupon kodu veya açıklama ara..." oninput="renderCouponsTable()">
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-action-primary" onclick="openAddCouponModal()">
+                                <i class="fa-solid fa-plus"></i> Yeni Kupon Oluştur
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>KUPON KODU</th>
+                                    <th>İNDİRİM DEĞERİ</th>
+                                    <th>MİN. SEPET TUTARI</th>
+                                    <th>AÇIKLAMA</th>
+                                    <th>KULLANIM</th>
+                                    <th>DURUM</th>
+                                    <th style="text-align: right;">İŞLEMLER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="couponsTableBody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div id="tabSync" style="display: none;">
                 <div class="content-card">
                     <h3 style="margin-bottom: 12px; font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-cloud" style="color:#38bdf8;"></i> Bulut Veritabanı & Yedekleme</h3>
@@ -806,8 +845,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=20260828_2355"></script>
-    <script src="js/store-service.js?v=20260828_2355"></script>
+    <script src="js/app.js?v=20260829_1200"></script>
+    <script src="js/store-service.js?v=20260829_1200"></script>
     <script>
         let currentModalImages = []; // Array of gallery images in modal
         let currentMainImage = "";
@@ -1704,5 +1743,62 @@
             }
         }, 3000);
     </script>
+
+    <!-- KUPON EKLE / DÜZENLE MODAL -->
+    <div id="couponModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1050; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-card" style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 28px; width: 100%; max-width: 480px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                <h3 id="couponModalTitle" style="color: #fff; font-size: 1.2rem; font-weight: 700;"><i class="fa-solid fa-ticket" style="color: #38bdf8;"></i> Yeni Kupon Oluştur</h3>
+                <button onclick="closeCouponModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="couponForm" onsubmit="return handleCouponFormSubmit(event)">
+                <input type="hidden" id="couponId" value="">
+
+                <div class="form-group">
+                    <label>Kupon Kodu *</label>
+                    <input type="text" id="couponCode" class="admin-input" placeholder="Örn: MOBELMOR500" required style="text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>İndirim Türü *</label>
+                        <select id="couponType" class="admin-input" style="padding-left: 14px;">
+                            <option value="fixed">Sabit Tutar (TL)</option>
+                            <option value="percent">Yüzde (%)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>İndirim Değeri *</label>
+                        <input type="number" id="couponValue" class="admin-input" placeholder="500" min="1" step="any" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Minimum Sepet Tutarı (TL)</label>
+                    <input type="number" id="couponMinCart" class="admin-input" placeholder="0 (Sınır yok)" min="0" step="any">
+                </div>
+
+                <div class="form-group">
+                    <label>Kupon Açıklaması (Opsiyonel)</label>
+                    <input type="text" id="couponDescription" class="admin-input" placeholder="Örn: 20.000 TL üzeri alımlarda 1.000 TL indirim">
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 12px; background: rgba(15,23,42,0.6); border-radius: 10px;">
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">Kupon Aktif mi?</span>
+                    <label class="switch">
+                        <input type="checkbox" id="couponIsActive" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 24px;">
+                    <button type="button" onclick="closeCouponModal()" class="btn-action-primary" style="background: #334155; flex: 1; justify-content: center;">İptal</button>
+                    <button type="submit" class="btn-action-primary" style="flex: 2; justify-content: center;"><i class="fa-solid fa-floppy-disk"></i> Kuponu Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
