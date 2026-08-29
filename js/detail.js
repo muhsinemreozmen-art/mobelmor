@@ -2,6 +2,24 @@
    mobelmor.com - Product Detail JS (v=9999)
    ========================================== */
 
+window.openMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    if (drawer) drawer.classList.add("active");
+    if (overlay) overlay.classList.add("active");
+    document.body.classList.add("mobile-drawer-open");
+    if (typeof lockBodyScroll === 'function') lockBodyScroll();
+};
+
+window.closeMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    if (drawer) drawer.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("mobile-drawer-open");
+    if (typeof unlockBodyScroll === 'function') unlockBodyScroll();
+};
+
 const PRODUCTS = [
   {
     "id": 1,
@@ -4183,12 +4201,12 @@ const initLiveSearchEngine = () => {
     });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    createLightbox();
-    renderProductDetail();
-    updateBadges();
-    renderCart();
-    initLiveSearchEngine();
+function initDetailPage() {
+    if (typeof renderProductDetail === 'function') renderProductDetail();
+    if (typeof window.createLightbox === 'function') window.createLightbox();
+    if (typeof updateBadges === 'function') updateBadges();
+    if (typeof renderCart === 'function') renderCart();
+    if (typeof initLiveSearchEngine === 'function') initLiveSearchEngine();
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -5345,35 +5363,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Vivense-Style Mobile Menu Drawer & Accordion
+    window.openMobileDrawer = function() {
+        const drawer = document.getElementById("mobileMenuDrawer") || document.getElementById("mobileCatDrawer");
+        const overlay = document.getElementById("mobileMenuOverlay") || document.getElementById("mobileDrawerOverlay");
+        drawer?.classList.add("active");
+        overlay?.classList.add("active");
+        if (typeof lockBodyScroll === 'function') lockBodyScroll();
+    };
+
+    window.closeMobileDrawer = function() {
+        const drawer = document.getElementById("mobileMenuDrawer") || document.getElementById("mobileCatDrawer");
+        const overlay = document.getElementById("mobileMenuOverlay") || document.getElementById("mobileDrawerOverlay");
+        drawer?.classList.remove("active");
+        overlay?.classList.remove("active");
+        if (typeof unlockBodyScroll === 'function') unlockBodyScroll();
+    };
+
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn");
-    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
-    const mobileMenuDrawer = document.getElementById("mobileMenuDrawer");
+    const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn") || document.getElementById("mobileDrawerCloseBtn");
+    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay") || document.getElementById("mobileDrawerOverlay");
 
-    function openMobileDrawer() {
-        mobileMenuDrawer?.classList.add("active");
-        mobileMenuOverlay?.classList.add("active");
-        lockBodyScroll();
-    }
-
-    function closeMobileDrawer() {
-        mobileMenuDrawer?.classList.remove("active");
-        mobileMenuOverlay?.classList.remove("active");
-        unlockBodyScroll();
-    }
-
-    mobileMenuBtn?.addEventListener("click", openMobileDrawer);
-    closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
-    mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
+    mobileMenuBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.openMobileDrawer();
+    });
+    closeMobileMenuBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.closeMobileDrawer();
+    });
+    mobileMenuOverlay?.addEventListener("click", () => {
+        window.closeMobileDrawer();
+    });
 
     // Mobile Drawer Wishlist / Cart Triggers
     document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
-        closeMobileDrawer();
+        window.closeMobileDrawer();
         document.getElementById("cartBtn")?.click();
     });
 
     document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
-        closeMobileDrawer();
+        window.closeMobileDrawer();
         document.getElementById("wishlistBtn")?.click();
     });
 
@@ -5384,6 +5413,7 @@ document.addEventListener("DOMContentLoaded", () => {
         header.addEventListener("click", (e) => {
             e.preventDefault();
             const accordion = header.closest(".mobile-cat-accordion");
+            if (!accordion) return;
             const isOpen = accordion.classList.contains("open");
             document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
             if (!isOpen) {
@@ -5391,6 +5421,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", initDetailPage);
+} else {
+    initDetailPage();
+}
 
 

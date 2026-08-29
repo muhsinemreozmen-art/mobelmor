@@ -1,4 +1,22 @@
 
+window.openMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    if (drawer) drawer.classList.add("active");
+    if (overlay) overlay.classList.add("active");
+    document.body.classList.add("mobile-drawer-open");
+    if (typeof lockBodyScroll === 'function') lockBodyScroll();
+};
+
+window.closeMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    if (drawer) drawer.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("mobile-drawer-open");
+    if (typeof unlockBodyScroll === 'function') unlockBodyScroll();
+};
+
 // =========================================================================
 // MOBELMOR MODERN LUXURY FAVORITES (WISHLIST) ENGINE (SEPET İLE TAM UYUMLU)
 // =========================================================================
@@ -1822,10 +1840,23 @@ const PRODUCTS = [
 
 const CATEGORY_NAMES = {
   all: "Tüm Koleksiyon",
+  "tum-koleksiyon": "Tüm Koleksiyon",
   living: "Oturma Odası",
+  "oturma-odasi": "Oturma Odası",
   dining: "Yemek Odası",
+  "yemek-odasi": "Yemek Odası",
   bedroom: "Yatak Odası",
-  office: "Çalışma Odası"
+  "yatak-odasi": "Yatak Odası",
+  office: "Çalışma Odası",
+  "calisma-odasi": "Çalışma Odası",
+  garden: "Bahçe Mobilyası",
+  "bahce": "Bahçe Mobilyası",
+  decoration: "Dekorasyon",
+  "dekorasyon": "Dekorasyon",
+  lighting: "Aydınlatma",
+  "aydinlatma": "Aydınlatma",
+  carpet: "Halı & Tekstil",
+  "hali": "Halı & Tekstil"
 };
 
 const SUBCATEGORY_NAMES = {
@@ -1833,12 +1864,12 @@ const SUBCATEGORY_NAMES = {
   sofas: "Koltuk Takımları & Kanepeler",
   "corner-sofas": "Köşe Koltuklar",
   armchairs: "Berjerler",
-  tables: "Sehpalar",
+  tables: "Sehpalar & Tamamlayıcı",
   "tv-units": "TV & Yaşam Üniteleri",
   "tv-uniteleri": "TV & Yaşam Üniteleri",
   consoles: "Konsollar & TV Üniteleri",
   poufs: "Puf & Tamamlayıcı",
-  "dining-tables": "Yemek Masaları & Takımlar",
+  "dining-tables": "Yemek Masaları",
   "dining-sets": "Yemek Odası Takımları",
   chairs: "Sandalyeler",
   buffets: "Konsol & Büfeler",
@@ -1853,12 +1884,53 @@ const SUBCATEGORY_NAMES = {
   bookcases: "Kitaplıklar"
 };
 
+const CATEGORY_HERO_DATA = {
+  living: {
+    tag: "OTURMA ODASINDA İNEGÖL İMZASI",
+    title: "OTURMA ODASI",
+    discount: "%20",
+    image: "assets/minegolden_p1_1.webp"
+  },
+  dining: {
+    tag: "YEMEK ODASINDA MASİF VE ZARAFET",
+    title: "YEMEK ODASI",
+    discount: "%25",
+    image: "assets/minegolden_p8_1.webp"
+  },
+  bedroom: {
+    tag: "YATAK ODASINDA HUZUR VE KONFOR",
+    title: "YATAK ODASI",
+    discount: "%20",
+    image: "assets/minegolden_p11_5.webp"
+  },
+  office: {
+    tag: "ÇALIŞMA ALANINDA ERGONOMİK ŞIKLIK",
+    title: "ÇALIŞMA ODASI",
+    discount: "%15",
+    image: "assets/minegolden_p19_1.webp"
+  },
+  garden: {
+    tag: "BAHÇE VE BALKONDA DOĞAL AHŞAP",
+    title: "BAHÇE MOBİLYASI",
+    discount: "%15",
+    image: "assets/minegolden_p2_1.webp"
+  },
+  all: {
+    tag: "MOBELMOR ÖZEL KOLEKSİYONLARI",
+    title: "TÜM KOLEKSİYON",
+    discount: "%20",
+    image: "assets/minegolden_p1_1.webp"
+  }
+};
+
 let currentCategory = "all";
 let currentSubcategory = "all";
 let searchQuery = "";
 let currentSort = "featured";
+let currentFilter = "";
 
-// Cart State with LocalStorage Persistence across reloads (Ctrl+F5)
+// Core State and Helper Functions
+let wishlist = (typeof window.loadWishlist === 'function') ? window.loadWishlist() : new Set();
 let cart = [];
 try {
   const savedCart = localStorage.getItem("mobelmor_cart");
@@ -1878,32 +1950,8 @@ const saveCart = () => {
   }
 };
 
-const loadWishlist = () => {
-  try {
-    const raw = localStorage.getItem("mobelmor_wishlist");
-    if (raw) {
-      const arr = JSON.parse(raw);
-      if (Array.isArray(arr)) {
-        return new Set(arr.map(Number));
-      }
-    }
-  } catch (e) {
-    console.error("Wishlist load error:", e);
-  }
-  return new Set();
-};
-
-const saveWishlist = () => {
-  try {
-    localStorage.setItem("mobelmor_wishlist", JSON.stringify(Array.from(wishlist)));
-  } catch (e) {
-    console.error("Wishlist save error:", e);
-  }
-};
-
-let wishlist = loadWishlist();
-
 const formatPrice = (num) => {
+  if (num === null || num === undefined || isNaN(num)) return "0 TL";
   return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(num);
 };
 
@@ -1927,15 +1975,14 @@ const unlockBodyScroll = (force = false) => {
     activeScrollLocks--;
   }
 
-  // Check if any modal or drawer is truly active in DOM
   const anyActive = document.querySelector(
-    ".modal-overlay.active, .cart-drawer.active, .wishlist-drawer.active, .cart-overlay.active, .wishlist-overlay.active, .yt-video-modal-overlay.active, .fabric-zoom-modal-overlay.active, .mbl-lightbox-overlay.active"
+    ".modal-overlay.active, .cart-drawer.active, .wishlist-drawer.active, .cart-overlay.active, .wishlist-overlay.active, .mobile-cat-drawer.active, .mobile-menu-drawer.active"
   );
 
   if (activeScrollLocks === 0 || !anyActive || force) {
     activeScrollLocks = 0;
-    document.documentElement.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
-    document.body.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open");
+    document.documentElement.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open", "mobile-drawer-open");
+    document.body.classList.remove("scroll-locked", "cart-open", "wishlist-open", "modal-open", "mobile-drawer-open");
     const top = document.body.style.top;
     document.body.style.top = "";
     document.body.style.position = "";
@@ -1945,29 +1992,6 @@ const unlockBodyScroll = (force = false) => {
     const targetY = top ? Math.abs(parseInt(top, 10)) : bodyScrollPos;
     window.scrollTo(0, targetY);
   }
-};
-
-const trapDrawerScroll = (element) => {
-  if (!element) return;
-  let startY = 0;
-  element.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) {
-      startY = e.touches[0].clientY;
-    }
-  }, { passive: true });
-
-  element.addEventListener("touchmove", (e) => {
-    if (e.touches.length !== 1) return;
-    const currentY = e.touches[0].clientY;
-    const deltaY = currentY - startY;
-    const scrollTop = element.scrollTop;
-    const isAtTop = scrollTop <= 0;
-    const isAtBottom = (scrollTop + element.clientHeight) >= (element.scrollHeight - 1);
-
-    if ((isAtTop && deltaY > 0) || (isAtBottom && deltaY < 0)) {
-      if (e.cancelable) e.preventDefault();
-    }
-  }, { passive: false });
 };
 
 const showToast = (message, icon = "fa-circle-check") => {
@@ -1986,17 +2010,185 @@ const showToast = (message, icon = "fa-circle-check") => {
   }, 2800);
 };
 
+const openQuickView = (productId) => {
+  const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+  const item = allProds.find(p => p.id == productId);
+  if (!item) return;
+
+  const content = document.getElementById("quickViewContent");
+  const overlay = document.getElementById("quickViewOverlay");
+  if (!content || !overlay) {
+    if (window.getCleanProductUrl) {
+      window.location.href = window.getCleanProductUrl(item.id, item.title);
+    } else {
+      window.location.href = `urun-detay.html?id=${item.id}`;
+    }
+    return;
+  }
+
+  content.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:16px; padding:16px;">
+      <div style="width:100%; height:260px; overflow:hidden; border-radius:12px;">
+        <img src="${item.image}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <h3 style="margin:0; font-size:1.2rem; color:#18181b;">${item.title}</h3>
+      <div style="font-size:1.4rem; font-weight:900; color:#6b21a8;">${formatPrice(item.price)}</div>
+      <p style="margin:0; font-size:0.88rem; color:#64748b;">${item.desc || ''}</p>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button type="button" class="btn btn-primary interactive-btn" onclick="addToCart(${item.id}); document.getElementById('quickViewOverlay')?.classList.remove('active');" style="flex:1; padding:12px; background:#6b21a8; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer;">
+          <i class="fa-solid fa-basket-shopping"></i> Sepete Ekle
+        </button>
+        <a href="${window.getCleanProductUrl ? window.getCleanProductUrl(item.id, item.title) : `urun-detay.html?id=${item.id}`}" class="btn interactive-btn" style="padding:12px 18px; background:#f4f4f5; color:#18181b; border-radius:8px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center;">
+          Detayları Gör &gt;
+        </a>
+      </div>
+    </div>
+  `;
+  overlay.classList.add("active");
+  lockBodyScroll();
+};
+
+const getSubcategoriesForCategory = (cat) => {
+  const normCat = (cat === "oturma-odasi" || cat === "living") ? "living"
+    : (cat === "yemek-odasi" || cat === "dining") ? "dining"
+    : (cat === "yatak-odasi" || cat === "bedroom") ? "bedroom"
+    : cat;
+
+  if (normCat === "living") {
+    return [
+      { id: "all", name: "Tüm Oturma Odası", image: "assets/minegolden_p1_1.webp", url: "kategori.html?c=oturma-odasi" },
+      { id: "sofas", name: "Koltuk Takımları", image: "assets/minegolden_p1_2.webp", url: "kategori.html?c=oturma-odasi&sub=sofas" },
+      { id: "corner-sofas", name: "Köşe Koltuk", image: "assets/minegolden_p2_1.webp", url: "kategori.html?c=oturma-odasi&sub=corner-sofas" },
+      { id: "armchairs", name: "Berjerler", image: "assets/minegolden_p1_4.webp", url: "kategori.html?c=oturma-odasi&sub=armchairs" },
+      { id: "tables", name: "Sehpalar", image: "assets/minegolden_p2_3.webp", url: "kategori.html?c=oturma-odasi&sub=tables" },
+      { id: "tv-units", name: "TV Üniteleri", image: "assets/minegolden_p19_1.webp", url: "kategori.html?c=oturma-odasi&sub=tv-units" }
+    ];
+  } else if (normCat === "dining") {
+    return [
+      { id: "all", name: "Tüm Yemek Odası", image: "assets/minegolden_p8_1.webp", url: "kategori.html?c=yemek-odasi" },
+      { id: "dining-sets", name: "Yemek Takımları", image: "assets/minegolden_p8_1.webp", url: "kategori.html?c=yemek-odasi&sub=dining-sets" },
+      { id: "dining-tables", name: "Yemek Masaları", image: "assets/minegolden_p9_1.webp", url: "kategori.html?c=yemek-odasi&sub=dining-tables" },
+      { id: "chairs", name: "Sandalyeler", image: "assets/minegolden_p7_2.webp", url: "kategori.html?c=yemek-odasi&sub=chairs" },
+      { id: "buffets", name: "Konsol & Aynalar", image: "assets/minegolden_p10_1.webp", url: "kategori.html?c=yemek-odasi&sub=buffets" }
+    ];
+  } else if (normCat === "bedroom") {
+    return [
+      { id: "all", name: "Tüm Yatak Odası", image: "assets/minegolden_p11_5.webp", url: "kategori.html?c=yatak-odasi" },
+      { id: "bedroom-sets", name: "Yatak Takımları", image: "assets/minegolden_p11_5.webp", url: "kategori.html?c=yatak-odasi&sub=bedroom-sets" },
+      { id: "beds", name: "Karyola & Bazalar", image: "assets/minegolden_p12_1.webp", url: "kategori.html?c=yatak-odasi&sub=beds" },
+      { id: "wardrobes", name: "Gardıroplar", image: "assets/minegolden_p11_1.webp", url: "kategori.html?c=yatak-odasi&sub=wardrobes" },
+      { id: "nightstands", name: "Komodinler", image: "assets/minegolden_p15_6.webp", url: "kategori.html?c=yatak-odasi&sub=nightstands" },
+      { id: "dressers", name: "Şifonyerler", image: "assets/minegolden_p14_1.webp", url: "kategori.html?c=yatak-odasi&sub=dressers" }
+    ];
+  }
+  return [];
+};
+
+const updateCategoryHeaderUI = () => {
+  const heroTitle = document.getElementById("categoryHeroTitle");
+  const bannerTag = document.getElementById("catBannerTag");
+  const bannerImg = document.getElementById("catBannerImg");
+  const discountNum = document.getElementById("catDiscountNum");
+  const subcirclesTrack = document.getElementById("catSubcirclesTrack");
+
+  const normCat = (currentCategory === "oturma-odasi" || currentCategory === "living") ? "living"
+    : (currentCategory === "yemek-odasi" || currentCategory === "dining") ? "dining"
+    : (currentCategory === "yatak-odasi" || currentCategory === "bedroom") ? "bedroom"
+    : (currentCategory === "calisma-odasi" || currentCategory === "office") ? "office"
+    : (currentCategory === "bahce" || currentCategory === "garden") ? "garden"
+    : currentCategory;
+
+  const heroInfo = CATEGORY_HERO_DATA[normCat] || CATEGORY_HERO_DATA.all;
+
+  if (bannerTag) bannerTag.textContent = heroInfo.tag;
+  if (bannerImg) bannerImg.src = heroInfo.image;
+  if (discountNum) discountNum.textContent = heroInfo.discount;
+
+  const catDisplay = CATEGORY_NAMES[currentCategory] || (currentCategory !== "all" ? currentCategory.toUpperCase() : "Tüm Koleksiyon");
+  if (heroTitle) {
+    if (searchQuery) {
+      heroTitle.textContent = `"${searchQuery.toUpperCase()}" İÇİN ARAMA SONUÇLARI`;
+    } else if (currentSubcategory !== "all" && SUBCATEGORY_NAMES[currentSubcategory]) {
+      heroTitle.textContent = `${catDisplay.toUpperCase()} - ${SUBCATEGORY_NAMES[currentSubcategory].toUpperCase()}`;
+    } else {
+      heroTitle.textContent = catDisplay.toUpperCase();
+    }
+  }
+
+  // Update Stories / Subcategory circles
+  if (subcirclesTrack) {
+    const subcats = getSubcategoriesForCategory(normCat);
+    if (subcats && subcats.length > 0) {
+      const parentWrap = subcirclesTrack.closest(".cat-subcircles-wrapper");
+      if (parentWrap) parentWrap.style.display = "flex";
+      subcirclesTrack.innerHTML = subcats.map(sub => `
+        <a href="${sub.url}" class="cat-circle-item ${currentSubcategory === sub.id ? 'active' : ''}">
+          <div class="cat-circle-img-box">
+            <img src="${sub.image}" alt="${sub.name}" loading="lazy">
+          </div>
+          <span class="cat-circle-name">${sub.name}</span>
+        </a>
+      `).join('');
+    } else {
+      const parentWrap = subcirclesTrack.closest(".cat-subcircles-wrapper");
+      if (parentWrap) parentWrap.style.display = "none";
+    }
+  }
+};
+
+const initCategoryFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  const catParam = (params.get("c") || params.get("category") || "all").toLowerCase();
+  const subParam = (params.get("sub") || params.get("subcategory") || "all").toLowerCase();
+  const queryParam = (params.get("q") || params.get("query") || "").trim();
+  const filterParam = (params.get("filter") || "").toLowerCase();
+  const sortParam = (params.get("sort") || "").toLowerCase();
+
+  if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[catParam]) {
+    currentCategory = window.SLUG_TO_CATEGORY[catParam];
+  } else if (catParam === "living" || catParam === "dining" || catParam === "bedroom" || catParam === "office" || catParam === "garden") {
+    currentCategory = catParam;
+  } else if (catParam === "oturma-odasi") {
+    currentCategory = "living";
+  } else if (catParam === "yemek-odasi") {
+    currentCategory = "dining";
+  } else if (catParam === "yatak-odasi") {
+    currentCategory = "bedroom";
+  } else if (catParam === "calisma-odasi") {
+    currentCategory = "office";
+  } else if (catParam === "bahce") {
+    currentCategory = "garden";
+  } else {
+    currentCategory = catParam || "all";
+  }
+
+  currentSubcategory = subParam;
+  searchQuery = queryParam;
+  currentFilter = filterParam;
+  if (sortParam) currentSort = sortParam;
+
+  const searchInput = document.getElementById("searchInput");
+  const mobileSearchInput = document.getElementById("mobileSearchInput");
+  if (searchInput && searchQuery) searchInput.value = searchQuery;
+  if (mobileSearchInput && searchQuery) mobileSearchInput.value = searchQuery;
+
+  const sortSelect = document.getElementById("sortSelect");
+  if (sortSelect && sortParam) sortSelect.value = sortParam;
+
+  updateCategoryHeaderUI();
+};
+
 const getFilteredProducts = () => {
   const query = (searchQuery || "").toLowerCase();
   const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
   let filtered = sourceList.filter(product => {
     let matchesCat = true;
-    const pCat = product.category || "";
-    const pSub = product.subcategory || "";
+    const pCat = (product.category || "").toLowerCase();
+    const pSub = (product.subcategory || "").toLowerCase();
     const pType = product.productType || "";
     const pTitle = (product.title || "").toLowerCase();
 
-    if (currentCategory !== "all") {
+    if (currentCategory !== "all" && currentCategory !== "tum-koleksiyon") {
       if (currentCategory === "living" || currentCategory === "oturma-odasi") {
         matchesCat = (pCat === "living");
       } else if (currentCategory === "dining" || currentCategory === "yemek-odasi") {
@@ -2027,11 +2219,7 @@ const getFilteredProducts = () => {
       } else if (currentSubcategory === "tv-units" || currentSubcategory === "tv-uniteleri") {
         matchesSubcat = (pCat === "living" && (pSub === "consoles" || pTitle.includes("tv")));
       } else if (currentSubcategory === "consoles" || currentSubcategory === "konsol") {
-        if (currentCategory === "bedroom") {
-          matchesSubcat = (pSub === "consoles");
-        } else {
-          matchesSubcat = (pSub === "consoles");
-        }
+        matchesSubcat = (pSub === "consoles");
       } else if (currentSubcategory === "poufs" || currentSubcategory === "puf") {
         matchesSubcat = (pSub === "armchairs" || pSub === "tables" || pTitle.includes("puf"));
       } else if (currentSubcategory === "dining-sets" || currentSubcategory === "yemek-takimi") {
@@ -2061,6 +2249,10 @@ const getFilteredProducts = () => {
       }
     }
 
+    if (currentFilter === "best-price") {
+      if (product.id % 3 !== 1) return false;
+    }
+
     const specsText = Object.values(product.specs || {}).join(" ").toLowerCase();
     const matchesSearch = (!query ||
       (product.title || "").toLowerCase().includes(query) ||
@@ -2072,14 +2264,12 @@ const getFilteredProducts = () => {
   });
 
   return filtered.sort((a, b) => {
-    // 1. Always prioritize complete Sets (Takımlar) first
     const isSetA = a.productType === 'Set' ? 1 : 0;
     const isSetB = b.productType === 'Set' ? 1 : 0;
     if (isSetA !== isSetB) {
       return isSetB - isSetA;
     }
 
-    // 2. Sort within the same group (Sets together, Solos together)
     if (currentSort === "price-low") return a.price - b.price;
     if (currentSort === "price-high") return b.price - a.price;
     if (currentSort === "rating") return b.rating - a.rating;
@@ -2104,11 +2294,17 @@ const renderProducts = () => {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: white; border-radius: 18px; border: 1px solid #e4e4e7;">
-                <i class="fa-solid fa-box-open" style="font-size: 3rem; color: #a1a1aa; margin-bottom: 12px;"></i>
-                <h3 style="margin: 0 0 8px 0; color: #18181b;">Aradığınız Kriterde Ürün Bulunamadı</h3>
-            </div>
-        `;
+      <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: #ffffff; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 4px 16px rgba(0,0,0,0.02); margin: 20px 0;">
+        <div style="width: 72px; height: 72px; border-radius: 50%; background: #faf5ff; color: #6b21a8; display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 18px; border: 1px solid #e9d5ff;">
+          <i class="fa-solid fa-couch"></i>
+        </div>
+        <h3 style="margin: 0 0 10px 0; color: #18181b; font-size: 1.25rem; font-weight: 800;">Bu Kategoride Henüz Ürün Bulunmuyor</h3>
+        <p style="margin: 0 0 24px 0; color: #64748b; font-size: 0.92rem; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.5;">İnegöl usta zanaatkarlarımızın hazırladığı yeni sezon tasarımları çok yakında bu koleksiyonda yerini alacaktır.</p>
+        <a href="kategori.html?c=tum-koleksiyon" class="btn interactive-btn" style="background: #6b21a8; color: #ffffff; padding: 12px 28px; border-radius: 999px; font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(107, 33, 168, 0.25);">
+          <i class="fa-solid fa-border-all"></i> Tüm Koleksiyonu İncele &gt;
+        </a>
+      </div>
+    `;
     return;
   }
 
@@ -2120,7 +2316,6 @@ const renderProducts = () => {
       : 'loading="lazy" decoding="async"';
     const webpImage = item.image ? item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp') : 'assets/zumrut_main.webp';
 
-    // Authentic pricing and discount calculation
     const originalPrice = item.originalPrice || Math.round(item.price * 1.15);
     const discountRate = item.originalPrice ? Math.round((1 - item.price / item.originalPrice) * 100) : 15;
     const discountClass = discountRate >= 20 ? 'red' : discountRate >= 15 ? 'purple' : discountRate >= 10 ? 'orange' : 'green';
@@ -2130,66 +2325,59 @@ const renderProducts = () => {
     const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
 
     return `
-            <article class="product-card" data-id="${item.id}">
-                <div class="card-image-box">
-                    <img src="${webpImage}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='${item.image}';">
-                    
-                    <!-- Top-Left Circle Sticker Badge -->
-                    <div class="vcard-circle-sticker ${discountClass}">
-                        <span class="vcs-sub">SEPETTE</span>
-                        <strong class="vcs-pct">%${discountRate}</strong>
-                        <span class="vcs-sub">İNDİRİM</span>
-                    </div>
+      <article class="product-card" data-id="${item.id}">
+        <div class="card-image-box">
+          <img src="${webpImage}" alt="${item.title}" class="card-img" width="400" height="300" ${imgAttr} onerror="this.onerror=null; this.src='${item.image}';">
+          
+          <div class="vcard-circle-sticker ${discountClass}">
+            <span class="vcs-sub">SEPETTE</span>
+            <strong class="vcs-pct">%${discountRate}</strong>
+            <span class="vcs-sub">İNDİRİM</span>
+          </div>
 
-                    ${(item.id % 5 === 0) ? `<span class="vcard-top-tag">%${discountRate}</span>` : ''}
+          ${(item.id % 5 === 0) ? `<span class="vcard-top-tag">%${discountRate}</span>` : ''}
 
-                    <!-- 3D Sticker -->
-                    ${has3d ? `
-                        <div class="vcard-3d-circle">
-                            <i class="fa-solid fa-cube"></i>
-                            <span>3D GÖRÜNTÜLE</span>
-                        </div>
-                    ` : ''}
+          ${has3d ? `
+            <div class="vcard-3d-circle">
+              <i class="fa-solid fa-cube"></i>
+              <span>3D GÖRÜNTÜLE</span>
+            </div>
+          ` : ''}
 
-                    <!-- Heart Wishlist Button -->
-                    <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${item.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle">
-                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
-                    </button>
-                </div>
+          <button class="card-heart-btn ${isFav ? 'active' : ''}" data-id="${item.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle">
+            <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+          </button>
+        </div>
 
-                <div class="card-details">
-                    <!-- Badges Row -->
-                    <div class="vcard-badges-row">
-                        ${isBestPrice
-        ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>`
-        : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
-      }
-                        <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
-                        ${item.rating >= 4.8 ? `<span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>` : ''}
-                        ${has3d ? `<span class="vbadge-pill pill-3d"><i class="fa-solid fa-cube"></i> 3D GÖRÜNTÜLE</span>` : ''}
-                    </div>
+        <div class="card-details">
+          <div class="vcard-badges-row">
+            ${isBestPrice
+              ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>`
+              : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
+            }
+            <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
+            ${item.rating >= 4.8 ? `<span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>` : ''}
+            ${has3d ? `<span class="vbadge-pill pill-3d"><i class="fa-solid fa-cube"></i> 3D GÖRÜNTÜLE</span>` : ''}
+          </div>
 
-                    <!-- Title -->
-                    <h3 class="card-product-title">${item.title}</h3>
+          <h3 class="card-product-title">${item.title}</h3>
 
-                    <!-- Pricing Block -->
-                    <div class="vcard-pricing-block">
-                        <span class="vcard-old-price">${formatPrice(originalPrice)}</span>
-                        <div class="vcard-main-price">${formatPrice(item.price)}</div>
-                        <div class="vcard-sepette-price"><i class="fa-solid fa-bolt"></i> Sepette: <strong>${formatPrice(item.price)}</strong></div>
-                        ${(item.id % 2 === 0) ? `<div class="vcard-lowest-price"><i class="fa-solid fa-arrow-trend-down"></i> Son 30 günün en düşük fiyatı</div>` : ''}
-                    </div>
+          <div class="vcard-pricing-block">
+            <span class="vcard-old-price">${formatPrice(originalPrice)}</span>
+            <div class="vcard-main-price">${formatPrice(item.price)}</div>
+            <div class="vcard-sepette-price"><i class="fa-solid fa-bolt"></i> Sepette: <strong>${formatPrice(item.price)}</strong></div>
+            ${(item.id % 2 === 0) ? `<div class="vcard-lowest-price"><i class="fa-solid fa-arrow-trend-down"></i> Son 30 günün en düşük fiyatı</div>` : ''}
+          </div>
 
-                    <!-- Feature Delivery & Variant Pills -->
-                    <div class="vcard-features-pills">
-                        <span class="vfeat-pill"><i class="fa-solid fa-truck"></i> Ücretsiz Teslimat</span>
-                        <span class="vfeat-pill teal"><i class="fa-solid fa-bolt"></i> Hızlı Teslimat</span>
-                        ${isLiving ? `<span class="vfeat-pill"><i class="fa-solid fa-couch"></i> Kumaşı değiştirilebilir</span>` : ''}
-                        ${isDining ? `<span class="vfeat-pill interactive"><i class="fa-solid fa-plus"></i> Masa Ölçüsü Seçenekleri</span>` : ''}
-                    </div>
-                </div>
-            </article>
-        `;
+          <div class="vcard-features-pills">
+            <span class="vfeat-pill"><i class="fa-solid fa-truck"></i> Ücretsiz Teslimat</span>
+            <span class="vfeat-pill teal"><i class="fa-solid fa-bolt"></i> Hızlı Teslimat</span>
+            ${isLiving ? `<span class="vfeat-pill"><i class="fa-solid fa-couch"></i> Kumaşı değiştirilebilir</span>` : ''}
+            ${isDining ? `<span class="vfeat-pill interactive"><i class="fa-solid fa-plus"></i> Masa Ölçüsü Seçenekleri</span>` : ''}
+          </div>
+        </div>
+      </article>
+    `;
   }).join('');
 
   attachCardEventListeners();
@@ -2574,7 +2762,7 @@ const renderCart = () => {
     });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
 
   // =========================================================================
   // HEADER ACTION BUTTONS ENGINE (TRUCK, WISHLIST, CART, USER AUTH)
@@ -2673,11 +2861,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-createGlobalLightbox();
-  renderProducts();
-  updateBadges();
-  renderCart();
+  if (typeof initCategoryFromUrl === 'function') initCategoryFromUrl();
+  if (typeof createGlobalLightbox === 'function') createGlobalLightbox();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof updateBadges === 'function') updateBadges();
+  if (typeof renderCart === 'function') renderCart();
   if (typeof initLiveSearchEngine === 'function') initLiveSearchEngine();
+
+  const sortSelectEl = document.getElementById("sortSelect");
+  if (sortSelectEl) {
+    sortSelectEl.addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      renderProducts();
+    });
+  }
 
   window.closeOrderReceipt = () => {
     const overlay = document.getElementById("orderInvoiceOverlay");
@@ -2923,7 +3120,10 @@ createGlobalLightbox();
   });
 
   window.addEventListener("popstate", () => {
-    handleUrlParams();
+    if (typeof initCategoryFromUrl === 'function') {
+      initCategoryFromUrl();
+      renderProducts();
+    }
   });
 
   // Vivense-Style Mega Menu Interaction (Desktop)
@@ -2939,34 +3139,45 @@ createGlobalLightbox();
   });
 
   // Vivense-Style Mobile Menu Drawer & Accordion
+  window.openMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    drawer?.classList.add("active");
+    overlay?.classList.add("active");
+    if (typeof lockBodyScroll === 'function') lockBodyScroll();
+  };
+
+  window.closeMobileDrawer = function() {
+    const drawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
+    drawer?.classList.remove("active");
+    overlay?.classList.remove("active");
+    if (typeof unlockBodyScroll === 'function') unlockBodyScroll();
+  };
+
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const closeMobileMenuBtn = document.getElementById("mobileDrawerCloseBtn") || document.getElementById("closeMobileMenuBtn");
   const mobileMenuOverlay = document.getElementById("mobileDrawerOverlay") || document.getElementById("mobileMenuOverlay");
-  const mobileMenuDrawer = document.getElementById("mobileCatDrawer") || document.getElementById("mobileMenuDrawer");
 
-  function openMobileDrawer() {
-    mobileMenuDrawer?.classList.add("active");
-    mobileMenuOverlay?.classList.add("active");
-    lockBodyScroll();
-  }
-
-  function closeMobileDrawer() {
-    mobileMenuDrawer?.classList.remove("active");
-    mobileMenuOverlay?.classList.remove("active");
-    unlockBodyScroll();
-  }
-
-  mobileMenuBtn?.addEventListener("click", openMobileDrawer);
-  closeMobileMenuBtn?.addEventListener("click", closeMobileDrawer);
-  mobileMenuOverlay?.addEventListener("click", closeMobileDrawer);
+  mobileMenuBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.openMobileDrawer();
+  });
+  closeMobileMenuBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.closeMobileDrawer();
+  });
+  mobileMenuOverlay?.addEventListener("click", () => {
+    window.closeMobileDrawer();
+  });
 
   // Mobile Drawer Wishlist / Cart Triggers
   document.getElementById("mobileDrawerWishlistBtn")?.addEventListener("click", () => {
-    closeMobileDrawer();
+    window.closeMobileDrawer();
     document.getElementById("wishlistBtn")?.click();
   });
   document.getElementById("mobileDrawerCartBtn")?.addEventListener("click", () => {
-    closeMobileDrawer();
+    window.closeMobileDrawer();
     document.getElementById("cartBtn")?.click();
   });
 
@@ -2975,6 +3186,7 @@ createGlobalLightbox();
     header.addEventListener("click", (e) => {
       e.preventDefault();
       const accordion = header.closest(".mobile-cat-accordion");
+      if (!accordion) return;
       const isOpen = accordion.classList.contains("open");
       document.querySelectorAll(".mobile-cat-accordion").forEach(acc => acc.classList.remove("open"));
       if (!isOpen) {
@@ -2983,7 +3195,9 @@ createGlobalLightbox();
     });
   });
 
+  // =========================================================================
   // Vivense-Style Hero Slider Engine (Full Drag / Swipe / Autoplay / Arrow / Dot Navigation)
+  // =========================================================================
   const heroSlider = document.getElementById("heroSlider");
   if (heroSlider) {
     const slides = heroSlider.querySelectorAll(".slider-slide");
@@ -3071,6 +3285,9 @@ createGlobalLightbox();
     heroSlider.addEventListener("mouseenter", stopAutoplay);
     heroSlider.addEventListener("mouseleave", startAutoplay);
 
+    // Prevent native browser image drag
+    heroSlider.addEventListener("dragstart", (e) => e.preventDefault());
+
     // Universal Pointer & Touch Drag / Swipe Interaction
     let startX = 0;
     let startY = 0;
@@ -3095,8 +3312,8 @@ createGlobalLightbox();
       const diffY = startY - endY;
       dragDistance = Math.hypot(diffX, diffY);
 
-      // Only act if horizontal movement exceeds vertical movement and threshold
-      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
+      // Act if horizontal swipe exceeds threshold
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
         if (diffX > 0) {
           nextSlide();
         } else {
@@ -3107,9 +3324,9 @@ createGlobalLightbox();
     }
 
     heroSlider.addEventListener("touchstart", onDragStart, { passive: true });
-    heroSlider.addEventListener("touchend", onDragEnd, { passive: true });
+    window.addEventListener("touchend", onDragEnd, { passive: true });
     heroSlider.addEventListener("mousedown", onDragStart);
-    heroSlider.addEventListener("mouseup", onDragEnd);
+    window.addEventListener("mouseup", onDragEnd);
 
     // Direct Click Navigation anywhere on the active slide
     slides.forEach((slide) => {
@@ -3146,6 +3363,78 @@ createGlobalLightbox();
     startAutoplay();
   }
 
+  // =========================================================================
+  // Product Showcase Carousels (Öne Çıkan Koleksiyonlar & Çok Satan Takımlar)
+  // =========================================================================
+  document.querySelectorAll(".vivense-carousel-wrap").forEach(wrap => {
+    const track = wrap.querySelector(".vivense-carousel-track");
+    const prevBtn = wrap.querySelector(".vivense-carousel-btn.prev-btn");
+    const nextBtn = wrap.querySelector(".vivense-carousel-btn.next-btn");
+    if (!track) return;
+
+    const getScrollAmount = () => {
+      const card = track.querySelector(".vprod-card");
+      if (card) {
+        return (card.offsetWidth + 16) * 2;
+      }
+      return 340;
+    };
+
+    prevBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+    });
+
+    nextBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+    });
+
+    // Mouse drag-to-scroll support
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasDragged = false;
+
+    track.addEventListener("mousedown", (e) => {
+      isDown = true;
+      hasDragged = false;
+      track.classList.add("dragging");
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (isDown) {
+        isDown = false;
+        track.classList.remove("dragging");
+      }
+    });
+
+    track.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      if (Math.abs(walk) > 6) {
+        hasDragged = true;
+      }
+      track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Prevent accidental link click if dragging
+    track.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+    });
+  });
+
   // Category Subcircles Carousel Scroll Controls
   const catCirclePrev = document.getElementById("catCirclePrev");
   const catCircleNext = document.getElementById("catCircleNext");
@@ -3167,7 +3456,13 @@ createGlobalLightbox();
       }
     }).catch(e => console.log('App background sync:', e));
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
 
 
 

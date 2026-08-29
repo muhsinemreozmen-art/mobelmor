@@ -60,7 +60,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css?v=20260829_1200">
+    <link rel="stylesheet" href="css/styles.min.css?v=20260829_1335">
 </head>
 <body style="background-color: #faf9fc !important; color: #18181b !important; color-scheme: light !important;">
 
@@ -69,7 +69,7 @@
         <div class="container header-container">
             <!-- Left: Brand Logo (+ Mobile Hamburger) -->
             <div class="header-left-col">
-                <button class="mobile-hamburger-btn interactive-btn hide-on-desktop" id="mobileMenuBtn" aria-label="Menüyü Aç" title="Kategoriler">
+                <button class="mobile-hamburger-btn interactive-btn hide-on-desktop" id="mobileMenuBtn" onclick="openMobileDrawer()" aria-label="Menüyü Aç" title="Kategoriler">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <a href="./" class="brand-logo" id="brandLogo" aria-label="Mobelmor Ana Sayfa">
@@ -462,10 +462,10 @@
     </header>
 
     <!-- Vivense-Style Mobile Menu Drawer -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileDrawer()"></div>
     <div class="mobile-menu-drawer" id="mobileMenuDrawer">
         <div class="mobile-drawer-header">
-            <button class="mobile-drawer-close-btn" id="closeMobileMenuBtn" aria-label="Kapat">
+            <button class="mobile-drawer-close-btn" id="closeMobileMenuBtn" onclick="closeMobileDrawer()" aria-label="Kapat">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <a href="./" class="brand-logo" aria-label="Mobelmor Ana Sayfa">
@@ -1198,7 +1198,7 @@
     <!-- Detail Page JS -->
     <script src="js/store-service.js?v=20260829_1200"></script>
     <script src="js/auth-modal.js?v=20260829_1200" defer></script>
-    <script src="js/detail.js?v=20260829_1200" defer></script>
+    <script src="js/detail.js?v=20260829_1335" defer></script>
     <script src="js/checkout-helper.js?v=20260829_1200" defer></script>
 </body>
 </html>

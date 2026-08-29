@@ -6868,18 +6868,20 @@ body.scroll-locked {
     inset: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.55);
     z-index: 99990;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    will-change: opacity, visibility;
+    pointer-events: none;
 }
 
 .mobile-drawer-overlay.active,
 .mobile-menu-overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 .mobile-cat-drawer,
@@ -6892,17 +6894,26 @@ body.scroll-locked {
     height: 100%;
     background: #ffffff;
     z-index: 99999;
-    transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate3d(-100%, 0, 0);
+    will-change: transform;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.18);
     overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-cat-drawer.active,
 .mobile-menu-drawer.active {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+}
+
+.mobile-hamburger-btn {
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .mobile-drawer-header {
@@ -8618,61 +8629,114 @@ body.scroll-locked {
     text-decoration: underline;
 }
 
-/* 2 & 6. PRODUCT CAROUSELS (SON GEZDİKLERİNİZ & ÇOK SATANLAR) */
+/* 2 & 6. PRODUCT CAROUSELS (ÖNE ÇIKANLAR & ÇOK SATANLAR) */
 .vivense-carousel-wrap {
     position: relative;
     width: 100%;
 }
 
 .vivense-carousel-track {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
     gap: 16px;
     width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 2px 18px 2px;
+    scrollbar-width: none;
+    cursor: grab;
+}
+
+.vivense-carousel-track:active,
+.vivense-carousel-track.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+}
+
+.vivense-carousel-track::-webkit-scrollbar {
+    display: none;
 }
 
 .vivense-carousel-btn {
     position: absolute;
-    top: 40%;
+    top: 42%;
     transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    color: #334155;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    color: #18181b;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 5;
-    transition: all 0.15s ease;
+    z-index: 10;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
 }
 
 .vivense-carousel-btn:hover {
-    background: #18181b;
+    background: #6b21a8;
     color: #ffffff;
-    border-color: #18181b;
+    border-color: #6b21a8;
+    transform: translateY(-50%) scale(1.08);
 }
 
 .vivense-carousel-btn.prev-btn {
-    left: -19px;
+    left: -20px;
 }
 
 .vivense-carousel-btn.next-btn {
-    right: -19px;
+    right: -20px;
+}
+
+@media (max-width: 768px) {
+    .vivense-carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .vivense-carousel-btn.prev-btn {
+        left: -6px;
+    }
+    .vivense-carousel-btn.next-btn {
+        right: -6px;
+    }
 }
 
 .vprod-card {
+    flex: 0 0 calc((100% - 48px) / 4);
+    min-width: calc((100% - 48px) / 4);
+    max-width: calc((100% - 48px) / 4);
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     background: #ffffff;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
     border: 1px solid #f1f5f9;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+    .vprod-card {
+        flex: 0 0 calc((100% - 32px) / 3);
+        min-width: calc((100% - 32px) / 3);
+        max-width: calc((100% - 32px) / 3);
+    }
+}
+
+@media (max-width: 768px) {
+    .vprod-card {
+        flex: 0 0 220px;
+        min-width: 220px;
+        max-width: 220px;
+    }
 }
 
 .vprod-card:hover {
@@ -8980,9 +9044,6 @@ body.scroll-locked {
 /* Responsive Rules */
 @media (max-width: 991px) {
     .sepette-promo-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .vivense-carousel-track {
         grid-template-columns: repeat(2, 1fr);
     }
     .vivense-mood-grid-3 {
@@ -12478,4 +12539,312 @@ body.scroll-locked {
     background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%) !important;
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(107, 33, 168, 0.45);
+}
+
+/* ========================================================================= */
+/* VIVENSE-STYLE MODERN CATEGORY HEADER & STORIES BAR                        */
+/* ========================================================================= */
+.vivense-cat-header-wrapper {
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 14px 0 16px 0;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+/* 1. Category Promo Banner */
+.cat-campaign-banner {
+    position: relative;
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fef3c7 100%);
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(251, 146, 60, 0.08);
+}
+
+.cat-banner-nav-btn {
+    display: none;
+}
+
+.cat-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 14px;
+}
+
+.cat-banner-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cat-banner-tag {
+    display: inline-block;
+    background: #047857;
+    color: #ffffff;
+    font-size: 0.70rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.cat-banner-cta {
+    display: inline-block;
+    background: #ea580c;
+    color: #ffffff !important;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    width: fit-content;
+    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+    white-space: nowrap;
+}
+
+.cat-banner-center {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.cat-discount-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.cat-discount-num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ea580c;
+    letter-spacing: -0.04em;
+}
+
+.cat-discount-sub {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: #c2410c;
+    text-transform: uppercase;
+}
+
+.cat-banner-text {
+    font-size: 0.78rem;
+    font-weight: 900;
+    color: #9a3412;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.cat-banner-right {
+    flex-shrink: 0;
+    width: 100px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.cat-banner-img {
+    width: 100%;
+    height: 100%;
+    max-width: 100px;
+    max-height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+/* 2. Category Hero Title */
+.vivense-cat-title-row {
+    text-align: center;
+    margin: 10px 0 12px 0;
+}
+
+.vivense-cat-heading {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: 0.04em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* 3. Subcategory Visual Circles / Stories Row */
+.cat-subcircles-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.cat-circle-nav-btn {
+    display: none;
+}
+
+.cat-subcircles-track {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 4px 4px 8px 4px;
+    width: 100%;
+}
+
+.cat-subcircles-track::-webkit-scrollbar {
+    display: none;
+}
+
+.cat-circle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.cat-circle-item:hover {
+    transform: translateY(-2px);
+}
+
+.cat-circle-img-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    padding: 2px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.cat-circle-item.active .cat-circle-img-box,
+.cat-circle-item:hover .cat-circle-img-box {
+    border-color: #6b21a8;
+    box-shadow: 0 0 0 2px rgba(107, 33, 168, 0.2);
+}
+
+.cat-circle-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.cat-circle-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #334155;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cat-circle-item.active .cat-circle-name {
+    color: #6b21a8;
+    font-weight: 800;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .vivense-cat-header-wrapper {
+        padding: 10px 0 12px 0;
+        margin-bottom: 10px;
+    }
+
+    .cat-campaign-banner {
+        padding: 8px 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+    
+    .cat-banner-content {
+        gap: 6px;
+    }
+
+    .cat-banner-left {
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .cat-banner-tag {
+        font-size: 0.58rem;
+        padding: 2px 5px;
+    }
+
+    .cat-banner-cta {
+        font-size: 0.62rem;
+        padding: 2px 6px;
+    }
+
+    .cat-banner-center {
+        gap: 4px;
+    }
+
+    .cat-discount-num {
+        font-size: 1.35rem;
+    }
+
+    .cat-discount-sub {
+        font-size: 0.54rem;
+    }
+
+    .cat-banner-text {
+        font-size: 0.60rem;
+        line-height: 1.1;
+    }
+
+    .cat-banner-right {
+        width: 60px;
+        height: 44px;
+        border-radius: 6px;
+    }
+
+    .cat-banner-img {
+        max-width: 60px;
+        max-height: 44px;
+    }
+
+    .vivense-cat-heading {
+        font-size: 1.1rem;
+    }
+
+    .cat-circle-img-box {
+        width: 52px;
+        height: 52px;
+    }
+
+    .cat-circle-name {
+        font-size: 0.66rem;
+        max-width: 68px;
+    }
 }
