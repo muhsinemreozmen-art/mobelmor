@@ -1344,10 +1344,11 @@
         },
 
         
-        // ==========================================
+                // ==========================================
         // KUPON & İNDİRİM YÖNETİM MOTORU (STORESERVICE)
         // ==========================================
         COUPONS_STORAGE_KEY: 'mobelmor_coupons',
+        COUPONS_VERSION_KEY: 'mobelmor_coupons_v2',
 
         getDefaultCoupons: function() {
             return [
@@ -1358,19 +1359,15 @@
             ];
         },
 
-        recordCouponUsage: function(code) {
-            if (!code) return;
-            const coupons = this.getCoupons();
-            const cleanCode = code.trim().toUpperCase();
-            const item = coupons.find(c => c.code.toUpperCase() === cleanCode);
-            if (item) {
-                item.usageCount = (item.usageCount || 0) + 1;
-                this.saveCoupons(coupons);
-            }
-        },
-
         getCoupons: function() {
             try {
+                // Ensure fresh 0 count version reset
+                if (!localStorage.getItem(this.COUPONS_VERSION_KEY)) {
+                    const defs = this.getDefaultCoupons();
+                    this.saveCoupons(defs);
+                    localStorage.setItem(this.COUPONS_VERSION_KEY, '20260829_ZERO_V1');
+                    return defs;
+                }
                 const stored = localStorage.getItem(this.COUPONS_STORAGE_KEY);
                 if (stored) {
                     const parsed = JSON.parse(stored);
