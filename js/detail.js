@@ -3522,6 +3522,28 @@ window.togglePromoAccordion = () => {
     content.style.display = content.style.display === "none" || !content.style.display ? "block" : "none";
 };
 
+window.removeCartItem = (id) => {
+    cart = cart.filter(c => c.id !== id && c.id != id);
+    localStorage.setItem("mobelmor_cart", JSON.stringify(cart));
+    renderCart();
+    if (typeof updateBadges === 'function') updateBadges();
+    if (typeof updateCartBadge === 'function') updateCartBadge();
+    if (typeof showToast === 'function') showToast("Ürün sepetten çıkarıldı.", "fa-trash-can");
+};
+
+window.changeQty = (id, delta) => {
+    const item = cart.find(c => c.id === id || c.id == id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+        cart = cart.filter(c => c.id !== id && c.id != id);
+    }
+    localStorage.setItem("mobelmor_cart", JSON.stringify(cart));
+    renderCart();
+    if (typeof updateBadges === 'function') updateBadges();
+    if (typeof updateCartBadge === 'function') updateCartBadge();
+};
+
 const renderCart = () => {
     const drawer = document.getElementById("cartDrawer");
     const body = document.getElementById("cartBody");
@@ -3548,7 +3570,7 @@ const renderCart = () => {
     if (cart.length === 0) {
         body.className = "ty-cart-body";
         body.innerHTML = `
-            <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center; background:#ffffff; border-radius:12px; margin-top:10px;">
+            <div style="padding:60px 20px; text-align:center; display:flex; flex-direction:column; align-items:center; background:#ffffff; border-radius:12px; margin-top:10px; border:1px solid #e2e8f0;">
                 <div style="width:64px; height:64px; border-radius:50%; background:#f3e8ff; color:#6b21a8; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.6rem; border:1px solid #e9d5ff;">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </div>
@@ -3568,7 +3590,7 @@ const renderCart = () => {
     const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
     const finalTotal = Math.max(0, subtotal - appliedCouponDiscount);
 
-    // 2. Mobelmor Purple Body
+    // 2. Direct Manufacturer Mobelmor Cart Body (No Multi-Vendor Marketplace Card)
     body.className = "ty-cart-body";
     body.innerHTML = `
         <!-- Top Promo Bar -->
@@ -3594,25 +3616,19 @@ const renderCart = () => {
             `}
         </div>
 
-        <!-- Store & Items Card -->
-        <div class="ty-store-card">
-            <div class="ty-store-header">
-                <input type="checkbox" class="ty-store-checkbox" checked disabled>
-                <span>Mobelmor İnegöl Fabrika</span>
-                <span class="ty-store-rating">9.9</span>
-                <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-            </div>
-            <div class="ty-free-shipping-strip">
-                <i class="fa-solid fa-truck-fast"></i>
-                <span>Kargo Bedava &amp; Ücretsiz Daireye Kurulum!</span>
-            </div>
+        <!-- Free Shipping Banner -->
+        <div class="ty-free-shipping-strip" style="border-radius:10px; border:1px solid #bbf7d0;">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Kargo Bedava &amp; Ücretsiz Daireye Kurulum!</span>
+        </div>
 
+        <!-- Direct Manufacturer Items Container -->
+        <div class="ty-store-card">
             <!-- Product Rows -->
             ${cart.map((item, idx) => {
                 const popularPeople = (12 + (item.id * 3)) % 40 + 8;
                 return `
                 <div class="ty-item-row">
-                    <input type="checkbox" class="ty-item-checkbox" checked disabled>
                     <div class="ty-item-img-wrap">
                         <img src="${item.image}" alt="${item.title}" class="ty-item-img">
                     </div>
