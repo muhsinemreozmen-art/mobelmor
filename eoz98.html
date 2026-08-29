@@ -1104,7 +1104,15 @@ let currentModalImages = []; // Array of gallery images in modal
             checkLoginState();
         }
 
-        function switchAdminTab(tab, evt) {
+                function switchAdminTab(tab, evt) {
+            if (!tab) tab = 'products';
+            sessionStorage.setItem('mobelmor_admin_active_tab', tab);
+            try {
+                if (window.location.hash !== '#' + tab) {
+                    history.replaceState(null, null, '#' + tab);
+                }
+            } catch(e) {}
+
             document.querySelectorAll('.sidebar-menu .menu-btn').forEach(btn => btn.classList.remove('active'));
             const targetBtn = evt ? (evt.target.closest('.menu-btn') || evt.target) : (window.event ? (window.event.target.closest('.menu-btn') || window.event.target) : null);
             if (targetBtn) {
@@ -1153,8 +1161,8 @@ let currentModalImages = []; // Array of gallery images in modal
             if (oEl) oEl.textContent = orders.length;
             if (cEl) cEl.textContent = customers.length;
 
-            renderProductsTable();
-            renderCustomersTable();
+            const currentTab = (window.location.hash || '').replace('#', '') || sessionStorage.getItem('mobelmor_admin_active_tab') || 'products';
+            switchAdminTab(currentTab);
 
             // Background fetch cloud orders
             fetchCloudOrders().then(cloudOrders => {
