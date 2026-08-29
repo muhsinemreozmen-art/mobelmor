@@ -3399,39 +3399,54 @@ const renderRelatedProducts = (currentProduct) => {
 };
 
 const addToCart = (productId, qty = 1) => {
-    const item = PRODUCTS.find(p => p.id === productId);
+    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+    const item = allProds.find(p => p.id == productId);
     if (!item) return;
 
-    const basePrice = (currentModuleState && currentModuleState.modules && currentModuleState.modules.length > 0)
-        ? currentModuleState.modules.reduce((s, m) => s + (m.price * m.qty), 0)
-        : item.price;
-    const fabricDiff = (currentFabricState && currentFabricState.priceDiff) ? currentFabricState.priceDiff : 0;
-    const finalUnitPrice = basePrice + fabricDiff;
+    // Sadece eğer eklenen ürün şu an ekranda detayını incelediğimiz ürün ise modül/kumaş seçimini uygula
+    const isCurrentDetailProduct = (typeof currentProduct !== 'undefined' && currentProduct && currentProduct.id == item.id);
 
-    const fabricInfo = currentFabricState ? {
-        selectedFabric: currentFabricState.fabricName,
-        selectedColor: currentFabricState.colorName,
-        colorHex: currentFabricState.colorHex,
-        fabricPriceDiff: fabricDiff
-    } : {};
+    let finalUnitPrice = item.price;
+    let fabricInfo = {};
 
-    const existing = cart.find(c => c.id === productId && c.selectedColor === fabricInfo.selectedColor && c.price === finalUnitPrice);
+    if (isCurrentDetailProduct) {
+        const basePrice = (typeof currentModuleState !== 'undefined' && currentModuleState && currentModuleState.modules && currentModuleState.modules.length > 0)
+            ? currentModuleState.modules.reduce((s, m) => s + (m.price * m.qty), 0)
+            : item.price;
+        const fabricDiff = (typeof currentFabricState !== 'undefined' && currentFabricState && currentFabricState.priceDiff) ? currentFabricState.priceDiff : 0;
+        finalUnitPrice = basePrice + fabricDiff;
+        fabricInfo = currentFabricState ? {
+            selectedFabric: currentFabricState.fabricName,
+            selectedColor: currentFabricState.colorName,
+            colorHex: currentFabricState.colorHex,
+            fabricPriceDiff: fabricDiff
+        } : {};
+    }
+
+    try {
+        const saved = localStorage.getItem("mobelmor_cart");
+        if (saved) cart = JSON.parse(saved) || [];
+    } catch(e) {}
+
+    const existing = cart.find(c => c.id == item.id && (!fabricInfo.selectedColor || c.selectedColor === fabricInfo.selectedColor) && c.price === finalUnitPrice);
     if (existing) {
-        existing.qty += qty;
+        existing.qty = (existing.qty || 1) + (qty || 1);
     } else {
-        cart.push({ ...item, price: finalUnitPrice, basePrice: item.price, qty, ...fabricInfo });
+        cart.push({ ...item, price: finalUnitPrice, basePrice: item.price, qty: (qty || 1), ...fabricInfo });
     }
     saveCart();
     updateBadges();
-    const fabricToastText = fabricInfo.selectedFabric ? ` — ${fabricInfo.selectedFabric}, ${fabricInfo.selectedColor}${fabricDiff > 0 ? ` (+${formatPrice(fabricDiff)})` : ''}` : '';
-    showToast(`<strong>${item.title}</strong>${fabricToastText}${qty > 1 ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
+    const fabricToastText = fabricInfo.selectedFabric ? ` — ${fabricInfo.selectedFabric}, ${fabricInfo.selectedColor}` : '';
+    if (typeof showToast === 'function') {
+        showToast(`<strong>${item.title}</strong>${fabricToastText}${(qty > 1) ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
+    }
     renderCart();
 
     // Otomatik olarak sepeti aç
     document.getElementById("cartDrawer")?.classList.add("active");
     document.getElementById("cartOverlay")?.classList.add("active");
     document.body.classList.add("cart-open");
-    lockBodyScroll();
+    if (typeof lockBodyScroll === 'function') lockBodyScroll();
 };
 
 const updateBadges = () => {
@@ -3550,7 +3565,20 @@ const renderCart = () => {
     const footer = document.getElementById("cartFooter");
     if (!body || !footer) return;
 
-    const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
+    try {
+        const saved = localStorage.getItem("mobelmor_cart");
+        if (saved) {
+            cart = JSON.parse(saved);
+            if (!Array.isArray(cart)) cart = [];
+            cart = cart.filter(c => c && c.id !== undefined && c.title && c.price);
+        } else {
+            cart = [];
+        }
+    } catch(e) {
+        cart = [];
+    }
+
+    const totalQty = cart.reduce((sum, c) => sum + (c.qty || 1), 0);
 
     // 1. Mobelmor Header (< Back Arrow, Centered Title, X Button)
     const headerEl = drawer ? drawer.querySelector(".cart-header") : null;

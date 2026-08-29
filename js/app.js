@@ -2065,25 +2065,34 @@ const attachCardEventListeners = () => {
   });
 };
 
-const addToCart = (productId) => {
-  const item = PRODUCTS.find(p => p.id === productId);
+const addToCart = (productId, qty = 1) => {
+  const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+  const item = allProds.find(p => p.id == productId);
   if (!item) return;
-  const existing = cart.find(c => c.id === productId);
+
+  try {
+    const saved = localStorage.getItem("mobelmor_cart");
+    if (saved) cart = JSON.parse(saved) || [];
+  } catch(e) {}
+
+  const existing = cart.find(c => c.id == item.id && c.price === item.price);
   if (existing) {
-    existing.qty += 1;
+    existing.qty = (existing.qty || 1) + (qty || 1);
   } else {
-    cart.push({ ...item, qty: 1 });
+    cart.push({ ...item, price: item.price, basePrice: item.price, qty: (qty || 1) });
   }
   saveCart();
   updateBadges();
-  showToast(`<strong>${item.title}</strong> sepete eklendi!`, "fa-bag-shopping");
+  if (typeof showToast === 'function') {
+    showToast(`<strong>${item.title}</strong>${(qty > 1) ? ` (${qty} Adet)` : ''} sepete eklendi!`, "fa-bag-shopping");
+  }
   renderCart();
   
   // Otomatik olarak sepeti aç
   document.getElementById("cartDrawer")?.classList.add("active");
   document.getElementById("cartOverlay")?.classList.add("active");
   document.body.classList.add("cart-open");
-  lockBodyScroll();
+  if (typeof lockBodyScroll === 'function') lockBodyScroll();
 };
 
 const updateBadges = () => {
@@ -2196,7 +2205,20 @@ const renderCart = () => {
     const footer = document.getElementById("cartFooter");
     if (!body || !footer) return;
 
-    const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
+    try {
+        const saved = localStorage.getItem("mobelmor_cart");
+        if (saved) {
+            cart = JSON.parse(saved);
+            if (!Array.isArray(cart)) cart = [];
+            cart = cart.filter(c => c && c.id !== undefined && c.title && c.price);
+        } else {
+            cart = [];
+        }
+    } catch(e) {
+        cart = [];
+    }
+
+    const totalQty = cart.reduce((sum, c) => sum + (c.qty || 1), 0);
 
     // 1. Mobelmor Header (< Back Arrow, Centered Title, X Button)
     const headerEl = drawer ? drawer.querySelector(".cart-header") : null;
