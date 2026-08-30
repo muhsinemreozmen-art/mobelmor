@@ -898,7 +898,7 @@ button:active,
     gap: 0;
     padding: 0 16px;
     position: static !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     white-space: nowrap;
     width: 100%;
     max-width: 1240px;
@@ -1055,8 +1055,7 @@ button:active,
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.18s;
-    transform: translateY(2px);
+    transition: opacity 0.15s ease, visibility 0.15s ease;
     z-index: 10000 !important;
     padding: 28px 0 32px 0;
 }
@@ -1065,13 +1064,14 @@ button:active,
 .vivense-mega-dropdown::before {
     content: "";
     position: absolute;
-    top: -16px;
+    top: -24px;
     left: 0;
     right: 0;
-    height: 18px;
+    height: 28px;
     background: transparent;
     display: block;
     z-index: 10001;
+    pointer-events: auto;
 }
 
 @media (min-width: 992px) {
@@ -1081,7 +1081,6 @@ button:active,
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
-        transform: translateY(0) !important;
     }
 }
 

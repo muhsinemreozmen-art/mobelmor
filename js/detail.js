@@ -5350,9 +5350,14 @@ function initDetailPage() {
         }
     });
 
-    // Vivense-Style Mega Menu Interaction (Desktop - with safe hover bridge)
+    // Vivense-Style Mega Menu Interaction (Desktop - with safe hover bridge & debounce)
     const megaNavItems = document.querySelectorAll(".vivense-nav-item.has-mega");
+    const megaDropdowns = document.querySelectorAll(".vivense-mega-dropdown");
     let megaCloseTimer = null;
+
+    function closeAllMegaMenus() {
+        megaNavItems.forEach(nav => nav.classList.remove("is-open"));
+    }
 
     megaNavItems.forEach(item => {
         item.addEventListener("mouseenter", () => {
@@ -5360,9 +5365,7 @@ function initDetailPage() {
                 clearTimeout(megaCloseTimer);
                 megaCloseTimer = null;
             }
-            megaNavItems.forEach(other => {
-                if (other !== item) other.classList.remove("is-open");
-            });
+            closeAllMegaMenus();
             item.classList.add("is-open");
         });
 
@@ -5370,11 +5373,10 @@ function initDetailPage() {
             if (megaCloseTimer) clearTimeout(megaCloseTimer);
             megaCloseTimer = setTimeout(() => {
                 item.classList.remove("is-open");
-            }, 160);
+            }, 350);
         });
     });
 
-    const megaDropdowns = document.querySelectorAll(".vivense-mega-dropdown");
     megaDropdowns.forEach(dropdown => {
         dropdown.addEventListener("mouseenter", () => {
             if (megaCloseTimer) {
@@ -5382,15 +5384,26 @@ function initDetailPage() {
                 megaCloseTimer = null;
             }
             const parent = dropdown.closest(".vivense-nav-item");
-            if (parent) parent.classList.add("is-open");
+            if (parent) {
+                closeAllMegaMenus();
+                parent.classList.add("is-open");
+            }
         });
+
         dropdown.addEventListener("mouseleave", () => {
             if (megaCloseTimer) clearTimeout(megaCloseTimer);
             megaCloseTimer = setTimeout(() => {
                 const parent = dropdown.closest(".vivense-nav-item");
                 if (parent) parent.classList.remove("is-open");
-            }, 160);
+            }, 350);
         });
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".vivense-nav-wrapper")) {
+            if (megaCloseTimer) clearTimeout(megaCloseTimer);
+            closeAllMegaMenus();
+        }
     });
 
     // Vivense-Style Mobile Menu Drawer & Accordion
