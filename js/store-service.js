@@ -313,7 +313,11 @@
             // 1. Supabase Auth Signup
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
                 try {
-                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/signup`, {
+                    const currentOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file://'))
+                        ? window.location.origin
+                        : 'https://mobelmor.com';
+
+                    const res = await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/signup?redirect_to=${encodeURIComponent(currentOrigin)}`, {
                         method: 'POST',
                         headers: {
                             'apikey': DEFAULT_CONFIG.supabaseKey,
@@ -326,6 +330,9 @@
                             data: {
                                 full_name: cleanName,
                                 phone: cleanPhone
+                            },
+                            options: {
+                                emailRedirectTo: currentOrigin
                             }
                         })
                     });
@@ -607,13 +614,22 @@
             // If Supabase Auth is enabled, send real password reset link if configured
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
                 try {
-                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/recover`, {
+                    const currentOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file://'))
+                        ? window.location.origin
+                        : 'https://mobelmor.com';
+
+                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(currentOrigin)}`, {
                         method: 'POST',
                         headers: {
                             'apikey': DEFAULT_CONFIG.supabaseKey,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ email: cleanEmail })
+                        body: JSON.stringify({ 
+                            email: cleanEmail,
+                            options: {
+                                emailRedirectTo: currentOrigin
+                            }
+                        })
                     });
                 } catch (e) {
                     console.warn("Supabase recover trigger:", e);
@@ -723,13 +739,22 @@
             // If Supabase Auth is enabled, send OTP if configured
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
                 try {
-                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/otp`, {
+                    const currentOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file://'))
+                        ? window.location.origin
+                        : 'https://mobelmor.com';
+
+                    await fetch(`${DEFAULT_CONFIG.supabaseUrl}/auth/v1/otp?redirect_to=${encodeURIComponent(currentOrigin)}`, {
                         method: 'POST',
                         headers: {
                             'apikey': DEFAULT_CONFIG.supabaseKey,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ email: cleanEmail })
+                        body: JSON.stringify({ 
+                            email: cleanEmail,
+                            options: {
+                                emailRedirectTo: currentOrigin
+                            }
+                        })
                     });
                 } catch (e) {
                     console.warn("Supabase OTP trigger:", e);
