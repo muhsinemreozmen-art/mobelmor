@@ -423,7 +423,9 @@
                 <li><button class="menu-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-receipt"></i> Gelen Siparişler</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('coupons', event)"><i class="fa-solid fa-ticket"></i> Kupon Yönetimi</button></li>
                 <li><button class="menu-btn" onclick="switchAdminTab('customers', event)"><i class="fa-solid fa-users"></i> Müşteri Kayıtları</button></li>
-                <li><button class="menu-btn" onclick="switchAdminTab('sync', event)"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut & Yedekleme</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('logs', event)"><i class="fa-solid fa-shield-halved"></i> Güvenlik &amp; IP Logları</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('installments', event)"><i class="fa-solid fa-credit-card"></i> Taksit &amp; Kampanya</button></li>
+                <li><button class="menu-btn" onclick="switchAdminTab('sync', event)"><i class="fa-solid fa-cloud-arrow-up"></i> Bulut &amp; Yedekleme</button></li>
             </ul>
 
             <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
@@ -571,17 +573,166 @@
                             <thead>
                                 <tr>
                                     <th>Müşteri ID / Ad Soyad</th>
+                                    <th>T.C. Kimlik No</th>
                                     <th>E-Posta</th>
                                     <th>Telefon</th>
                                     <th>Adres / İl</th>
-                                    <th>Hesap Türü</th>
-                                    <th>Kayıt / Son İşlem</th>
-                                    <th>Sipariş Sayısı</th>
-                                    <th style="text-align: right;">İşlemler</th>
+                                    <th>Hesap Durumu</th>
+                                    <th>Kayıt Tarihi</th>
+                                    <th>Sipariş</th>
+                                    <th style="text-align: right; min-width: 220px;">İşlemler</th>
                                 </tr>
                             </thead>
                             <tbody id="customersTableBody"></tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: MÜŞTERİ & GÜVENLİK LOGLARI (IP KAYITLARI) -->
+            <div id="tabLogs" style="display: none;">
+                <div class="content-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">
+                                <i class="fa-solid fa-shield-halved" style="color:#38bdf8;"></i> Müşteri &amp; Güvenlik İşlem Logları (IP Takibi)
+                            </h3>
+                            <p style="color: #94a3b8; font-size: 0.88rem; margin-top: 4px;">
+                                Müşterilerin giriş, yeni üyelik, şifre değişimi, profil güncellemesi ve sipariş hareketleri gerçek IP adresleriyle birlikte anlık kaydedilir.
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="renderLogsTable()" class="btn-action-primary" style="background:#0284c7;" title="Listeyi Yenile">
+                                <i class="fa-solid fa-rotate"></i> Yenile
+                            </button>
+                            <button onclick="exportLogsJson()" class="btn-action-primary" style="background:#0f766e;" title="Logları İndir">
+                                <i class="fa-solid fa-download"></i> JSON İndir
+                            </button>
+                            <button onclick="handleClearLogs()" class="btn-action-primary" style="background:#ef4444;" title="Tüm Logları Temizle">
+                                <i class="fa-solid fa-trash-can"></i> Temizle
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="action-bar" style="flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                        <div class="search-box" style="flex: 1; min-width: 260px;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="logSearchInput" class="admin-input" placeholder="Müşteri adı, e-posta, IP adresi veya işlem detayı ara..." oninput="renderLogsTable()">
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <select id="logActionFilter" class="admin-input" style="width: auto; padding-left: 14px;" onchange="renderLogsTable()">
+                                <option value="all">Tüm İşlem Türleri</option>
+                                <option value="LOGIN">Giriş Yapıldı (LOGIN)</option>
+                                <option value="LOGIN_BLOCKED">Giriş Engellendi (Askıda)</option>
+                                <option value="REGISTER">Yeni Kayıt (REGISTER)</option>
+                                <option value="PROFILE_UPDATE">Profil / TC Güncelleme</option>
+                                <option value="PASSWORD_CHANGE">Şifre Değişimi</option>
+                                <option value="ORDER_CREATE">Sipariş Oluşturuldu</option>
+                                <option value="SUSPEND_USER">Hesap Askıya Alma</option>
+                                <option value="ACTIVATE_USER">Hesap Aktifleştirme</option>
+                                <option value="ADMIN_PASS_RESET">Admin Şifre Değiştirme</option>
+                                <option value="ADMIN_UPDATE_CUSTOMER">Admin Müşteri Güncelleme</option>
+                                <option value="INSTALLMENT_UPDATE">Taksit Güncelleme</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px;">Tarih / Saat</th>
+                                    <th>Müşteri / Kullanıcı</th>
+                                    <th>İşlem Türü</th>
+                                    <th>IP Adresi</th>
+                                    <th>Açıklama &amp; Detay</th>
+                                    <th style="max-width: 200px;">Cihaz / Tarayıcı</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsTableBody">
+                                <!-- Dynamic log rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: TAKSİT ORANLARI & KAMPANYA YÖNETİMİ -->
+            <div id="tabInstallments" style="display: none;">
+                <div class="content-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">
+                                <i class="fa-solid fa-credit-card" style="color:#38bdf8;"></i> Kredi Kartı Taksit Oranları &amp; Kampanya Yönetimi
+                            </h3>
+                            <p style="color: #94a3b8; font-size: 0.88rem; margin-top: 4px;">
+                                Buradan güncelleyeceğiniz taksit sayıları ve banka vade farkı oranları tüm ürün sayfalarına ve ödeme adımına dinamik yansır.
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="resetInstallmentsDefault()" class="btn-action-primary" style="background: #334155;" title="Varsayılan Oranlara Dön">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> Sıfırla
+                            </button>
+                            <button onclick="saveInstallmentSettingsAdmin()" class="btn-action-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                <i class="fa-solid fa-floppy-disk"></i> Taksit Ayarlarını Kaydet
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Genel Kampanya Ayarları -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                        <div style="background: #0f172a; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">Peşin Fiyatına Vade Farksız Taksit Sayısı *</label>
+                            <select id="instMaxFree" class="admin-input" style="padding-left: 14px;">
+                                <option value="2">Peşin Fiyatına 2 Taksit</option>
+                                <option value="3">Peşin Fiyatına 3 Taksit</option>
+                                <option value="6" selected>Peşin Fiyatına 6 Taksit (Önerilen)</option>
+                                <option value="9">Peşin Fiyatına 9 Taksit</option>
+                                <option value="12">Peşin Fiyatına 12 Taksit</option>
+                            </select>
+                            <small style="color: #94a3b8; font-size: 0.78rem; display: block; margin-top: 4px;">Ürün detaydaki rozet ve 'Vade Farksız' ibareleri bu sayıya göre güncellenir.</small>
+                        </div>
+
+                        <div style="background: #0f172a; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">Taksit Kampanya Başlığı</label>
+                            <input type="text" id="instCampaignTitle" class="admin-input" placeholder="Örn: Peşin Fiyatına 6 Taksit Avantajı" style="padding-left: 14px;">
+                            <small style="color: #94a3b8; font-size: 0.78rem; display: block; margin-top: 4px;">Ürün detayında ve ödeme kutusunda gösterilen kampanya sloganı.</small>
+                        </div>
+
+                        <div style="background: #0f172a; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <label style="display: block; font-size: 0.88rem; font-weight: 700; color: #fff;">Taksitli Satış Aktif mi?</label>
+                                <small style="color: #94a3b8; font-size: 0.78rem;">Kapalıyken yalnızca tek çekim / havale kabul edilir.</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="instIsActive" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Hızlı Toplu Ayar Çubuğu -->
+                    <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); padding: 14px 18px; border-radius: 10px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <span style="font-size: 0.9rem; color: #e0f2fe; font-weight: 600;">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#38bdf8;"></i> Hızlı Güncelleme:
+                        </span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" onclick="quickSetZeroInterest(6)" class="btn-action-primary" style="background:#0284c7; padding:6px 12px; font-size:0.8rem;">
+                                6 Taksiti Tüm Bankalarda %0 Yap
+                            </button>
+                            <button type="button" onclick="quickSetZeroInterest(9)" class="btn-action-primary" style="background:#0369a1; padding:6px 12px; font-size:0.8rem;">
+                                9 Taksiti %0 Yap
+                            </button>
+                            <button type="button" onclick="quickSet12MonthRate(0.085)" class="btn-action-primary" style="background:#475569; padding:6px 12px; font-size:0.8rem;">
+                                12 Taksiti %8.5 Yap
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 6 Büyük Banka Taksit Oran Tabloları -->
+                    <div id="bankRatesEditorContainer">
+                        <!-- Dynamic bank cards injected via renderInstallmentsTab() -->
                     </div>
                 </div>
             </div>
@@ -1126,18 +1277,24 @@ let currentModalImages = []; // Array of gallery images in modal
             const tabOrders = document.getElementById('tabOrders');
             const tabCustomers = document.getElementById('tabCustomers');
             const tabCoupons = document.getElementById('tabCoupons');
+            const tabLogs = document.getElementById('tabLogs');
+            const tabInstallments = document.getElementById('tabInstallments');
             const tabSync = document.getElementById('tabSync');
 
             if (tabProducts) tabProducts.style.display = tab === 'products' ? 'block' : 'none';
             if (tabOrders) tabOrders.style.display = tab === 'orders' ? 'block' : 'none';
             if (tabCustomers) tabCustomers.style.display = tab === 'customers' ? 'block' : 'none';
             if (tabCoupons) tabCoupons.style.display = tab === 'coupons' ? 'block' : 'none';
+            if (tabLogs) tabLogs.style.display = tab === 'logs' ? 'block' : 'none';
+            if (tabInstallments) tabInstallments.style.display = tab === 'installments' ? 'block' : 'none';
             if (tabSync) tabSync.style.display = tab === 'sync' ? 'block' : 'none';
 
             if (tab === 'orders') renderOrdersTable();
             if (tab === 'customers') renderCustomersTable();
             if (tab === 'products') renderProductsTable();
             if (tab === 'coupons') renderCouponsTable();
+            if (tab === 'logs') renderLogsTable();
+            if (tab === 'installments') renderInstallmentsTab();
 
             // Refresh KPI customer counter
             const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
@@ -1502,10 +1659,12 @@ let currentModalImages = []; // Array of gallery images in modal
 
             tbody.innerHTML = customers.map(c => {
                 const name = c.fullName || c.name || 'Müşteri';
+                const tcNo = c.tcNo ? `<span style="font-family: monospace; font-weight: 700; color: #38bdf8;">${c.tcNo}</span>` : '<span style="color: #64748b; font-size:0.8rem;">Belirtilmedi</span>';
                 const email = c.email || '-';
                 const phone = c.phone || '-';
-                const address = c.address || '-';
+                const address = (c.city || c.district) ? `${c.city || ''} ${c.district ? '/ ' + c.district : ''}` : (c.address || '-');
                 const regDate = c.createdAt ? new Date(c.createdAt).toLocaleDateString('tr-TR') : '-';
+                const isSusp = !!(c.isSuspended || c.status === 'suspended');
                 const custOrders = allOrders.filter(o => 
                     (o.customerEmail && c.email && o.customerEmail.toLowerCase() === c.email.toLowerCase()) ||
                     (o.customer && o.customer.email && c.email && o.customer.email.toLowerCase() === c.email.toLowerCase()) ||
@@ -1516,13 +1675,17 @@ let currentModalImages = []; // Array of gallery images in modal
                     <tr>
                         <td>
                             <strong style="color: #fff;">${name}</strong>
-                            <div style="font-size: 0.75rem; color: #94a3b8;">${c.id || ''}</div>
+                            <div style="font-size: 0.72rem; color: #94a3b8;">${c.id || ''}</div>
                         </td>
+                        <td>${tcNo}</td>
                         <td><a href="mailto:${email}" style="color: #38bdf8; text-decoration: none;">${email}</a></td>
                         <td>${phone}</td>
-                        <td style="max-width: 200px; white-space: normal; font-size: 0.85rem; color: #cbd5e1;">${address}</td>
+                        <td style="max-width: 180px; white-space: normal; font-size: 0.82rem; color: #cbd5e1;">${address}</td>
                         <td>
-                            ${c.isGuest ? '<span class="status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Sipariş / Misafir</span>' : '<span class="status-badge status-new">Kayıtlı Üye</span>'}
+                            ${isSusp 
+                                ? '<span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-ban"></i> Askıya Alındı</span>' 
+                                : '<span class="status-badge status-new"><i class="fa-solid fa-check"></i> Aktif Üye</span>'
+                            }
                         </td>
                         <td><small style="color: #94a3b8;">${regDate}</small></td>
                         <td>
@@ -1530,8 +1693,12 @@ let currentModalImages = []; // Array of gallery images in modal
                                 ${custOrders.length} Sipariş
                             </span>
                         </td>
-                            <button onclick="openCustomerDetail('${c.id}')" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 6px;" title="Müşteri Detayı ve Siparişleri"><i class="fa-solid fa-eye"></i> Detay</button>
-                            <button onclick="deleteCustomerAdmin('${c.id}', '${c.email || ''}')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Müşteriyi Sil"><i class="fa-solid fa-trash"></i></button>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <button onclick="openCustomerDetail('${c.id}')" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 4px;" title="Müşteri Detayı"><i class="fa-solid fa-eye"></i></button>
+                            <button onclick="openAdminEditCustomer('${c.id}')" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 4px;" title="Bilgileri ve TC No Düzenle"><i class="fa-solid fa-user-pen"></i></button>
+                            <button onclick="openAdminChangePassword('${c.id}')" style="background: rgba(234, 179, 8, 0.15); color: #eab308; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 4px;" title="Şifre Değiştir"><i class="fa-solid fa-key"></i></button>
+                            <button onclick="toggleCustomerSuspensionAdmin('${c.id}', ${!isSusp})" style="background: ${isSusp ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; color: ${isSusp ? '#4ade80' : '#ef4444'}; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 4px;" title="${isSusp ? 'Hesabı Aktifleştir' : 'Hesabı Askıya Al'}"><i class="fa-solid ${isSusp ? 'fa-user-check' : 'fa-ban'}"></i></button>
+                            <button onclick="deleteCustomerAdmin('${c.id}', '${c.email || ''}')" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" title="Müşteriyi Sil"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
@@ -1580,28 +1747,69 @@ let currentModalImages = []; // Array of gallery images in modal
                 `;
             }
 
+            const isSusp = !!(cust.isSuspended || cust.status === 'suspended');
+            const custLogs = window.StoreService ? window.StoreService.getCustomerLogs({ email: cust.email }) : [];
+
+            let logsHtml = '';
+            if (custLogs.length === 0) {
+                logsHtml = '<p style="color:#64748b; font-size:0.82rem; margin-top:8px;">Henüz kaydedilmiş bir aktivite/IP logu bulunmuyor.</p>';
+            } else {
+                logsHtml = `
+                    <div style="margin-top: 14px;">
+                        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 8px;"><i class="fa-solid fa-shield-halved" style="color:#38bdf8;"></i> Müşterinin Son IP &amp; Güvenlik Logları (${custLogs.length})</h4>
+                        <div style="display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;">
+                            ${custLogs.slice(0, 10).map(l => `
+                                <div style="background: #090d16; padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                                    <div>
+                                        <span style="color:#38bdf8; font-weight:700; font-family:monospace;">${l.ip}</span> • 
+                                        <span style="color:#e2e8f0;">${l.action}</span>
+                                        <div style="color:#94a3b8; font-size:0.75rem;">${l.details || ''}</div>
+                                    </div>
+                                    <div style="color:#64748b; font-size:0.75rem; text-align:right;">${l.dateFormatted || ''}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
             if (bodyEl) {
                 bodyEl.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #0f172a; padding: 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 12px;">
+                        <button onclick="closeCustomerModal(); openAdminEditCustomer('${cust.id}');" class="btn-action-primary" style="background: #0284c7; padding: 6px 12px; font-size: 0.82rem;"><i class="fa-solid fa-user-pen"></i> Bilgileri &amp; TC Düzenle</button>
+                        <button onclick="closeCustomerModal(); openAdminChangePassword('${cust.id}');" class="btn-action-primary" style="background: #eab308; color: #0f172a; font-weight: 800; padding: 6px 12px; font-size: 0.82rem;"><i class="fa-solid fa-key"></i> Şifre Değiştir</button>
+                        <button onclick="closeCustomerModal(); toggleCustomerSuspensionAdmin('${cust.id}', ${!isSusp});" class="btn-action-primary" style="background: ${isSusp ? '#10b981' : '#ef4444'}; padding: 6px 12px; font-size: 0.82rem;"><i class="fa-solid ${isSusp ? 'fa-check' : 'fa-ban'}"></i> ${isSusp ? 'Askıdan Çıkar' : 'Hesabı Askıya Al'}</button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #0f172a; padding: 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px;">
                         <div>
                             <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Ad Soyad</div>
                             <div style="font-size: 1rem; font-weight: 700; color: #fff; margin-top: 2px;">${name}</div>
                         </div>
                         <div>
-                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Hesap Türü</div>
-                            <div style="margin-top: 4px;">${cust.isGuest ? '<span class="status-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Sipariş / Misafir</span>' : '<span class="status-badge status-new">Kayıtlı Üye</span>'}</div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Hesap Durumu</div>
+                            <div style="margin-top: 4px;">
+                                ${isSusp 
+                                    ? '<span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;"><i class="fa-solid fa-ban"></i> Askıya Alındı</span>' 
+                                    : '<span class="status-badge status-new"><i class="fa-solid fa-check"></i> Aktif Üye</span>'
+                                }
+                            </div>
                         </div>
                         <div>
-                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">E-Posta</div>
-                            <div style="font-size: 0.9rem; color: #38bdf8; margin-top: 2px;"><a href="mailto:${cust.email || ''}" style="color:#38bdf8; text-decoration:none;">${cust.email || '-'}</a></div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">T.C. Kimlik No</div>
+                            <div style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; font-family: monospace; margin-top: 2px;">${cust.tcNo || '<span style="color:#64748b; font-weight:normal; font-family:inherit;">Belirtilmemiş</span>'}</div>
                         </div>
                         <div>
                             <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Telefon</div>
                             <div style="font-size: 0.9rem; color: #fff; margin-top: 2px;">${cust.phone || '-'}</div>
                         </div>
                         <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">E-Posta</div>
+                            <div style="font-size: 0.9rem; color: #38bdf8; margin-top: 2px;"><a href="mailto:${cust.email || ''}" style="color:#38bdf8; text-decoration:none;">${cust.email || '-'}</a></div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
                             <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Teslimat Adresi</div>
-                            <div style="font-size: 0.88rem; color: #cbd5e1; margin-top: 2px;">${cust.address || '-'}</div>
+                            <div style="font-size: 0.88rem; color: #cbd5e1; margin-top: 2px;">${cust.address || (cust.city ? cust.city + ' ' + (cust.district || '') : '-')}</div>
                         </div>
                         <div>
                             <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Kayıt Tarihi</div>
@@ -1613,6 +1821,7 @@ let currentModalImages = []; // Array of gallery images in modal
                         </div>
                     </div>
                     ${ordersHtml}
+                    ${logsHtml}
                 `;
             }
 
@@ -1954,6 +2163,379 @@ let currentModalImages = []; // Array of gallery images in modal
                 renderCustomersTable();
             }
         }, 3000);
+
+        // ==========================================
+        // YÖNETİCİ MÜŞTERİ YÖNETİMİ & ŞİFRE & ASKIYA ALMA
+        // ==========================================
+        window.openAdminEditCustomer = (id) => {
+            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const cust = customers.find(c => c.id === id || c.email === id);
+            if (!cust) return;
+
+            document.getElementById('editCustId').value = cust.id;
+            document.getElementById('editCustFullName').value = cust.fullName || cust.name || '';
+            document.getElementById('editCustTcNo').value = cust.tcNo || '';
+            document.getElementById('editCustPhone').value = cust.phone || '';
+            document.getElementById('editCustEmail').value = cust.email || '';
+            document.getElementById('editCustCity').value = cust.city || '';
+            document.getElementById('editCustDistrict').value = cust.district || '';
+            document.getElementById('editCustAddress').value = cust.address || '';
+            document.getElementById('editCustStatus').value = (cust.isSuspended || cust.status === 'suspended') ? 'suspended' : 'active';
+
+            const modal = document.getElementById('adminEditCustomerModal');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeAdminEditCustomerModal = () => {
+            const modal = document.getElementById('adminEditCustomerModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.handleAdminEditCustomerSubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editCustId').value;
+            const fullName = document.getElementById('editCustFullName').value.trim();
+            const tcNo = document.getElementById('editCustTcNo').value.trim();
+            const phone = document.getElementById('editCustPhone').value.trim();
+            const email = document.getElementById('editCustEmail').value.trim().toLowerCase();
+            const city = document.getElementById('editCustCity').value.trim();
+            const district = document.getElementById('editCustDistrict').value.trim();
+            const address = document.getElementById('editCustAddress').value.trim();
+            const status = document.getElementById('editCustStatus').value;
+
+            try {
+                if (window.StoreService && typeof window.StoreService.adminUpdateCustomer === 'function') {
+                    await window.StoreService.adminUpdateCustomer(id, {
+                        fullName, tcNo, phone, email, city, district, address,
+                        isSuspended: status === 'suspended'
+                    });
+                }
+                closeAdminEditCustomerModal();
+                renderCustomersTable();
+                alert(`Müşteri '${fullName}' bilgileri başarıyla güncellendi!`);
+            } catch (err) {
+                alert("Hata: " + err.message);
+            }
+            return false;
+        };
+
+        window.openAdminChangePassword = (id) => {
+            const customers = window.StoreService ? window.StoreService.getAllCustomers() : [];
+            const cust = customers.find(c => c.id === id || c.email === id);
+            if (!cust) return;
+
+            document.getElementById('adminPassCustId').value = cust.id;
+            document.getElementById('adminPassCustName').textContent = cust.fullName || cust.name || 'Müşteri';
+            document.getElementById('adminPassCustEmail').textContent = cust.email || '';
+            document.getElementById('adminNewPasswordInput').value = '';
+
+            const modal = document.getElementById('adminChangePassModal');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeAdminChangePassModal = () => {
+            const modal = document.getElementById('adminChangePassModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.generateRandomCustomerPassword = () => {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+            let pass = 'Mobel';
+            for (let i = 0; i < 4; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            pass += '!';
+            document.getElementById('adminNewPasswordInput').value = pass;
+        };
+
+        window.handleAdminChangePassSubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('adminPassCustId').value;
+            const newPass = document.getElementById('adminNewPasswordInput').value.trim();
+
+            if (!newPass || newPass.length < 6) {
+                alert("Yeni şifre en az 6 karakter olmalıdır.");
+                return false;
+            }
+
+            try {
+                if (window.StoreService && typeof window.StoreService.adminChangeCustomerPassword === 'function') {
+                    await window.StoreService.adminChangeCustomerPassword(id, newPass);
+                }
+                closeAdminChangePassModal();
+                alert(`Müşterinin şifresi başarıyla '${newPass}' olarak güncellendi! Müşteriye bildirebilirsiniz.`);
+            } catch (err) {
+                alert("Hata: " + err.message);
+            }
+            return false;
+        };
+
+        window.toggleCustomerSuspensionAdmin = async (id, suspend) => {
+            const actionText = suspend ? "askıya almak" : "tekrar aktif etmek";
+            if (!confirm(`Bu müşteri hesabını ${actionText} istediğinize emin misiniz?`)) return;
+
+            try {
+                if (window.StoreService && typeof window.StoreService.adminToggleCustomerSuspension === 'function') {
+                    await window.StoreService.adminToggleCustomerSuspension(id, suspend);
+                }
+                renderCustomersTable();
+                alert(suspend ? "Müşteri hesabı askıya alındı. Girişi engellendi." : "Müşteri hesabı tekrar aktifleştirildi.");
+            } catch (err) {
+                alert("İşlem başarısız: " + err.message);
+            }
+        };
+
+        // ==========================================
+        // GÜVENLİK & MÜŞTERİ İŞLEM LOGLARI (IP)
+        // ==========================================
+        window.renderLogsTable = () => {
+            const tbody = document.getElementById('logsTableBody');
+            if (!tbody) return;
+
+            const q = (document.getElementById('logSearchInput')?.value || '').toLowerCase().trim();
+            const filterAction = document.getElementById('logActionFilter')?.value || 'all';
+
+            let logs = window.StoreService ? window.StoreService.getCustomerLogs() : [];
+
+            if (filterAction !== 'all') {
+                logs = logs.filter(l => l.action === filterAction);
+            }
+
+            if (q) {
+                logs = logs.filter(l => 
+                    (l.customerName && l.customerName.toLowerCase().includes(q)) ||
+                    (l.customerEmail && l.customerEmail.toLowerCase().includes(q)) ||
+                    (l.ip && l.ip.toLowerCase().includes(q)) ||
+                    (l.action && l.action.toLowerCase().includes(q)) ||
+                    (l.details && l.details.toLowerCase().includes(q))
+                );
+            }
+
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:35px; color:#64748b;"><i class="fa-solid fa-shield" style="font-size:1.5rem; margin-bottom:8px; display:block;"></i>Kayıtlı güvenlik ve işlem logu bulunamadı.</td></tr>';
+                return;
+            }
+
+            const actionBadges = {
+                LOGIN: { bg: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', icon: 'fa-right-to-bracket', text: 'GİRİŞ' },
+                LOGIN_BLOCKED: { bg: 'rgba(239, 68, 68, 0.25)', color: '#ef4444', icon: 'fa-shield-halved', text: 'GİRİŞ ENGELLENDİ' },
+                REGISTER: { bg: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', icon: 'fa-user-plus', text: 'YENİ ÜYE' },
+                LOGOUT: { bg: 'rgba(148, 163, 184, 0.15)', color: '#94a3b8', icon: 'fa-arrow-right-from-bracket', text: 'ÇIKIŞ' },
+                PROFILE_UPDATE: { bg: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', icon: 'fa-user-pen', text: 'PROFİL / TC GÜNCELLEME' },
+                PASSWORD_CHANGE: { bg: 'rgba(234, 179, 8, 0.15)', color: '#eab308', icon: 'fa-key', text: 'ŞİFRE DEĞİŞTİ' },
+                ADMIN_PASS_RESET: { bg: 'rgba(234, 179, 8, 0.25)', color: '#facc15', icon: 'fa-user-shield', text: 'ADMİN ŞİFRE SIFIRLADI' },
+                ORDER_CREATE: { bg: 'rgba(16, 185, 129, 0.2)', color: '#34d399', icon: 'fa-bag-shopping', text: 'SİPARİŞ VERİLDİ' },
+                SUSPEND_USER: { bg: 'rgba(239, 68, 68, 0.2)', color: '#f87171', icon: 'fa-ban', text: 'HESAP ASKIYA ALINDI' },
+                ACTIVATE_USER: { bg: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', icon: 'fa-user-check', text: 'HESAP AKTİF EDİLDİ' },
+                ADMIN_UPDATE_CUSTOMER: { bg: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', icon: 'fa-pen-to-square', text: 'ADMİN MÜŞTERİ DÜZENLEDİ' },
+                INSTALLMENT_UPDATE: { bg: 'rgba(99, 102, 241, 0.2)', color: '#818cf8', icon: 'fa-credit-card', text: 'TAKSİT GÜNCELLENDİ' }
+            };
+
+            tbody.innerHTML = logs.map(l => {
+                const conf = actionBadges[l.action] || { bg: 'rgba(148, 163, 184, 0.15)', color: '#cbd5e1', icon: 'fa-info-circle', text: l.action || 'BİLGİ' };
+                const uaShort = (l.userAgent || '').includes('Mobile') ? '📱 Mobil Cihaz' : '💻 Masaüstü / PC';
+
+                return `
+                    <tr>
+                        <td style="white-space: nowrap; font-size: 0.85rem; color: #cbd5e1;">
+                            <strong>${l.dateFormatted || (new Date(l.timestamp).toLocaleDateString('tr-TR'))}</strong>
+                        </td>
+                        <td>
+                            <strong style="color: #fff;">${l.customerName || 'Ziyaretçi'}</strong>
+                            <div style="font-size: 0.78rem; color: #38bdf8;">${l.customerEmail || '-'}</div>
+                        </td>
+                        <td>
+                            <span class="status-badge" style="background: ${conf.bg}; color: ${conf.color}; border: 1px solid rgba(255,255,255,0.08);">
+                                <i class="fa-solid ${conf.icon}"></i> ${conf.text}
+                            </span>
+                        </td>
+                        <td>
+                            <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.25); color: #38bdf8; font-family: monospace; font-size: 0.88rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; cursor: pointer;" onclick="navigator.clipboard.writeText('${l.ip}'); alert('IP kopyalandı: ${l.ip}');" title="IP Adresini Kopyala">
+                                <i class="fa-solid fa-network-wired" style="font-size:0.75rem;"></i> ${l.ip}
+                            </span>
+                        </td>
+                        <td style="font-size: 0.86rem; color: #e2e8f0; max-width: 320px; white-space: normal;">
+                            ${l.details || '-'}
+                        </td>
+                        <td style="font-size: 0.8rem; color: #94a3b8;" title="${l.userAgent || ''}">
+                            ${uaShort}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        window.exportLogsJson = () => {
+            const logs = window.StoreService ? window.StoreService.getCustomerLogs() : [];
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(logs, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `mobelmor_guvenlik_ve_ip_loglari_${new Date().toISOString().slice(0, 10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        };
+
+        window.handleClearLogs = () => {
+            if (!confirm("Tüm güvenlik ve müşteri işlem loglarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.")) return;
+            if (window.StoreService) window.StoreService.clearCustomerLogs();
+            renderLogsTable();
+            alert("Tüm log kayıtları temizlendi.");
+        };
+
+        // ==========================================
+        // TAKSİT VE KAMPANYA YÖNETİMİ
+        // ==========================================
+        let currentEditingInstallments = null;
+
+        window.renderInstallmentsTab = () => {
+            if (!window.StoreService) return;
+            const settings = window.StoreService.getInstallmentSettings();
+            currentEditingInstallments = JSON.parse(JSON.stringify(settings));
+
+            document.getElementById('instMaxFree').value = settings.maxFreeInstallments || 6;
+            document.getElementById('instCampaignTitle').value = settings.campaignTitle || 'Peşin Fiyatına 6 Taksit Avantajı';
+            document.getElementById('instIsActive').checked = settings.isInstallmentActive !== false;
+
+            const container = document.getElementById('bankRatesEditorContainer');
+            if (!container) return;
+
+            const bankKeys = Object.keys(settings.bankRates || {});
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px;">';
+
+            bankKeys.forEach(bKey => {
+                const bank = settings.bankRates[bKey];
+                html += `
+                    <div style="background: #0f172a; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 38px; height: 38px; border-radius: 8px; background: ${bank.color || '#38bdf8'}22; color: ${bank.color || '#38bdf8'}; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                                        <i class="${bank.logoClass || 'fa-solid fa-credit-card'}"></i>
+                                    </div>
+                                    <div>
+                                        <strong style="color: #fff; font-size: 1rem;">${bank.name}</strong>
+                                        <div style="font-size: 0.78rem; color: #94a3b8;">${bank.bank}</div>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-weight: 700; padding: 3px 8px; border-radius: 4px;">6 Vade Matrisi</span>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="color: #94a3b8; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                        <th style="padding: 6px 4px;">Vade</th>
+                                        <th style="padding: 6px 4px;">Vade Farkı %</th>
+                                        <th style="padding: 6px 4px;">Kampanya İbaresi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+                const installmentCounts = [1, 2, 3, 6, 9, 12];
+                installmentCounts.forEach(cnt => {
+                    const rateObj = (bank.rates && bank.rates[cnt]) ? bank.rates[cnt] : { count: cnt, rate: 0, campaign: 'Vade Farksız' };
+                    const ratePct = (rateObj.rate * 100).toFixed(1);
+                    html += `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 8px 4px; font-weight: 700; color: #fff;">${cnt === 1 ? 'Tek Çekim' : cnt + ' Taksit'}</td>
+                            <td style="padding: 8px 4px;">
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <input type="number" step="0.1" min="0" max="50" value="${ratePct}" id="rate_${bKey}_${cnt}" class="admin-input" style="width: 75px; padding: 6px 8px; font-weight: 700; font-size: 0.85rem; text-align: center;">
+                                    <span style="color: #94a3b8;">%</span>
+                                </div>
+                            </td>
+                            <td style="padding: 8px 4px;">
+                                <input type="text" value="${rateObj.campaign || ''}" id="camp_${bKey}_${cnt}" class="admin-input" style="padding: 6px 8px; font-size: 0.82rem;" placeholder="Örn: Peşin Fiyatına">
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        };
+
+        window.saveInstallmentSettingsAdmin = async () => {
+            if (!currentEditingInstallments) return;
+            const maxFree = parseInt(document.getElementById('instMaxFree').value) || 6;
+            const campaignTitle = document.getElementById('instCampaignTitle').value.trim();
+            const isActive = document.getElementById('instIsActive').checked;
+
+            currentEditingInstallments.maxFreeInstallments = maxFree;
+            currentEditingInstallments.campaignTitle = campaignTitle;
+            currentEditingInstallments.isInstallmentActive = isActive;
+
+            const bankKeys = Object.keys(currentEditingInstallments.bankRates || {});
+            const installmentCounts = [1, 2, 3, 6, 9, 12];
+
+            bankKeys.forEach(bKey => {
+                installmentCounts.forEach(cnt => {
+                    const rateInput = document.getElementById(`rate_${bKey}_${cnt}`);
+                    const campInput = document.getElementById(`camp_${bKey}_${cnt}`);
+                    if (rateInput && currentEditingInstallments.bankRates[bKey].rates[cnt]) {
+                        const val = parseFloat(rateInput.value) || 0;
+                        currentEditingInstallments.bankRates[bKey].rates[cnt].rate = parseFloat((val / 100).toFixed(4));
+                    }
+                    if (campInput && currentEditingInstallments.bankRates[bKey].rates[cnt]) {
+                        currentEditingInstallments.bankRates[bKey].rates[cnt].campaign = campInput.value.trim();
+                    }
+                });
+            });
+
+            try {
+                await window.StoreService.saveInstallmentSettings(currentEditingInstallments);
+                alert("Taksit oranları ve kampanya ayarları başarıyla kaydedildi! Tüm sitede anında güncellendi.");
+            } catch (err) {
+                alert("Kayıt hatası: " + err.message);
+            }
+        };
+
+        window.quickSetZeroInterest = (upToMonths) => {
+            const bankKeys = Object.keys(currentEditingInstallments?.bankRates || {});
+            const installmentCounts = [1, 2, 3, 6, 9, 12];
+            bankKeys.forEach(bKey => {
+                installmentCounts.forEach(cnt => {
+                    if (cnt <= upToMonths) {
+                        const rEl = document.getElementById(`rate_${bKey}_${cnt}`);
+                        const cEl = document.getElementById(`camp_${bKey}_${cnt}`);
+                        if (rEl) rEl.value = '0.0';
+                        if (cEl) cEl.value = cnt === 1 ? 'Peşin Fiyatına' : 'Peşin Fiyatına Vade Farksız';
+                    }
+                });
+            });
+            alert(`${upToMonths} aya kadar olan tüm taksitler tüm bankalarda %0 vade farksız olarak ayarlandı. Lütfen 'Kaydet' butonuna basınız.`);
+        };
+
+        window.quickSet12MonthRate = (rateVal) => {
+            const bankKeys = Object.keys(currentEditingInstallments?.bankRates || {});
+            const pct = (rateVal * 100).toFixed(1);
+            bankKeys.forEach(bKey => {
+                const rEl = document.getElementById(`rate_${bKey}_12`);
+                const cEl = document.getElementById(`camp_${bKey}_12`);
+                if (rEl) rEl.value = pct;
+                if (cEl) cEl.value = '12 Ay Taksit İmkanı';
+            });
+            alert(`12 ay taksit oranı tüm bankalarda %${pct} olarak ayarlandı. Lütfen 'Kaydet' butonuna basınız.`);
+        };
+
+        window.resetInstallmentsDefault = async () => {
+            if (!confirm("Taksit oranlarını varsayılan sistem ayarlarına sıfırlamak istediğinize emin misiniz?")) return;
+            if (window.StoreService) {
+                await window.StoreService.resetInstallmentSettings();
+                renderInstallmentsTab();
+                alert("Taksit oranları varsayılan ayarlara sıfırlandı.");
+            }
+        };
+
     </script>
 
     <!-- KUPON EKLE / DÜZENLE MODAL -->
@@ -2007,6 +2589,105 @@ let currentModalImages = []; // Array of gallery images in modal
                 <div style="display: flex; gap: 10px; margin-top: 24px;">
                     <button type="button" onclick="closeCouponModal()" class="btn-action-primary" style="background: #334155; flex: 1; justify-content: center;">İptal</button>
                     <button type="submit" class="btn-action-primary" style="flex: 2; justify-content: center;"><i class="fa-solid fa-floppy-disk"></i> Kuponu Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MÜŞTERİ DÜZENLE MODAL -->
+    <div id="adminEditCustomerModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1060; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-card" style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 28px; width: 100%; max-width: 520px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                <h3 style="color: #fff; font-size: 1.2rem; font-weight: 700;"><i class="fa-solid fa-user-pen" style="color: #38bdf8;"></i> Müşteri Bilgilerini Düzenle</h3>
+                <button onclick="closeAdminEditCustomerModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="adminEditCustomerForm" onsubmit="return handleAdminEditCustomerSubmit(event)">
+                <input type="hidden" id="editCustId">
+
+                <div class="form-group">
+                    <label>Adı Soyadı *</label>
+                    <input type="text" id="editCustFullName" class="admin-input" required style="padding-left: 14px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>T.C. Kimlik Numarası</label>
+                        <input type="text" id="editCustTcNo" class="admin-input" placeholder="11 Haneli TC No" maxlength="11" style="padding-left: 14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon Numarası</label>
+                        <input type="text" id="editCustPhone" class="admin-input" placeholder="05XX XXX XX XX" style="padding-left: 14px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>E-Posta Adresi *</label>
+                    <input type="email" id="editCustEmail" class="admin-input" required style="padding-left: 14px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>İl (Şehir)</label>
+                        <input type="text" id="editCustCity" class="admin-input" placeholder="Örn: Bursa" style="padding-left: 14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>İlçe</label>
+                        <input type="text" id="editCustDistrict" class="admin-input" placeholder="Örn: İnegöl" style="padding-left: 14px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Teslimat Adresi</label>
+                    <textarea id="editCustAddress" class="admin-input" rows="2" style="padding: 10px 14px;" placeholder="Açık adres..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Hesap Durumu *</label>
+                    <select id="editCustStatus" class="admin-input" style="padding-left: 14px;">
+                        <option value="active">✅ Aktif Üye (Giriş Yapabilir)</option>
+                        <option value="suspended">⛔ Askıya Alındı (Giriş Engellendi)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="closeAdminEditCustomerModal()" class="btn-action-primary" style="background: #475569;">Vazgeç</button>
+                    <button type="submit" class="btn-action-primary" style="background: #0284c7;"><i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MÜŞTERİ ŞİFRE DEĞİŞTİRME MODAL -->
+    <div id="adminChangePassModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1060; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-card" style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 28px; width: 100%; max-width: 440px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                <h3 style="color: #fff; font-size: 1.15rem; font-weight: 700;"><i class="fa-solid fa-key" style="color: #eab308;"></i> Müşteri Şifresi Değiştir</h3>
+                <button onclick="closeAdminChangePassModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div style="background: #0f172a; padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06);">
+                <div style="font-size: 0.8rem; color: #94a3b8;">Şifresi Değiştirilecek Müşteri:</div>
+                <div id="adminPassCustName" style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 2px;">-</div>
+                <div id="adminPassCustEmail" style="font-size: 0.82rem; color: #38bdf8;">-</div>
+            </div>
+
+            <form id="adminChangePassForm" onsubmit="return handleAdminChangePassSubmit(event)">
+                <input type="hidden" id="adminPassCustId">
+                <div class="form-group">
+                    <label>Yeni Belirlenecek Şifre * (En az 6 karakter)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="adminNewPasswordInput" class="admin-input" required minlength="6" placeholder="Yeni şifre giriniz" style="padding-left: 14px; font-weight: 700; letter-spacing: 0.5px;">
+                        <button type="button" onclick="generateRandomCustomerPassword()" class="btn-action-primary" style="background: #334155; white-space: nowrap; font-size: 0.8rem;" title="Rastgele Güçlü Şifre Üret">
+                            <i class="fa-solid fa-dice"></i> Üret
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="closeAdminChangePassModal()" class="btn-action-primary" style="background: #475569;">İptal</button>
+                    <button type="submit" class="btn-action-primary" style="background: #eab308; color: #0f172a; font-weight: 800;"><i class="fa-solid fa-check"></i> Şifreyi Kaydet</button>
                 </div>
             </form>
         </div>

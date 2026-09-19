@@ -40,10 +40,11 @@
                     </div>
 
                     <form id="registerForm" style="display:flex; flex-direction:column; gap:12px;">
-                        <input type="text" id="regName" class="auth-input-modern" placeholder="Adınız Soyadınız" required>
-                        <input type="email" id="regEmail" class="auth-input-modern" placeholder="E-Posta Adresiniz" required>
-                        <input type="tel" id="regPhone" class="auth-input-modern" placeholder="Telefon Numaranız" required>
-                        <input type="password" id="regPassword" class="auth-input-modern" placeholder="Şifreniz (En az 6 karakter)" required>
+                        <input type="text" id="regName" class="auth-input-modern" placeholder="Adınız Soyadınız *" required>
+                        <input type="email" id="regEmail" class="auth-input-modern" placeholder="E-Posta Adresiniz *" required>
+                        <input type="tel" id="regPhone" class="auth-input-modern" placeholder="Telefon Numaranız *" required>
+                        <input type="text" id="regTcNo" class="auth-input-modern" placeholder="T.C. Kimlik Numaranız (Fatura & Sipariş)" maxlength="11">
+                        <input type="password" id="regPassword" class="auth-input-modern" placeholder="Şifreniz (En az 6 karakter) *" required>
                         <button type="submit" class="btn-auth-primary interactive-btn">
                             <i class="fa-solid fa-user-plus"></i> ÜCRETSİZ ÜYE OL
                         </button>
@@ -289,6 +290,7 @@
                 const name = (document.getElementById("regName")?.value || "").trim();
                 const email = (document.getElementById("regEmail")?.value || "").trim().toLowerCase();
                 const phone = (document.getElementById("regPhone")?.value || "").trim();
+                const tcNo = (document.getElementById("regTcNo")?.value || "").trim();
                 const password = (document.getElementById("regPassword")?.value || "").trim();
                 const submitBtn = registerForm.querySelector('button[type="submit"]');
                 const origText = submitBtn ? submitBtn.innerHTML : "Ücretsiz Üye Ol";
@@ -309,6 +311,7 @@
                         name: name,
                         email: email,
                         phone: phone,
+                        tcNo: tcNo,
                         password: password
                     });
 

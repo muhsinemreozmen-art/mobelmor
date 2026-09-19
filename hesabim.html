@@ -332,6 +332,10 @@
                         <input type="text" id="profFullName" class="form-input-custom" placeholder="Örn: Ahmet Yılmaz" required>
                     </div>
                     <div class="form-group-custom">
+                        <label class="form-label-custom" for="profTcNo">T.C. Kimlik Numaranız (Fatura &amp; Sipariş)</label>
+                        <input type="text" id="profTcNo" class="form-input-custom" placeholder="11 Haneli T.C. Kimlik No" maxlength="11">
+                    </div>
+                    <div class="form-group-custom">
                         <label class="form-label-custom" for="profPhone">Telefon Numaranız *</label>
                         <input type="tel" id="profPhone" class="form-input-custom" placeholder="05XX XXX XX XX" required>
                     </div>
@@ -350,6 +354,33 @@
                     <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
                         <button type="submit" class="btn btn-primary interactive-btn" style="padding: 13px 32px; font-weight: 700; border-radius: 10px; font-size: 0.95rem;">
                             <i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Şifre Değiştirme Kartı -->
+            <div class="account-content-card" style="margin-top: 24px;">
+                <div class="account-card-header">
+                    <h2 class="account-card-title"><i class="fa-solid fa-lock" style="color:#6b21a8;"></i> Şifre Değiştirme</h2>
+                    <span style="color:#71717a; font-size:0.88rem;">Hesap güvenliğiniz için şifrenizi dilediğiniz zaman güncelleyebilirsiniz.</span>
+                </div>
+                <form id="passwordUpdateForm" class="profile-form-grid">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profOldPassword">Mevcut Şifreniz *</label>
+                        <input type="password" id="profOldPassword" class="form-input-custom" placeholder="Mevcut şifreniz" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="profNewPassword">Yeni Şifreniz * (En az 6 karakter)</label>
+                        <input type="password" id="profNewPassword" class="form-input-custom" placeholder="Yeni şifreniz" minlength="6" required>
+                    </div>
+                    <div class="form-group-custom" style="grid-column: 1 / -1;">
+                        <label class="form-label-custom" for="profConfirmPassword">Yeni Şifreniz (Tekrar) *</label>
+                        <input type="password" id="profConfirmPassword" class="form-input-custom" placeholder="Yeni şifrenizi tekrar giriniz" minlength="6" required>
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 8px;">
+                        <button type="submit" class="btn btn-primary interactive-btn" style="padding: 13px 32px; font-weight: 700; border-radius: 10px; font-size: 0.95rem;">
+                            <i class="fa-solid fa-key"></i> Şifremi Güncelle
                         </button>
                     </div>
                 </form>
@@ -426,6 +457,8 @@
 
             // Populate Form Fields
             document.getElementById("profFullName").value = rawName;
+            const tcEl = document.getElementById("profTcNo");
+            if (tcEl) tcEl.value = user.tcNo || "";
             document.getElementById("profPhone").value = user.phone || "";
             document.getElementById("profCity").value = user.city || "";
             document.getElementById("profDistrict").value = user.district || "";
@@ -527,9 +560,10 @@
         }
 
         // Profile Form Submit Handler
-        document.getElementById("profileUpdateForm")?.addEventListener("submit", (e) => {
+        document.getElementById("profileUpdateForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
             const fullName = document.getElementById("profFullName").value.trim();
+            const tcNo = document.getElementById("profTcNo")?.value.trim() || "";
             const phone = document.getElementById("profPhone").value.trim();
             const city = document.getElementById("profCity").value.trim();
             const district = document.getElementById("profDistrict").value.trim();
@@ -541,32 +575,67 @@
 
             user.fullName = fullName;
             user.name = fullName;
+            user.tcNo = tcNo;
             user.phone = phone;
             user.city = city;
             user.district = district;
             user.address = address;
 
-            // Save in active session
-            localStorage.setItem("mobelmor_active_customer", JSON.stringify(user));
-            localStorage.setItem("mobelmor_current_user", JSON.stringify(user));
-
-            // Sync with all customers list
-            try {
-                let custs = JSON.parse(localStorage.getItem("mobelmor_customers") || "[]");
-                const idx = custs.findIndex(c => c.email && c.email.toLowerCase() === (user.email || "").toLowerCase());
-                if (idx !== -1) {
-                    custs[idx] = { ...custs[idx], ...user };
-                    localStorage.setItem("mobelmor_customers", JSON.stringify(custs));
-                }
-            } catch (err) {}
+            if (window.StoreService && typeof window.StoreService.updateCustomerProfile === "function") {
+                await window.StoreService.updateCustomerProfile({
+                    fullName, tcNo, phone, city, district, address
+                });
+            } else {
+                localStorage.setItem("mobelmor_active_customer", JSON.stringify(user));
+                localStorage.setItem("mobelmor_current_user", JSON.stringify(user));
+            }
 
             document.getElementById("accFullName").textContent = fullName;
             document.getElementById("accAvatar").textContent = fullName.charAt(0).toUpperCase();
 
             if (typeof showToast === "function") {
-                showToast("Profil ve adres bilgileriniz başarıyla güncellendi!", "fa-circle-check");
+                showToast("Ad, Soyad, T.C. ve adres bilgileriniz başarıyla kaydedildi!", "fa-circle-check");
             } else {
                 alert("Bilgileriniz başarıyla güncellendi.");
+            }
+        });
+
+        // Password Form Submit Handler
+        document.getElementById("passwordUpdateForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const oldPass = document.getElementById("profOldPassword").value.trim();
+            const newPass = document.getElementById("profNewPassword").value.trim();
+            const confirmPass = document.getElementById("profConfirmPassword").value.trim();
+
+            if (newPass !== confirmPass) {
+                if (typeof showToast === "function") {
+                    showToast("Yeni şifreler birbiriyle eşleşmiyor.", "fa-triangle-exclamation");
+                } else {
+                    alert("Yeni şifreler birbiriyle eşleşmiyor.");
+                }
+                return;
+            }
+
+            const rawUser = localStorage.getItem("mobelmor_active_customer") || localStorage.getItem("mobelmor_current_user");
+            if (!rawUser) return;
+            const user = JSON.parse(rawUser);
+
+            try {
+                if (window.StoreService && typeof window.StoreService.changeCustomerPassword === "function") {
+                    await window.StoreService.changeCustomerPassword(user.email, oldPass, newPass);
+                }
+                document.getElementById("passwordUpdateForm").reset();
+                if (typeof showToast === "function") {
+                    showToast("Şifreniz başarıyla güncellendi!", "fa-circle-check");
+                } else {
+                    alert("Şifreniz başarıyla güncellendi.");
+                }
+            } catch (err) {
+                if (typeof showToast === "function") {
+                    showToast(err.message, "fa-triangle-exclamation");
+                } else {
+                    alert(err.message);
+                }
             }
         });
 

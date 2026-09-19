@@ -47,8 +47,8 @@
         "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
     ];
 
-    // 2. 6 BÜYÜK BANKA TAKSİT ORANLARI VE KAMPANYA MATRİSİ
-    const BANK_RATES = {
+    // 2. 6 BÜYÜK BANKA TAKSİT ORANLARI VE KAMPANYA MATRİSİ (Dinamik Admin Paneli Entegreli)
+    const DEFAULT_BANK_RATES = {
         world: {
             name: "World",
             bank: "Yapı Kredi",
@@ -135,6 +135,17 @@
         }
     };
 
+    // Dinamik Taksit Oranlarını Getir (Admin Panelinden Güncellenen)
+    function getEffectiveBankRates() {
+        if (typeof window !== "undefined" && window.StoreService && typeof window.StoreService.getInstallmentSettings === "function") {
+            const settings = window.StoreService.getInstallmentSettings();
+            if (settings && settings.bankRates) {
+                return settings.bankRates;
+            }
+        }
+        return DEFAULT_BANK_RATES;
+    }
+
     // BIN Kart Tanıma Algoritması (İlk 6 Hane)
     function detectBankFromCardNumber(cardNum) {
         const clean = (cardNum || "").replace(/\D/g, "");
@@ -195,7 +206,8 @@
         let panelsHtml = `<div class="bank-tabs-content" id="bankTabsContent">`;
 
         let isFirst = true;
-        for (const [key, bank] of Object.entries(BANK_RATES)) {
+        const currentBankRates = getEffectiveBankRates();
+        for (const [key, bank] of Object.entries(currentBankRates)) {
             const activeClass = isFirst ? "active" : "";
             tabsHtml += `
                 <button type="button" class="bank-tab-btn ${activeClass}" data-bank="${key}" onclick="window.MobelmorCheckout.switchBankTab('${key}')">
@@ -345,7 +357,8 @@
 
         function updateInstallmentOptions(bankKey, totalAmount) {
             if (!installmentSelect) return;
-            const bank = BANK_RATES[bankKey] || BANK_RATES.world;
+            const currentBankRates = getEffectiveBankRates();
+            const bank = currentBankRates[bankKey] || currentBankRates.world || DEFAULT_BANK_RATES.world;
             installmentSelect.innerHTML = "";
 
             for (const [cnt, rateObj] of Object.entries(bank.rates)) {
@@ -517,7 +530,8 @@
     window.MobelmorCheckout = {
         TURKEY_CITIES,
         ALL_81_PROVINCES,
-        BANK_RATES,
+        BANK_RATES: DEFAULT_BANK_RATES,
+        getEffectiveBankRates,
         detectBankFromCardNumber,
         renderBankInstallmentTable,
         switchBankTab,

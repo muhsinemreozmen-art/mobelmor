@@ -285,12 +285,151 @@
             this._deleteProductFromCloud(id);
             return true;
         },
+        // --- IP TESPİTİ & MÜŞTERİ İŞLEM LOGLARI ---
+        _cachedClientIp: null,
+        getClientIp: async function () {
+            if (this._cachedClientIp) return this._cachedClientIp;
+            try {
+                const cached = sessionStorage.getItem('mobelmor_client_ip');
+                if (cached) { this._cachedClientIp = cached; return cached; }
+            } catch (e) {}
+
+            // 1. Yerel sunucu API denemesi
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 1200);
+                const res = await fetch('/api/client-ip', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.ip) {
+                        this._cachedClientIp = data.ip;
+                        sessionStorage.setItem('mobelmor_client_ip', data.ip);
+                        return data.ip;
+                    }
+                }
+            } catch (e) {}
+
+            // 2. Canlı genel IP servisi denemesi
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 1500);
+                const res = await fetch('https://api64.ipify.org?format=json', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.ip) {
+                        this._cachedClientIp = data.ip;
+                        sessionStorage.setItem('mobelmor_client_ip', data.ip);
+                        return data.ip;
+                    }
+                }
+            } catch (e) {}
+
+            const fallback = '127.0.0.1 (Yerel)';
+            this._cachedClientIp = fallback;
+            return fallback;
+        },
+
+        addCustomerLog: async function (logData) {
+            try {
+                let logs = [];
+                try {
+                    logs = JSON.parse(localStorage.getItem('mobelmor_customer_logs') || '[]');
+                } catch (e) { logs = []; }
+
+                const ip = logData.ip || await this.getClientIp();
+                const userAgent = logData.userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent : 'Bilinmiyor');
+
+                const newLog = {
+                    id: 'LOG-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                    timestamp: new Date().toISOString(),
+                    dateFormatted: new Date().toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                    customerId: logData.customerId || 'ANONIM',
+                    customerEmail: (logData.customerEmail || logData.email || '').toLowerCase(),
+                    customerName: logData.customerName || logData.name || 'Ziyaretçi',
+                    action: logData.action || 'BILGI', // LOGIN, REGISTER, LOGOUT, PROFILE_UPDATE, PASSWORD_CHANGE, ORDER_CREATE, SUSPEND_USER, ACTIVATE_USER, ADMIN_PASS_RESET, ADMIN_UPDATE_CUSTOMER, INSTALLMENT_UPDATE, LOGIN_BLOCKED
+                    details: logData.details || '',
+                    ip: ip,
+                    userAgent: userAgent,
+                    status: logData.status || 'success' // success, warning, danger
+                };
+
+                logs.unshift(newLog);
+                if (logs.length > 600) logs = logs.slice(0, 600);
+                localStorage.setItem('mobelmor_customer_logs', JSON.stringify(logs));
+
+                // Arka planda Supabase log tablosuna da kaydet
+                try {
+                    if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                        fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customer_logs`, {
+                            method: 'POST',
+                            headers: {
+                                'apikey': DEFAULT_CONFIG.supabaseKey,
+                                'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify(newLog)
+                        }).catch(() => {});
+                    }
+                } catch (e) {}
+
+                return newLog;
+            } catch (e) {
+                console.warn("Log kaydedilirken hata:", e);
+                return null;
+            }
+        },
+
+        getCustomerLogs: function (filter = {}) {
+            try {
+                let logs = JSON.parse(localStorage.getItem('mobelmor_customer_logs') || '[]');
+                if (filter.customerId) {
+                    logs = logs.filter(l => l.customerId === filter.customerId || (filter.email && l.customerEmail === filter.email.toLowerCase()));
+                }
+                if (filter.email) {
+                    logs = logs.filter(l => l.customerEmail === filter.email.toLowerCase());
+                }
+                if (filter.action) {
+                    logs = logs.filter(l => l.action === filter.action);
+                }
+                if (filter.ip) {
+                    logs = logs.filter(l => l.ip && l.ip.includes(filter.ip));
+                }
+                return logs;
+            } catch (e) {
+                return [];
+            }
+        },
+
+        clearCustomerLogs: function () {
+            localStorage.removeItem('mobelmor_customer_logs');
+            return true;
+        },
+
+
 
         // --- MÜŞTERİ ÜYELİK & AUTH İŞLEMLERİ ---
         getCurrentUser: function () {
             try {
                 const userJson = localStorage.getItem('mobelmor_active_customer');
-                return userJson ? JSON.parse(userJson) : null;
+                if (!userJson) return null;
+                const user = JSON.parse(userJson);
+                
+                // Askıya alınma kontrolü: Eğer hesap askıdaysa oturumu derhal düşür
+                let custs = [];
+                try {
+                    const raw = localStorage.getItem('mobelmor_customers');
+                    if (raw) custs = JSON.parse(raw);
+                } catch(e) {}
+                const matched = custs.find(c => c.id === user.id || (c.email && user.email && c.email.toLowerCase() === user.email.toLowerCase()));
+                if (matched && (matched.isSuspended || matched.status === 'suspended')) {
+                    localStorage.removeItem('mobelmor_active_customer');
+                    localStorage.removeItem('mobelmor_current_user');
+                    return null;
+                }
+                return user;
             } catch (e) {
                 return null;
             }
@@ -301,6 +440,7 @@
             const cleanPass = (userData.password || '').trim();
             const cleanName = (userData.fullName || userData.name || '').trim();
             const cleanPhone = (userData.phone || '').trim();
+            const cleanTc = (userData.tcNo || userData.tc || '').trim();
 
             if (!cleanEmail || !cleanPass || !cleanName) {
                 throw new Error("Lütfen tüm zorunlu alanları (Ad Soyad, E-Posta, Şifre) doldurunuz.");
@@ -352,7 +492,10 @@
                                 name: cleanName,
                                 email: cleanEmail,
                                 phone: cleanPhone,
+                                tcNo: cleanTc,
                                 password: cleanPass,
+                                isSuspended: false,
+                                status: 'active',
                                 createdAt: new Date().toISOString()
                             };
 
@@ -394,6 +537,14 @@
                             localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
                             localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
 
+                            this.addCustomerLog({
+                                customerId: sessionUser.id,
+                                customerEmail: sessionUser.email,
+                                customerName: sessionUser.fullName,
+                                action: 'REGISTER',
+                                details: `Yeni müşteri kaydı oluşturuldu (T.C.: ${cleanTc || 'Belirtilmedi'}, Tel: ${cleanPhone || '-'})`,
+                                status: 'success'
+                            });
                             return { user: sessionUser, confirmationSent: false };
                         } else {
                             throw new Error(resData.msg || resData.error_description || "Kayıt işlemi gerçekleştirilemedi.");
@@ -406,9 +557,12 @@
                         name: cleanName,
                         email: cleanEmail,
                         phone: cleanPhone,
+                        tcNo: cleanTc,
                         address: userData.address || '',
                         city: userData.city || '',
                         district: userData.district || '',
+                        isSuspended: false,
+                        status: 'active',
                         createdAt: new Date().toISOString()
                     };
 
@@ -448,6 +602,14 @@
                     localStorage.setItem('mobelmor_customers', JSON.stringify(users));
                     localStorage.setItem('mobelmor_users', JSON.stringify(users));
 
+                    this.addCustomerLog({
+                        customerId: newUser.id,
+                        customerEmail: newUser.email,
+                        customerName: newUser.fullName,
+                        action: 'REGISTER',
+                        details: `Yeni müşteri kaydı oluşturuldu (T.C.: ${cleanTc || 'Belirtilmedi'}, Tel: ${cleanPhone || '-'})`,
+                        status: 'success'
+                    });
                     return { user: newUser, confirmationSent: true };
                 } catch (err) {
                     throw err;
@@ -464,11 +626,22 @@
                 name: cleanName,
                 email: cleanEmail,
                 phone: cleanPhone,
+                tcNo: cleanTc,
                 password: cleanPass,
+                isSuspended: false,
+                status: 'active',
                 createdAt: new Date().toISOString()
             };
             users.push(newUser);
             localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            this.addCustomerLog({
+                customerId: newUser.id,
+                customerEmail: newUser.email,
+                customerName: newUser.fullName,
+                action: 'REGISTER',
+                details: `Yeni müşteri kaydı oluşturuldu (T.C.: ${cleanTc || 'Belirtilmedi'}, Tel: ${cleanPhone || '-'})`,
+                status: 'success'
+            });
             return { user: newUser, confirmationSent: false };
         },
 
@@ -478,6 +651,21 @@
 
             if (!cleanEmail || !cleanPass) {
                 throw new Error("Lütfen e-posta adresi ve şifrenizi giriniz.");
+            }
+
+            // GÜVENLİK KONTROLÜ: Hesap askıya alınmış mı?
+            const allCusts = this.getAllCustomers();
+            const suspendedMatch = allCusts.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+            if (suspendedMatch && (suspendedMatch.isSuspended === true || suspendedMatch.status === 'suspended')) {
+                await this.addCustomerLog({
+                    customerId: suspendedMatch.id || 'CUST',
+                    customerEmail: cleanEmail,
+                    customerName: suspendedMatch.fullName || suspendedMatch.name || 'Askıdaki Kullanıcı',
+                    action: 'LOGIN_BLOCKED',
+                    details: 'Askıya alınmış hesaba giriş denemesi sistem tarafından engellendi.',
+                    status: 'danger'
+                });
+                throw new Error("⚠️ Bu hesap sistem yöneticisi tarafından askıya alınmıştır. Güvenlik nedeniyle giriş yapılamaz. Lütfen destek ekibimiz ile iletişime geçiniz.");
             }
 
             if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
@@ -519,6 +707,15 @@
                             users[idx] = { ...users[idx], ...sessionUser };
                         }
                         localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+
+                        this.addCustomerLog({
+                            customerId: sessionUser.id,
+                            customerEmail: sessionUser.email,
+                            customerName: sessionUser.fullName,
+                            action: 'LOGIN',
+                            details: 'Kullanıcı sisteme başarıyla giriş yaptı (Supabase Auth).',
+                            status: 'success'
+                        });
 
                         return sessionUser;
                     }
@@ -567,6 +764,15 @@
                                 }
                                 localStorage.setItem('mobelmor_customers', JSON.stringify(users));
 
+                                this.addCustomerLog({
+                                    customerId: sessionUser.id,
+                                    customerEmail: sessionUser.email,
+                                    customerName: sessionUser.fullName,
+                                    action: 'LOGIN',
+                                    details: 'Kullanıcı sisteme başarıyla giriş yaptı (Bulut Doğrulama).',
+                                    status: 'success'
+                                });
+
                                 return sessionUser;
                             }
                         }
@@ -580,17 +786,62 @@
             let users = this.getAllCustomers();
             const localUser = users.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password && u.password === cleanPass);
             if (localUser) {
+                if (localUser.isSuspended || localUser.status === 'suspended') {
+                    await this.addCustomerLog({
+                        customerId: localUser.id,
+                        customerEmail: cleanEmail,
+                        customerName: localUser.fullName || localUser.name,
+                        action: 'LOGIN_BLOCKED',
+                        details: 'Askıya alınmış hesaba giriş denemesi yerel kontrolde engellendi.',
+                        status: 'danger'
+                    });
+                    throw new Error("⚠️ Bu hesap sistem yöneticisi tarafından askıya alınmıştır. Güvenlik nedeniyle giriş yapılamaz.");
+                }
+
                 const sessionUser = { ...localUser };
                 delete sessionUser.password;
                 localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
                 localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                this.addCustomerLog({
+                    customerId: sessionUser.id,
+                    customerEmail: sessionUser.email,
+                    customerName: sessionUser.fullName || sessionUser.name,
+                    action: 'LOGIN',
+                    details: 'Kullanıcı sisteme başarıyla giriş yaptı.',
+                    status: 'success'
+                });
+
                 return sessionUser;
             }
+
+            // Hatalı şifre girişi logu
+            this.addCustomerLog({
+                customerEmail: cleanEmail,
+                customerName: cleanEmail.split('@')[0],
+                action: 'LOGIN_FAILED',
+                details: 'Hatalı şifre veya e-posta ile başarısız giriş denemesi.',
+                status: 'warning'
+            });
 
             throw new Error("E-posta adresi veya şifre hatalı.");
         },
 
         logoutCustomer: function () {
+            try {
+                const active = localStorage.getItem('mobelmor_active_customer');
+                if (active) {
+                    const u = JSON.parse(active);
+                    this.addCustomerLog({
+                        customerId: u.id,
+                        customerEmail: u.email,
+                        customerName: u.fullName || u.name,
+                        action: 'LOGOUT',
+                        details: 'Kullanıcı oturumu güvenli şekilde sonlandırıldı.',
+                        status: 'info'
+                    });
+                }
+            } catch(e) {}
             localStorage.removeItem('mobelmor_active_customer');
             localStorage.removeItem('mobelmor_current_user');
         },
@@ -816,16 +1067,34 @@
             const current = this.getCurrentUser();
             if (!current) throw new Error("Giriş yapılmamış.");
 
-            let users = JSON.parse(localStorage.getItem('mobelmor_customers') || '[]');
+            let users = this.getAllCustomers();
             const idx = users.findIndex(u => u.id === current.id || (u.email && u.email.toLowerCase() === current.email?.toLowerCase()));
             if (idx !== -1) {
-                users[idx] = { ...users[idx], ...profileData };
+                // Ad Soyad, TC No, Telefon, Adres güncellemesi
+                if (profileData.fullName) users[idx].fullName = profileData.fullName.trim();
+                if (profileData.name) users[idx].name = profileData.name.trim();
+                if (profileData.tcNo !== undefined) users[idx].tcNo = profileData.tcNo.trim();
+                if (profileData.phone !== undefined) users[idx].phone = profileData.phone.trim();
+                if (profileData.city !== undefined) users[idx].city = profileData.city.trim();
+                if (profileData.district !== undefined) users[idx].district = profileData.district.trim();
+                if (profileData.address !== undefined) users[idx].address = profileData.address.trim();
+
                 localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+                localStorage.setItem('mobelmor_users', JSON.stringify(users));
 
                 const sessionUser = { ...users[idx] };
                 delete sessionUser.password;
                 localStorage.setItem('mobelmor_active_customer', JSON.stringify(sessionUser));
                 localStorage.setItem('mobelmor_current_user', JSON.stringify(sessionUser));
+
+                await this.addCustomerLog({
+                    customerId: sessionUser.id,
+                    customerEmail: sessionUser.email,
+                    customerName: sessionUser.fullName || sessionUser.name,
+                    action: 'PROFILE_UPDATE',
+                    details: `Müşteri profilini güncelledi (Ad: ${sessionUser.fullName}, T.C.: ${sessionUser.tcNo || '-'}, Tel: ${sessionUser.phone || '-'})`,
+                    status: 'success'
+                });
 
                 // Push updated profile to Supabase
                 if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
@@ -857,6 +1126,298 @@
             }
             return current;
         },
+
+        // KULLANICI ŞİFRE DEĞİŞTİRME (Hesabım sayfasından)
+        changeCustomerPassword: async function (email, oldPassword, newPassword) {
+            const cleanEmail = (email || '').trim().toLowerCase();
+            const cleanOld = (oldPassword || '').trim();
+            const cleanNew = (newPassword || '').trim();
+
+            if (!cleanNew || cleanNew.length < 6) {
+                throw new Error("Yeni şifreniz en az 6 karakter olmalıdır.");
+            }
+
+            let users = this.getAllCustomers();
+            const idx = users.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+            if (idx === -1) {
+                throw new Error("Müşteri hesabı bulunamadı.");
+            }
+
+            if (users[idx].password && users[idx].password !== cleanOld) {
+                throw new Error("Mevcut şifrenizi hatalı girdiniz.");
+            }
+
+            users[idx].password = cleanNew;
+            localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+            await this.addCustomerLog({
+                customerId: users[idx].id,
+                customerEmail: cleanEmail,
+                customerName: users[idx].fullName || users[idx].name,
+                action: 'PASSWORD_CHANGE',
+                details: 'Müşteri hesabım sayfasından şifresini başarıyla güncelledi.',
+                status: 'success'
+            });
+
+            return true;
+        },
+
+        // YÖNETİCİ: MÜŞTERİ ŞİFRESİNİ PANEL DEN DEĞİŞTİRME
+        adminChangeCustomerPassword: async function (customerId, newPassword) {
+            if (!newPassword || newPassword.trim().length < 6) {
+                throw new Error("Yeni şifre en az 6 karakter olmalıdır.");
+            }
+            const cleanPass = newPassword.trim();
+            let users = this.getAllCustomers();
+            const user = users.find(u => u.id === customerId || u.email === customerId);
+            if (!user) throw new Error("Müşteri bulunamadı.");
+
+            user.password = cleanPass;
+            localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+            // Bulut eşitleme (varsa)
+            if (DEFAULT_CONFIG.supabaseUrl && DEFAULT_CONFIG.supabaseKey) {
+                try {
+                    fetch(`${DEFAULT_CONFIG.supabaseUrl}/rest/v1/customers?id=eq.${encodeURIComponent(user.id)}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': DEFAULT_CONFIG.supabaseKey,
+                            'Authorization': `Bearer ${DEFAULT_CONFIG.supabaseKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ password: cleanPass })
+                    }).catch(() => {});
+                } catch(e) {}
+            }
+
+            await this.addCustomerLog({
+                customerId: user.id,
+                customerEmail: user.email,
+                customerName: user.fullName || user.name,
+                action: 'ADMIN_PASS_RESET',
+                details: `Yönetici panelinden müşteri şifresi güncellendi. (Yeni Şifre: ${cleanPass})`,
+                status: 'warning'
+            });
+
+            return true;
+        },
+
+        // YÖNETİCİ: HESABI ASKIYA ALMA / AKTİFLEŞTİRME
+        adminToggleCustomerSuspension: async function (customerId, isSuspended) {
+            let users = this.getAllCustomers();
+            const user = users.find(u => u.id === customerId || u.email === customerId);
+            if (!user) throw new Error("Müşteri bulunamadı.");
+
+            user.isSuspended = !!isSuspended;
+            user.status = isSuspended ? 'suspended' : 'active';
+            localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+            // Eğer askıya alınıyorsa ve oturumu açıksa oturumunu anında düşür
+            const active = localStorage.getItem('mobelmor_active_customer');
+            if (isSuspended && active) {
+                try {
+                    const actObj = JSON.parse(active);
+                    if (actObj.id === user.id || actObj.email === user.email) {
+                        localStorage.removeItem('mobelmor_active_customer');
+                        localStorage.removeItem('mobelmor_current_user');
+                    }
+                } catch(e) {}
+            }
+
+            await this.addCustomerLog({
+                customerId: user.id,
+                customerEmail: user.email,
+                customerName: user.fullName || user.name,
+                action: isSuspended ? 'SUSPEND_USER' : 'ACTIVATE_USER',
+                details: isSuspended 
+                    ? 'Müşteri hesabı yönetici tarafından ASKIYA ALINDI (Siteye girişi engellendi).' 
+                    : 'Müşteri hesabı askıdan çıkarıldı ve tekrar AKTİFLEŞTİRİLDİ.',
+                status: isSuspended ? 'danger' : 'success'
+            });
+
+            return user;
+        },
+
+        // YÖNETİCİ: MÜŞTERİ BİLGİLERİNİ GÜNCELLEME (AD, SOYAD, TC NO, TEL, E-POSTA, ADRES)
+        adminUpdateCustomer: async function (customerId, updatedData) {
+            let users = this.getAllCustomers();
+            const user = users.find(u => u.id === customerId || u.email === customerId);
+            if (!user) throw new Error("Müşteri bulunamadı.");
+
+            if (updatedData.fullName) {
+                user.fullName = updatedData.fullName.trim();
+                user.name = user.fullName;
+            }
+            if (updatedData.email) user.email = updatedData.email.trim().toLowerCase();
+            if (updatedData.phone !== undefined) user.phone = updatedData.phone.trim();
+            if (updatedData.tcNo !== undefined) user.tcNo = updatedData.tcNo.trim();
+            if (updatedData.address !== undefined) user.address = updatedData.address.trim();
+            if (updatedData.city !== undefined) user.city = updatedData.city.trim();
+            if (updatedData.district !== undefined) user.district = updatedData.district.trim();
+            if (updatedData.isSuspended !== undefined) {
+                user.isSuspended = !!updatedData.isSuspended;
+                user.status = user.isSuspended ? 'suspended' : 'active';
+            }
+
+            localStorage.setItem('mobelmor_customers', JSON.stringify(users));
+            localStorage.setItem('mobelmor_users', JSON.stringify(users));
+
+            // Eğer şu an açık oturum varsa onu da güncelle
+            const active = localStorage.getItem('mobelmor_active_customer');
+            if (active) {
+                try {
+                    const actObj = JSON.parse(active);
+                    if (actObj.id === user.id || actObj.email === user.email) {
+                        const updatedSession = { ...user };
+                        delete updatedSession.password;
+                        localStorage.setItem('mobelmor_active_customer', JSON.stringify(updatedSession));
+                    }
+                } catch(e) {}
+            }
+
+            await this.addCustomerLog({
+                customerId: user.id,
+                customerEmail: user.email,
+                customerName: user.fullName,
+                action: 'ADMIN_UPDATE_CUSTOMER',
+                details: `Müşteri bilgileri yönetici tarafından güncellendi (Ad: ${user.fullName}, T.C.: ${user.tcNo || '-'}, Tel: ${user.phone || '-'})`,
+                status: 'success'
+            });
+
+            return user;
+        },
+
+        // --- DİNAMİK TAKSİT YÖNETİMİ ---
+        DEFAULT_INSTALLMENT_SETTINGS: {
+            maxFreeInstallments: 6,
+            campaignTitle: "Peşin Fiyatına 6 Taksit Avantajı",
+            isInstallmentActive: true,
+            bankRates: {
+                world: {
+                    name: "World",
+                    bank: "Yapı Kredi",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#682b85",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                },
+                bonus: {
+                    name: "Bonus",
+                    bank: "Garanti BBVA",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#008542",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                },
+                maximum: {
+                    name: "Maximum",
+                    bank: "İş Bankası",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#004889",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                },
+                axess: {
+                    name: "Axess",
+                    bank: "Akbank",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#e30613",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                },
+                cardfinans: {
+                    name: "CardFinans",
+                    bank: "QNB Finansbank",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#003b64",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                },
+                paraf: {
+                    name: "Paraf",
+                    bank: "Halkbank",
+                    logoClass: "fa-solid fa-credit-card",
+                    color: "#0085ca",
+                    rates: {
+                        1: { count: 1, rate: 0.00, campaign: "Peşin Fiyatına", active: true },
+                        2: { count: 2, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        3: { count: 3, rate: 0.00, campaign: "Vade Farksız", active: true },
+                        6: { count: 6, rate: 0.00, campaign: "Peşin Fiyatına 6 Taksit", active: true },
+                        9: { count: 9, rate: 0.045, campaign: "Düşük Faizli", active: true },
+                        12: { count: 12, rate: 0.085, campaign: "12 Ay Taksit", active: true }
+                    }
+                }
+            }
+        },
+
+        getInstallmentSettings: function () {
+            try {
+                const stored = localStorage.getItem('mobelmor_installment_settings');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (parsed && parsed.bankRates) return parsed;
+                }
+            } catch (e) {}
+            return JSON.parse(JSON.stringify(this.DEFAULT_INSTALLMENT_SETTINGS));
+        },
+
+        saveInstallmentSettings: async function (newSettings) {
+            localStorage.setItem('mobelmor_installment_settings', JSON.stringify(newSettings));
+            await this.addCustomerLog({
+                action: 'INSTALLMENT_UPDATE',
+                customerName: 'Yönetici (Admin)',
+                customerEmail: 'admin@mobelmor.com',
+                details: `Taksit oranları ve kampanya güncellendi (Peşin Taksit Sayısı: ${newSettings.maxFreeInstallments || 6}, Başlık: ${newSettings.campaignTitle || '-'})`,
+                status: 'success'
+            });
+            return true;
+        },
+
+        resetInstallmentSettings: async function () {
+            localStorage.removeItem('mobelmor_installment_settings');
+            await this.addCustomerLog({
+                action: 'INSTALLMENT_UPDATE',
+                customerName: 'Yönetici (Admin)',
+                customerEmail: 'admin@mobelmor.com',
+                details: 'Taksit oranları varsayılan sistem ayarlarına sıfırlandı.',
+                status: 'warning'
+            });
+            return this.getInstallmentSettings();
+        },
+
 
         getAllCustomers: function () {
             try {
@@ -1073,6 +1634,15 @@
             orders = orders.filter(o => (o.orderNumber !== orderNum && o.id !== orderNum));
             orders.unshift(newOrder);
             localStorage.setItem('mobelmor_all_orders', JSON.stringify(orders));
+
+            this.addCustomerLog({
+                customerId: newOrder.customerId || 'guest',
+                customerEmail: newOrder.customerEmail || '',
+                customerName: newOrder.customerName || 'Misafir',
+                action: 'ORDER_CREATE',
+                details: `Yeni sipariş oluşturuldu: #${newOrder.orderNumber} - Tutar: ${(newOrder.totalAmount || newOrder.total || 0).toLocaleString('tr-TR')} ₺ (${newOrder.paymentMethodLabel || newOrder.paymentMethod || 'Kredi Kartı'})`,
+                status: 'success'
+            });
 
             // Also update mobelmor_orders cleanly
             try {
