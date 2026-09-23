@@ -442,6 +442,22 @@
             const msg = `Merhaba Mobelmor, sitemizden sipariş vermek istiyorum.%0A%0A*Müşteri:* ${name}%0A*Telefon:* ${phone}%0A*Teslimat Yeri:* ${city} / ${district}%0A%0A*Sepetteki Ürünler:*%0A${itemsText}%0A%0A*Toplam Tutar:* ${fmtPrice(total)}%0A%0ASipariş teyidi ve detaylı bilgi rica ederim.`;
             window.open(`https://wa.me/905300000000?text=${msg}`, "_blank");
         });
+
+        // Ödeme Yöntemi Seçim Tabları (Kredi Kartı, Havale/EFT, Teslimatta Ödeme)
+        document.querySelectorAll(".payment-tab-btn-modern, .payment-method-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const m = btn.getAttribute("data-method") || (btn.id === "payMethodBank" ? "bank" : btn.id === "payMethodCod" ? "cod" : "card");
+                if (typeof window.switchPaymentMethod === 'function') {
+                    window.switchPaymentMethod(m);
+                }
+            });
+        });
+
+        // Varsayılan olarak Kredi Kartını aktif et
+        if (typeof window.switchPaymentMethod === 'function') {
+            window.switchPaymentMethod(window.selectedPayMethod || "card");
+        }
     }
 
     // 6. ÜCRETSİZ KUMAŞ NUMUNESİ MODALI YÖNETİCİSİ
@@ -542,6 +558,7 @@
         renderBankInstallmentTable,
         switchBankTab,
         populateCityAndDistrict,
+        switchPaymentMethod: (m) => (typeof window.switchPaymentMethod === 'function' ? window.switchPaymentMethod(m) : null),
         initAdvancedCheckout,
         initFabricSampleModal,
         fmtPrice

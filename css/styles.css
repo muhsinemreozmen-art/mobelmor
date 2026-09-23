@@ -12161,6 +12161,18 @@ body.scroll-locked {
     font-size: 1.1rem;
 }
 
+.payment-tab-btn-modern * {
+    pointer-events: none;
+}
+
+.payment-method-panel.active {
+    display: block !important;
+}
+
+.payment-method-panel:not(.active) {
+    display: none !important;
+}
+
 /* Bank detected pill */
 .bank-detected-pill-modern {
     font-size: 0.72rem;

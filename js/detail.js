@@ -2494,6 +2494,62 @@ const FABRIC_COLLECTIONS = [
     }
 ];
 
+// ── Dynamic Delivery Date & Time Calculator (Parses "15 gün", "1 ay", etc.) ──
+window.calculateDeliveryInfo = function(deliveryTimeStr) {
+    if (!deliveryTimeStr || typeof deliveryTimeStr !== 'string') {
+        deliveryTimeStr = "15 gün";
+    }
+    const lower = deliveryTimeStr.trim().toLowerCase();
+    let daysToAdd = 15;
+    let displaySuffix = "";
+
+    const monthMatch = lower.match(/(\d+)\s*(ay|month)/);
+    if (monthMatch) {
+        const months = parseInt(monthMatch[1], 10) || 1;
+        daysToAdd = months * 30;
+        displaySuffix = `${months} Ay Sonra Kargoda`;
+    } else {
+        const weekMatch = lower.match(/(\d+)\s*(hafta|week)/);
+        if (weekMatch) {
+            const weeks = parseInt(weekMatch[1], 10) || 1;
+            daysToAdd = weeks * 7;
+            displaySuffix = `${weeks} Hafta Sonra Kargoda`;
+        } else {
+            const dayMatch = lower.match(/(\d+)/);
+            if (dayMatch) {
+                daysToAdd = parseInt(dayMatch[1], 10) || 15;
+                displaySuffix = `${daysToAdd} Gün Sonra Kargoda`;
+            } else {
+                daysToAdd = 15;
+                displaySuffix = "15 Gün Sonra Kargoda";
+            }
+        }
+    }
+
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + daysToAdd);
+    const monthsTr = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const formattedDate = `${targetDate.getDate()} ${monthsTr[targetDate.getMonth()]}`;
+
+    return {
+        daysToAdd,
+        formattedDate,
+        displaySuffix,
+        fullText: `${formattedDate} (${displaySuffix})`,
+        shortText: `${formattedDate} Günü Kargoda`
+    };
+};
+
+let currentProductFabrics = [...FABRIC_COLLECTIONS];
+
+function getProductFabricCollections(prod) {
+    if (prod && prod.hasFabric === false) return [];
+    if (prod && Array.isArray(prod.fabricCollections) && prod.fabricCollections.length > 0) {
+        return prod.fabricCollections;
+    }
+    return FABRIC_COLLECTIONS;
+}
+
 let currentFabricState = {
     fabricId: 'babyface',
     fabricName: 'Baby Face Kadife',
@@ -2518,8 +2574,9 @@ window.recalculateDetailProductTotal = () => {
 };
 
 const renderFabricSwatchesHtml = (colId) => {
-    const col = FABRIC_COLLECTIONS.find(c => c.id === colId);
-    if (!col) return '';
+    const collections = (currentProductFabrics && currentProductFabrics.length > 0) ? currentProductFabrics : FABRIC_COLLECTIONS;
+    const col = collections.find(c => c.id === colId);
+    if (!col || !col.colors || col.colors.length === 0) return '';
     return col.colors.map(color => `
         <button type="button" 
             class="vcolor-swatch-btn ${color.code === currentFabricState.colorCode ? 'active' : ''}" 
@@ -2534,13 +2591,14 @@ const renderFabricSwatchesHtml = (colId) => {
 };
 
 window.selectFabricCollection = (colId) => {
-    const col = FABRIC_COLLECTIONS.find(c => c.id === colId);
+    const collections = (currentProductFabrics && currentProductFabrics.length > 0) ? currentProductFabrics : FABRIC_COLLECTIONS;
+    const col = collections.find(c => c.id === colId);
     if (!col) return;
     currentFabricState.fabricId = col.id;
     currentFabricState.fabricName = col.name;
     currentFabricState.priceDiff = col.priceDiff || 0;
 
-    const firstColor = col.colors[0];
+    const firstColor = (col.colors && col.colors.length > 0) ? col.colors[0] : { code: 'STD-01', name: 'Standart Renk', hex: '#6b21a8', image: 'assets/fabrics/bf_krem.webp' };
     currentFabricState.colorCode = firstColor.code;
     currentFabricState.colorName = firstColor.name;
     currentFabricState.colorHex = firstColor.hex;
@@ -2567,7 +2625,8 @@ window.selectFabricColor = (code, name, hex, image) => {
         btn.classList.toggle("active", btn.dataset.code === code);
     });
 
-    const col = FABRIC_COLLECTIONS.find(c => c.id === currentFabricState.fabricId);
+    const collections = (currentProductFabrics && currentProductFabrics.length > 0) ? currentProductFabrics : FABRIC_COLLECTIONS;
+    const col = collections.find(c => c.id === currentFabricState.fabricId);
     updateFabricLensAndBadge(col, { code, name, hex, image: currentFabricState.colorImage });
 };
 
@@ -2579,21 +2638,21 @@ const updateFabricLensAndBadge = (col, color) => {
     const sampleLink = document.getElementById("vfabricSampleLink");
     const freeBadge = document.getElementById("vfabricHeaderBadge");
 
-    const priceTag = col.priceDiff > 0 ? ` (+${formatPrice(col.priceDiff)})` : ' (0 TL Fark)';
+    const priceTag = (col && col.priceDiff > 0) ? ` (+${formatPrice(col.priceDiff)})` : ' (0 TL Fark)';
 
-    if (activeLabel) activeLabel.textContent = `${color.name} (${color.code})${priceTag}`;
+    if (activeLabel && color) activeLabel.textContent = `${color.name} (${color.code})${priceTag}`;
     if (lensCircle) {
-        lensCircle.style.backgroundImage = `url('${color.image || currentFabricState.colorImage}')`;
+        lensCircle.style.backgroundImage = `url('${color ? (color.image || currentFabricState.colorImage) : currentFabricState.colorImage}')`;
         lensCircle.style.backgroundSize = 'cover';
         lensCircle.style.backgroundPosition = 'center';
     }
-    if (selectedTitle && col) selectedTitle.textContent = `${col.name} • ${color.name}`;
+    if (selectedTitle && col && color) selectedTitle.textContent = `${col.name} • ${color.name}`;
     if (selectedDesc && col) {
         const diffDesc = col.priceDiff > 0 ? ` [Kumaş Farkı: +${formatPrice(col.priceDiff)}]` : ' [Standart Baz Fiyat]';
-        selectedDesc.textContent = `${col.desc}${diffDesc}`;
+        selectedDesc.textContent = `${col.desc || ''}${diffDesc}`;
     }
     if (freeBadge) {
-        if (col.priceDiff > 0) {
+        if (col && col.priceDiff > 0) {
             freeBadge.textContent = `+${formatPrice(col.priceDiff)}`;
             freeBadge.style.background = '#faf5ff';
             freeBadge.style.color = '#7e22ce';
@@ -2606,7 +2665,7 @@ const updateFabricLensAndBadge = (col, color) => {
         }
     }
     if (sampleLink && currentDetailProduct) {
-        sampleLink.href = `https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(currentDetailProduct.title)}%20ürünü%20için%20${encodeURIComponent((col ? col.name : '') + ' - ' + color.name + ' [' + color.code + ']' + (col.priceDiff > 0 ? ' (+' + formatPrice(col.priceDiff) + ')' : ''))}%20kumaş%20kartelası%20talep%20etmek%20istiyorum.`;
+        sampleLink.href = `https://wa.me/905300000000?text=Merhaba,%20Mobelmor.com'dan%20${encodeURIComponent(currentDetailProduct.title)}%20ürünü%20için%20${encodeURIComponent((col ? col.name : '') + ' - ' + (color ? color.name : '') + ' [' + (color ? color.code : '') + ']' + ((col && col.priceDiff > 0) ? ' (+' + formatPrice(col.priceDiff) + ')' : ''))}%20kumaş%20kartelası%20talep%20etmek%20istiyorum.`;
     }
 };
 
@@ -2701,11 +2760,26 @@ const renderProductDetail = () => {
     const modules = getCategoryModuleConfig(product);
     currentModuleState.modules = modules.map(m => ({ ...m }));
 
-    // Delivery calculation (15-20 days forward)
-    const delDate = new Date();
-    delDate.setDate(delDate.getDate() + 14);
-    const monthsTr = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
-    const formattedDeliveryDate = `${delDate.getDate()} ${monthsTr[delDate.getMonth()]}`;
+    // Dynamic Delivery calculation (parses "15 gün", "1 ay", etc.)
+    const deliveryInfo = window.calculateDeliveryInfo(product.deliveryTime || "15 gün");
+    const formattedDeliveryDate = deliveryInfo.fullText;
+
+    // Dynamic Fabric collections for this product
+    currentProductFabrics = getProductFabricCollections(product);
+    if (currentProductFabrics.length > 0) {
+        const found = currentProductFabrics.find(c => c.id === currentFabricState.fabricId);
+        if (!found) {
+            const first = currentProductFabrics[0];
+            currentFabricState.fabricId = first.id;
+            currentFabricState.fabricName = first.name;
+            currentFabricState.priceDiff = first.priceDiff || 0;
+            const firstC = (first.colors && first.colors.length > 0) ? first.colors[0] : { code: 'STD-01', name: 'Standart Renk', hex: '#6b21a8', image: 'assets/fabrics/bf_krem.webp' };
+            currentFabricState.colorCode = firstC.code;
+            currentFabricState.colorName = firstC.name;
+            currentFabricState.colorHex = firstC.hex;
+            currentFabricState.colorImage = firstC.image;
+        }
+    }
 
     const detailGrid = document.getElementById("detailGrid");
     if (detailGrid) {
@@ -2748,19 +2822,26 @@ const renderProductDetail = () => {
                     </button>
 
                     <!-- Carousel Side Nav Arrows -->
-                    <button class="vgallery-arrow-btn prev" onclick="prevSlide()" aria-label="Önceki Görsel"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="vgallery-arrow-btn next" onclick="nextSlide()" aria-label="Sonraki Görsel"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-nav-btn prev" onclick="scrollGallery(-1)" aria-label="Önceki Görsel"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="gallery-nav-btn next" onclick="scrollGallery(1)" aria-label="Sonraki Görsel"><i class="fa-solid fa-chevron-right"></i></button>
 
-                    <!-- Counter pill -->
-                    <div class="gallery-counter-pill">
-                        <span id="currentSlideNum">1</span> / ${gallery.length}
+                    <!-- Bottom Dots Indicator -->
+                    <div class="gallery-dots-indicator" id="galleryDotsIndicator">
+                        ${gallery.map((_, idx) => `<span class="gallery-dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></span>`).join('')}
                     </div>
 
-                    <!-- Bottom Dot Indicators (Mobile & Tablet) -->
-                    <div class="gallery-dots-strip" id="galleryDotsStrip">
-                        ${gallery.map((_, idx) => `
-                            <span class="gallery-dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></span>
-                        `).join('')}
+                    <!-- Action Bar Below Carousel: 3D AR & Video Watch -->
+                    <div class="vgallery-action-bar">
+                        <button type="button" class="vaction-btn ar-btn" onclick="openArExperience()" title="Odanızda Canlı Görün">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>EVİNDE GÖR (AR)</span>
+                        </button>
+                        ${(product.videoUrl || product.youtubeUrl) ? `
+                        <button type="button" class="vaction-btn video-btn" onclick="openProductVideoModal('${product.videoUrl || product.youtubeUrl}')" title="Ürün Tanıtım Videosunu İzle">
+                            <span class="vvideo-play-icon"><i class="fa-solid fa-play"></i></span>
+                            <span>VİDEO İZLE</span>
+                        </button>
+                        ` : ''}
                     </div>
                 </div>
 
@@ -2787,7 +2868,7 @@ const renderProductDetail = () => {
                     <div class="vdetail-quick-actions-list">
                         <div class="vquick-action-item">
                             <i class="fa-regular fa-clock vqa-icon-time"></i>
-                            <span>Hızlı Teslimat: <strong>${formattedDeliveryDate} Günü Yolda</strong></span>
+                            <span>Hızlı Teslimat: <strong>${formattedDeliveryDate}</strong></span>
                         </div>
                         <a href="#modulePriceSection" class="vquick-action-item is-link" onclick="document.getElementById('modulePriceSection')?.scrollIntoView({behavior:'smooth'}); event.preventDefault();">
                             <i class="fa-solid fa-couch vqa-icon-couch"></i>
@@ -2867,6 +2948,7 @@ const renderProductDetail = () => {
                 </div>
 
                 <!-- Interactive Fabric & Color Studio Card -->
+                ${currentProductFabrics.length > 0 ? `
                 <div class="vfabric-studio-card" id="fabricStudioCard">
                     <div class="vfabric-studio-header">
                         <div class="vfabric-title-group">
@@ -2880,10 +2962,10 @@ const renderProductDetail = () => {
                     <div class="vfabric-types-wrap">
                         <span class="vfabric-section-label">1. Kumaş Dokusu:</span>
                         <div class="vfabric-type-pills">
-                            ${FABRIC_COLLECTIONS.map(fc => `
+                            ${currentProductFabrics.map(fc => `
                                 <button type="button" class="vfabric-pill-btn ${fc.id === currentFabricState.fabricId ? 'active' : ''}" onclick="selectFabricCollection('${fc.id}')" title="${fc.desc}">
                                     <span class="vfp-name">${fc.name}</span>
-                                    <span class="vfp-badge">${fc.badge}</span>
+                                    <span class="vfp-badge">${fc.badge || (fc.priceDiff > 0 ? '+' + formatPrice(fc.priceDiff) : 'Baz Fiyat')}</span>
                                 </button>
                             `).join('')}
                         </div>
@@ -2919,6 +3001,7 @@ const renderProductDetail = () => {
                         </a>
                     </div>
                 </div>
+                ` : ''}
 
                 <!-- Primary Buy Button -->
                 <button class="vbuy-primary-btn interactive-btn" id="topDetailAddToCartBtn">
@@ -2945,7 +3028,7 @@ const renderProductDetail = () => {
                     </div>
                     <div class="vtrust-item">
                         <i class="fa-solid fa-bolt vtrust-bolt"></i>
-                        <span>⚡ Hızlı Teslimat: <strong>${formattedDeliveryDate}</strong> Günü Yolda</span>
+                        <span>⚡ Hızlı Teslimat: <strong>${formattedDeliveryDate}</strong></span>
                     </div>
                     <div class="vtrust-item">
                         <i class="fa-solid fa-shield-halved vtrust-shield"></i>
@@ -3838,7 +3921,7 @@ const renderCart = () => {
                         </span>
 
                         <span class="ty-item-delivery-info">
-                            <i class="fa-solid fa-truck"></i> Özel Üretim &amp; Teslimat: 10-14 iş günü
+                            <i class="fa-solid fa-truck"></i> Özel Üretim &amp; Teslimat: <strong>${(typeof window.calculateDeliveryInfo === 'function' ? window.calculateDeliveryInfo(item.deliveryTime || "15 gün").fullText : "15 Gün Sonra Kargoda")}</strong>
                         </span>
 
                         ${item.selectedFabric ? `
@@ -5056,24 +5139,63 @@ function initDetailPage() {
 
     // Payment method selection & card input formatters
     let selectedPayMethod = "card";
-    const payMethodBtns = document.querySelectorAll(".payment-method-btn");
-    payMethodBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-            payMethodBtns.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            selectedPayMethod = btn.getAttribute("data-method") || "card";
-            
-            document.getElementById("panelPayCard")?.classList.toggle("active", selectedPayMethod === "card");
-            document.getElementById("panelPayBank")?.classList.toggle("active", selectedPayMethod === "bank");
-            document.getElementById("panelPayCod")?.classList.toggle("active", selectedPayMethod === "cod");
+    window.selectedPayMethod = "card";
 
-            const submitText = document.getElementById("checkoutSubmitText");
-            if (submitText) {
-                if (selectedPayMethod === "card") submitText.textContent = "iyzico ile Güvenli Ödeme Yap";
-                else if (selectedPayMethod === "bank") submitText.textContent = "Havale ile Siparişi Tamamla";
-                else if (selectedPayMethod === "cod") submitText.textContent = "Kapıda Ödeme ile Siparişi Onayla";
+    window.switchPaymentMethod = function(method) {
+        if (!method) method = "card";
+        selectedPayMethod = method;
+        window.selectedPayMethod = method;
+
+        // 1. Update tab buttons
+        document.querySelectorAll(".payment-tab-btn-modern, .payment-method-btn").forEach(btn => {
+            const m = btn.getAttribute("data-method") || (btn.id === "payMethodBank" ? "bank" : btn.id === "payMethodCod" ? "cod" : "card");
+            if (m === method) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
             }
         });
+
+        // 2. Explicitly toggle panels (both class and inline style)
+        const panelCard = document.getElementById("panelPayCard");
+        const panelBank = document.getElementById("panelPayBank");
+        const panelCod = document.getElementById("panelPayCod");
+
+        if (panelCard) {
+            panelCard.classList.toggle("active", method === "card");
+            panelCard.style.display = method === "card" ? "block" : "none";
+        }
+        if (panelBank) {
+            panelBank.classList.toggle("active", method === "bank");
+            panelBank.style.display = method === "bank" ? "block" : "none";
+        }
+        if (panelCod) {
+            panelCod.classList.toggle("active", method === "cod");
+            panelCod.style.display = method === "cod" ? "block" : "none";
+        }
+
+        // 3. Update checkout submit button text
+        const submitText = document.getElementById("checkoutSubmitText");
+        if (submitText) {
+            if (method === "card") submitText.textContent = "iyzico ile Güvenli Ödeme Yap";
+            else if (method === "bank") submitText.textContent = "Havale / EFT ile Siparişi Tamamla";
+            else if (method === "cod") submitText.textContent = "Kapıda Ödeme ile Siparişi Onayla";
+        }
+
+        // 4. Update checkout totals summary if Havale discount applies
+        if (typeof window.updateCheckoutSummaryTotals === "function") {
+            window.updateCheckoutSummaryTotals();
+        }
+    };
+
+    // Attach delegated click event on document so clicks inside modal always work reliably
+    document.addEventListener("click", function(e) {
+        const tabBtn = e.target.closest(".payment-tab-btn-modern, .payment-method-btn");
+        if (tabBtn) {
+            e.preventDefault();
+            const method = tabBtn.getAttribute("data-method") || (tabBtn.id === "payMethodBank" ? "bank" : tabBtn.id === "payMethodCod" ? "cod" : "card");
+            window.switchPaymentMethod(method);
+        }
     });
 
     document.getElementById("cardNumber")?.addEventListener("input", (e) => {

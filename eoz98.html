@@ -349,6 +349,21 @@
             background: rgba(30, 41, 59, 0.7);
             border-color: rgba(56, 189, 248, 0.25);
         }
+        .modal-fabric-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 110px 38px;
+            gap: 8px;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+        .modal-fabric-row:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(192, 132, 252, 0.35);
+        }
         .sub-prod-input {
             width: 100%;
             background: rgba(15, 23, 42, 0.85);
@@ -975,6 +990,78 @@
                             <button type="button" onclick="syncSetPriceFromSubProducts()" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;" title="Solo parçaların toplam tutarını yukarıdaki Ürün Fiyatı alanına aktarır">
                                 <i class="fa-solid fa-calculator"></i> Takım Fiyatı Yap
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TESLİMAT SÜRESİ YÖNETİMİ -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
+                    <label style="color:#38bdf8; font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-truck-fast"></i> Teslimat &amp; Kargoya Veriliş Süresi
+                    </label>
+                    <span style="font-size: 0.76rem; color: #94a3b8; display:block; margin-bottom:8px;">
+                        Örn: <strong>15 gün</strong> seçildiğinde sistem otomatik olarak bugünden itibaren ileri tarihi hesaplar ve sitede <em>"8 Ekim (15 Gün Sonra Kargoda)"</em> olarak gösterir. <strong>1 ay</strong> seçilirse <em>"23 Ekim (1 Ay Sonra Kargoda)"</em> olarak hesaplar.
+                    </span>
+                    <div style="display: grid; grid-template-columns: 180px 1fr; gap: 12px; align-items:center;">
+                        <select id="editProdDeliveryPreset" class="admin-input" style="padding-left:14px;" onchange="onDeliveryPresetChange(this.value)">
+                            <option value="15 gün">15 Gün (Standart)</option>
+                            <option value="20 gün">20 Gün</option>
+                            <option value="30 gün">30 Gün</option>
+                            <option value="1 ay">1 Ay</option>
+                            <option value="45 gün">45 Gün</option>
+                            <option value="custom">Özel Süre Gir...</option>
+                        </select>
+                        <input type="text" id="editProdDeliveryTime" class="admin-input" style="padding-left:14px;" placeholder="Örn: 15 gün veya 1 ay" value="15 gün" oninput="updateDeliveryDatePreview(this.value)">
+                    </div>
+                    <div id="deliveryDatePreviewBox" style="margin-top:8px; background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.25); border-radius:8px; padding:8px 12px; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-circle-info" style="color:#38bdf8;"></i>
+                        <span>Sitedeki Canlı Görünüm: <strong id="deliveryDatePreviewText" style="color:#38bdf8;">Hesaplanıyor...</strong></span>
+                    </div>
+                </div>
+
+                <!-- KUMAŞ SEÇENEKLERİ & KARTELA YÖNETİMİ -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                        <div>
+                            <label style="color:#c084fc; font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:2px;">
+                                <i class="fa-solid fa-swatchbook"></i> Kumaş Seçenekleri &amp; Kartela Yönetimi
+                            </label>
+                            <span style="font-size:0.76rem; color:#94a3b8;">
+                                Bu üründe müşterilerin seçebileceği kumaş dokularını, özelliklerini ve ek fiyat farklarını buradan yönetin.
+                            </span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.85rem; color:#f1f5f9; background:rgba(192, 132, 252, 0.15); border:1px solid rgba(192, 132, 252, 0.3); padding:5px 10px; border-radius:6px;">
+                                <input type="checkbox" id="editProdHasFabric" checked onchange="toggleFabricSettingsBox(this.checked)">
+                                <span>Kumaş Seçenekleri Aktif</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="fabricSettingsBox">
+                        <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
+                            <button type="button" onclick="addNewFabricRow()" class="btn-action-primary" style="padding:6px 12px; font-size:0.8rem; background:linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);">
+                                <i class="fa-solid fa-plus"></i> Yeni Kumaş Ekle
+                            </button>
+                            <button type="button" onclick="loadDefaultFabricsPreset()" class="preset-pill-btn" style="border-color:#a855f7; color:#c084fc;">
+                                <i class="fa-solid fa-rotate-right"></i> Standart Mobelmor Kumaşlarını Yükle (5 Dokuma)
+                            </button>
+                            <button type="button" onclick="clearAllFabrics()" class="preset-pill-btn clear" style="color:#f87171;">
+                                <i class="fa-solid fa-trash-can"></i> Temizle
+                            </button>
+                        </div>
+
+                        <!-- Kumaşlar Tablosu -->
+                        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; max-height: 260px; overflow-y: auto;">
+                            <div style="display: grid; grid-template-columns: 140px 1fr 110px 38px; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">
+                                <div>Kumaş Dokusu *</div>
+                                <div>Açıklama / Özellikler</div>
+                                <div>Fiyat Farkı (₺)</div>
+                                <div style="text-align:center;">Sil</div>
+                            </div>
+                            <div id="modalFabricRows" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                                <!-- Rendered dynamically via renderModalFabrics -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1803,6 +1890,222 @@ let currentModalImages = []; // Array of gallery images in modal
             updateSubProductsSummary();
         };
 
+        // --- DİNAMİK TESLİMAT SÜRESİ HESAPLAMA & ÖNİZLEME ---
+        window.calculateAdminDeliveryInfo = function(timeStr) {
+            if (!timeStr || typeof timeStr !== 'string') timeStr = '15 gün';
+            const lower = timeStr.trim().toLowerCase();
+            let daysToAdd = 15;
+            let displaySuffix = "";
+
+            const monthMatch = lower.match(/(\d+)\s*(ay|month)/);
+            if (monthMatch) {
+                const months = parseInt(monthMatch[1], 10) || 1;
+                daysToAdd = months * 30;
+                displaySuffix = `${months} Ay Sonra Kargoda`;
+            } else {
+                const weekMatch = lower.match(/(\d+)\s*(hafta|week)/);
+                if (weekMatch) {
+                    const weeks = parseInt(weekMatch[1], 10) || 1;
+                    daysToAdd = weeks * 7;
+                    displaySuffix = `${weeks} Hafta Sonra Kargoda`;
+                } else {
+                    const dayMatch = lower.match(/(\d+)/);
+                    if (dayMatch) {
+                        daysToAdd = parseInt(dayMatch[1], 10) || 15;
+                        displaySuffix = `${daysToAdd} Gün Sonra Kargoda`;
+                    } else {
+                        daysToAdd = 15;
+                        displaySuffix = "15 Gün Sonra Kargoda";
+                    }
+                }
+            }
+
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + daysToAdd);
+            const monthsTr = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+            const formattedDate = `${targetDate.getDate()} ${monthsTr[targetDate.getMonth()]}`;
+
+            return `${formattedDate} (${displaySuffix})`;
+        };
+
+        window.updateDeliveryDatePreview = function(val) {
+            const previewEl = document.getElementById('deliveryDatePreviewText');
+            if (previewEl) {
+                previewEl.textContent = window.calculateAdminDeliveryInfo(val);
+            }
+        };
+
+        window.onDeliveryPresetChange = function(val) {
+            const input = document.getElementById('editProdDeliveryTime');
+            if (val !== 'custom') {
+                input.value = val;
+                window.updateDeliveryDatePreview(val);
+            } else {
+                input.focus();
+            }
+        };
+
+        // --- KUMAŞ SEÇENEKLERİ YÖNETİMİ ---
+        const DEFAULT_ADMIN_FABRICS = [
+            {
+                id: 'babyface',
+                name: 'Baby Face Kadife',
+                badge: 'Baz Fiyat (0 TL)',
+                desc: 'Su itici, silinebilir, ipeksi yumuşak kadife doku.',
+                priceDiff: 0,
+                colors: [
+                    { code: 'BF-01', name: 'Krem Bej', image: 'assets/fabrics/bf_krem.webp', hex: '#f5f0eb' },
+                    { code: 'BF-02', name: 'Antrasit Gri', image: 'assets/fabrics/bf_antrasit.webp', hex: '#334155' },
+                    { code: 'BF-03', name: 'Zümrüt Yeşili', image: 'assets/fabrics/bf_zumrut.webp', hex: '#166534' },
+                    { code: 'BF-04', name: 'Terracotta', image: 'assets/fabrics/bf_terracotta.webp', hex: '#c2410c' },
+                    { code: 'BF-05', name: 'Gece Mavisi', image: 'assets/fabrics/bf_gecemavisi.webp', hex: '#1e3a8a' },
+                    { code: 'BF-06', name: 'Vizon Latte', image: 'assets/fabrics/bf_vizon.webp', hex: '#a89484' },
+                    { code: 'BF-07', name: 'Hardal Sarısı', image: 'assets/fabrics/bf_hardal.webp', hex: '#ca8a04' },
+                    { code: 'BF-08', name: 'Adaçayı Yeşili', image: 'assets/fabrics/bf_adacayi.webp', hex: '#57755f' }
+                ]
+            },
+            {
+                id: 'nubuk',
+                name: 'Silinebilir Nubuk',
+                badge: '+3.120 TL',
+                desc: 'Tırnak takılmayan, leke tutmaz pürüzsüz süet nubuk dokusu.',
+                priceDiff: 3120,
+                colors: [
+                    { code: 'NB-01', name: 'Taba Kahve', image: 'assets/fabrics/nb_taba.webp', hex: '#b46937' },
+                    { code: 'NB-02', name: 'Duman Gri', image: 'assets/fabrics/nb_duman.webp', hex: '#64748b' },
+                    { code: 'NB-03', name: 'Kum Beji', image: 'assets/fabrics/nb_kum.webp', hex: '#d4c4b0' },
+                    { code: 'NB-04', name: 'Çikolata Kahve', image: 'assets/fabrics/nb_cikolata.webp', hex: '#4e342e' },
+                    { code: 'NB-05', name: 'Petrol Yeşili', image: 'assets/fabrics/nb_petrol.webp', hex: '#155e75' },
+                    { code: 'NB-06', name: 'Kül Grisi', image: 'assets/fabrics/nb_kul.webp', hex: '#8c8c91' }
+                ]
+            },
+            {
+                id: 'sonil',
+                name: 'Lüks Şönil / Jakar',
+                badge: '+5.460 TL',
+                desc: 'Ağır gramajlı, tok ve dökümlü şık jakarlı mobilya şönili.',
+                priceDiff: 5460,
+                colors: [
+                    { code: 'SN-01', name: 'Lüks Antrasit', image: 'assets/fabrics/sn_antrasit.webp', hex: '#2d3748' },
+                    { code: 'SN-02', name: 'Vizon Şönil', image: 'assets/fabrics/sn_vizon.webp', hex: '#9b8778' },
+                    { code: 'SN-03', name: 'Zümrüt Şönil', image: 'assets/fabrics/sn_zumrut.webp', hex: '#145537' },
+                    { code: 'SN-04', name: 'Krem Şönil', image: 'assets/fabrics/sn_krem.webp', hex: '#f2ece2' },
+                    { code: 'SN-05', name: 'Bakır Şönil', image: 'assets/fabrics/sn_bakir.webp', hex: '#af502d' },
+                    { code: 'SN-06', name: 'Lacivert Şönil', image: 'assets/fabrics/sn_lacivert.webp', hex: '#192d5a' }
+                ]
+            },
+            {
+                id: 'keten',
+                name: 'Doğal Dokuma Keten',
+                badge: '+7.800 TL',
+                desc: 'Doğal lifli, ferah ve organik nefes alabilen keten dokuma.',
+                priceDiff: 7800,
+                colors: [
+                    { code: 'KT-01', name: 'Doğal Keten', image: 'assets/fabrics/kt_dogal.webp', hex: '#e1d7c6' },
+                    { code: 'KT-02', name: 'Açık Bej', image: 'assets/fabrics/kt_acikbej.webp', hex: '#f0e9de' },
+                    { code: 'KT-03', name: 'Taş Rengi', image: 'assets/fabrics/kt_tas.webp', hex: '#b9afa0' },
+                    { code: 'KT-04', name: 'Grafit Keten', image: 'assets/fabrics/kt_grafit.webp', hex: '#4b5563' },
+                    { code: 'KT-05', name: 'Zeytin Yeşili', image: 'assets/fabrics/kt_zeytin.webp', hex: '#5f6e50' },
+                    { code: 'KT-06', name: 'Çöl Kumu', image: 'assets/fabrics/kt_colkumu.webp', hex: '#cdb99b' }
+                ]
+            },
+            {
+                id: 'bukle',
+                name: 'İtalyan Bukle',
+                badge: '+14.820 TL',
+                desc: 'Özel 3D bukle dokuma, hacimli ve sıcak lüks doku.',
+                priceDiff: 14820,
+                colors: [
+                    { code: 'BK-01', name: 'Ekru Bukle', image: 'assets/fabrics/bk_ekru.webp', hex: '#f8f5ee' },
+                    { code: 'BK-02', name: 'Fildişi Bukle', image: 'assets/fabrics/bk_fildisi.webp', hex: '#eee8dc' },
+                    { code: 'BK-03', name: 'Sıcak Bej', image: 'assets/fabrics/bk_bej.webp', hex: '#daccb9' },
+                    { code: 'BK-04', name: 'Taş Grisi', image: 'assets/fabrics/bk_tasgri.webp', hex: '#949ba2' },
+                    { code: 'BK-05', name: 'Vizon Bukle', image: 'assets/fabrics/bk_vizon.webp', hex: '#a08c7d' },
+                    { code: 'BK-06', name: 'Fıstık Yeşili', image: 'assets/fabrics/bk_fistik.webp', hex: '#78916e' }
+                ]
+            }
+        ];
+
+        let currentModalFabrics = [];
+
+        window.toggleFabricSettingsBox = function(isActive) {
+            const box = document.getElementById('fabricSettingsBox');
+            if (box) box.style.display = isActive ? 'block' : 'none';
+        };
+
+        window.renderModalFabrics = function() {
+            const container = document.getElementById('modalFabricRows');
+            if (!container) return;
+
+            if (!currentModalFabrics || currentModalFabrics.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:16px; color:#94a3b8; font-size:0.8rem; background:rgba(15,23,42,0.4); border-radius:6px;">
+                        <i class="fa-solid fa-swatchbook" style="margin-right:6px; color:#c084fc;"></i> Bu ürün için özel kumaş eklenmedi. Yukarıdaki <strong>"Yeni Kumaş Ekle"</strong> veya <strong>"Standart Kumaşları Yükle"</strong> butonuna tıklayabilirsiniz.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = currentModalFabrics.map((fc, idx) => `
+                <div class="modal-fabric-row" data-index="${idx}">
+                    <div>
+                        <input type="text" class="sub-prod-input fabric-name" value="${(fc.name || '').replace(/"/g, '&quot;')}" placeholder="Örn: Baby Face Kadife" oninput="onFabricFieldChange(${idx}, 'name', this.value)" required>
+                    </div>
+                    <div>
+                        <input type="text" class="sub-prod-input fabric-desc" value="${(fc.desc || '').replace(/"/g, '&quot;')}" placeholder="Açıklama (Örn: Leke tutmaz kadife doku)" oninput="onFabricFieldChange(${idx}, 'desc', this.value)">
+                    </div>
+                    <div>
+                        <input type="number" class="sub-prod-input fabric-price-diff" value="${(fc.priceDiff !== undefined && fc.priceDiff !== null) ? fc.priceDiff : 0}" placeholder="Fark (₺)" oninput="onFabricFieldChange(${idx}, 'priceDiff', this.value)">
+                    </div>
+                    <div style="display:flex; justify-content:center;">
+                        <button type="button" class="sub-prod-del-btn" onclick="removeFabricRow(${idx})" title="Bu Kumaşı Sil"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.onFabricFieldChange = function(idx, field, val) {
+            if (!currentModalFabrics[idx]) return;
+            if (field === 'priceDiff') {
+                currentModalFabrics[idx].priceDiff = parseFloat(val) || 0;
+                currentModalFabrics[idx].badge = currentModalFabrics[idx].priceDiff > 0 ? `+${currentModalFabrics[idx].priceDiff.toLocaleString('tr-TR')} TL` : 'Baz Fiyat (0 TL)';
+            } else {
+                currentModalFabrics[idx][field] = val;
+            }
+        };
+
+        window.addNewFabricRow = function() {
+            currentModalFabrics.push({
+                id: 'fab_' + Date.now().toString(36),
+                name: 'Yeni Kumaş ' + (currentModalFabrics.length + 1),
+                badge: 'Baz Fiyat (0 TL)',
+                desc: 'Silinebilir 1. sınıf dokuma mobilya kumaşı',
+                priceDiff: 0,
+                colors: [
+                    { code: 'KM-01', name: 'Krem Bej', image: 'assets/fabrics/bf_krem.webp', hex: '#f5f0eb' },
+                    { code: 'KM-02', name: 'Antrasit Gri', image: 'assets/fabrics/bf_antrasit.webp', hex: '#334155' }
+                ]
+            });
+            window.renderModalFabrics();
+        };
+
+        window.removeFabricRow = function(idx) {
+            currentModalFabrics.splice(idx, 1);
+            window.renderModalFabrics();
+        };
+
+        window.clearAllFabrics = function() {
+            if (confirm("Tüm kumaş seçeneklerini silmek istediğinize emin misiniz?")) {
+                currentModalFabrics = [];
+                window.renderModalFabrics();
+            }
+        };
+
+        window.loadDefaultFabricsPreset = function() {
+            currentModalFabrics = JSON.parse(JSON.stringify(DEFAULT_ADMIN_FABRICS));
+            window.renderModalFabrics();
+        };
+
         // Open Product Modal (Populate all specs, sub-products and dimensions)
         window.openProductModal = (id) => {
             const modal = document.getElementById('productModal');
@@ -1818,6 +2121,27 @@ let currentModalImages = []; // Array of gallery images in modal
                 document.getElementById('editProdPrice').value = prod.price;
                 document.getElementById('editProdOldPrice').value = prod.originalPrice || '';
                 
+                // Delivery Time Initialization
+                const delTimeVal = prod.deliveryTime || '15 gün';
+                document.getElementById('editProdDeliveryTime').value = delTimeVal;
+                const presetSelect = document.getElementById('editProdDeliveryPreset');
+                if (presetSelect) {
+                    const hasOpt = Array.from(presetSelect.options).some(o => o.value === delTimeVal);
+                    presetSelect.value = hasOpt ? delTimeVal : 'custom';
+                }
+                window.updateDeliveryDatePreview(delTimeVal);
+
+                // Fabric Studio Options Initialization
+                const hasFabricVal = prod.hasFabric !== false;
+                document.getElementById('editProdHasFabric').checked = hasFabricVal;
+                window.toggleFabricSettingsBox(hasFabricVal);
+                if (prod.fabricCollections && Array.isArray(prod.fabricCollections) && prod.fabricCollections.length > 0) {
+                    currentModalFabrics = JSON.parse(JSON.stringify(prod.fabricCollections));
+                } else {
+                    currentModalFabrics = JSON.parse(JSON.stringify(DEFAULT_ADMIN_FABRICS));
+                }
+                window.renderModalFabrics();
+
                 // Sub-products initialization
                 currentModalSubProducts = [];
                 if (prod.subProducts && Array.isArray(prod.subProducts) && prod.subProducts.length > 0) {
@@ -1866,6 +2190,13 @@ let currentModalImages = []; // Array of gallery images in modal
                 document.getElementById('productForm').reset();
                 document.getElementById('editProdId').value = "0";
                 document.getElementById('editProdVideoUrl').value = "";
+                document.getElementById('editProdDeliveryTime').value = "15 gün";
+                if (document.getElementById('editProdDeliveryPreset')) document.getElementById('editProdDeliveryPreset').value = "15 gün";
+                window.updateDeliveryDatePreview('15 gün');
+                document.getElementById('editProdHasFabric').checked = true;
+                window.toggleFabricSettingsBox(true);
+                currentModalFabrics = JSON.parse(JSON.stringify(DEFAULT_ADMIN_FABRICS));
+                window.renderModalFabrics();
                 currentMainImage = "";
                 currentModalImages = [];
                 currentModalSubProducts = [];
@@ -1898,6 +2229,31 @@ let currentModalImages = []; // Array of gallery images in modal
             const mainImg = currentMainImage || currentModalImages[0] || "assets/minegolden_p1_1.webp";
             const galleryList = currentModalImages.length > 0 ? currentModalImages : [mainImg];
             const videoUrlVal = (document.getElementById('editProdVideoUrl').value || '').trim();
+            const deliveryTimeVal = (document.getElementById('editProdDeliveryTime')?.value || '').trim() || '15 gün';
+            const hasFabricVal = document.getElementById('editProdHasFabric')?.checked !== false;
+
+            // Collect fabrics
+            const syncedFabrics = [];
+            const fabricRows = document.querySelectorAll('.modal-fabric-row');
+            fabricRows.forEach((row, fIdx) => {
+                const name = (row.querySelector('.fabric-name')?.value || '').trim();
+                const desc = (row.querySelector('.fabric-desc')?.value || '').trim();
+                const diff = parseFloat(row.querySelector('.fabric-price-diff')?.value) || 0;
+                if (name) {
+                    const orig = currentModalFabrics[fIdx] || {};
+                    syncedFabrics.push({
+                        id: orig.id || ('fab_' + fIdx),
+                        name: name,
+                        desc: desc || 'Silinebilir dokuma kumaş',
+                        priceDiff: diff,
+                        badge: diff > 0 ? `+${diff.toLocaleString('tr-TR')} TL` : 'Baz Fiyat (0 TL)',
+                        colors: (orig.colors && orig.colors.length > 0) ? orig.colors : [
+                            { code: 'KM-01', name: 'Krem Bej', image: 'assets/fabrics/bf_krem.webp', hex: '#f5f0eb' },
+                            { code: 'KM-02', name: 'Antrasit Gri', image: 'assets/fabrics/bf_antrasit.webp', hex: '#334155' }
+                        ]
+                    });
+                }
+            });
 
             // Collect sub-products from modal inputs
             const subProducts = [];
@@ -1930,6 +2286,9 @@ let currentModalImages = []; // Array of gallery images in modal
                 gallery: galleryList,
                 videoUrl: videoUrlVal,
                 youtubeUrl: videoUrlVal,
+                deliveryTime: deliveryTimeVal,
+                hasFabric: hasFabricVal,
+                fabricCollections: syncedFabrics,
                 dimensions: (document.getElementById('editProdDimensions').value || '').trim(),
                 skeleton: (document.getElementById('editProdSkeleton').value || '').trim(),
                 sponge: (document.getElementById('editProdSponge').value || '').trim(),
