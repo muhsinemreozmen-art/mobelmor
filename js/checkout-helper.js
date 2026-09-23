@@ -430,7 +430,13 @@
             const district = document.getElementById("checkoutDistrict")?.value || "";
 
             const cartItems = (typeof cart !== 'undefined' && Array.isArray(cart)) ? cart : [];
-            let itemsText = cartItems.map(i => `• ${i.title} (${i.qty} Adet) - ${fmtPrice(i.price * i.qty)}`).join("%0A");
+            let itemsText = cartItems.map(i => {
+                let txt = `• ${i.title} (${i.qty} Adet) - ${fmtPrice(i.price * i.qty)}`;
+                if (i.selectedModules && i.selectedModules.length > 0) {
+                    txt += ` [Parçalar: ${i.selectedModules.map(m => `${m.qty}x ${m.label}`).join(', ')}]`;
+                }
+                return txt;
+            }).join("%0A");
             const total = cartItems.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
             const msg = `Merhaba Mobelmor, sitemizden sipariş vermek istiyorum.%0A%0A*Müşteri:* ${name}%0A*Telefon:* ${phone}%0A*Teslimat Yeri:* ${city} / ${district}%0A%0A*Sepetteki Ürünler:*%0A${itemsText}%0A%0A*Toplam Tutar:* ${fmtPrice(total)}%0A%0ASipariş teyidi ve detaylı bilgi rica ederim.`;

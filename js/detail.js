@@ -3050,6 +3050,18 @@ const renderProductDetail = () => {
 };
 
 const getCategoryModuleConfig = (product) => {
+    // 0. If explicit subProducts with custom solo prices are configured from admin panel
+    if (product.subProducts && Array.isArray(product.subProducts) && product.subProducts.length > 0) {
+        return product.subProducts.map((sp, idx) => ({
+            id: sp.id || ('sub_' + idx),
+            label: sp.title || sp.name || sp.label || ('Parça ' + (idx + 1)),
+            price: parseFloat(sp.price) || 0,
+            originalPrice: parseFloat(sp.originalPrice) || 0,
+            qty: (sp.qty !== undefined && sp.qty !== null) ? parseInt(sp.qty) : 1
+        }));
+    }
+
+    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
     const isSet = product.productType === 'Set' || (product.title && product.title.toLowerCase().includes('takım')) || (product.badges && product.badges.some(b => b.toLowerCase().includes('takım')));
     const cat = product.category || '';
     const sub = product.subcategory || '';
@@ -3065,8 +3077,14 @@ const getCategoryModuleConfig = (product) => {
 
         let allocated = 0;
         return product.components.map((compName, idx) => {
+            const matchingSolo = allProds.find(p => 
+                (p.parentSet === product.title && p.title.toLowerCase() === compName.toLowerCase()) || 
+                (p.title.toLowerCase() === compName.toLowerCase())
+            );
             let price;
-            if (idx === count - 1) {
+            if (matchingSolo && matchingSolo.price) {
+                price = matchingSolo.price;
+            } else if (idx === count - 1) {
                 price = product.price - allocated;
             } else {
                 price = Math.round(product.price * weights[idx]);
@@ -3560,6 +3578,14 @@ const addToCart = (productId, qty = 1) => {
             colorHex: currentFabricState.colorHex,
             fabricPriceDiff: fabricDiff
         } : {};
+        if (typeof currentModuleState !== 'undefined' && currentModuleState && currentModuleState.modules) {
+            fabricInfo.selectedModules = currentModuleState.modules.filter(m => m.qty > 0).map(m => ({
+                id: m.id,
+                label: m.label,
+                qty: m.qty,
+                price: m.price
+            }));
+        }
     }
 
     try {
@@ -3819,6 +3845,13 @@ const renderCart = () => {
                             <div style="font-size:0.72rem; color:#64748b; font-weight:600; display:flex; align-items:center; gap:4px;">
                                 <span style="width:7px; height:7px; border-radius:50%; background-color:${item.colorHex || '#6b21a8'}; display:inline-block;"></span>
                                 <span>${item.selectedFabric}: ${item.selectedColor}</span>
+                            </div>
+                        ` : ''}
+
+                        ${(item.selectedModules && item.selectedModules.length > 0) ? `
+                            <div style="font-size:0.72rem; color:#475569; font-weight:600; margin-top:2px; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+                                <i class="fa-solid fa-layer-group" style="color:#6b21a8; font-size:0.7rem;"></i>
+                                <span>Parçalar: ${item.selectedModules.map(m => `${m.qty}x ${m.label}`).join(', ')}</span>
                             </div>
                         ` : ''}
 
@@ -5141,7 +5174,16 @@ function initDetailPage() {
                 paymentMethodLabel: paymentMethodLabel,
                 paymentStatus: paymentStatus,
                 paymentGateway: paymentGateway,
-                items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, qty: i.qty, image: i.image, selectedFabric: i.selectedFabric, selectedColor: i.selectedColor })),
+                items: cart.map(i => ({
+                    id: i.id,
+                    title: i.title,
+                    price: i.price,
+                    qty: i.qty,
+                    image: i.image,
+                    selectedFabric: i.selectedFabric,
+                    selectedColor: i.selectedColor,
+                    selectedModules: i.selectedModules || []
+                })),
                 total: subtotal,
                 totalAmount: subtotal
             };

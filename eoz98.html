@@ -302,11 +302,87 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
             width: 100%;
-            max-width: 680px;
+            max-width: 740px;
             max-height: 90vh;
             overflow-y: auto;
             padding: 28px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Sub-Products / Modules Manager Styles */
+        .preset-pill-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .preset-pill-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-color: #38bdf8;
+        }
+        .preset-pill-btn.clear:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        .modal-sub-prod-row {
+            display: grid;
+            grid-template-columns: 1fr 135px 125px 38px;
+            gap: 8px;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+        .modal-sub-prod-row:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+        .sub-prod-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.15s ease;
+        }
+        .sub-prod-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        .sub-prod-del-btn {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.15s ease;
+        }
+        .sub-prod-del-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
         }
 
         /* Image Uploader & Thumbnail Strip */
@@ -839,11 +915,67 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group">
                         <label>Fiyat (₺) *</label>
-                        <input type="number" id="editProdPrice" class="admin-input" style="padding-left: 14px;" required>
+                        <input type="number" id="editProdPrice" class="admin-input" style="padding-left: 14px;" required oninput="updateSubProductsSummary()">
                     </div>
                     <div class="form-group">
                         <label>Eski / Liste Fiyatı (₺)</label>
                         <input type="number" id="editProdOldPrice" class="admin-input" style="padding-left: 14px;">
+                    </div>
+                </div>
+
+                <!-- ALT PARÇALAR & PARÇA (SOLO) FİYATLANDIRMA YÖNETİMİ -->
+                <div class="form-group" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <label style="color:#38bdf8; font-weight:700; margin-bottom: 2px; display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-puzzle-piece"></i> Alt Parçalar &amp; Solo Fiyatlandırması (Şifonyer, Başlık, Gardırop vb.)
+                            </label>
+                            <span style="font-size: 0.76rem; color: #94a3b8;">
+                                Takıma ait modüllerin tekil (solo) satış tutarlarını buradan yönetin. Ürün detayındaki canlı modül hesaplayıcısında bu fiyatlar kullanılır.
+                            </span>
+                        </div>
+                        <button type="button" onclick="addNewSubProductRow()" class="btn-action-primary" style="padding: 6px 12px; font-size: 0.8rem; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                            <i class="fa-solid fa-plus"></i> Yeni Parça Ekle
+                        </button>
+                    </div>
+
+                    <!-- Hızlı Şablon Butonları -->
+                    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom: 12px; align-items:center;">
+                        <span style="font-size:0.72rem; color:#64748b; margin-right:4px;">Hızlı Şablon:</span>
+                        <button type="button" onclick="applySubProductPreset('bedroom')" class="preset-pill-btn"><i class="fa-solid fa-bed"></i> Yatak Odası</button>
+                        <button type="button" onclick="applySubProductPreset('living')" class="preset-pill-btn"><i class="fa-solid fa-couch"></i> Oturma Odası</button>
+                        <button type="button" onclick="applySubProductPreset('dining')" class="preset-pill-btn"><i class="fa-solid fa-utensils"></i> Yemek Odası</button>
+                        <button type="button" onclick="clearAllSubProducts()" class="preset-pill-btn clear" style="color:#f87171;"><i class="fa-solid fa-trash-can"></i> Temizle</button>
+                    </div>
+
+                    <!-- Alt Parçalar Tablosu / Listesi -->
+                    <div id="subProductsListContainer" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; max-height: 290px; overflow-y: auto;">
+                        <div id="subProductsTableHead" style="display: grid; grid-template-columns: 1fr 135px 125px 38px; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">
+                            <div>Parça / Alt Ürün Adı *</div>
+                            <div>Solo Fiyat (₺) *</div>
+                            <div>Liste Fiyatı (₺)</div>
+                            <div style="text-align:center;">Sil</div>
+                        </div>
+                        <div id="modalSubProductsRows" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <!-- Rendered dynamically via renderModalSubProducts -->
+                        </div>
+                    </div>
+
+                    <!-- Alt Parçalar Canlı Fiyat Özeti -->
+                    <div id="subProductsSummaryBar" style="display:flex; justify-content:space-between; align-items:center; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 0.85rem; flex-wrap:wrap; gap:10px;">
+                        <div style="color: #cbd5e1; display:flex; align-items:center; gap:8px;">
+                            <span id="subProdCountBadge" style="font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.15); padding:2px 8px; border-radius:12px; font-size:0.75rem;">0 parça</span>
+                            <span style="font-size:0.78rem; color:#94a3b8;">parça fiyatları girildiğinde otomatik toplanır</span>
+                        </div>
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <div style="text-align:right;">
+                                <span style="font-size:0.72rem; color:#94a3b8; display:block;">Solo Parçalar Toplamı:</span>
+                                <strong id="subProdSoloTotalDisp" style="color:#4ade80; font-size:1.1rem;">0 ₺</strong>
+                            </div>
+                            <button type="button" onclick="syncSetPriceFromSubProducts()" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;" title="Solo parçaların toplam tutarını yukarıdaki Ürün Fiyatı alanına aktarır">
+                                <i class="fa-solid fa-calculator"></i> Takım Fiyatı Yap
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1492,7 +1624,186 @@ let currentModalImages = []; // Array of gallery images in modal
             `).join('');
         }
 
-        // Open Product Modal (Populate all specs and dimensions)
+        // --- SUB-PRODUCTS (ALT PARÇALAR & MODÜL FİYATLANDIRMA) LOGIC ---
+        let currentModalSubProducts = [];
+
+        window.renderModalSubProducts = () => {
+            const container = document.getElementById('modalSubProductsRows');
+            if (!container) return;
+
+            if (!currentModalSubProducts || currentModalSubProducts.length === 0) {
+                container.innerHTML = `
+                    <div id="noSubProdsMsg" style="text-align:center; padding:18px; color:#64748b; font-size:0.8rem; background:rgba(15,23,42,0.4); border-radius:6px;">
+                        <i class="fa-solid fa-puzzle-piece" style="margin-right:6px; color:#38bdf8;"></i> Bu ürün için henüz alt parça tanımlanmadı. Yukarıdaki <strong>"Yeni Parça Ekle"</strong> butonunu veya hazır şablonları kullanabilirsiniz.
+                    </div>
+                `;
+                updateSubProductsSummary();
+                return;
+            }
+
+            container.innerHTML = currentModalSubProducts.map((sp, idx) => `
+                <div class="modal-sub-prod-row" data-index="${idx}">
+                    <div>
+                        <input type="text" class="sub-prod-input sub-prod-title" value="${(sp.title || sp.name || '').replace(/"/g, '&quot;')}" placeholder="Örn: Aynalı Şifonyer, Karyola &amp; Başlık..." oninput="onSubProductFieldChange(${idx}, 'title', this.value)" required>
+                    </div>
+                    <div>
+                        <input type="number" class="sub-prod-input sub-prod-price" value="${(sp.price !== undefined && sp.price !== null && sp.price !== '') ? sp.price : ''}" placeholder="Solo Fiyat (₺)" oninput="onSubProductFieldChange(${idx}, 'price', this.value)" required>
+                    </div>
+                    <div>
+                        <input type="number" class="sub-prod-input sub-prod-orig-price" value="${sp.originalPrice || ''}" placeholder="Eski Fiyat (₺)" oninput="onSubProductFieldChange(${idx}, 'originalPrice', this.value)">
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="button" class="sub-prod-del-btn" onclick="removeSubProductRow(${idx})" title="Parçayı Sil">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateSubProductsSummary();
+        };
+
+        window.onSubProductFieldChange = (idx, field, val) => {
+            if (!currentModalSubProducts[idx]) return;
+            if (field === 'price' || field === 'originalPrice') {
+                currentModalSubProducts[idx][field] = parseFloat(val) || 0;
+            } else {
+                currentModalSubProducts[idx][field] = val;
+            }
+            updateSubProductsSummary();
+        };
+
+        window.addNewSubProductRow = (name = '', price = 0, origPrice = 0) => {
+            currentModalSubProducts.push({
+                title: name,
+                price: price,
+                originalPrice: origPrice || (price ? Math.round(price * 1.15) : 0)
+            });
+            renderModalSubProducts();
+            setTimeout(() => {
+                const rows = document.querySelectorAll('.modal-sub-prod-row');
+                const lastRow = rows[rows.length - 1];
+                if (lastRow) {
+                    const input = lastRow.querySelector('.sub-prod-title');
+                    if (input) input.focus();
+                }
+            }, 60);
+        };
+
+        window.removeSubProductRow = (idx) => {
+            currentModalSubProducts.splice(idx, 1);
+            renderModalSubProducts();
+        };
+
+        window.clearAllSubProducts = () => {
+            if (currentModalSubProducts.length === 0) return;
+            if (confirm("Tanımlı tüm alt parçaları kaldırmak istediğinize emin misiniz?")) {
+                currentModalSubProducts = [];
+                renderModalSubProducts();
+            }
+        };
+
+        window.applySubProductPreset = (type) => {
+            const presets = {
+                bedroom: [
+                    { title: "Gardırop (6 Kapaklı / Sürgülü)", price: 0, originalPrice: 0 },
+                    { title: "Karyola & Yatak Başlığı", price: 0, originalPrice: 0 },
+                    { title: "Aynalı Şifonyer", price: 0, originalPrice: 0 },
+                    { title: "Komodin (2 Adet)", price: 0, originalPrice: 0 }
+                ],
+                living: [
+                    { title: "3'lü Koltuk (1. Adet)", price: 0, originalPrice: 0 },
+                    { title: "3'lü Koltuk (2. Adet)", price: 0, originalPrice: 0 },
+                    { title: "Berjer / Tekli Koltuk", price: 0, originalPrice: 0 }
+                ],
+                dining: [
+                    { title: "Açılır Yemek Masası", price: 0, originalPrice: 0 },
+                    { title: "Konsol & Aynası", price: 0, originalPrice: 0 },
+                    { title: "Sandalye Seti (4 Adet)", price: 0, originalPrice: 0 }
+                ]
+            };
+
+            const items = presets[type];
+            if (!items) return;
+
+            // If main product has price > 0, calculate realistic default module distribution
+            const mainPrice = parseFloat(document.getElementById('editProdPrice')?.value) || 0;
+            if (mainPrice > 0) {
+                if (type === 'bedroom') {
+                    items[0].price = Math.round(mainPrice * 0.42);
+                    items[1].price = Math.round(mainPrice * 0.30);
+                    items[2].price = Math.round(mainPrice * 0.16);
+                    items[3].price = mainPrice - (items[0].price + items[1].price + items[2].price);
+                } else if (type === 'living') {
+                    items[0].price = Math.round(mainPrice * 0.39);
+                    items[1].price = Math.round(mainPrice * 0.39);
+                    items[2].price = mainPrice - (items[0].price + items[1].price);
+                } else if (type === 'dining') {
+                    items[0].price = Math.round(mainPrice * 0.40);
+                    items[1].price = Math.round(mainPrice * 0.36);
+                    items[2].price = mainPrice - (items[0].price + items[1].price);
+                }
+                items.forEach(it => {
+                    it.originalPrice = Math.round(it.price * 1.15);
+                });
+            }
+
+            if (currentModalSubProducts.length > 0) {
+                if (!confirm("Mevcut parçaların üzerine şablon parçaları eklensin mi? (İptal derseniz mevcut parçalar şablonla değiştirilir)")) {
+                    currentModalSubProducts = items.map(x => ({ ...x }));
+                } else {
+                    currentModalSubProducts = [...currentModalSubProducts, ...items.map(x => ({ ...x }))];
+                }
+            } else {
+                currentModalSubProducts = items.map(x => ({ ...x }));
+            }
+            renderModalSubProducts();
+        };
+
+        window.updateSubProductsSummary = () => {
+            let total = 0;
+            let count = 0;
+            const rows = document.querySelectorAll('.modal-sub-prod-row');
+            if (rows.length > 0) {
+                rows.forEach(r => {
+                    const title = (r.querySelector('.sub-prod-title')?.value || '').trim();
+                    const p = parseFloat(r.querySelector('.sub-prod-price')?.value) || 0;
+                    if (title || p > 0) {
+                        count++;
+                        total += p;
+                    }
+                });
+            } else {
+                count = currentModalSubProducts.length;
+                total = currentModalSubProducts.reduce((sum, sp) => sum + (parseFloat(sp.price) || 0), 0);
+            }
+
+            const countBadge = document.getElementById('subProdCountBadge');
+            const totalDisp = document.getElementById('subProdSoloTotalDisp');
+            if (countBadge) countBadge.textContent = `${count} parça`;
+            if (totalDisp) totalDisp.textContent = `${total.toLocaleString('tr-TR')} ₺`;
+        };
+
+        window.syncSetPriceFromSubProducts = () => {
+            let total = 0;
+            const rows = document.querySelectorAll('.modal-sub-prod-row');
+            rows.forEach(r => {
+                total += parseFloat(r.querySelector('.sub-prod-price')?.value) || 0;
+            });
+            if (total <= 0) {
+                alert("Henüz fiyatı girilmiş bir alt parça bulunmuyor.");
+                return;
+            }
+            const priceInput = document.getElementById('editProdPrice');
+            const oldPriceInput = document.getElementById('editProdOldPrice');
+            if (priceInput) priceInput.value = total;
+            if (oldPriceInput && (!oldPriceInput.value || parseFloat(oldPriceInput.value) <= total)) {
+                oldPriceInput.value = Math.round(total * 1.15);
+            }
+            updateSubProductsSummary();
+        };
+
+        // Open Product Modal (Populate all specs, sub-products and dimensions)
         window.openProductModal = (id) => {
             const modal = document.getElementById('productModal');
             const title = document.getElementById('modalProductTitle');
@@ -1507,6 +1818,27 @@ let currentModalImages = []; // Array of gallery images in modal
                 document.getElementById('editProdPrice').value = prod.price;
                 document.getElementById('editProdOldPrice').value = prod.originalPrice || '';
                 
+                // Sub-products initialization
+                currentModalSubProducts = [];
+                if (prod.subProducts && Array.isArray(prod.subProducts) && prod.subProducts.length > 0) {
+                    currentModalSubProducts = JSON.parse(JSON.stringify(prod.subProducts));
+                } else if (prod.components && Array.isArray(prod.components) && prod.components.length > 0) {
+                    const allProds = window.StoreService ? window.StoreService.getProducts(true) : [];
+                    currentModalSubProducts = prod.components.map(compName => {
+                        const solo = allProds.find(p => 
+                            (p.parentSet === prod.title && p.title.toLowerCase() === compName.toLowerCase()) || 
+                            (p.title.toLowerCase() === compName.toLowerCase())
+                        );
+                        const pPrice = solo ? (parseFloat(solo.price) || 0) : 0;
+                        const pOrig = solo ? (parseFloat(solo.originalPrice) || Math.round(pPrice * 1.15)) : 0;
+                        return {
+                            title: compName,
+                            price: pPrice,
+                            originalPrice: pOrig
+                        };
+                    });
+                }
+
                 // Images
                 currentMainImage = prod.image || "";
                 currentModalImages = prod.gallery && prod.gallery.length > 0 ? [...prod.gallery] : [prod.image].filter(Boolean);
@@ -1536,9 +1868,11 @@ let currentModalImages = []; // Array of gallery images in modal
                 document.getElementById('editProdVideoUrl').value = "";
                 currentMainImage = "";
                 currentModalImages = [];
+                currentModalSubProducts = [];
             }
 
             renderModalGallery();
+            renderModalSubProducts();
             modal.style.display = 'flex';
         };
 
@@ -1565,11 +1899,31 @@ let currentModalImages = []; // Array of gallery images in modal
             const galleryList = currentModalImages.length > 0 ? currentModalImages : [mainImg];
             const videoUrlVal = (document.getElementById('editProdVideoUrl').value || '').trim();
 
+            // Collect sub-products from modal inputs
+            const subProducts = [];
+            const subRows = document.querySelectorAll('.modal-sub-prod-row');
+            subRows.forEach((row, rIdx) => {
+                const subTitle = (row.querySelector('.sub-prod-title')?.value || '').trim();
+                const subPrice = parseFloat(row.querySelector('.sub-prod-price')?.value) || 0;
+                const subOrigPrice = parseFloat(row.querySelector('.sub-prod-orig-price')?.value) || Math.round(subPrice * 1.15);
+                if (subTitle) {
+                    subProducts.push({
+                        id: 'sub_' + rIdx + '_' + Math.random().toString(36).substr(2, 5),
+                        title: subTitle,
+                        name: subTitle,
+                        price: subPrice,
+                        originalPrice: subOrigPrice
+                    });
+                }
+            });
+
+            const prodTypeVal = document.getElementById('editProdType').value || (subProducts.length > 0 ? 'Set' : 'Solo');
+
             const updatedData = {
                 id: id,
                 title: title,
                 category: document.getElementById('editProdCategory').value || 'living',
-                productType: document.getElementById('editProdType').value || 'Solo',
+                productType: prodTypeVal,
                 price: price,
                 originalPrice: parseFloat(document.getElementById('editProdOldPrice').value) || Math.round(price * 1.15),
                 image: mainImg,
@@ -1581,16 +1935,38 @@ let currentModalImages = []; // Array of gallery images in modal
                 sponge: (document.getElementById('editProdSponge').value || '').trim(),
                 fabric: (document.getElementById('editProdFabric').value || '').trim(),
                 warranty: (document.getElementById('editProdWarranty').value || '').trim(),
-                material: (document.getElementById('editProdFabric').value || '').trim() || 'İnegöl Masif Ahşap & İthal Kumaş'
+                material: (document.getElementById('editProdFabric').value || '').trim() || 'İnegöl Masif Ahşap & İthal Kumaş',
+                subProducts: subProducts,
+                components: subProducts.length > 0 ? subProducts.map(sp => sp.title) : []
             };
 
             if (window.StoreService) {
                 await window.StoreService.saveProduct(updatedData);
+
+                // Standalone Solo ürünleri katalogda senkronize et
+                if (subProducts.length > 0) {
+                    try {
+                        const allProds = window.StoreService.getProducts(true);
+                        for (const sp of subProducts) {
+                            const matchingSolo = allProds.find(p => 
+                                (p.parentSet === updatedData.title && p.title.toLowerCase() === sp.title.toLowerCase()) ||
+                                (p.parentSet === updatedData.title && (p.title.toLowerCase().includes(sp.title.toLowerCase()) || sp.title.toLowerCase().includes(p.title.toLowerCase())))
+                            );
+                            if (matchingSolo) {
+                                matchingSolo.price = sp.price;
+                                if (sp.originalPrice) matchingSolo.originalPrice = sp.originalPrice;
+                                window.StoreService.saveProduct(matchingSolo);
+                            }
+                        }
+                    } catch (syncErr) {
+                        console.warn("Solo sync warning:", syncErr);
+                    }
+                }
             }
 
             closeProductModal();
             loadDashboardData();
-            alert("✅ Ürün başarıyla kaydedildi ve buluta senkronize edildi!");
+            alert("✅ Ürün ve alt parçaların solo fiyatlandırması başarıyla kaydedildi!");
             return false;
         };
 
@@ -1609,7 +1985,15 @@ let currentModalImages = []; // Array of gallery images in modal
                     <td><strong style="color:#38bdf8;">${o.orderNumber}</strong></td>
                     <td><strong>${o.customerName}</strong></td>
                     <td>${o.customerPhone || '-'}<br><small style="color:#94a3b8;">${o.city || ''} / ${o.district || ''}</small></td>
-                    <td>${(o.items || []).map(i => `${i.qty}x ${i.title}`).join(', ')}</td>
+                    <td>
+                        ${(o.items || []).map(i => {
+                            let itemHtml = `<strong>${i.qty}x ${i.title}</strong>`;
+                            if (i.selectedModules && i.selectedModules.length > 0) {
+                                itemHtml += `<div style="font-size:0.75rem; color:#a78bfa; margin-top:2px;"><i class="fa-solid fa-layer-group"></i> Parçalar: ${i.selectedModules.map(m => `${m.qty}x ${m.label}`).join(', ')}</div>`;
+                            }
+                            return itemHtml;
+                        }).join('<div style="margin-bottom:6px;"></div>')}
+                    </td>
                     <td><strong style="color:#4ade80;">${(o.totalAmount || 0).toLocaleString('tr-TR')} ₺</strong></td>
                     <td>
                         <select onchange="updateOrderStatus('${o.orderNumber || o.id}', this.value)" class="admin-input" style="padding: 4px 8px; font-size: 0.8rem; width: auto; background:#1e293b; color:#f8fafc; border:1px solid #334155; border-radius:6px; cursor:pointer;">
