@@ -1660,6 +1660,7 @@ const CATEGORY_NAMES = {
     living: "Oturma Odası",
     dining: "Yemek Odası",
     bedroom: "Yatak Odası",
+    wedding: "Düğün Paketleri",
     office: "Çalışma Odası"
 };
 
@@ -2886,6 +2887,26 @@ const renderProductDetail = () => {
                         </div>
                     </div>
 
+                    ${(product.category === 'wedding' && product.weddingPackageItems && product.weddingPackageItems.length > 0) ? `
+                    <div class="vdetail-options-card" style="background: linear-gradient(145deg, #faf5ff 0%, #ffffff 100%); border: 1.5px solid #d8b4fe; border-radius: 14px; padding: 16px;">
+                        <h4 class="voptions-heading" style="color: #6b21a8; display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-gem"></i> Düğün Paketi İçeriği (3 Tam Takım)
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            ${product.weddingPackageItems.map(wItem => `
+                                <a href="urun-detay.html?id=${wItem.id}" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #ffffff; border: 1px solid #e9d5ff; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease;">
+                                    <img src="${wItem.image || gallery[0]}" alt="${wItem.title}" style="width: 68px; height: 52px; object-fit: cover; border-radius: 8px; border: 1px solid #f3e8ff;">
+                                    <div style="flex: 1; min-width: 0;">
+                                        <span style="display: inline-block; font-size: 0.7rem; font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 2px 7px; border-radius: 99px; margin-bottom: 3px;">${wItem.role || 'Takım'}</span>
+                                        <div style="font-size: 0.9rem; font-weight: 800; color: #18181b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${wItem.title}</div>
+                                        <div style="font-size: 0.78rem; color: #64748b;">Tekil Satış Fiyatı: <strong>${formatPrice(wItem.price)}</strong></div>
+                                    </div>
+                                    <span style="font-size: 0.78rem; font-weight: 700; color: #6b21a8; white-space: nowrap;">İncele &gt;</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : `
                     <div class="vdetail-options-card">
                         <h4 class="voptions-heading">${isDining ? 'Masa & Takım Seçenekleri' : isLiving ? 'Ölçü & Modül Seçenekleri' : 'Koleksiyon Seçenekleri'}</h4>
                         <div class="voptions-grid">
@@ -2909,6 +2930,7 @@ const renderProductDetail = () => {
                             </div>
                         </div>
                     </div>
+                    `}
                 </div>
             </div>
 

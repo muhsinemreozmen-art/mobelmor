@@ -1847,6 +1847,9 @@ const CATEGORY_NAMES = {
   "yemek-odasi": "Yemek Odası",
   bedroom: "Yatak Odası",
   "yatak-odasi": "Yatak Odası",
+  wedding: "Düğün Paketleri",
+  "dugun-paketleri": "Düğün Paketleri",
+  "dugun-paketi": "Düğün Paketleri",
   office: "Çalışma Odası",
   "calisma-odasi": "Çalışma Odası",
   garden: "Bahçe Mobilyası",
@@ -1902,6 +1905,12 @@ const CATEGORY_HERO_DATA = {
     title: "YATAK ODASI",
     discount: "%20",
     image: "assets/minegolden_p11_5.webp"
+  },
+  wedding: {
+    tag: "KOLTUK + YEMEK ODASI + YATAK ODASI 3'LÜ KOMBİN",
+    title: "DÜĞÜN PAKETLERİ",
+    discount: "%25",
+    image: "assets/asya_main.webp"
   },
   office: {
     tag: "ÇALIŞMA ALANINDA ERGONOMİK ŞIKLIK",
@@ -2094,6 +2103,7 @@ const updateCategoryHeaderUI = () => {
   const normCat = (currentCategory === "oturma-odasi" || currentCategory === "living") ? "living"
     : (currentCategory === "yemek-odasi" || currentCategory === "dining") ? "dining"
     : (currentCategory === "yatak-odasi" || currentCategory === "bedroom") ? "bedroom"
+    : (currentCategory === "dugun-paketleri" || currentCategory === "dugun-paketi" || currentCategory === "wedding") ? "wedding"
     : (currentCategory === "calisma-odasi" || currentCategory === "office") ? "office"
     : (currentCategory === "bahce" || currentCategory === "garden") ? "garden"
     : currentCategory;
@@ -2146,7 +2156,7 @@ const initCategoryFromUrl = () => {
 
   if (window.SLUG_TO_CATEGORY && window.SLUG_TO_CATEGORY[catParam]) {
     currentCategory = window.SLUG_TO_CATEGORY[catParam];
-  } else if (catParam === "living" || catParam === "dining" || catParam === "bedroom" || catParam === "office" || catParam === "garden") {
+  } else if (catParam === "living" || catParam === "dining" || catParam === "bedroom" || catParam === "wedding" || catParam === "office" || catParam === "garden") {
     currentCategory = catParam;
   } else if (catParam === "oturma-odasi") {
     currentCategory = "living";
@@ -2154,6 +2164,8 @@ const initCategoryFromUrl = () => {
     currentCategory = "dining";
   } else if (catParam === "yatak-odasi") {
     currentCategory = "bedroom";
+  } else if (catParam === "dugun-paketleri" || catParam === "dugun-paketi") {
+    currentCategory = "wedding";
   } else if (catParam === "calisma-odasi") {
     currentCategory = "office";
   } else if (catParam === "bahce") {
@@ -2195,6 +2207,8 @@ const getFilteredProducts = () => {
         matchesCat = (pCat === "dining");
       } else if (currentCategory === "bedroom" || currentCategory === "yatak-odasi") {
         matchesCat = (pCat === "bedroom");
+      } else if (currentCategory === "wedding" || currentCategory === "dugun-paketleri" || currentCategory === "dugun-paketi") {
+        matchesCat = (pCat === "wedding" || (Array.isArray(product.weddingPackageItems) && product.weddingPackageItems.length > 0));
       } else if (currentCategory === "office" || currentCategory === "calisma-odasi") {
         matchesCat = (pCat === "office" || pCat === "tv-unit" || pCat === "tv-uniteleri");
       } else if (currentCategory === "garden" || currentCategory === "bahce") {
@@ -2321,7 +2335,8 @@ const renderProducts = () => {
     const discountClass = discountRate >= 20 ? 'red' : discountRate >= 15 ? 'purple' : discountRate >= 10 ? 'orange' : 'green';
     const has3d = (item.id % 4 === 0);
     const isBestPrice = (item.id % 3 === 1);
-    const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa'));
+    const isWedding = item.category === 'wedding' || (Array.isArray(item.weddingPackageItems) && item.weddingPackageItems.length > 0);
+    const isLiving = item.category === 'living' || (item.subcategory && item.subcategory.includes('sofa')) || isWedding;
     const isDining = item.category === 'dining' || (item.subcategory && item.subcategory.includes('table'));
 
     return `
@@ -2351,9 +2366,11 @@ const renderProducts = () => {
 
         <div class="card-details">
           <div class="vcard-badges-row">
-            ${isBestPrice
-              ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>`
-              : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
+            ${isWedding
+              ? `<span class="vbadge-pill" style="background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); color: #ffffff; font-weight: 800;"><i class="fa-solid fa-gem"></i> 3'LÜ DÜĞÜN PAKETİ</span>`
+              : isBestPrice
+                ? `<span class="vbadge-pill pill-best-price"><i class="fa-solid fa-tag"></i> EN İYİ FİYAT</span>`
+                : `<span class="vbadge-pill pill-collection">mobelmor collection</span>`
             }
             <span class="vbadge-pill pill-campaign"><i class="fa-solid fa-bullhorn"></i> Kampanyalı Ürün</span>
             ${item.rating >= 4.8 ? `<span class="vbadge-pill pill-rating"><i class="fa-solid fa-star"></i> Yüksek Puanlı</span>` : ''}
@@ -2361,6 +2378,11 @@ const renderProducts = () => {
           </div>
 
           <h3 class="card-product-title">${item.title}</h3>
+          ${(isWedding && item.weddingPackageItems && item.weddingPackageItems.length > 0) ? `
+            <div style="font-size: 0.75rem; color: #6b21a8; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 5px 8px; margin-bottom: 6px; font-weight: 600; line-height: 1.35;">
+              <i class="fa-solid fa-layer-group"></i> Paket İçeriği: ${item.weddingPackageItems.map(w => w.title).join(' + ')}
+            </div>
+          ` : ''}
 
           <div class="vcard-pricing-block">
             <span class="vcard-old-price">${formatPrice(originalPrice)}</span>
@@ -2390,7 +2412,8 @@ const attachCardEventListeners = () => {
 
     const goToDetail = (e) => {
       if (e.target.closest(".card-heart-btn") || e.target.closest(".add-to-cart-btn") || e.target.closest(".quick-view-btn")) return;
-      const item = PRODUCTS.find(p => p.id === parseInt(id));
+      const sourceList = (typeof window.StoreService !== 'undefined') ? window.StoreService.getProducts() : PRODUCTS;
+      const item = sourceList.find(p => p.id === parseInt(id)) || PRODUCTS.find(p => p.id === parseInt(id));
       if (item && window.getCleanProductUrl) {
         window.location.href = window.getCleanProductUrl(item.id, item.title);
       } else {

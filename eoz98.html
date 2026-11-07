@@ -568,15 +568,17 @@
                             <input type="text" id="prodSearchInput" class="admin-input" placeholder="Ürün adı veya model ara..." oninput="renderProductsTable()">
                         </div>
 
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             <select id="prodCatFilter" class="admin-input" style="width: auto; padding-left: 14px;" onchange="renderProductsTable()">
                                 <option value="all">Tüm Kategoriler</option>
+                                <option value="wedding">💍 Düğün Paketleri</option>
                                 <option value="living">Oturma Odası</option>
                                 <option value="dining">Yemek Odası</option>
                                 <option value="bedroom">Yatak Odası</option>
                             </select>
 
                             <button class="btn-action-primary" onclick="syncAllToCloudManual(event)" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);" title="Tüm ürün ve ayarları Supabase bulut veritabanına yedekler"><i class="fa-solid fa-cloud-arrow-up"></i> Buluta Senkronize Et</button>
+                            <button class="btn-action-primary" onclick="openWeddingPackageModal()" style="background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.35);"><i class="fa-solid fa-gem"></i> Düğün Paketi Oluştur</button>
                             <button class="btn-action-primary" onclick="openProductModal(0)"><i class="fa-solid fa-plus"></i> Yeni Ürün Ekle</button>
                         </div>
                     </div>
@@ -912,10 +914,11 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group">
                         <label>Kategori *</label>
-                        <select id="editProdCategory" class="admin-input" style="padding-left: 14px;">
+                        <select id="editProdCategory" class="admin-input" style="padding-left: 14px;" onchange="onEditCategoryChange(this.value)">
                             <option value="living">Oturma Odası</option>
                             <option value="dining">Yemek Odası</option>
                             <option value="bedroom">Yatak Odası</option>
+                            <option value="wedding">💍 Düğün Paketi (3'lü Kombin)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -924,6 +927,73 @@
                             <option value="Set">Tam Takım (Set)</option>
                             <option value="Solo">Tekil Parça (Solo)</option>
                         </select>
+                    </div>
+                </div>
+
+                <!-- 💍 3'LÜ DÜĞÜN PAKETİ SEÇİCİ ALANI (Koltuk + Yemek + Yatak Odası) -->
+                <div id="weddingPackageBuilderBox" style="display: none; background: linear-gradient(145deg, rgba(107, 33, 168, 0.22) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 12px; padding: 18px; margin-bottom: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 1rem; color: #e9d5ff; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-gem" style="color: #c084fc;"></i> 3'lü Düğün Paketi Ürün Seçimi
+                            </h3>
+                            <p style="margin: 3px 0 0 0; font-size: 0.76rem; color: #cbd5e1;">
+                                Katalogdaki mevcut ürünlerden 1 Koltuk Takımı, 1 Yemek Odası ve 1 Yatak Odası seçin. Görseller, alt parçalar ve toplam liste fiyatı otomatik aktarılır.
+                            </p>
+                        </div>
+                        <button type="button" onclick="syncWeddingBundleDataToForm(true)" style="background: rgba(192, 132, 252, 0.2); color: #e9d5ff; border: 1px solid rgba(192, 132, 252, 0.45); padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 700; cursor: pointer;">
+                            <i class="fa-solid fa-rotate"></i> Görsel &amp; Parçaları Yeniden Aktar
+                        </button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                        <!-- 1. Koltuk Takımı -->
+                        <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px;">
+                            <label style="color: #38bdf8; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa-solid fa-couch"></i> 1. Koltuk / Oturma Odası Takımı Seçin *
+                            </label>
+                            <select id="weddingSelectLiving" class="admin-input" style="padding-left: 12px;" onchange="onWeddingItemSelectChange()">
+                                <option value="">-- Koltuk Takımı Seçiniz --</option>
+                            </select>
+                            <div id="weddingPreviewLiving" style="margin-top: 8px; display: none;"></div>
+                        </div>
+
+                        <!-- 2. Yemek Odası Takımı -->
+                        <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px;">
+                            <label style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa-solid fa-utensils"></i> 2. Yemek Odası Takımı Seçin *
+                            </label>
+                            <select id="weddingSelectDining" class="admin-input" style="padding-left: 12px;" onchange="onWeddingItemSelectChange()">
+                                <option value="">-- Yemek Odası Takımı Seçiniz --</option>
+                            </select>
+                            <div id="weddingPreviewDining" style="margin-top: 8px; display: none;"></div>
+                        </div>
+
+                        <!-- 3. Yatak Odası Takımı -->
+                        <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px;">
+                            <label style="color: #f472b6; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa-solid fa-bed"></i> 3. Yatak Odası Takımı Seçin *
+                            </label>
+                            <select id="weddingSelectBedroom" class="admin-input" style="padding-left: 12px;" onchange="onWeddingItemSelectChange()">
+                                <option value="">-- Yatak Odası Takımı Seçiniz --</option>
+                            </select>
+                            <div id="weddingPreviewBedroom" style="margin-top: 8px; display: none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 3 Takım Toplam & Paket İndirim Hesaplayıcı -->
+                    <div style="margin-top: 14px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <span style="font-size: 0.74rem; color: #94a3b8; display: block;">Seçilen 3 Takımın Normal Toplamı:</span>
+                            <strong id="weddingRawTotalDisp" style="color: #4ade80; font-size: 1.15rem;">0 ₺</strong>
+                        </div>
+                        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                            <span style="font-size: 0.74rem; color: #cbd5e1;">Hızlı Paket Fiyatı:</span>
+                            <button type="button" onclick="applyWeddingDiscountPct(0)" class="preset-pill-btn" title="Normal toplamı direkt paket fiyatı yap">İndirimsiz (Tam)</button>
+                            <button type="button" onclick="applyWeddingDiscountPct(10)" class="preset-pill-btn" style="color:#c084fc; border-color:rgba(192,132,252,0.4);">%10 İndirimli</button>
+                            <button type="button" onclick="applyWeddingDiscountPct(15)" class="preset-pill-btn" style="color:#c084fc; border-color:rgba(192,132,252,0.4);">%15 İndirimli</button>
+                            <button type="button" onclick="applyWeddingDiscountPct(20)" class="preset-pill-btn" style="color:#4ade80; border-color:rgba(74,222,128,0.4);">%20 İndirimli</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1592,8 +1662,18 @@ let currentModalImages = []; // Array of gallery images in modal
                     <td>
                         <strong style="color: #fff;">${p.title}</strong>
                         <div style="font-size: 0.75rem; color: #94a3b8;">ID: #${p.id}</div>
+                        ${(p.category === 'wedding' && p.weddingPackageItems && p.weddingPackageItems.length > 0) ? `
+                            <div style="font-size: 0.72rem; color: #c084fc; margin-top: 3px;">
+                                <i class="fa-solid fa-gem"></i> ${p.weddingPackageItems.map(w => w.title).join(' + ')}
+                            </div>
+                        ` : ''}
                     </td>
-                    <td><span style="text-transform: capitalize; color: #cbd5e1;">${p.category}</span></td>
+                    <td>
+                        ${p.category === 'wedding' 
+                            ? `<span style="background: rgba(147,51,234,0.2); color: #e9d5ff; border: 1px solid rgba(192,132,252,0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;"><i class="fa-solid fa-gem"></i> Düğün Paketi</span>`
+                            : `<span style="text-transform: capitalize; color: #cbd5e1;">${p.category === 'living' ? 'Oturma Odası' : p.category === 'dining' ? 'Yemek Odası' : p.category === 'bedroom' ? 'Yatak Odası' : p.category}</span>`
+                        }
+                    </td>
                     <td><span class="status-badge ${p.productType === 'Set' ? 'status-shipping' : 'status-new'}">${p.productType}</span></td>
                     <td><strong>${p.price.toLocaleString('tr-TR')} ₺</strong></td>
                     <td>
@@ -2106,11 +2186,228 @@ let currentModalImages = []; // Array of gallery images in modal
             window.renderModalFabrics();
         };
 
+        // --- 💍 3'LÜ DÜĞÜN PAKETİ OLUŞTURUCU (KOLTUK + YEMEK + YATAK ODASI) ---
+        window.openWeddingPackageModal = () => {
+            window.openProductModal(0);
+            const catEl = document.getElementById('editProdCategory');
+            const typeEl = document.getElementById('editProdType');
+            const titleEl = document.getElementById('modalProductTitle');
+            if (catEl) catEl.value = 'wedding';
+            if (typeEl) typeEl.value = 'Set';
+            if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-gem" style="color:#c084fc;"></i> Yeni 3\'lü Düğün Paketi Oluştur';
+            window.onEditCategoryChange('wedding');
+        };
+
+        window.onEditCategoryChange = (catVal) => {
+            const box = document.getElementById('weddingPackageBuilderBox');
+            if (!box) return;
+            if (catVal === 'wedding') {
+                box.style.display = 'block';
+                const typeEl = document.getElementById('editProdType');
+                if (typeEl) typeEl.value = 'Set';
+                window.populateWeddingSelects();
+            } else {
+                box.style.display = 'none';
+            }
+        };
+
+        window.populateWeddingSelects = (selectedIds = {}) => {
+            const allProds = window.StoreService ? window.StoreService.getProducts(true) : [];
+            const livingSelect = document.getElementById('weddingSelectLiving');
+            const diningSelect = document.getElementById('weddingSelectDining');
+            const bedroomSelect = document.getElementById('weddingSelectBedroom');
+            if (!livingSelect || !diningSelect || !bedroomSelect) return;
+
+            const prevLiving = selectedIds.living || livingSelect.value || '';
+            const prevDining = selectedIds.dining || diningSelect.value || '';
+            const prevBedroom = selectedIds.bedroom || bedroomSelect.value || '';
+
+            // Prioritize Sets first, then other items in each category
+            const sortSetsFirst = (arr) => [...arr].sort((a, b) => (b.productType === 'Set' ? 1 : 0) - (a.productType === 'Set' ? 1 : 0));
+
+            const livingProds = sortSetsFirst(allProds.filter(p => p.category === 'living'));
+            const diningProds = sortSetsFirst(allProds.filter(p => p.category === 'dining'));
+            const bedroomProds = sortSetsFirst(allProds.filter(p => p.category === 'bedroom'));
+
+            livingSelect.innerHTML = '<option value="">-- Koltuk / Oturma Odası Takımı Seçiniz --</option>' +
+                livingProds.map(p => `<option value="${p.id}" ${String(p.id) === String(prevLiving) ? 'selected' : ''}>${p.title} (${(p.price || 0).toLocaleString('tr-TR')} ₺)</option>`).join('');
+
+            diningSelect.innerHTML = '<option value="">-- Yemek Odası Takımı Seçiniz --</option>' +
+                diningProds.map(p => `<option value="${p.id}" ${String(p.id) === String(prevDining) ? 'selected' : ''}>${p.title} (${(p.price || 0).toLocaleString('tr-TR')} ₺)</option>`).join('');
+
+            bedroomSelect.innerHTML = '<option value="">-- Yatak Odası Takımı Seçiniz --</option>' +
+                bedroomProds.map(p => `<option value="${p.id}" ${String(p.id) === String(prevBedroom) ? 'selected' : ''}>${p.title} (${(p.price || 0).toLocaleString('tr-TR')} ₺)</option>`).join('');
+
+            window.renderWeddingSelectPreviews();
+        };
+
+        window.getSelectedWeddingItems = () => {
+            const allProds = window.StoreService ? window.StoreService.getProducts(true) : [];
+            const livId = parseInt(document.getElementById('weddingSelectLiving')?.value) || 0;
+            const dinId = parseInt(document.getElementById('weddingSelectDining')?.value) || 0;
+            const bedId = parseInt(document.getElementById('weddingSelectBedroom')?.value) || 0;
+
+            const livProd = allProds.find(p => p.id === livId) || null;
+            const dinProd = allProds.find(p => p.id === dinId) || null;
+            const bedProd = allProds.find(p => p.id === bedId) || null;
+
+            return { livProd, dinProd, bedProd };
+        };
+
+        window.renderWeddingSelectPreviews = () => {
+            const { livProd, dinProd, bedProd } = window.getSelectedWeddingItems();
+            const renderCard = (prod, elId) => {
+                const el = document.getElementById(elId);
+                if (!el) return;
+                if (!prod) {
+                    el.style.display = 'none';
+                    el.innerHTML = '';
+                    return;
+                }
+                el.style.display = 'flex';
+                el.style.alignItems = 'center';
+                el.style.gap = '10px';
+                el.style.background = 'rgba(255,255,255,0.04)';
+                el.style.padding = '8px 10px';
+                el.style.borderRadius = '8px';
+                el.innerHTML = `
+                    <img src="${prod.image}" style="width:48px; height:36px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,0.15);">
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-size:0.8rem; font-weight:700; color:#f8fafc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prod.title}</div>
+                        <div style="font-size:0.74rem; color:#4ade80; font-weight:700;">${(prod.price || 0).toLocaleString('tr-TR')} ₺</div>
+                    </div>
+                `;
+            };
+
+            renderCard(livProd, 'weddingPreviewLiving');
+            renderCard(dinProd, 'weddingPreviewDining');
+            renderCard(bedProd, 'weddingPreviewBedroom');
+
+            const rawTotal = (livProd?.price || 0) + (dinProd?.price || 0) + (bedProd?.price || 0);
+            const rawEl = document.getElementById('weddingRawTotalDisp');
+            if (rawEl) rawEl.textContent = `${rawTotal.toLocaleString('tr-TR')} ₺`;
+        };
+
+        window.onWeddingItemSelectChange = () => {
+            window.renderWeddingSelectPreviews();
+            window.syncWeddingBundleDataToForm(false);
+        };
+
+        window.applyWeddingDiscountPct = (pct) => {
+            const { livProd, dinProd, bedProd } = window.getSelectedWeddingItems();
+            const rawTotal = (livProd?.price || 0) + (dinProd?.price || 0) + (bedProd?.price || 0);
+            if (rawTotal <= 0) {
+                alert("Lütfen önce pakete dahil edilecek ürünleri seçiniz.");
+                return;
+            }
+            const discounted = Math.round(rawTotal * (1 - (pct / 100)));
+            const priceInput = document.getElementById('editProdPrice');
+            const oldPriceInput = document.getElementById('editProdOldPrice');
+            if (priceInput) priceInput.value = discounted;
+            if (oldPriceInput) oldPriceInput.value = pct > 0 ? rawTotal : Math.round(rawTotal * 1.15);
+            window.updateSubProductsSummary();
+        };
+
+        window.syncWeddingBundleDataToForm = (forceOverwriteTitle = false) => {
+            const { livProd, dinProd, bedProd } = window.getSelectedWeddingItems();
+            const selectedList = [
+                livProd ? { role: 'Koltuk Takımı', prod: livProd } : null,
+                dinProd ? { role: 'Yemek Odası Takımı', prod: dinProd } : null,
+                bedProd ? { role: 'Yatak Odası Takımı', prod: bedProd } : null
+            ].filter(Boolean);
+
+            if (selectedList.length === 0) return;
+
+            // 1. Auto-suggest title if empty or auto-generated before
+            const titleInput = document.getElementById('editProdTitle');
+            if (titleInput && (forceOverwriteTitle || !titleInput.value.trim() || titleInput.dataset.autoGenerated === 'true')) {
+                const shortNames = selectedList.map(x => {
+                    return x.prod.title
+                        .replace(/Koltuk Takımı|Oturma Grubu|Yemek Odası Takımı|Yatak Odası Takımı|Takımı/gi, '')
+                        .trim()
+                        .split(' ')
+                        .slice(0, 2)
+                        .join(' ');
+                });
+                const uniqueNames = [...new Set(shortNames.filter(Boolean))];
+                titleInput.value = `${uniqueNames.join(' & ')} 3'lü Düğün Paketi`;
+                titleInput.dataset.autoGenerated = 'true';
+            }
+
+            // 2. Sync Prices (Raw total -> Old Price & Price if empty)
+            const rawTotal = selectedList.reduce((sum, x) => sum + (parseFloat(x.prod.price) || 0), 0);
+            const priceInput = document.getElementById('editProdPrice');
+            const oldPriceInput = document.getElementById('editProdOldPrice');
+            if (rawTotal > 0) {
+                if (forceOverwriteTitle || !priceInput.value || parseFloat(priceInput.value) === 0 || priceInput.dataset.autoGenerated === 'true') {
+                    // Default 10% package discount
+                    priceInput.value = Math.round(rawTotal * 0.90);
+                    priceInput.dataset.autoGenerated = 'true';
+                }
+                if (forceOverwriteTitle || !oldPriceInput.value || parseFloat(oldPriceInput.value) <= parseFloat(priceInput.value)) {
+                    oldPriceInput.value = rawTotal;
+                }
+            }
+
+            // 3. Merge Images into Gallery
+            const mergedImages = [];
+            selectedList.forEach(x => {
+                if (x.prod.image && !mergedImages.includes(x.prod.image)) {
+                    mergedImages.push(x.prod.image);
+                }
+            });
+            selectedList.forEach(x => {
+                if (Array.isArray(x.prod.gallery)) {
+                    x.prod.gallery.slice(0, 3).forEach(g => {
+                        if (g && !mergedImages.includes(g)) mergedImages.push(g);
+                    });
+                }
+            });
+            if (mergedImages.length > 0) {
+                currentMainImage = mergedImages[0];
+                currentModalImages = mergedImages;
+                renderModalGallery();
+            }
+
+            // 4. Populate SubProducts with the 3 selected sets
+            currentModalSubProducts = selectedList.map(x => ({
+                id: 'wed_' + x.prod.id,
+                productId: x.prod.id,
+                role: x.role,
+                title: `${x.role}: ${x.prod.title}`,
+                name: `${x.role}: ${x.prod.title}`,
+                price: parseFloat(x.prod.price) || 0,
+                originalPrice: parseFloat(x.prod.originalPrice) || Math.round((parseFloat(x.prod.price) || 0) * 1.15),
+                image: x.prod.image || ''
+            }));
+            renderModalSubProducts();
+
+            // 5. Merge Dimensions if empty
+            const dimsInput = document.getElementById('editProdDimensions');
+            if (dimsInput && (forceOverwriteTitle || !dimsInput.value.trim())) {
+                const dimLines = selectedList.map(x => {
+                    let d = '';
+                    if (typeof x.prod.dimensions === 'string' && x.prod.dimensions.trim()) {
+                        d = x.prod.dimensions.trim().replace(/\n+/g, ' | ');
+                    } else if (x.prod.specs) {
+                        d = Object.entries(x.prod.specs).map(([k, v]) => `${k}: ${v}`).join(' | ');
+                    }
+                    return `${x.role} (${x.prod.title}): ${d || 'Standart Tam Takım Ölçüleri'}`;
+                });
+                dimsInput.value = dimLines.join('\n');
+            }
+        };
+
         // Open Product Modal (Populate all specs, sub-products and dimensions)
         window.openProductModal = (id) => {
             const modal = document.getElementById('productModal');
             const title = document.getElementById('modalProductTitle');
             const prod = id > 0 ? window.StoreService.getProductById(id) : null;
+
+            const titleInput = document.getElementById('editProdTitle');
+            const priceInput = document.getElementById('editProdPrice');
+            if (titleInput) delete titleInput.dataset.autoGenerated;
+            if (priceInput) delete priceInput.dataset.autoGenerated;
 
             document.getElementById('editProdId').value = id;
             if (prod) {
@@ -2120,6 +2417,21 @@ let currentModalImages = []; // Array of gallery images in modal
                 document.getElementById('editProdType').value = prod.productType || 'Solo';
                 document.getElementById('editProdPrice').value = prod.price;
                 document.getElementById('editProdOldPrice').value = prod.originalPrice || '';
+
+                if (prod.category === 'wedding') {
+                    window.onEditCategoryChange('wedding');
+                    const wItems = prod.weddingPackageItems || [];
+                    const livItem = wItems.find(w => w.category === 'living' || w.role?.includes('Koltuk'));
+                    const dinItem = wItems.find(w => w.category === 'dining' || w.role?.includes('Yemek'));
+                    const bedItem = wItems.find(w => w.category === 'bedroom' || w.role?.includes('Yatak'));
+                    window.populateWeddingSelects({
+                        living: livItem ? livItem.id : '',
+                        dining: dinItem ? dinItem.id : '',
+                        bedroom: bedItem ? bedItem.id : ''
+                    });
+                } else {
+                    window.onEditCategoryChange(prod.category);
+                }
                 
                 // Delivery Time Initialization
                 const delTimeVal = prod.deliveryTime || '15 gün';
@@ -2195,6 +2507,7 @@ let currentModalImages = []; // Array of gallery images in modal
                 window.updateDeliveryDatePreview('15 gün');
                 document.getElementById('editProdHasFabric').checked = true;
                 window.toggleFabricSettingsBox(true);
+                window.onEditCategoryChange('living');
                 currentModalFabrics = JSON.parse(JSON.stringify(DEFAULT_ADMIN_FABRICS));
                 window.renderModalFabrics();
                 currentMainImage = "";
@@ -2273,12 +2586,52 @@ let currentModalImages = []; // Array of gallery images in modal
                 }
             });
 
-            const prodTypeVal = document.getElementById('editProdType').value || (subProducts.length > 0 ? 'Set' : 'Solo');
+            const catVal = document.getElementById('editProdCategory').value || 'living';
+            const prodTypeVal = catVal === 'wedding' ? 'Set' : (document.getElementById('editProdType').value || (subProducts.length > 0 ? 'Set' : 'Solo'));
+
+            let weddingPackageItems = [];
+            if (catVal === 'wedding') {
+                const { livProd, dinProd, bedProd } = window.getSelectedWeddingItems();
+                if (livProd) {
+                    weddingPackageItems.push({
+                        id: livProd.id,
+                        role: 'Koltuk Takımı',
+                        category: 'living',
+                        title: livProd.title,
+                        price: livProd.price,
+                        originalPrice: livProd.originalPrice || Math.round((livProd.price || 0) * 1.15),
+                        image: livProd.image
+                    });
+                }
+                if (dinProd) {
+                    weddingPackageItems.push({
+                        id: dinProd.id,
+                        role: 'Yemek Odası Takımı',
+                        category: 'dining',
+                        title: dinProd.title,
+                        price: dinProd.price,
+                        originalPrice: dinProd.originalPrice || Math.round((dinProd.price || 0) * 1.15),
+                        image: dinProd.image
+                    });
+                }
+                if (bedProd) {
+                    weddingPackageItems.push({
+                        id: bedProd.id,
+                        role: 'Yatak Odası Takımı',
+                        category: 'bedroom',
+                        title: bedProd.title,
+                        price: bedProd.price,
+                        originalPrice: bedProd.originalPrice || Math.round((bedProd.price || 0) * 1.15),
+                        image: bedProd.image
+                    });
+                }
+            }
 
             const updatedData = {
                 id: id,
                 title: title,
-                category: document.getElementById('editProdCategory').value || 'living',
+                category: catVal,
+                subcategory: catVal === 'wedding' ? 'wedding-packages' : undefined,
                 productType: prodTypeVal,
                 price: price,
                 originalPrice: parseFloat(document.getElementById('editProdOldPrice').value) || Math.round(price * 1.15),
@@ -2296,7 +2649,8 @@ let currentModalImages = []; // Array of gallery images in modal
                 warranty: (document.getElementById('editProdWarranty').value || '').trim(),
                 material: (document.getElementById('editProdFabric').value || '').trim() || 'İnegöl Masif Ahşap & İthal Kumaş',
                 subProducts: subProducts,
-                components: subProducts.length > 0 ? subProducts.map(sp => sp.title) : []
+                components: subProducts.length > 0 ? subProducts.map(sp => sp.title) : [],
+                weddingPackageItems: weddingPackageItems.length > 0 ? weddingPackageItems : undefined
             };
 
             if (window.StoreService) {
