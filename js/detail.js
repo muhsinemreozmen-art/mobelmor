@@ -1748,7 +1748,7 @@ window.updateWishlistBadges = () => {
 };
 
 window.addAllFavoritesToCart = () => {
-    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+    const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
     const wishListItems = allProds.filter(p => wishlist.has(p.id) || wishlist.has(parseInt(p.id)));
     if (!wishListItems.length) return;
 
@@ -1769,7 +1769,7 @@ window.renderWishlist = () => {
     const footer = document.getElementById("wishlistFooter");
     if (!body || !footer) return;
 
-    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+    const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
     const wishListItems = allProds.filter(p => wishlist.has(p.id) || wishlist.has(parseInt(p.id)));
     const totalCount = wishListItems.length;
 
@@ -2085,17 +2085,20 @@ const getProductIdFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const idStr = params.get("id");
     const slugStr = params.get("slug");
+    const sourceList = (typeof window.StoreService !== 'undefined' && window.StoreService.getProducts)
+        ? window.StoreService.getProducts(true)
+        : (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
 
-    // 1. If slug is explicitly provided, resolve exact product by slug
-    if (slugStr) {
-        const foundBySlug = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === slugStr);
-        if (foundBySlug) return foundBySlug.id;
-    }
-
-    // 2. If valid ID is provided and exists in DB
+    // 1. If valid ID is provided in URL query (?id=...), use it directly
     if (idStr) {
         const parsed = parseInt(idStr);
-        if (!isNaN(parsed) && PRODUCTS.some(p => p.id === parsed)) return parsed;
+        if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+
+    // 2. If slug is explicitly provided, resolve exact product by slug
+    if (slugStr) {
+        const foundBySlug = sourceList.find(p => (window.slugify ? window.slugify(p.title) : (p.title || '').toLowerCase()) === slugStr);
+        if (foundBySlug) return foundBySlug.id;
     }
 
     // 3. Also check pathname: /urun/slug or /slug
@@ -2103,7 +2106,7 @@ const getProductIdFromUrl = () => {
     const lastPart = pathParts[pathParts.length - 1];
     if (lastPart && !lastPart.includes('detail') && !lastPart.includes('detay')) {
         const cleanLast = lastPart.replace(/\.html$/, '');
-        const found = PRODUCTS.find(p => (window.slugify ? window.slugify(p.title) : p.title.toLowerCase()) === cleanLast);
+        const found = sourceList.find(p => (window.slugify ? window.slugify(p.title) : (p.title || '').toLowerCase()) === cleanLast);
         if (found) return found.id;
     }
     return 1;
@@ -2893,17 +2896,21 @@ const renderProductDetail = () => {
                             <i class="fa-solid fa-gem"></i> Düğün Paketi İçeriği (3 Tam Takım)
                         </h4>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            ${product.weddingPackageItems.map(wItem => `
-                                <a href="urun-detay.html?id=${wItem.id}" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #ffffff; border: 1px solid #e9d5ff; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease;">
-                                    <img src="${wItem.image || gallery[0]}" alt="${wItem.title}" style="width: 68px; height: 52px; object-fit: cover; border-radius: 8px; border: 1px solid #f3e8ff;">
+                            ${product.weddingPackageItems.map(wItem => {
+                                const roleLabel = wItem.role || (wItem.category === 'living' ? 'Koltuk Takımı' : wItem.category === 'dining' ? 'Yemek Odası Takımı' : 'Yatak Odası Takımı');
+                                const roleDesc = wItem.category === 'living' ? "3'lü + 3'lü + Berjer Tam Takım" : wItem.category === 'dining' ? "Açılır Masa + Konsol & Ayna + Sandalye Seti" : "Gardırop + Karyola & Başlık + Şifonyer + 2 Komodin";
+                                return `
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #ffffff; border: 1px solid #e9d5ff; border-radius: 10px;">
+                                    <img src="${wItem.image || gallery[0]}" alt="${roleLabel}" style="width: 68px; height: 52px; object-fit: cover; border-radius: 8px; border: 1px solid #f3e8ff;">
                                     <div style="flex: 1; min-width: 0;">
-                                        <span style="display: inline-block; font-size: 0.7rem; font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 2px 7px; border-radius: 99px; margin-bottom: 3px;">${wItem.role || 'Takım'}</span>
-                                        <div style="font-size: 0.9rem; font-weight: 800; color: #18181b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${wItem.title}</div>
-                                        <div style="font-size: 0.78rem; color: #64748b;">Tekil Satış Fiyatı: <strong>${formatPrice(wItem.price)}</strong></div>
+                                        <span style="display: inline-block; font-size: 0.7rem; font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 2px 7px; border-radius: 99px; margin-bottom: 3px;">Pakete Dahil</span>
+                                        <div style="font-size: 0.9rem; font-weight: 800; color: #18181b;">${roleLabel}</div>
+                                        <div style="font-size: 0.76rem; color: #64748b;">${roleDesc}</div>
                                     </div>
-                                    <span style="font-size: 0.78rem; font-weight: 700; color: #6b21a8; white-space: nowrap;">İncele &gt;</span>
-                                </a>
-                            `).join('')}
+                                    <span style="font-size: 0.82rem; font-weight: 800; color: #16a34a; white-space: nowrap;"><i class="fa-solid fa-circle-check"></i> Dahil</span>
+                                </div>
+                                `;
+                            }).join('')}
                         </div>
                     </div>
                     ` : `
@@ -3152,6 +3159,23 @@ const renderProductDetail = () => {
     // Render Dimension Specs, Features, Installments & Related Products
     renderSpecsAndGeneralInfo(product);
     renderRelatedProducts(product);
+
+    // If Wedding Package cover is not yet a 4-panel collage, build it on the fly and update 1st slide
+    if ((product.category === 'wedding' || (Array.isArray(product.weddingPackageItems) && product.weddingPackageItems.length > 0)) && (!product.image || !product.image.startsWith('data:image/'))) {
+        if (window.StoreService && typeof window.StoreService.buildWeddingCollageImage === 'function') {
+            window.StoreService.buildWeddingCollageImage(product).then(dUrl => {
+                if (dUrl) {
+                    product.image = dUrl;
+                    product.gallery = [dUrl, ...(product.gallery || []).filter(g => g && g !== dUrl)];
+                    const firstSlideImg = document.querySelector('#galleryCarouselTrack .gallery-slide[data-index="0"] img');
+                    const firstThumbImg = document.querySelector('#galleryThumbStrip .vthumb-item:first-child img');
+                    if (firstSlideImg) firstSlideImg.src = dUrl;
+                    if (firstThumbImg) firstThumbImg.src = dUrl;
+                    window.StoreService.updateProduct(product.id, { image: dUrl, gallery: product.gallery, title: product.title, subProducts: product.subProducts });
+                }
+            });
+        }
+    }
 };
 
 const getCategoryModuleConfig = (product) => {
@@ -3166,7 +3190,7 @@ const getCategoryModuleConfig = (product) => {
         }));
     }
 
-    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+    const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
     const isSet = product.productType === 'Set' || (product.title && product.title.toLowerCase().includes('takım')) || (product.badges && product.badges.some(b => b.toLowerCase().includes('takım')));
     const cat = product.category || '';
     const sub = product.subcategory || '';
@@ -3661,7 +3685,7 @@ const renderRelatedProducts = (currentProduct) => {
 };
 
 const addToCart = (productId, qty = 1) => {
-    const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+    const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
     const item = allProds.find(p => p.id == productId);
     if (!item) return;
 
@@ -4341,6 +4365,13 @@ const initLiveSearchEngine = () => {
 
 function initDetailPage() {
     if (typeof renderProductDetail === 'function') renderProductDetail();
+    if (typeof window.StoreService !== 'undefined' && window.StoreService.syncProductsFromCloud) {
+        window.StoreService.syncProductsFromCloud().then(updatedList => {
+            if (Array.isArray(updatedList) && updatedList.length > 0 && typeof renderProductDetail === 'function') {
+                renderProductDetail();
+            }
+        }).catch(e => console.log('Detail cloud sync:', e));
+    }
     if (typeof window.createLightbox === 'function') window.createLightbox();
     if (typeof updateBadges === 'function') updateBadges();
     if (typeof renderCart === 'function') renderCart();

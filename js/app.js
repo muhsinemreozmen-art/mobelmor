@@ -2020,7 +2020,7 @@ const showToast = (message, icon = "fa-circle-check") => {
 };
 
 const openQuickView = (productId) => {
-  const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+  const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
   const item = allProds.find(p => p.id == productId);
   if (!item) return;
 
@@ -2378,11 +2378,6 @@ const renderProducts = () => {
           </div>
 
           <h3 class="card-product-title">${item.title}</h3>
-          ${(isWedding && item.weddingPackageItems && item.weddingPackageItems.length > 0) ? `
-            <div style="font-size: 0.75rem; color: #6b21a8; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 5px 8px; margin-bottom: 6px; font-weight: 600; line-height: 1.35;">
-              <i class="fa-solid fa-layer-group"></i> Paket İçeriği: ${item.weddingPackageItems.map(w => w.title).join(' + ')}
-            </div>
-          ` : ''}
 
           <div class="vcard-pricing-block">
             <span class="vcard-old-price">${formatPrice(originalPrice)}</span>
@@ -2403,6 +2398,25 @@ const renderProducts = () => {
   }).join('');
 
   attachCardEventListeners();
+
+  // Auto-generate 4-panel collage cover for any wedding package that doesn't have one yet
+  if (window.StoreService && typeof window.StoreService.buildWeddingCollageImage === 'function') {
+    filtered.forEach(item => {
+      const isWed = item.category === 'wedding' || (Array.isArray(item.weddingPackageItems) && item.weddingPackageItems.length > 0);
+      if (isWed && (!item.image || !item.image.startsWith('data:image/'))) {
+        window.StoreService.buildWeddingCollageImage(item).then(dUrl => {
+          if (dUrl) {
+            item.image = dUrl;
+            if (!Array.isArray(item.gallery)) item.gallery = [];
+            item.gallery = [dUrl, ...item.gallery.filter(g => g && g !== dUrl)];
+            const cardImg = document.querySelector(`.product-card[data-id="${item.id}"] .card-img`);
+            if (cardImg) cardImg.src = dUrl;
+            window.StoreService.updateProduct(item.id, { image: dUrl, gallery: item.gallery, title: item.title, subProducts: item.subProducts });
+          }
+        });
+      }
+    });
+  }
 };
 
 const attachCardEventListeners = () => {
@@ -2459,7 +2473,7 @@ const attachCardEventListeners = () => {
 };
 
 const addToCart = (productId, qty = 1) => {
-  const allProds = (typeof PRODUCTS !== 'undefined' && PRODUCTS && PRODUCTS.length) ? PRODUCTS : (window.StoreService ? window.StoreService.getProducts() : []);
+  const allProds = (window.StoreService && typeof window.StoreService.getProducts === 'function') ? window.StoreService.getProducts(true) : ((typeof PRODUCTS !== 'undefined' && PRODUCTS) ? PRODUCTS : []);
   const item = allProds.find(p => p.id == productId);
   if (!item) return;
 

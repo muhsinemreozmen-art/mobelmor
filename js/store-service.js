@@ -85,6 +85,21 @@
             }
             product.material = product.material.replace(/\|\|META:[^|]*\|\|/g, '').replace(/\|\|VIDEO:[^|]*\|\|/g, '').trim();
         }
+        // Sanitize wedding package titles & subProducts so individual catalog names are never exposed
+        if (product.category === 'wedding' || (Array.isArray(product.weddingPackageItems) && product.weddingPackageItems.length > 0)) {
+            if (product.title && (product.title.includes('&') || product.title.includes('+'))) {
+                product.title = "Vakko Düğün Paketi";
+            }
+            if (Array.isArray(product.subProducts)) {
+                product.subProducts = product.subProducts.map(sp => {
+                    const cleanRole = (sp.role || sp.title || '').split(':')[0].trim() || 'Takım';
+                    return { ...sp, title: cleanRole, name: cleanRole };
+                });
+            }
+            if (Array.isArray(product.components)) {
+                product.components = product.components.map(c => (c || '').split(':')[0].trim());
+            }
+        }
         return product;
     }
 
@@ -247,8 +262,8 @@
             const isNew = !productData.id || productData.id === 0;
 
             if (isNew) {
-                // Yeni ID Üret
-                const maxId = list.reduce((max, p) => Math.max(max, p.id || 0), 0);
+                // Yeni ID Üret (100+ üstünden başlat ki mevcut 85 ürünle çakışmasın)
+                const maxId = list.reduce((max, p) => Math.max(max, p.id || 0), 100);
                 productData.id = maxId + 1;
                 productData.isActive = productData.isActive !== false;
                 list.push(productData);
@@ -265,6 +280,192 @@
             localStorage.setItem('mobelmor_custom_products', JSON.stringify(list));
             this._pushProductToCloud(productData);
             return productData;
+        },
+
+        generateRandomWeddingTitle: function (currentVal = '') {
+            const MODERN_WEDDING_NAMES = [
+                "Vakko", "Verona", "Valencia", "Monaco", "Sienna", "Bellagio",
+                "Capri", "Toscana", "Riviera", "Venezia", "Portofino", "Milano",
+                "Sorento", "Aurelia", "Solaris", "Lucca", "Como", "Louvre",
+                "Marbella", "Ginevra", "Firenze", "Palermo", "Cortina", "Modena",
+                "Genova", "Ravenna", "Amalfi", "Sanremo", "Treviso", "Novara"
+            ];
+            const allProds = this.getProducts(true);
+            const usedTitlesLower = allProds.map(p => (p.title || '').toLowerCase());
+            const currentClean = (currentVal || '').toLowerCase();
+
+            const unused = MODERN_WEDDING_NAMES.filter(name => {
+                const lower = name.toLowerCase();
+                return !usedTitlesLower.some(t => t.includes(lower)) && !currentClean.includes(lower);
+            });
+            const pool = unused.length > 0 ? unused : MODERN_WEDDING_NAMES;
+            const chosen = pool[Math.floor(Math.random() * pool.length)];
+            return `${chosen} Düğün Paketi`;
+        },
+
+        buildWeddingCollageImage: async function (product) {
+            if (!product) return null;
+            const wItems = product.weddingPackageItems || [];
+            const gallery = Array.isArray(product.gallery) ? product.gallery : [];
+
+            const livItem = wItems.find(w => w.category === 'living' || (w.role && w.role.includes('Koltuk')));
+            const dinItem = wItems.find(w => w.category === 'dining' || (w.role && w.role.includes('Yemek')));
+            const bedItem = wItems.find(w => w.category === 'bedroom' || (w.role && w.role.includes('Yatak')));
+
+            const nonDataGallery = gallery.filter(g => g && !g.startsWith('data:image/'));
+            const topLeftSrc = bedItem?.image || nonDataGallery[2] || nonDataGallery[0] || product.image;
+            const topRightSrc = dinItem?.image || nonDataGallery[1] || nonDataGallery[0] || product.image;
+            const bottomLeftSrc = livItem?.image || nonDataGallery[0] || product.image;
+
+            if (!topLeftSrc && !topRightSrc && !bottomLeftSrc) return null;
+
+            const loadImg = (src) => new Promise((resolve) => {
+                if (!src) return resolve(null);
+                const img = new Image();
+                if (/^https?:\/\//i.test(src)) img.crossOrigin = "anonymous";
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                img.src = src;
+            });
+
+            const [imgTL, imgTR, imgBL] = await Promise.all([
+                loadImg(topLeftSrc),
+                loadImg(topRightSrc),
+                loadImg(bottomLeftSrc)
+            ]);
+
+            const canvas = document.createElement('canvas');
+            const W = 1200, H = 760;
+            canvas.width = W;
+            canvas.height = H;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, W, H);
+
+            const pad = 16, gap = 14;
+            const cellW = Math.floor((W - pad * 2 - gap) / 2);
+            const cellH = Math.floor((H - pad * 2 - gap) / 2);
+            const x1 = pad, y1 = pad;
+            const x2 = pad + cellW + gap, y2 = pad + cellH + gap;
+
+            const drawCover = (img, x, y, w, h) => {
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(x, y, w, h);
+                ctx.clip();
+                if (!img || !img.width || !img.height) {
+                    ctx.fillStyle = "#f1f5f9";
+                    ctx.fillRect(x, y, w, h);
+                    ctx.restore();
+                    return;
+                }
+                const imgRatio = img.width / img.height;
+                const boxRatio = w / h;
+                let drawW, drawH, drawX, drawY;
+                if (imgRatio > boxRatio) {
+                    drawH = h; drawW = h * imgRatio;
+                    drawX = x - (drawW - w) / 2; drawY = y;
+                } else {
+                    drawW = w; drawH = w / imgRatio;
+                    drawX = x; drawY = y - (drawH - h) / 2;
+                }
+                ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                ctx.restore();
+            };
+
+            drawCover(imgTL, x1, y1, cellW, cellH);
+            drawCover(imgTR, x2, y1, cellW, cellH);
+            drawCover(imgBL, x1, y2, cellW, cellH);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x2, y2, cellW, cellH);
+
+            const cx = x2 + cellW / 2;
+            const lineInset = 48;
+            const lineLeft = x2 + lineInset;
+            const lineRight = x2 + cellW - lineInset;
+            const maxTextW = cellW - lineInset * 2 - 12;
+
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.moveTo(lineLeft, y2 + 64);
+            ctx.lineTo(lineRight, y2 + 64);
+            ctx.stroke();
+
+            let pkgName = (product.title || 'VAKKO')
+                .replace(/3\s*['’]?\s*l[üu]\s+d[üu][ğg][üu]n\s+paketi/gi, '')
+                .replace(/d[üu][ğg][üu]n\s+paketi/gi, '')
+                .replace(/3\s*['’]?\s*l[üu]\s+paket/gi, '')
+                .replace(/paketi$/gi, '')
+                .trim();
+            if (!pkgName || pkgName.includes('&') || pkgName.includes('+')) pkgName = 'VAKKO';
+            pkgName = pkgName.toLocaleUpperCase('tr-TR');
+
+            let fontSize = 56;
+            ctx.font = `800 ${fontSize}px "Plus Jakarta Sans", "Montserrat", "Segoe UI", sans-serif`;
+            while (ctx.measureText(pkgName).width > maxTextW && fontSize > 26) {
+                fontSize -= 2;
+                ctx.font = `800 ${fontSize}px "Plus Jakarta Sans", "Montserrat", "Segoe UI", sans-serif`;
+            }
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pkgName, cx, y2 + 126);
+
+            ctx.font = `500 22px "Plus Jakarta Sans", "Montserrat", "Segoe UI", sans-serif`;
+            ctx.fillStyle = '#1e293b';
+            ctx.fillText('D Ü Ğ Ü N   P A K E T İ', cx, y2 + 190);
+
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.moveTo(lineLeft, y2 + 236);
+            ctx.lineTo(lineRight, y2 + 236);
+            ctx.stroke();
+
+            const logoCenterY = y2 + 302;
+            ctx.font = `800 46px "Plus Jakarta Sans", "Segoe UI", sans-serif`;
+            const mobelW = ctx.measureText('mobel').width;
+            const morW = ctx.measureText('mor').width;
+            const logoStartX = cx - (mobelW + morW) / 2;
+
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
+            ctx.fillStyle = '#000000';
+            ctx.fillText('mobel', logoStartX, logoCenterY);
+
+            const morStartX = logoStartX + mobelW;
+            ctx.fillStyle = '#6b1480';
+            ctx.fillText('mor', morStartX, logoCenterY);
+
+            const badgeW = 48, badgeH = 18;
+            const badgeX = morStartX + morW - badgeW - 2;
+            const badgeY = logoCenterY - 46;
+            ctx.fillStyle = '#6b1480';
+            ctx.beginPath();
+            ctx.moveTo(badgeX, badgeY);
+            ctx.lineTo(badgeX + badgeW * 0.78, badgeY);
+            ctx.lineTo(badgeX + badgeW, badgeY + badgeH / 2);
+            ctx.lineTo(badgeX + badgeW * 0.78, badgeY + badgeH);
+            ctx.lineTo(badgeX, badgeY + badgeH);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.font = `800 11px "Plus Jakarta Sans", "Segoe UI", sans-serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('.com', badgeX + 6, badgeY + badgeH / 2 + 0.5);
+
+            try {
+                let dUrl = canvas.toDataURL('image/webp', 0.90);
+                if (!dUrl || !dUrl.startsWith('data:image/')) dUrl = canvas.toDataURL('image/jpeg', 0.90);
+                return dUrl;
+            } catch (e) {
+                return null;
+            }
         },
 
         toggleProductStatus: function (id) {
